@@ -2,41 +2,52 @@
 
 module Phlex
   class Tag
-    SPACE = ' '
-    include Phlex::HTML
+    SPACE = " "
+    NAMESPACE_DELINEATOR = "::"
 
-    def initialize(parent, name, content = nil, **attributes, &block)
-      raise ArgumentError if content && block_given?
+    class << self
+      attr_accessor :abstract
 
-      @parent = parent
-      @name = name
-      @content = content
-      @attributes = attributes
-      @children = []
+      def value
+        name.split(NAMESPACE_DELINEATOR).last.downcase
+      end
 
-      instance_eval(&block) if block_given?
+      def descendants
+        Enumerator.new do |yielder|
+          subclasses.each do |subclass|
+            yielder << subclass
+            subclass.descendants.each { yielder << _1 }
+          end
+        end
+      end
     end
 
-    def build
-      "#{opening_tag}#{content}#{closing_tag}"
+    self.abstract = true
+
+    def call
+      raise NoMethodError
+    end
+
+    def initialize(**attributes)
+      @attributes = attributes.transform_values { Array(_1.split(SPACE)) }
+    end
+
+    def method_missing(name, *args, **kwargs, &block)
+      @attributes[:class] ||= []
+      @attributes[:class] << name
+      self
     end
 
     private
 
-    def opening_tag
-      "<#{opening_tag_content.join(SPACE)}>"
+    def meta_data
+      ([self.class.value] + build_attributes).join(SPACE)
     end
 
-    def opening_tag_content
-      [@name] + @attributes.map { |k, v| "#{k} = '#{v}'" }
-    end
-
-    def content
-      @content || @children.map(&:build).join
-    end
-
-    def closing_tag
-      "</#{@name}>"
+    def build_attributes
+      @attributes
+        .transform_values { _1.join(SPACE) }
+        .map { |k, v| "#{k}=\"#{v}\"" }
     end
   end
 end

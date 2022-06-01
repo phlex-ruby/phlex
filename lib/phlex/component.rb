@@ -2,19 +2,10 @@
 
 module Phlex
   class Component
-    def initialize(*args, **kwargs, &block)
-      @args = args
-      @kwargs = kwargs
-      @block = block
-    end
+    include Node
 
-    def build
-      instance_exec(@content, **@kwargs, &self.class.template)
-      @children.join
-    end
-
-    def render(&block)
-      Phlex::Context.new
+    def initialize(&block)
+      Context.new(self, block).call(&template)
     end
   end
 end

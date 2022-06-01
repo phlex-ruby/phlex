@@ -1,16 +1,36 @@
+# frozen_string_literal: true
+
 module Phlex
   class Context
-    include HTML
+    include Callable
 
-    def initialize(content = nil, &block)
+    def initialize(container, content = nil)
+      @container = container
       @content = content
-      @children = []
-      @block = block
     end
 
-    def build
-      instance_exec(@content, &@block)
-      @children.map(&:build).join
+    def call(&block)
+      instance_exec(@content, &block)
+    end
+
+    def text(content)
+      self << Text.new(content)
+    end
+
+    def component(component, &block)
+      self << component.new(&block)
+    end
+
+    def <<(node)
+      @container.children << node
+    end
+
+    Tag.descendants.reject(&:abstract).each do |tag|
+      class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+        def #{tag.value}(*args, **kwargs, &block)
+          #{tag.name}.new(*args, **kwargs, &block).tap { self << _1 }
+        end
+      RUBY
     end
   end
 end
