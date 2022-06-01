@@ -1,0 +1,2 @@
+module Component
+end

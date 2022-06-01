@@ -1,0 +1,21 @@
+PATH
+  remote: .
+  specs:
+    phlex (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.15.0)
+    rake (13.0.6)
+
+PLATFORMS
+  arm64-darwin-21
+
+DEPENDENCIES
+  minitest (~> 5.0)
+  phlex!
+  rake (~> 13.0)
+
+BUNDLED WITH
+   2.3.7
