@@ -6,9 +6,9 @@ module Phlex
       self << Text.new(content)
     end
 
-    # def component(component, &block)
-    #   component.new(&block).tap { self << _1 }
-    # end
+    def component(component, *args, **kwargs, &block)
+      self << component.new(*args, **kwargs, &block)
+    end
 
     Tag.descendants.reject(&:abstract).each do |tag|
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)

@@ -10,6 +10,9 @@ module Phlex
       def template(&block)
         ul do
           li "Hi"
+          li emoji
+          li @status
+          render &block
         end
       end
 
@@ -26,8 +29,11 @@ module Phlex
     end
 
     def test_it_works
-      component = MyComponent.new(status: :success)
-      assert_equal "<ul><li>Hi</li></ul>", component.call
+      component = MyComponent.new(status: :success) do
+        h1 "Hello"
+        component MyComponent, status: :failure
+      end
+      assert_equal "<ul><li>Hi</li><h1>Hello</h1></ul>", component.call
     end
   end
 end
