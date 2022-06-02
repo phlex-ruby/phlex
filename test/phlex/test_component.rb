@@ -2,19 +2,32 @@ require "test_helper"
 
 module Phlex
   class TestComponent < Minitest::Test
-    class MyComponent < Phlex::Component
-      template do |content, title|
-        table do
-          h1 title
-          render &content
+    class MyComponent < Component
+      def initialize(status:)
+        @status = status
+      end
+
+      def template(&block)
+        ul do
+          li "Hi"
+        end
+      end
+
+      private
+
+      def emoji
+        case @status
+        when :success
+          "✅"
+        when :failure
+          "❌"
         end
       end
     end
 
     def test_it_works
-      component = MyComponent.new("Joel") { tr { td } }
-
-      assert_equal "<table><h1>Joel</h1><tr><td></td></tr></table>", component.call
+      component = MyComponent.new(status: :success)
+      assert_equal "<ul><li>Hi</li></ul>", component.call
     end
   end
 end

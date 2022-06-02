@@ -29,7 +29,7 @@ module Phlex
     end
 
     def initialize(**attributes)
-      @attributes = attributes.transform_values { Array(_1.split(SPACE)) }
+      @attributes = attributes
     end
 
     def method_missing(name, *args, **kwargs, &block)
