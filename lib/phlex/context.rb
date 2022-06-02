@@ -7,10 +7,15 @@ module Phlex
     end
 
     def component(component, *args, **kwargs, &block)
-      self << component.new(*args, **kwargs, &block)
+      assigns = instance_variables
+        .reject { _1 == :@render_context || _1 == :@children }
+        .map { [_1, instance_variable_get(_1)] }.to_h
+
+      comp = component.new(*args, **kwargs, assigns:, &block)
+      self << comp
     end
 
-    Tag.descendants.reject(&:abstract).each do |tag|
+    Tag::StandardElement.subclasses.each do |tag|
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
         def #{tag.value}(content = nil, **kwargs, &block)
           raise ArgumentError if content && block_given?
@@ -18,6 +23,15 @@ module Phlex
           self << tag
           render_tag(tag, &block) if block_given?
           render_tag(tag) { text content } if content
+        end
+      RUBY
+    end
+
+    Tag::VoidElement.subclasses.each do |tag|
+      class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+        def #{tag.value}(**kwargs)
+          tag = #{tag.name}.new(**kwargs)
+          self << tag
         end
       RUBY
     end

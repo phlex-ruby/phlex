@@ -5,7 +5,9 @@ module Phlex
     include Node, Context
 
     module Initializer
-      def initialize(*args, **kwargs, &block)
+      def initialize(*args, assigns: [], **kwargs, &block)
+        assigns.each { |k, v| instance_variable_set(k, v) }
+
         super(*args, **kwargs)
         template(&block)
       end
@@ -33,9 +35,5 @@ module Phlex
       instance_eval(&block)
       @render_context = old_render_context
     end
-
-    # def h1(content = nil, &block)
-    #   self << H1.new(content, component: self, &block)
-    # end
   end
 end

@@ -22,14 +22,13 @@ module Phlex
       end
     end
 
-    self.abstract = true
-
     def call
       raise NoMethodError
     end
 
     def initialize(**attributes)
       @attributes = attributes
+        .transform_values { _1.split(SPACE) if _1.is_a?(String) }
     end
 
     def method_missing(name, *args, **kwargs, &block)

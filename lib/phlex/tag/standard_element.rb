@@ -3,8 +3,6 @@ module Phlex
     class StandardElement < Tag
       include Node
 
-      self.abstract = true
-
       def call
         "<#{meta_data}>#{super}</#{self.class.value}>"
       end
