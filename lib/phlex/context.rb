@@ -4,13 +4,15 @@ module Phlex
   class Context
     include Callable
 
-    def initialize(container, content = nil)
+    def initialize(container, content = nil, *args, **kwargs)
       @container = container
       @content = content
+      @args = args
+      @kwargs = kwargs
     end
 
     def call(&block)
-      instance_exec(@content, &block)
+      instance_exec(@content, *@args, **@kwargs, &block)
     end
 
     def text(content)
@@ -19,6 +21,10 @@ module Phlex
 
     def component(component, &block)
       self << component.new(&block)
+    end
+
+    def render(&block)
+      instance_eval(&block)
     end
 
     def <<(node)
