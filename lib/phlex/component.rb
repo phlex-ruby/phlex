@@ -6,11 +6,17 @@ module Phlex
 
     module Initializer
       def initialize(*args, assigns: [], **kwargs, &block)
-        assigns.each { |k, v| instance_variable_set(k, v) }
+        assigns.each do |k, v|
+          instance_variable_get(k) || instance_variable_set(k, v)
+        end
 
         super(*args, **kwargs)
         template(&block)
       end
+    end
+
+    def initialize(**attributes)
+      attributes.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
     def self.inherited(child)
@@ -18,7 +24,7 @@ module Phlex
     end
 
     def render_context
-      @render_context ||= self
+      @_render_context ||= self
     end
 
     def <<(node)
@@ -31,9 +37,9 @@ module Phlex
 
     def render_tag(tag, &block)
       old_render_context = render_context.dup
-      @render_context = tag
+      @_render_context = tag
       instance_eval(&block)
-      @render_context = old_render_context
+      @_render_context = old_render_context
     end
   end
 end

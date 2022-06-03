@@ -11,15 +11,6 @@ module Phlex
       def value
         name.split(NAMESPACE_DELINEATOR).last.downcase
       end
-
-      def descendants
-        Enumerator.new do |yielder|
-          subclasses.each do |subclass|
-            yielder << subclass
-            subclass.descendants.each { yielder << _1 }
-          end
-        end
-      end
     end
 
     def call
@@ -31,11 +22,11 @@ module Phlex
         .transform_values { _1.split(SPACE) if _1.is_a?(String) }
     end
 
-    def method_missing(name, *args, **kwargs, &block)
-      @attributes[:class] ||= []
-      @attributes[:class] << name
-      self
-    end
+    # def method_missing(name, *args, **kwargs, &block)
+    #   @attributes[:class] ||= []
+    #   @attributes[:class] << name
+    #   self
+    # end
 
     private
 

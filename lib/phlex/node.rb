@@ -3,8 +3,7 @@ module Phlex
     include Callable
 
     def children
-      return @children if defined? @children
-      @children = []
+      @_children ||= []
     end
 
     def call

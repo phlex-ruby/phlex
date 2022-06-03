@@ -8,10 +8,10 @@ module Phlex
 
     def component(component, *args, **kwargs, &block)
       assigns = instance_variables
-        .reject { _1 == :@render_context || _1 == :@children }
+        .reject { _1.start_with? "@_" }
         .map { [_1, instance_variable_get(_1)] }.to_h
 
-      comp = component.new(*args, **kwargs, assigns:, &block)
+      comp = component.new(*args, assigns:, **kwargs, &block)
       self << comp
     end
 
