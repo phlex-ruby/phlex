@@ -11,6 +11,7 @@ require_relative "phlex/tag/standard_element"
 require_relative "phlex/tags"
 require_relative "phlex/context"
 require_relative "phlex/component"
+require_relative "phlex/page"
 require_relative "phlex/text"
 
 module Phlex

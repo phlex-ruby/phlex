@@ -11,7 +11,7 @@ module Phlex
         .reject { _1.start_with? "@_" }
         .map { [_1, instance_variable_get(_1)] }.to_h
 
-      comp = component.new(*args, assigns:, **kwargs, &block)
+      comp = component.new(*args, parent: self, assigns:, **kwargs, &block)
       self << comp
     end
 

@@ -5,10 +5,12 @@ module Phlex
     include Node, Context
 
     module Initializer
-      def initialize(*args, assigns: [], **kwargs, &block)
+      def initialize(*args, parent: nil, assigns: [], **kwargs, &block)
         assigns.each do |k, v|
           instance_variable_get(k) || instance_variable_set(k, v)
         end
+
+        @_parent = parent
 
         super(*args, **kwargs)
         template(&block)
@@ -40,6 +42,16 @@ module Phlex
       @_render_context = tag
       instance_eval(&block)
       @_render_context = old_render_context
+    end
+
+    def method_missing(*args, **kwargs, &block)
+      super unless @_parent
+      @_parent.send(*args, **kwargs, &block)
+    end
+
+    def respond_to_missing?(name)
+      super unless @_parent
+      @_parent.respond_to?(name)
     end
   end
 end

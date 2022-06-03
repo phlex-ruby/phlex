@@ -9,6 +9,10 @@ module Phlex
     end
 
     class ComponentWithImplicitAttributes < Component
+      def initialize(status:)
+        super
+      end
+
       def template
         div @status
       end
@@ -27,10 +31,16 @@ module Phlex
     class Inception < Component
       def template
         h1 @dream
+        h2 some_method
 
         component SimpleComponent do
           h1 @dream
+          h2 some_method
         end
+      end
+
+      def some_method
+        "Woop"
       end
     end
 
@@ -74,7 +84,8 @@ module Phlex
 
     def test_assigns_are_passed_down
       component = Inception.new(dream: "😴")
-      assert_equal "<h1>😴</h1><div><h1>😴</h1></div>", component.call
+      assert_equal "<h1>😴</h1><h2>Woop</h2><div><h1>😴</h1><h2>Woop</h2></div>",
+        component.call
     end
 
     def test_component_with_template_tag
