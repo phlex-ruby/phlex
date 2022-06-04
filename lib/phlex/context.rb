@@ -7,6 +7,10 @@ module Phlex
     end
 
     def component(component, *args, **kwargs, &block)
+      unless component < Component
+        raise ArgumentError, "#{component.name} isn't a Phlex::Component."
+      end
+
       assigns = instance_variables
         .reject { _1.start_with? "@_" }
         .map { [_1, instance_variable_get(_1)] }.to_h
