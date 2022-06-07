@@ -6,13 +6,14 @@ module Phlex
 
     module Initializer
       def initialize(*args, parent: nil, assigns: [], **kwargs, &block)
+        @_parent = parent
+
         assigns.each do |k, v|
           instance_variable_get(k) || instance_variable_set(k, v)
         end
 
-        @_parent = parent
-
         super(*args, **kwargs)
+
         template(&block)
       end
     end
@@ -33,8 +34,8 @@ module Phlex
       render_context.children << node
     end
 
-    def render(&block)
-      instance_eval(&block) if block_given?
+    def render(*args, **kwargs, &block)
+      instance_exec(*args, **kwargs, &block) if block_given?
     end
 
     def render_tag(tag, &block)
