@@ -4,6 +4,7 @@ module Phlex
   class Tag
     SPACE = " "
     NAMESPACE_DELINEATOR = "::"
+    HTML_ESCAPE = ERB::Util.method(:html_escape)
 
     class << self
       attr_accessor :abstract
@@ -37,6 +38,8 @@ module Phlex
     def build_attributes
       @attributes
         .transform_values { _1.join(SPACE) }
+        .transform_values(&HTML_ESCAPE)
+        .transform_keys(&HTML_ESCAPE)
         .map { |k, v| "#{k}=\"#{v}\"" }
     end
   end
