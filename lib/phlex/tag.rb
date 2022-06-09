@@ -41,7 +41,7 @@ module Phlex
         .transform_values { _1.join(SPACE) }
         .transform_values(&HTML_ESCAPE)
         .transform_keys(&HTML_ESCAPE)
-        .map { |k, v| "#{k}=\"#{v}\"" }
+        .map { |k, v| %Q(#{k}="#{v}") }
     end
   end
 end
