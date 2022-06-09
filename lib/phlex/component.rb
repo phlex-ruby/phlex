@@ -9,7 +9,7 @@ module Phlex
         @_parent = parent
 
         assigns.each do |k, v|
-          instance_variable_get(k) || instance_variable_set(k, v)
+          instance_variable_set(k, v) unless instance_variables.include?(k)
         end
 
         super(*args, **kwargs)
