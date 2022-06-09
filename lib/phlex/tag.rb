@@ -20,6 +20,7 @@ module Phlex
 
     def initialize(**attributes)
       @attributes = attributes
+        .transform_keys(&:to_sym)
         .transform_values { _1.split(SPACE) if _1.is_a?(String) }
     end
 
