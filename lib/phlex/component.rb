@@ -8,11 +8,11 @@ module Phlex
       def initialize(*args, parent: nil, assigns: [], **kwargs, &block)
         @_parent = parent
 
+        super(*args, **kwargs)
+
         assigns.each do |k, v|
           instance_variable_set(k, v) unless instance_variables.include?(k)
         end
-
-        super(*args, **kwargs)
 
         template(&block)
       end
