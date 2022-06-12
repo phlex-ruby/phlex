@@ -11,12 +11,7 @@ module Phlex
         raise ArgumentError, "#{component.name} isn't a Phlex::Component."
       end
 
-      assigns = instance_variables
-        .reject { _1.start_with? "@_" }
-        .map { [_1, instance_variable_get(_1)] }.to_h
-
-      comp = component.new(*args, parent: self, assigns:, **kwargs, &block)
-      self << comp
+      self << component.new(*args, parent: self, **kwargs, &block)
     end
 
     Tag::StandardElement.subclasses.each do |tag|

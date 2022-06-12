@@ -10,9 +10,7 @@ module Phlex
 
         super(*args, **kwargs)
 
-        assigns.each do |k, v|
-          instance_variable_set(k, v) unless instance_variables.include?(k)
-        end
+        copy_assigns
 
         template(&block)
       end
@@ -43,6 +41,20 @@ module Phlex
       @_render_context = tag
       instance_eval(&block)
       @_render_context = old_render_context
+    end
+
+    def assigns
+      instance_variables
+        .reject { _1.start_with? "@_" }
+        .map { [_1, instance_variable_get(_1)] }.to_h
+    end
+
+    def copy_assigns
+      return unless @_parent
+
+      @_parent.assigns.each do |k, v|
+        instance_variable_get(k) || instance_variable_set(k, v)
+      end
     end
 
     def method_missing(*args, **kwargs, &block)
