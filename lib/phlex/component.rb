@@ -33,7 +33,18 @@ module Phlex
     end
 
     def render(*args, **kwargs, &block)
-      instance_exec(*args, **kwargs, &block) if block_given?
+      return instance_exec(*args, **kwargs, &block) if block_given?
+
+      content = args[0]
+
+      case content
+      when String
+        instance_exec { text content }
+      when Proc
+        instance_exec(&content)
+      else
+        raise ArgumentError
+      end
     end
 
     def render_tag(tag, &block)
