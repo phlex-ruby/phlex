@@ -4,7 +4,7 @@ module Phlex
       include Node
 
       def call
-        "<#{meta_data}>#{super}</#{self.class.value}>"
+        "<#{opening_tag_content}>#{super}</#{self.class.tag_name}>"
       end
 
       def method_missing(*args, **kwargs, &block)

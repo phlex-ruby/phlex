@@ -2,7 +2,7 @@ module Phlex
   class Tag
     class VoidElement < Tag
       def call
-        "<#{meta_data} />"
+        "<#{opening_tag_content} />"
       end
     end
   end

@@ -9,7 +9,7 @@ module Phlex
     class << self
       attr_accessor :abstract
 
-      def value
+      def tag_name
         name.split(NAMESPACE_DELINEATOR).last.downcase
       end
     end
@@ -24,16 +24,10 @@ module Phlex
         .transform_values { _1.split(SPACE) if _1.is_a?(String) }
     end
 
-    # def method_missing(name, *args, **kwargs, &block)
-    #   @attributes[:class] ||= []
-    #   @attributes[:class] << name
-    #   self
-    # end
-
     private
 
-    def meta_data
-      ([self.class.value] + build_attributes).join(SPACE)
+    def opening_tag_content
+      ([self.class.tag_name] + build_attributes).join(SPACE)
     end
 
     def build_attributes

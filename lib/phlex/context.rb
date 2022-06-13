@@ -16,7 +16,7 @@ module Phlex
 
     Tag::StandardElement.subclasses.each do |tag|
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-        def #{tag.value}(content = nil, **kwargs, &block)
+        def #{tag.tag_name}(content = nil, **kwargs, &block)
           raise ArgumentError if content && block_given?
           tag = #{tag.name}.new(**kwargs)
           self << tag
@@ -28,7 +28,7 @@ module Phlex
 
     Tag::VoidElement.subclasses.each do |tag|
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-        def #{tag.value}(**kwargs)
+        def #{tag.tag_name}(**kwargs)
           tag = #{tag.name}.new(**kwargs)
           self << tag
         end
