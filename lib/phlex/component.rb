@@ -1,27 +1,86 @@
 # frozen_string_literal: true
+require "digest"
 
 module Phlex
   class Component
     include Node, Context
 
-    module Initializer
-      def initialize(*args, parent: nil, assigns: [], **kwargs, &block)
+    SUBCOMPONENT_REGEX = /component\s([A-Z]+[A-Za-z:]*)/
+
+    module ClassMethods
+      include Cacheable
+
+      def cache_key
+        @cache_key ||= CacheKey.new(
+          super,
+          subcomponents,
+          cacheable_ancestors
+        )
+      end
+
+      def cache_version
+        @cache_version ||= CacheVersion.new(
+          super,
+          subcomponents,
+          cacheable_ancestors
+        )
+      end
+
+      def subcomponents
+        @subcomponents ||= direct_subcomponents.reduce(Set.new) do |set, component|
+          set << component
+          component.subcomponents.each { set << _1 }
+          set
+        end
+      end
+
+      private
+
+      def cacheable_ancestors
+        @cacheable_ancestors ||= ancestors.lazy
+          .reject { [self, Object, BasicObject, Kernel].include? _1 }
+          .reject { _1.name.start_with? "Phlex::" }
+          .map { CacheableObject.new(_1) }.to_a
+      end
+
+      def direct_subcomponents
+        source_file.scan(SUBCOMPONENT_REGEX).flatten.map do
+          Phlex.find_constant(_1, relative_to: self)
+        end
+      end
+    end
+
+    extend ClassMethods
+
+    module Overrides
+      def initialize(*args, parent: nil, cache: false, assigns: [], **kwargs, &block)
         @_parent = parent
+        @_cache = cache
+        @_content = block
 
         super(*args, **kwargs)
 
         copy_assigns
-
-        template(&block)
       end
+
+      def call
+        return super unless @_cache
+        Rails.cache.fetch(self) { super }
+      end
+    end
+
+    def self.inherited(child)
+      child.prepend(Overrides)
+      super
     end
 
     def initialize(**attributes)
       attributes.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
-    def self.inherited(child)
-      child.prepend(Initializer)
+    def call
+      template(&@_content)
+      super
     end
 
     def render_context
@@ -64,18 +123,44 @@ module Phlex
       return unless @_parent
 
       @_parent.assigns.each do |k, v|
-        instance_variable_get(k) || instance_variable_set(k, v)
+        instance_variable_set(k, v) unless instance_variables.include?(k)
       end
     end
 
-    def method_missing(*args, **kwargs, &block)
+    def method_missing(...)
       super unless @_parent
-      @_parent.send(*args, **kwargs, &block)
+      @_parent.send(...)
     end
 
     def respond_to_missing?(name)
       super unless @_parent
       @_parent.respond_to?(name)
+    end
+
+    def cache_key
+      @cache_key ||= CacheKey.new(
+        self.class,
+        cacheable_content,
+        cacheable_resources
+      )
+    end
+
+    def cache_version
+      @cache_version ||= CacheVersion.new(
+        RUBY_VERSION,
+        Phlex::VERSION,
+        self.class,
+        cacheable_content,
+        cacheable_resources
+      )
+    end
+
+    def cacheable_resources
+      (@_cache == true) ? assigns : @_cache
+    end
+
+    def cacheable_content
+      CacheableObject.new(@_content)
     end
   end
 end
