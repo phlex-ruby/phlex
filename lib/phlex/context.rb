@@ -20,8 +20,9 @@ module Phlex
           raise ArgumentError if content && block_given?
           tag = #{tag.name}.new(**kwargs)
           self << tag
-          render_tag(tag, &block) if block_given?
-          render_tag(tag) { text content } if content
+          return render_tag(tag, &block) if block_given?
+          return render_tag(tag) { text content } if content
+          Tag::ClassCollector.new(self, tag)
         end
       RUBY
     end
