@@ -9,9 +9,16 @@ module Phlex
       def method_missing(name, content = nil, *args, **attributes, &block)
         @tag.attributes = { class: name }
         @tag.attributes = attributes
-        
-        return @context.render_tag(@tag, &block) if block_given?
-        return @context.render_tag(@tag) { text content } if content
+
+        if block_given?
+          if block.binding.receiver.is_a?(Block)
+            block.call(@tag)
+          else
+            Block.new(@context, &block).call(@tag)
+          end
+        end
+
+        Block.new(@context) { text content }.call(@tag) if content
 
         self
       end

@@ -4,6 +4,7 @@ require "active_support/core_ext/string/output_safety"
 
 require_relative "phlex/version"
 require_relative "phlex/callable"
+require_relative "phlex/block"
 require_relative "phlex/tag"
 require_relative "phlex/tag/class_collector"
 require_relative "phlex/tag/void_element"
@@ -15,11 +16,14 @@ require_relative "phlex/cache_key"
 require_relative "phlex/cacheable"
 require_relative "phlex/cacheable_object"
 require_relative "phlex/component"
-require_relative "phlex/page"
 require_relative "phlex/text"
 
 module Phlex
   extend self
+
+  def html_escape(string)
+    ERB::Util.html_escape(string)
+  end
 
   def find_constant(name, relative_to:)
     try_to_find_constant(name, relative_to:) || relative_to.const_get(name, false)
