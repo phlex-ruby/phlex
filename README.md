@@ -1,10 +1,31 @@
 # Phlex [WIP]
 
+### 🚨 Phlex is still in early development and should not be used in production yet. 🚨
 
+HAML, Slim and ERB are on notice. It’s time for a new way to compose views in Ruby, using... ✨**Ruby**.✨ We don’t need another templating lanauge and we’re fed up with div soup. With Phlex, you can write small, reusable view components using Plain Old Ruby Objects and templates composed of plain old Ruby block.
+
+### The Road to 1.0
+
+Phlex is licenced under MIT and is being developed in the open by [Joel Drapper](https://github.com/joeldrapper). The plan is to release a stable 1.0 version in the next few months with the following featuers:
+
+- [x] basic view componetns;
+- [x] Emmet-style CSS classes
+- [ ] Fragment caching with syntax tree cache keys [WIP]
+- [ ] Rails interoperability
+- [ ] Performance optimization
+- [ ] Through, through, through tests and careful security review
+
+After the 1.0 release, the plan is to begin working on:
+1. integration with Stimulus Reflex; and
+2. a library of pre-built Tailwind Phlex components.
+
+If you want to help out, you can contribute by opening an issue or PR. You can also [book a pairing session](https://savvycal.com/joeldrapper/pair) with me. If you work for a company that would benefit from Phlex, I accept [sponsorships](https://github.com/sponsors/joeldrapper) through GitHub.
+
+## Usage
 
 ### Basic Component
 
-You can define a component by subclassing `Phlex::Component` and defining a `template` method. Within this method, you can build HTML with simple block syntax.
+You can define a component by subclassing `Phlex::Component` and defining a `template` method where you can build HTML with simple block syntax. Each HTMl tag is a method that accepts keyword arguments for its attributes. Text content can be passed as the first positional argument or alternatively, you can open a block to create nested HTML tags.
 
 ```ruby
 class NavComponent < Phlex::Component
@@ -20,7 +41,19 @@ class NavComponent < Phlex::Component
 end
 ```
 
-### Attributes
+### Emmet-style CSS classes
+
+It’s also possible to add classes to a tag by chaining methods calls like CSS selectors.
+
+```ruby
+class CardComponent
+  def template(&)
+    div.shadow.rounded.p_5(&)
+  end
+end
+```
+
+### Component Attributes
 
 Components can accept arguments by defining an initializer.
 
@@ -36,7 +69,7 @@ class MessageComponent < Phlex::Component
 end
 ```
 
-The default initialiser sets each keyword argument to an instance variable, so this above could be re-written to call `super` instead.
+The default initialiser inherited from `Phlex::Component` sets each keyword argument to an instance variable, so the above could be re-written to call `super` instead.
 
 ```ruby
 class MessageComponent < Phlex::Component
@@ -52,17 +85,19 @@ end
 
 ### Content
 
-Components can optionally accept embedded contents which they can render into a tag.
+Components, like tags, can accept nested contents as a block given to `template`, which they can then render inline or pass to another tag.
+
+Here the content is passed to a `div` tag:
 
 ```ruby
 class CardComponent < Phlex::Component
   def template(&)
-    div class: "p-5 rounded drop-shadow", &
+    div.rounded.drop_shadow.p_5(&)
   end
 end
 ```
 
-Or inline
+Here the content is rendered inside a `div` tag right after an `h1` tag.
 
 ```ruby
 class CardComponent < Phlex::Component
@@ -71,9 +106,9 @@ class CardComponent < Phlex::Component
   end
 
   def template(&)
-    div class: "p-5 rounded drop-shadow" do
+    div.rounded.drop_shadow.p_5 do
       h1 @title
-      render &
+      render(&)
     end
   end
 end
@@ -81,7 +116,7 @@ end
 
 ### Nested components
 
-Components can be nested inside other components.
+Components can be nested inside other components too.
 
 ```ruby
 class NavComponent < Phlex::Component
@@ -106,7 +141,7 @@ class Nav::ItemComponent < Phlex::Component
   end
 
   def template
-    a label, href: link
+    li { a label, href: link }
   end
 end
 ```
@@ -125,7 +160,7 @@ class NestedComponent < Phlex::Component
 end
 ```
 
-Instance variables are also copied down to components embedded inside them unless there is a naming conflict.
+Instance variables are also copied down to components embedded inside them, unless the subcomponent redefines the instance variable.
 
 ```ruby
 class ArticlesComponent < Phlex::Component
@@ -136,119 +171,28 @@ class ArticlesComponent < Phlex::Component
   def template
     component CardComponent, title: "Articles" do
       @articles.each do |article|
-        h2 article.title
-        text article.content
+        h2 @article.title
+        text @article.content
       end
     end
   end
 end
 ```
 
-# Pages
+### Caching [WIP]
 
-A `Phlex::Page` is a `Phlex::Component` though pages might some extra features in the future.
+To enable fragment caching on a component, simply pass the argument `cache: true`. The component will look for cache keys on its instance variables. Alternatively, you can pass a specific resource to be cached e.g. `cache: @articles`.
+
+### Advanced components with DSLs
+
+Becuase components accept blocks, it’s really easy to define advanced components with their own DSLs. Take, for instance, this table fabricator component that lets you define rows / columns with headers using blocks. 
 
 ```ruby
-class Article::IndexPage < Phlex::Page
-  def initialize(articles:)
-    super
-  end
-
-  def template
-    component Layout, title: "All Articles" do
-      component Article::TableComponent, articles: @articles
-    end
-  end
+component Table::Fabricator, @articles, layout: :column do
+  data "Title" { a _1.title, href: article_path(_1) }
+  text_data("Author", &:author)
+  text_data("Published", &:published_at)
 end
-```
-
-# Examples
-
-A component that renders the status of an article in a colour-coded badge using `ecase` and `literal_enums` .
-
-```ruby
-class Article
-  class StatusBadgeComponent < Phlex::Component
-    def initialize(article)
-      @status = article.status
-    end
-
-    def template
-      div t("issue.status.#{@status.value}"), class: ["rounded", "text-sm"] + colors
-    end
-
-    def colors
-      ecase @status, Status do
-        on(Status::Accepted) { ["bg-green-100", "text-green-800"] }
-        on(Status::Rejected) { ["bg-red-100", "text-red-800"] }
-      end
-    end
-  end
-end
-```
-
-A component that lets you build tables with procs for column content
-
-```ruby
-module Sharp
-  class Table
-    class Fabricator < Phlex::Component
-      def initialize(resources)
-        @resources = resources
-        @columns = {}
-      end
-
-      def template(&)
-        render(&)
-
-        component Table do
-          component Head do
-            component Row do
-              @columns.keys.each do |header|
-                component Header do
-                  text header
-                end
-              end
-            end
-          end
-
-          component Body do
-            @resources.each do |resource|
-              component Row do
-                @columns.values.each do |value|
-                  component Column do
-                    render(resource, &value)
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-
-      def column(name, &block)
-        @columns[name] = block
-      end
-    end
-  end
-end
-```
-
-This could be used like this and the proc would be called for each row with the resource.
-
-```ruby
-component Sharp::Table::Fabricator, @requests do
-  column("Created") { text _1.created_at }
-  column("Updated") { text _1.updated_at }
-  column("UUID") { text _1.uuid }
-  column("Requestee at") { text _1.requested_at }
-  column("Subject ID") { text _1.subject_id }
-end
-```
-
-
-
-
 
 ## Installation
 
@@ -266,19 +210,7 @@ Or install it yourself as:
 
     $ gem install phlex
 
-## Usage
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/phlex. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/phlex/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
