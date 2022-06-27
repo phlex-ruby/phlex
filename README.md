@@ -146,21 +146,7 @@ class Nav::ItemComponent < Phlex::Component
 end
 ```
 
-Instance variables are accessible deep inside tag blocks, because blocks are evaluated in the context of the defining component.
-
-```ruby
-class NestedComponent < Phlex::Component
-  def initialize(text:)
-    super
-  end
-
-  def template
-    div { h1 @text }
-  end
-end
-```
-
-Instance variables are also copied down to components embedded inside them, unless the subcomponent redefines the instance variable.
+Instance variables are accessible deep inside nested components and tag blocks because blocks capture their context for execution.
 
 ```ruby
 class ArticlesComponent < Phlex::Component
