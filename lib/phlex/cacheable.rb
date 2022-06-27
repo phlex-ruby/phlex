@@ -3,14 +3,12 @@ require 'delegate'
 module Phlex
   module Cacheable
     def cache_key
-      CacheKey.new(source_path)
+      source_path
     end
 
     def cache_version
-      CacheVersion.new(
-        Digest::MD5.hexdigest(
-          source_file
-        )
+      Digest::MD5.hexdigest(
+        source_file
       )
     end
 

@@ -11,7 +11,11 @@ module Phlex
         raise ArgumentError, "#{component.name} isn't a Phlex::Component."
       end
 
-      self << component.new(*args, parent: self, **kwargs, &block)
+      if block_given? && !block.binding.receiver.is_a?(Block)
+        block = Block.new(self, &block)
+      end
+
+      self << component.new(*args, **kwargs, &block)
     end
 
     Tag::StandardElement.subclasses.each do |tag|
@@ -21,8 +25,15 @@ module Phlex
           tag = #{tag.name}.new(**kwargs)
           self << tag
 
-          render_tag(tag, &block) if block_given?
-          render_tag(tag) { text content } if content
+          if block_given?
+            if block.binding.receiver.is_a?(Block)
+              block.call(tag)
+            else
+              Block.new(self, &block).call(tag)
+            end
+          end
+
+          Block.new(self) { text content }.call(tag) if content
 
           Tag::ClassCollector.new(self, tag)
         end

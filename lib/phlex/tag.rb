@@ -4,7 +4,6 @@ module Phlex
   class Tag
     SPACE = " "
     NAMESPACE_DELINEATOR = "::"
-    HTML_ESCAPE = ERB::Util.method(:html_escape)
 
     class << self
       attr_accessor :abstract
@@ -19,12 +18,7 @@ module Phlex
       self.attributes = attributes
     end
 
-    def call
-      raise NoMethodError
-    end
-
     def attributes=(attributes)
-      attributes.transform_keys!(&:to_sym)
       self.classes = attributes.delete(:class)
       @attributes = attributes
     end
@@ -39,13 +33,12 @@ module Phlex
       @attributes
         .merge({ class: classes })
         .compact
-        .transform_values(&HTML_ESCAPE)
-        .transform_keys(&HTML_ESCAPE)
+        .transform_values(&Phlex.method(:html_escape))
         .map { |k, v| %Q(#{k}="#{v}") }
     end
 
-    def classes=(classes)
-      @classes += classes
+    def classes=(new_classes)
+      @classes += new_classes
         .then { _1.is_a?(String) ? _1.split(SPACE) : Array(_1) }
         .map { _1.to_s.dasherize }
     end

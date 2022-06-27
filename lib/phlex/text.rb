@@ -7,7 +7,7 @@ module Phlex
     end
 
     def call
-      ERB::Util.html_escape(@content)
+      Phlex.html_escape(@content)
     end
   end
 end
