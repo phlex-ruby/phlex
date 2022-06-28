@@ -179,6 +179,7 @@ component Table::Fabricator, @articles, layout: :column do
   text_data("Author", &:author)
   text_data("Published", &:published_at)
 end
+```
 
 ## Installation
 
