@@ -181,6 +181,40 @@ component Table::Fabricator, @articles, layout: :column do
 end
 ```
 
+### Other examples
+
+This badge component takes a color argument and uses [Ecase](https://github.com/joeldrapper/ecase) to build a list of Tailwind classes.
+
+```ruby
+class BadgeComponent < Phlex::Component
+  VALID_COLORS = [:sky, :teal, :rose, :slate, :orange]
+  
+  def initialize(color:)
+    super
+  end
+  
+  def template(&)
+    span(class:, &)
+  end
+  
+  private
+  
+  def class
+    [:px_1, :py_1, :rounded_full, :text_sm] + colors
+  end
+  
+  def colors
+    ecase @color, VALID_COLORS
+      on(:sky) { [:bg_sky_200, :ring_sky_300, :text_sky_900] }
+      on(:teal) { [:bg_teal_100, :ring_teal_200, :text_teal_800] }
+      on(:rose) { [:bg_rose_100, :ring_rose_200, :text_rose_900] }
+      on(:slate) { [:bg_slate_200, :ring_slate_300, :text_slate_800] }
+      on(:orange) { [:bg_orange_200, :ring_orange_300, :text_orange_900] }
+    end
+  end
+end
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:
