@@ -85,7 +85,7 @@ end
 
 ### Content
 
-Components, like tags, can accept nested contents as a block given to `template`, which they can then render inline or pass to another tag.
+Components, like tags, can accept nested contents as a block given to `template`, which they can then yield or pass to another tag.
 
 Here the content is passed to a `div` tag:
 
@@ -97,7 +97,7 @@ class CardComponent < Phlex::Component
 end
 ```
 
-Here the content is rendered inside a `div` tag right after an `h1` tag.
+Here the content is yielded inside a `div` tag right after an `h1` tag.
 
 ```ruby
 class CardComponent < Phlex::Component
@@ -105,10 +105,10 @@ class CardComponent < Phlex::Component
     super
   end
 
-  def template(&)
+  def template
     div.rounded.drop_shadow.p_5 do
       h1 @title
-      render(&)
+      content
     end
   end
 end
@@ -171,7 +171,7 @@ To enable fragment caching on a component, simply pass the argument `cache: true
 
 ### Advanced components with DSLs
 
-Becuase components accept blocks, it’s really easy to define advanced components with their own DSLs. Take, for instance, this table fabricator component that lets you define rows / columns with headers using blocks. 
+Becuase components accept blocks, it’s really easy to define advanced components with their own DSLs. Take, for instance, this table fabricator component that lets you define rows / columns with headers using blocks.
 
 ```ruby
 component Table::Fabricator, @articles, layout: :column do
@@ -188,21 +188,21 @@ This badge component takes a color argument and uses [Ecase](https://github.com/
 ```ruby
 class BadgeComponent < Phlex::Component
   VALID_COLORS = [:sky, :teal, :rose, :slate, :orange]
-  
+
   def initialize(color:)
     super
   end
-  
+
   def template(&)
     span(class:, &)
   end
-  
+
   private
-  
+
   def class
     [:px_1, :py_1, :rounded_full, :text_sm] + colors
   end
-  
+
   def colors
     ecase @color, VALID_COLORS
       on(:sky) { [:bg_sky_200, :ring_sky_300, :text_sky_900] }

@@ -86,8 +86,8 @@ module Phlex
       target.children << node
     end
 
-    def render(*args, **kwargs, &block)
-      block.call(self, *args, **kwargs)
+    def content
+      yield(self) if block_given?
     end
 
     def render_block(new_target, ...)
