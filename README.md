@@ -1,4 +1,4 @@
-# Phlex [WIP]
+<img alt="Phlex logo" src="phlex_logo.png" width="250" />
 
 ### 🚨 Phlex is still in early development and should not be used in production yet. 🚨
 
@@ -240,3 +240,8 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the Phlex project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/phlex/blob/master/CODE_OF_CONDUCT.md).
+
+
+## Credits
+
+Logo design sponsored by [Logology](https://www.logology.co).
