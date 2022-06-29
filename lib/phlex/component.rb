@@ -79,7 +79,7 @@ module Phlex
     end
 
     def target
-      @_target ||= self
+      @_target || self
     end
 
     def <<(node)
