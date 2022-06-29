@@ -146,7 +146,7 @@ class Nav::ItemComponent < Phlex::Component
 end
 ```
 
-Instance variables are accessible deep inside nested components and tag blocks because blocks capture their context for execution.
+Instance variables and methods from the components are accessible deep inside nested components and tag blocks because blocks capture their context for execution.
 
 ```ruby
 class ArticlesComponent < Phlex::Component
