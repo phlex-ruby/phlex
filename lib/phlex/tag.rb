@@ -38,9 +38,14 @@ module Phlex
     end
 
     def classes=(new_classes)
-      @classes += new_classes
-        .then { _1.is_a?(String) ? _1.split(SPACE) : Array(_1) }
-        .map { _1.to_s.dasherize }
+      case new_classes
+      when Symbol
+        @classes << new_classes.to_s.gsub!("_", "-")
+      when String
+        @classes += new_classes.gsub("_", "-").split(/\s+/)
+      when Array
+        @classes += new_classes.map { _1.to_s.dasherize }
+      end
     end
 
     def classes
