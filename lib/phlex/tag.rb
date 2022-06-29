@@ -30,11 +30,11 @@ module Phlex
     end
 
     def attributes
-      @attributes
-        .merge({ class: classes })
-        .compact
-        .transform_values(&Phlex.method(:html_escape))
-        .map { |k, v| %Q(#{k}="#{v}") }
+      attributes = @attributes.dup
+      attributes.merge!({ class: classes })
+      attributes.compact!
+      attributes.transform_values!(&Phlex.method(:html_escape))
+      attributes.map { |k, v| %Q(#{k}="#{v}") }
     end
 
     def classes=(new_classes)
