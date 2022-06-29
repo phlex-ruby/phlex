@@ -8,8 +8,6 @@ module Phlex
     DASH = "-"
 
     class << self
-      attr_accessor :abstract
-
       def tag_name
         @tag_name ||= name.split(NAMESPACE_DELINEATOR).last.downcase
       end
