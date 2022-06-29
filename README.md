@@ -2,7 +2,7 @@
 
 ### 🚨 Phlex is still in early development and should not be used in production yet. 🚨
 
-HAML, Slim and ERB are on notice. It’s time for a new way to compose views in Ruby, using... ✨**Ruby**.✨ We don’t need another templating lanauge and we’re fed up with div soup. With Phlex, you can write small, reusable view components using Plain Old Ruby Objects and templates composed of plain old Ruby block.
+HAML, Slim and ERB are on notice. It’s time for a new way to compose views in Ruby, using... ✨**Ruby**.✨ We don’t need another templating lanauge and we’re fed up with div soup. With Phlex, you can write small, reusable view components using Plain Old Ruby Objects and templates composed of plain old Ruby blocks.
 
 ### The Road to 1.0
 
