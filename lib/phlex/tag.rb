@@ -40,9 +40,11 @@ module Phlex
     def classes=(new_classes)
       case new_classes
       when Symbol
-        @classes << new_classes.to_s.gsub!(UNDERSCORE, DASH)
+        new_classes = new_classes.to_s
+        new_classes.gsub!(UNDERSCORE, DASH)
+        @classes << new_classes
       when String
-        @classes += new_classes.gsub(UNDERSCORE, DASH).split(/\s+/)
+        @classes += new_classes.gsub(UNDERSCORE, DASH).split(SPACE)
       when Array
         @classes += new_classes.map { _1.to_s.gsub(UNDERSCORE, DASH) }
       end
