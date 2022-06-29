@@ -4,6 +4,8 @@ module Phlex
   class Tag
     SPACE = " "
     NAMESPACE_DELINEATOR = "::"
+    UNDERSCORE = "_"
+    DASH = "-"
 
     class << self
       attr_accessor :abstract
@@ -40,11 +42,11 @@ module Phlex
     def classes=(new_classes)
       case new_classes
       when Symbol
-        @classes << new_classes.to_s.gsub!("_", "-")
+        @classes << new_classes.to_s.gsub!(UNDERSCORE, DASH)
       when String
-        @classes += new_classes.gsub("_", "-").split(/\s+/)
+        @classes += new_classes.gsub(UNDERSCORE, DASH).split(/\s+/)
       when Array
-        @classes += new_classes.map { _1.to_s.dasherize }
+        @classes += new_classes.map { _1.to_s.gsub(UNDERSCORE, DASH) }
       end
     end
 
