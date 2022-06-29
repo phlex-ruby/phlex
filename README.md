@@ -204,7 +204,7 @@ class BadgeComponent < Phlex::Component
   end
 
   def colors
-    ecase @color, VALID_COLORS
+    ecase @color, VALID_COLORS do
       on(:sky) { [:bg_sky_200, :ring_sky_300, :text_sky_900] }
       on(:teal) { [:bg_teal_100, :ring_teal_200, :text_teal_800] }
       on(:rose) { [:bg_rose_100, :ring_rose_200, :text_rose_900] }
