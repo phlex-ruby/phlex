@@ -1,27 +1,19 @@
 <img alt="Phlex logo" src="phlex_logo.png" width="250" />
 
-### 🚨 Phlex is still in early development and should not be used in production yet. 🚨
+It’s time for a new way to compose views in Ruby, using... ✨**Ruby**.✨ We don’t need another templating lanauge. With Phlex, you can write small, reusable view components using simple Ruby Objects and templates composed of Ruby blocks.
 
-HAML, Slim and ERB are on notice. It’s time for a new way to compose views in Ruby, using... ✨**Ruby**.✨ We don’t need another templating lanauge and we’re fed up with div soup. With Phlex, you can write small, reusable view components using Plain Old Ruby Objects and templates composed of plain old Ruby blocks.
+> **Warning**
+>
+> _Phlex is still in early development and should not be used in production yet._
+
 
 ### The Road to 1.0
 
-Phlex is licenced under MIT and is being developed in the open by [Joel Drapper](https://github.com/joeldrapper). The plan is to release a stable 1.0 version in the next few months with the following featuers:
-
-- [x] basic view componetns;
-- [x] Emmet-style CSS classes
-- [ ] Fragment caching with syntax tree cache keys [WIP]
-- [ ] Rails interoperability
-- [ ] Performance optimization
-- [ ] Through, through, through tests and careful security review
-
-After the 1.0 release, the plan is to begin working on:
-1. integration with Stimulus Reflex; and
-2. a library of pre-built Tailwind Phlex components.
+Phlex is licenced under MIT and is being developed in the open by [Joel Drapper](https://github.com/joeldrapper). The plan is to release a stable `1.0` version in the next few months.
 
 If you want to help out, you can contribute by opening an issue or PR. You can also [book a pairing session](https://savvycal.com/joeldrapper/pair) with me. If you work for a company that would benefit from Phlex, I accept [sponsorships](https://github.com/sponsors/joeldrapper) through GitHub.
 
-## Usage
+# Usage
 
 ### Basic Component
 
