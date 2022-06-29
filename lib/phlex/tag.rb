@@ -14,7 +14,7 @@ module Phlex
     end
 
     def initialize(**attributes)
-      @classes ||= []
+      @classes = []
       self.attributes = attributes
     end
 
