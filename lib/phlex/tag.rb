@@ -2,10 +2,10 @@
 
 module Phlex
   class Tag
-    SPACE = " "
-    NAMESPACE_DELINEATOR = "::"
-    UNDERSCORE = "_"
     DASH = "-"
+    SPACE = " "
+    UNDERSCORE = "_"
+    NAMESPACE_DELINEATOR = "::"
 
     class << self
       def tag_name
@@ -14,7 +14,7 @@ module Phlex
     end
 
     def initialize(**attributes)
-      @classes = []
+      @classes = String.new
       self.attributes = attributes
     end
 
@@ -23,10 +23,25 @@ module Phlex
       @attributes = attributes
     end
 
+    def classes=(value)
+      case value
+      when String
+        @classes << value.prepend(SPACE)
+      when Symbol
+        @classes << value.to_s.prepend(SPACE)
+      when Array
+        @classes << value.join(SPACE).prepend(SPACE)
+      when nil
+        return
+      else
+        raise ArgumentError, "Classes must be String, Symbol, or Array<String>."
+      end
+    end
+
     private
 
     def opening_tag_content
-      ([self.class.tag_name] + attributes).join(SPACE)
+      self.class.tag_name + attributes
     end
 
     def attributes
@@ -34,24 +49,16 @@ module Phlex
       attributes.merge!({ class: classes })
       attributes.compact!
       attributes.transform_values!(&Phlex.method(:html_escape))
-      attributes.map { |k, v| %Q(#{k}="#{v}") }
-    end
-
-    def classes=(new_classes)
-      case new_classes
-      when Symbol
-        new_classes = new_classes.to_s
-        new_classes.gsub!(UNDERSCORE, DASH)
-        @classes << new_classes
-      when String
-        @classes += new_classes.gsub(UNDERSCORE, DASH).split(SPACE)
-      when Array
-        @classes += new_classes.map { _1.to_s.gsub(UNDERSCORE, DASH) }
-      end
+      attributes = attributes.map { |k, v| %Q(#{k}="#{v}") }.join(SPACE)
+      attributes.prepend(SPACE) unless attributes.empty?
+      attributes
     end
 
     def classes
-      @classes.join(SPACE) if @classes.any?
+      return if @classes.empty?
+      @classes.gsub!(UNDERSCORE, DASH)
+      @classes.strip!
+      @classes
     end
   end
 end
