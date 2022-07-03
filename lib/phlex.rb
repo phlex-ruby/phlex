@@ -21,10 +21,6 @@ require_relative "phlex/text"
 module Phlex
   extend self
 
-  def html_escape(string)
-    ERB::Util.html_escape(string)
-  end
-
   def find_constant(name, relative_to:)
     try_to_find_constant(name, relative_to:) || relative_to.const_get(name, false)
     # relative_to.class_eval(name)
