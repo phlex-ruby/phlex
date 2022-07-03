@@ -87,7 +87,7 @@ module Phlex
     end
 
     def content
-      yield(self) if block_given?
+      yield(target) if block_given?
     end
 
     def render_block(new_target, ...)

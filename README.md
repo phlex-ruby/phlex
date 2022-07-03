@@ -97,10 +97,10 @@ class CardComponent < Phlex::Component
     super
   end
 
-  def template
+  def template(&)
     div.rounded.drop_shadow.p_5 do
       h1 @title
-      content
+      content(&)
     end
   end
 end
