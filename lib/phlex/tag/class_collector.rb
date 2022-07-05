@@ -1,6 +1,6 @@
 module Phlex
   class Tag
-    class ClassCollector
+    class ClassCollector < BasicObject
       def initialize(context, tag)
         @context = context
         @tag = tag
@@ -10,7 +10,7 @@ module Phlex
         @tag.classes = name
         @tag.attributes = attributes if attributes
 
-        if block_given?
+        if ::Kernel.block_given?
           if block.binding.receiver.is_a?(Block)
             block.call(@tag)
           else
