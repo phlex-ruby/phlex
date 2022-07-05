@@ -46,7 +46,7 @@ module Phlex
 
     def attributes
       attributes = @attributes.dup
-      attributes.merge!({ class: classes })
+      attributes[:class] = classes
       attributes.compact!
       attributes.transform_values! { ERB::Util.html_escape(_1) }
       attributes = attributes.map { |k, v| %Q(#{k}="#{v}") }.join(SPACE)
