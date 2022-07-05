@@ -12,11 +12,34 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    benchmark-memory (0.2.0)
+      memory_profiler (~> 1)
     concurrent-ruby (1.1.10)
+    diff-lcs (1.5.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
+    memory_profiler (1.0.0)
     minitest (5.15.0)
+    nokogiri (1.13.6-arm64-darwin)
+      racc (~> 1.4)
+    racc (1.6.0)
     rake (13.0.6)
+    rspec (3.11.0)
+      rspec-core (~> 3.11.0)
+      rspec-expectations (~> 3.11.0)
+      rspec-mocks (~> 3.11.0)
+    rspec-core (3.11.0)
+      rspec-support (~> 3.11.0)
+    rspec-expectations (3.11.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.11.0)
+    rspec-html-matchers (0.9.4)
+      nokogiri (~> 1)
+      rspec (>= 3.0.0.a, < 4)
+    rspec-mocks (3.11.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.11.0)
+    rspec-support (3.11.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
 
@@ -24,9 +47,11 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
-  minitest (~> 5.0)
+  benchmark-memory
   phlex!
   rake (~> 13.0)
+  rspec
+  rspec-html-matchers
 
 BUNDLED WITH
    2.3.7
