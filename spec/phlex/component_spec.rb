@@ -122,11 +122,15 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          div.a.b.c do
+          div.a.b.c.tap do
             h1.a.b.c "Hello", id: "foo"
           end
         end
       end
+    end
+
+    it "supports a wide variety of methods" do
+      expect(output).to have_tag :div, with: { class: "tap" }
     end
 
     it "produces the block content" do
@@ -142,7 +146,7 @@ RSpec.describe Phlex::Component do
     end
 
     it "produces the correct markup" do
-      expect(output).to eq %{<div class="a b c"><h1 id="foo" class="a b c">Hello</h1></div>}
+      expect(output).to eq %{<div class="a b c tap"><h1 id="foo" class="a b c">Hello</h1></div>}
     end
   end
 
