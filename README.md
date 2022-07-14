@@ -1,6 +1,6 @@
 <img alt="Phlex logo" src="phlex_logo.png" width="250" />
 
-It’s time for a new way to compose views in Ruby, using... ✨**Ruby**.✨ We don’t need another templating lanauge. With Phlex, you can write small, reusable view components using simple Ruby Objects and templates composed of Ruby blocks.
+It’s time for a new way to compose views in Ruby, using... ✨**Ruby**.✨ We don’t need another templating language. With Phlex, you can write small, reusable view components using simple Ruby Objects and templates composed of Ruby blocks.
 
 > **Warning**
 >
