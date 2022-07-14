@@ -17,7 +17,7 @@ If you want to help out, you can contribute by opening an issue or PR. You can a
 
 ### Basic Component
 
-You can define a component by subclassing `Phlex::Component` and defining a `template` method where you can build HTML with simple block syntax. Each HTMl tag is a method that accepts keyword arguments for its attributes. Text content can be passed as the first positional argument or alternatively, you can open a block to create nested HTML tags.
+You can define a component by subclassing `Phlex::Component` and defining a `template` method where you can build HTML with simple block syntax. Each HTML tag is a method that accepts keyword arguments for its attributes. Text content can be passed as the first positional argument or alternatively, you can open a block to create nested HTML tags.
 
 ```ruby
 class NavComponent < Phlex::Component

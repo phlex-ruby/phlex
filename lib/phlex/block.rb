@@ -1,5 +1,7 @@
 module Phlex
   class Block
+    include Callable
+
     def initialize(context, &block)
       @context = context
       @block = block
@@ -7,10 +9,6 @@ module Phlex
 
     def call(target, *args, **kwargs)
       @context.render_block(target, *args, **kwargs, &@block)
-    end
-
-    def to_proc
-      method(:call).to_proc
     end
   end
 end
