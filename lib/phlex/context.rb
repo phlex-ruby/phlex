@@ -22,7 +22,7 @@ module Phlex
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
       def #{tag_name}(content = nil, **kwargs, &block)
           raise ArgumentError if content && block_given?
-          tag = Tag::StandardElement.new(name: "#{tag_name}", **kwargs)
+          tag = Tag::StandardElement.new("#{tag_name}", **kwargs)
           self << tag
 
           if block_given?
@@ -43,7 +43,7 @@ module Phlex
     Tag::VoidElement::ELEMENTS.each do |tag_name|
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
         def #{tag_name}(**kwargs)
-          tag = Tag::VoidElement.new(name: "#{tag_name}", **kwargs)
+          tag = Tag::VoidElement.new("#{tag_name}", **kwargs)
           self << tag
           Tag::ClassCollector.new(self, tag)
         end

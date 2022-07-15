@@ -9,7 +9,7 @@ module Phlex
 
     attr_reader :name
 
-    def initialize(name:, **attributes)
+    def initialize(name, **attributes)
       @name = name
       @classes = String.new
       self.attributes = attributes

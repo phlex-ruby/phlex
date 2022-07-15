@@ -11,7 +11,7 @@ module Phlex
         param
         track
         col
-      ]
+      ].freeze
 
       def call
         "<#{opening_tag_content} />"
