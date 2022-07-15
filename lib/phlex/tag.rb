@@ -2,20 +2,15 @@
 
 module Phlex
   class Tag
-    include Tags
-
     DASH = "-"
     SPACE = " "
     UNDERSCORE = "_"
     NAMESPACE_DELINEATOR = "::"
 
-    class << self
-      def tag_name
-        @tag_name ||= name.split(NAMESPACE_DELINEATOR).last.downcase
-      end
-    end
+    attr_reader :tag_name
 
-    def initialize(**attributes)
+    def initialize(tag_name:, **attributes)
+      @tag_name = tag_name
       @classes = String.new
       self.attributes = attributes
     end
@@ -43,7 +38,7 @@ module Phlex
     private
 
     def opening_tag_content
-      self.class.tag_name + attributes
+      tag_name + attributes
     end
 
     def attributes
