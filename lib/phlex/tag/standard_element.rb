@@ -101,7 +101,7 @@ module Phlex
       ].freeze
 
       def call
-        "<#{opening_tag_content}>#{super}</#{tag_name}>"
+        "<#{opening_tag_content}>#{super}</#{name}>"
       end
     end
   end
