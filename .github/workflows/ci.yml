@@ -1,0 +1,22 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  specs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.1.x
+
+      - name: Install system dependencies
+        run: sudo apt-get update
+
+      - name: Install gem dependencies
+        run:  gem install bundler && bundle install --jobs 4 --retry 3 --path vendor/bundle
+
+      - name: Run specs
+        run: bundle exec rspec
