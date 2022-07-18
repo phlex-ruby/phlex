@@ -2,6 +2,7 @@
 
 require "active_support/core_ext/string/output_safety"
 require "zeitwerk"
+require "phlex/configuration"
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup
@@ -12,6 +13,14 @@ module Phlex
   def find_constant(name, relative_to:)
     try_to_find_constant(name, relative_to:) || relative_to.const_get(name, false)
     # relative_to.class_eval(name)
+  end
+
+  def configuration
+    @configuration ||= Configuration.new
+  end
+
+  def configure
+    yield configuration
   end
 
   private

@@ -178,6 +178,26 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "with underscore in class name" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          div class: "a_b"
+        end
+      end
+    end
+
+    it "when convert_underscores_to_dashes config is true convert underscores to dashes and produces the classes" do
+      expect(output).to eq %{<div class="a-b"></div>}
+    end
+
+    it "when convert_underscores_to_dashes config is false do not convert underscores to dashes and produces the classes" do
+      Phlex.configure { |config| config.convert_underscores_to_dashes = false }
+      expect(output).to eq %{<div class="a_b"></div>}
+      Phlex.configure { |config| config.convert_underscores_to_dashes = true }
+    end
+  end
+
   describe "with component attributes" do
     let :component do
       Class.new Phlex::Component do
