@@ -187,14 +187,22 @@ RSpec.describe Phlex::Component do
       end
     end
 
-    it "when convert_underscores_to_dashes config is true convert underscores to dashes and produces the classes" do
-      expect(output).to eq %{<div class="a-b"></div>}
+    describe "when default configuration used" do
+      it "converts underscores to dashes and produces the classes" do
+        expect(output).to eq %{<div class="a-b"></div>}
+      end
     end
 
-    it "when convert_underscores_to_dashes config is false do not convert underscores to dashes and produces the classes" do
-      Phlex.configure { |config| config.convert_underscores_to_dashes = false }
-      expect(output).to eq %{<div class="a_b"></div>}
-      Phlex.configure { |config| config.convert_underscores_to_dashes = true }
+    describe "when configured convert_underscores_to_dashes to false" do
+      around(:each) do |example|
+        Phlex.configure { |config| config.convert_underscores_to_dashes = false }
+        example.run
+        Phlex.configure { |config| config.convert_underscores_to_dashes = true }
+      end
+
+      it "does not converts underscores to dashes and produces the classes" do
+        expect(output).to eq %{<div class="a_b"></div>}
+      end
     end
   end
 

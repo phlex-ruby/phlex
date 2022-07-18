@@ -2,7 +2,6 @@
 
 require "active_support/core_ext/string/output_safety"
 require "zeitwerk"
-require "phlex/configuration"
 
 loader = Zeitwerk::Loader.for_gem
 loader.setup
