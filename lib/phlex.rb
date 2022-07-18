@@ -26,6 +26,20 @@ module Phlex
     end
   end
 
+  # Given:
+  #
+  #   module A
+  #     module B; end
+  #   end
+  #
+  # Then:
+  #
+  #   > namespace_above('A::B')
+  #   => A
+  #   > namespace_above('A::B::Foo')
+  #   => A::B
+  #   > namespace_above('A::B::Foo::Bar')
+  #   => A::B
   def namespace_above(name)
     path = name.split("::")[..-2].join("::")
     return if path.empty?
