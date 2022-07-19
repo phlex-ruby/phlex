@@ -6,7 +6,7 @@ module Phlex
         @tag = tag
       end
 
-      def method_missing(name, content = nil, *args, **attributes, &block)
+      def method_missing(name, content = nil, **attributes, &block)
         @tag.classes = name
         @tag.attributes = attributes if attributes
 
