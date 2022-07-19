@@ -14,6 +14,14 @@ module Phlex
     # relative_to.class_eval(name)
   end
 
+  def configuration
+    @configuration ||= Configuration.new
+  end
+
+  def configure
+    yield configuration
+  end
+
   private
 
   def try_to_find_constant(name, relative_to: Module)
