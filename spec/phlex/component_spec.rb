@@ -280,5 +280,23 @@ RSpec.describe Phlex::Component do
         expect { output }.to raise_error(ArgumentError, "Set isn't a Phlex::Component.")
       end
     end
+
+    describe "with a template tag" do
+      let :component do
+        Class.new Phlex::Component do
+          def template
+            div do
+              h1 "A"
+              template "B"
+              h2 "C"
+            end
+          end
+        end
+      end
+
+      it "produces the correct markup" do
+        expect(output).to eq "<div><h1>A</h1><template>B</template><h2>C</h2></div>"
+      end
+    end
   end
 end

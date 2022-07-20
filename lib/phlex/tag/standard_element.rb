@@ -86,7 +86,6 @@ module Phlex
         table
         tbody
         td
-        template
         textarea
         tfoot
         th

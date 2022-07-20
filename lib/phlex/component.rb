@@ -18,6 +18,16 @@ module Phlex
         return super unless @_cache
         Rails.cache.fetch(self) { super }
       end
+
+      def template(...)
+        if @_rendering
+          _template_tag(...)
+        else
+          @_rendering = true
+          super
+          @_rendering = false
+        end
+      end
     end
 
     extend Cacheable
