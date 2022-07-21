@@ -6,6 +6,10 @@ module Phlex
       self << Text.new(content)
     end
 
+    def _raw(content)
+      self << Raw.new(content)
+    end
+
     def component(component, *args, **kwargs, &block)
       unless component < Component
         raise ArgumentError, "#{component.name} isn't a Phlex::Component."
