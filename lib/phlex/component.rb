@@ -34,6 +34,20 @@ module Phlex
     include Node, Context
 
     class << self
+      def register_element(*tag_names)
+        tag_names.each do |tag_name|
+          unless tag_name.is_a? Symbol
+            raise ArgumentError, "Custom elements must be provided as Symbols"
+          end
+
+          class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+            def #{tag_name}(...)
+              _standard_element("#{tag_name.to_s.gsub('_', '-')}", ...)
+            end
+          RUBY
+        end
+      end
+
       def inherited(child)
         child.prepend(Overrides)
         super
