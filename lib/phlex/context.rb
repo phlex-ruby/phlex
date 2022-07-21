@@ -6,6 +6,10 @@ module Phlex
       self << Text.new(content)
     end
 
+    def whitespace
+      _raw(" ")
+    end
+
     def _raw(content)
       self << Raw.new(content)
     end

@@ -36,6 +36,22 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "with whitespace" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          a "Home"
+          whitespace
+          a "About"
+        end
+      end
+    end
+
+    it "produces the correct output" do
+      expect(output).to eq "<a>Home</a> <a>About</a>"
+    end
+  end
+
   describe "with dangerous tag attributes" do
     let :component do
       Class.new Phlex::Component do
