@@ -8,6 +8,20 @@ RSpec.describe Phlex::Component do
   let(:output) { example.call }
   let(:example) { component.new }
 
+  describe "with text" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          text "Hi"
+        end
+      end
+    end
+
+    it "produces the correct output" do
+      expect(output).to eq "Hi"
+    end
+  end
+
   describe "with dangerous tag attributes" do
     let :component do
       Class.new Phlex::Component do
