@@ -298,5 +298,37 @@ RSpec.describe Phlex::Component do
         expect(output).to eq "<div><h1>A</h1><template>B</template><h2>C</h2></div>"
       end
     end
+
+    describe "with custom elements" do
+      let :component do
+        Class.new Phlex::Component do
+          register_element :trix_editor, :trix_toolbar
+
+          def template
+            div {
+              trix_toolbar
+              trix_editor "Hello"
+            }
+          end
+        end
+      end
+
+      it "produces the correct markup" do
+        expect(output).to eq "<div><trix-toolbar></trix-toolbar><trix-editor>Hello</trix-editor></div>"
+      end
+
+      describe "with invalid tags" do
+        let :component do
+          Class.new Phlex::Component do
+            register_element "NOT-VALID"
+          end
+        end
+
+        it "raises an ArgumentError" do
+          expect { component }.to raise_error(ArgumentError,
+            "Custom elements must be provided as Symbols")
+        end
+      end
+    end
   end
 end
