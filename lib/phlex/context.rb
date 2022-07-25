@@ -48,14 +48,15 @@ module Phlex
       Tag::ClassCollector.new(self, tag)
     end
 
-    def _void_element(name, **kwargs)
-      tag = Tag::VoidElement.new(name, **kwargs)
+    def _void_element(**kwargs)
+      tag = Tag::VoidElement.new(__callee__.name, **kwargs)
       self << tag
       Tag::ClassCollector.new(self, tag)
     end
 
     Tag::StandardElement::ELEMENTS.each do |tag_name|
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+        # frozen_string_literal: true
         def #{tag_name}(...)
           _standard_element("#{tag_name}", ...)
         end
@@ -63,11 +64,7 @@ module Phlex
     end
 
     Tag::VoidElement::ELEMENTS.each do |tag_name|
-      class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-        def #{tag_name}(...)
-          _void_element("#{tag_name}", ...)
-        end
-      RUBY
+      alias_method tag_name, :_void_element
     end
   end
 end
