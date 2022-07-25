@@ -8,7 +8,7 @@ module Phlex
       @_children ||= []
     end
 
-    def call(buffer = String.new)
+    def call(buffer = +"")
       children.each { _1.call(buffer) }
       buffer
     end

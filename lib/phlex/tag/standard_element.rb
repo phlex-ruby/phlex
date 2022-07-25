@@ -101,7 +101,7 @@ module Phlex
         wbr
       ].freeze
 
-      def call(buffer = String.new)
+      def call(buffer = +"")
         buffer << "<" << name << attributes << ">"
         super
         buffer << "</" << name << ">"

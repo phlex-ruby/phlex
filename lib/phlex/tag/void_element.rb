@@ -15,7 +15,7 @@ module Phlex
         col
       ].freeze
 
-      def call(buffer = String.new)
+      def call(buffer = +"")
         buffer << "<" << name << attributes << " />"
       end
     end
