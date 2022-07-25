@@ -98,6 +98,9 @@ module Phlex
     end
 
     def call
+      raise "The same component instance shouldn't be rendered twice" if @_rendered
+      @_rendered = true
+
       template(&@_content)
       super
     end

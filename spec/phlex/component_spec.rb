@@ -284,6 +284,22 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "rendering the same component twice" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          h1 "Rendered twice"
+        end
+      end
+    end
+
+    it "raises an error" do
+      instance = component.new
+
+      expect { 2.times { instance.call } }.to raise_error("The same component instance shouldn't be rendered twice")
+    end
+  end
+
   describe "with a nested component" do
     describe "with nested content" do
       let :component do
