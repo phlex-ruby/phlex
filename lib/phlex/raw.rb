@@ -8,7 +8,7 @@ module Phlex
       @content = content
     end
 
-    def call(buffer = String.new)
+    def call(buffer = +"")
       buffer << @content
     end
   end

@@ -8,7 +8,7 @@ module Phlex
       @content = content
     end
 
-    def call(buffer = String.new)
+    def call(buffer = +"")
       buffer << CGI.escape_html(@content)
     end
   end
