@@ -37,4 +37,6 @@ Gem::Specification.new do |spec|
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
+
+  spec.add_development_dependency "benchmark-ips", "~> 2.10.0"
 end

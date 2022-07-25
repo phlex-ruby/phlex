@@ -13,6 +13,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    benchmark-ips (2.10.0)
     benchmark-memory (0.2.0)
       memory_profiler (~> 1)
     concurrent-ruby (1.1.10)
@@ -49,6 +50,7 @@ PLATFORMS
   arm64-darwin-21
 
 DEPENDENCIES
+  benchmark-ips (~> 2.10.0)
   benchmark-memory
   phlex!
   rake (~> 13.0)
