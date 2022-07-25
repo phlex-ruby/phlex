@@ -157,10 +157,6 @@ class ArticlesComponent < Phlex::Component
 end
 ```
 
-### Caching [WIP]
-
-To enable fragment caching on a component, simply pass the argument `cache: true`. The component will look for cache keys on its instance variables. Alternatively, you can pass a specific resource to be cached e.g. `cache: @articles`.
-
 ### Advanced components with DSLs
 
 Becuase components accept blocks, it’s really easy to define advanced components with their own DSLs. Take, for instance, this table fabricator component that lets you define rows / columns with headers using blocks.
