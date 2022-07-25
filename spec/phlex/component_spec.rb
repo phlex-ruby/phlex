@@ -80,6 +80,20 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "with javascript link protocol in hypertext reference" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          a "Javascript link", href: "javascript:javascript:alert(1)"
+        end
+      end
+    end
+
+    it "produces link by striping javascript:" do
+      expect(output).to have_tag :a, with: { href: "alert(1)" }
+    end
+  end
+
   describe "with a standard HTML element" do
     let :component do
       Class.new Phlex::Component do
