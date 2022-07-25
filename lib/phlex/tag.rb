@@ -41,8 +41,8 @@ module Phlex
       attributes = @attributes.dup
       attributes[:class] = classes
       attributes.compact!
-      attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
       attributes.transform_values! { CGI.escape_html(_1) }
+      attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
       attributes = attributes.map { |k, v| %Q(#{k}="#{v}") }.join(SPACE)
       attributes.prepend(SPACE) unless attributes.empty?
       attributes
