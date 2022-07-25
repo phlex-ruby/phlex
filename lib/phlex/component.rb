@@ -31,8 +31,8 @@ module Phlex
           end
 
           class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-            def #{tag_name}(...)
-              _standard_element("#{tag_name.to_s.gsub('_', '-')}", ...)
+            def #{tag_name}(*args, **kwargs, &)
+              _standard_element(*args, _name: "#{tag_name.to_s.gsub('_', '-')}", **kwargs, &)
             end
           RUBY
         end
