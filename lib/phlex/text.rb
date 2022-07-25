@@ -9,7 +9,7 @@ module Phlex
     end
 
     def call(buffer = String.new)
-      buffer << ERB::Util.html_escape(@content)
+      buffer << CGI.escape_html(@content)
     end
   end
 end
