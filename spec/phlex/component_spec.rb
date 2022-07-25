@@ -89,7 +89,7 @@ RSpec.describe Phlex::Component do
       end
     end
 
-    it "produces link by striping javascript:" do
+    it "strips the javascript protocol" do
       expect(output).to have_tag :a, with: { href: "alert(1)" }
     end
   end
