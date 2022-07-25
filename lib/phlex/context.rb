@@ -26,12 +26,14 @@ module Phlex
       self << component.new(*args, **kwargs, &block)
     end
 
-    def _template_tag(...)
-      _standard_element("template", ...)
+    def _template_tag(*args, **kwargs, &)
+      _standard_element(*args, _name: "template", **kwargs, &)
     end
 
-    def _standard_element(name, content = nil, **kwargs, &block)
+    def _standard_element(content = nil, _name: nil, **kwargs, &block)
       raise ArgumentError if content && block_given?
+
+      name = _name ||= __callee__.name
       tag = Tag::StandardElement.new(name, **kwargs)
       self << tag
 
@@ -48,26 +50,18 @@ module Phlex
       Tag::ClassCollector.new(self, tag)
     end
 
-    def _void_element(name, **kwargs)
-      tag = Tag::VoidElement.new(name, **kwargs)
+    def _void_element(**kwargs)
+      tag = Tag::VoidElement.new(__callee__.name, **kwargs)
       self << tag
       Tag::ClassCollector.new(self, tag)
     end
 
     Tag::StandardElement::ELEMENTS.each do |tag_name|
-      class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-        def #{tag_name}(...)
-          _standard_element("#{tag_name}", ...)
-        end
-      RUBY
+      alias_method tag_name, :_standard_element
     end
 
     Tag::VoidElement::ELEMENTS.each do |tag_name|
-      class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-        def #{tag_name}(...)
-          _void_element("#{tag_name}", ...)
-        end
-      RUBY
+      alias_method tag_name, :_void_element
     end
   end
 end
