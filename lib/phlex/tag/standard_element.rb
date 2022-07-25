@@ -3,7 +3,7 @@
 module Phlex
   class Tag
     class StandardElement < Tag
-      include Node
+      include ParentNode
 
       ELEMENTS = %w[
         a

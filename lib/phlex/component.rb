@@ -21,7 +21,7 @@ module Phlex
       end
     end
 
-    include Node, Context
+    include ParentNode, Context
 
     class << self
       def register_element(*tag_names)
