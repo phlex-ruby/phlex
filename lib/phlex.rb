@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext/string/output_safety"
+require "cgi"
 require "zeitwerk"
 
 loader = Zeitwerk::Loader.for_gem
