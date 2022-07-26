@@ -162,10 +162,10 @@ end
 Becuase components accept blocks, it’s really easy to define advanced components with their own DSLs. Take, for instance, this table fabricator component that lets you define rows / columns with headers using blocks.
 
 ```ruby
-component Table::Fabricator, @articles, layout: :column do
-  data "Title" { a _1.title, href: article_path(_1) }
-  text_data("Author", &:author)
-  text_data("Published", &:published_at)
+component Table::Fabricator, @articles, layout: :column do |t|
+  t.data "Title" { a _1.title, href: article_path(_1) }
+  t.text_data("Author", &:author)
+  t.text_data("Published", &:published_at)
 end
 ```
 
