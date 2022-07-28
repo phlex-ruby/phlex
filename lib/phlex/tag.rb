@@ -5,7 +5,6 @@ module Phlex
     DASH = "-"
     SPACE = " "
     UNDERSCORE = "_"
-    NAMESPACE_DELINEATOR = "::"
 
     attr_reader :name
 

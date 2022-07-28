@@ -4,6 +4,8 @@ require "digest"
 
 module Phlex
   class Component
+    include Node, Context
+
     module Overrides
       def initialize(*args, **kwargs, &block)
         @_content = block
@@ -21,9 +23,28 @@ module Phlex
       end
     end
 
-    include Node, Context
-
     class << self
+      def inherited(child)
+        child.prepend(Overrides)
+
+        if child.name
+          child.name.split("::").reverse.reduce(+"") do |sum, n|
+            sum.prepend("::#{n}").tap do |name|
+              name = name[2..]
+              component_class = Phlex.find_constant(child.name, relative_to: self.class)
+
+              define_method child.name do |*args, **kwargs, &block|
+                component(component_class, *args, **kwargs, &block)
+              end
+
+              binding.irb
+            end
+          end
+        end
+
+        super
+      end
+
       def register_element(*tag_names)
         tag_names.each do |tag_name|
           unless tag_name.is_a? Symbol
@@ -36,11 +57,6 @@ module Phlex
             end
           RUBY
         end
-      end
-
-      def inherited(child)
-        child.prepend(Overrides)
-        super
       end
     end
 

@@ -4,6 +4,43 @@ class CardComponent < Phlex::Component
   end
 end
 
+class Example < Phlex::Component
+  def template
+    CardComponent do
+      h1 "Hi"
+    end
+  end
+end
+
+class Table < Phlex::Component
+  def template(&)
+    table(&)
+  end
+
+  class Row < Phlex::Component
+    def template(&)
+      tr(&)
+    end
+  end
+
+  class Column < Phlex::Component
+    def template(&)
+      td(&)
+    end
+  end
+
+  class Fabricator < Phlex::Component
+    def template(&)
+      Table {
+        Row {
+          Column { text "Hello" }
+        }
+      }
+    end
+  end
+end
+
+
 RSpec.describe Phlex::Component do
   let(:output) { example.call }
   let(:example) { component.new }
@@ -402,6 +439,23 @@ RSpec.describe Phlex::Component do
           expect { component }.to raise_error(ArgumentError,
             "Custom elements must be provided as Symbols")
         end
+      end
+    end
+
+    describe "with constant methods" do
+      let(:component) { Example }
+
+      it "produces the correct output" do
+        expect(output).to have_tag :article
+        expect(output).to have_tag :h1, text: "Hi"
+      end
+    end
+
+    describe "with complex nesting constant methods" do
+      let(:component) { Table::Fabricator }
+
+      it "produces the correct output" do
+        expect(output).to eq("")
       end
     end
   end
