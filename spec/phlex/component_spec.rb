@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CardComponent < Phlex::Component
   def template(&)
     article.p_5.rounded.drop_shadow(&)

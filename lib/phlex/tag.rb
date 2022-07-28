@@ -11,7 +11,7 @@ module Phlex
 
     def initialize(name, **attributes)
       @name = name
-      @classes = String.new
+      @classes = +""
       self.attributes = attributes
     end
 
@@ -23,11 +23,11 @@ module Phlex
     def classes=(value)
       case value
       when String
-        @classes << value.prepend(SPACE)
+        @classes << SPACE << value
       when Symbol
-        @classes << value.to_s.prepend(SPACE)
+        @classes << SPACE << value.to_s
       when Array
-        @classes << value.join(SPACE).prepend(SPACE)
+        value.each { @classes << SPACE << _1 }
       when nil
         return
       else
