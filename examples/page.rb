@@ -1,0 +1,39 @@
+module Example
+  class Page < Phlex::Component
+    def template
+      component LayoutComponent do
+        h1 "Hi"
+
+        5.times do
+          div do
+            10.times do
+              a "Test", href: "something"
+            end
+          end
+        end
+
+        table do
+          thead do
+            10.times do
+              tr do
+                th "Hi"
+              end
+            end
+          end
+
+          tbody do
+            100.times do
+              tr.a.b.c.d.e.f.g id: "something" do
+                10.times do
+                  td.f.g.h.i.j.k.l do
+                    span "Test"
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
