@@ -6,6 +6,16 @@ class CardComponent < Phlex::Component
   end
 end
 
+class Article
+  include ActiveModel::Model
+
+  attr_accessor :title
+
+  def to_partial_path
+    File.expand_path("../../examples/partials/article", __dir__)
+  end
+end
+
 RSpec.describe Phlex::Component do
   let(:output) { example.call }
   let(:example) { component.new }
@@ -419,6 +429,46 @@ RSpec.describe Phlex::Component do
 
     it "produces the correct markup" do
       expect(output).to eq %{<article class="p-5 rounded drop-shadow">Hello World!</article>}
+    end
+  end
+
+  describe "with Rails rendering" do
+    describe "when passing the locals to render" do
+      let(:component) do
+        Class.new Phlex::Component do
+          def template
+            component CardComponent do
+              render "content", locals: { name: "Alexandre" }
+            end
+          end
+        end
+      end
+
+      it "produces the correct markup" do
+        ActionView::Base.with_view_paths(File.expand_path("../../examples/partials", __dir__)) do
+          expect(output).to eq %{<article class="p-5 rounded drop-shadow">Welcome Alexandre!</article>}
+        end
+      end
+    end
+
+    describe "when passing a model to render" do
+      let(:component) do
+        Class.new Phlex::Component do
+          def template
+            component CardComponent do
+              render @article
+            end
+          end
+        end
+      end
+
+      it "produces the correct markup" do
+        @article = Article.new(title: "Phlex documentation")
+
+        ActionView::Base.with_view_paths(File.expand_path("../../examples/partials", __dir__)) do
+          expect(output).to eq %{<article class="p-5 rounded drop-shadow">Title: Phlex documentation</article>}
+        end
+      end
     end
   end
 end

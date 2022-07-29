@@ -1,4 +1,6 @@
 require "phlex"
+require "phlex/rails"
+require "rails/all"
 require "rspec-html-matchers"
 
 RSpec.configure do |config|
