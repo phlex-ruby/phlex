@@ -14,6 +14,10 @@ GEM
     memory_profiler (1.0.0)
     nokogiri (1.13.6-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.13.6-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.6-x86_64-linux)
+      racc (~> 1.4)
     racc (1.6.0)
     rake (13.0.6)
     rspec (3.11.0)
@@ -36,6 +40,8 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   benchmark-ips (~> 2.10.0)
@@ -46,4 +52,4 @@ DEPENDENCIES
   rspec-html-matchers
 
 BUNDLED WITH
-   2.3.7
+   2.3.14
