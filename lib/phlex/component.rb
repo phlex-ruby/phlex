@@ -55,6 +55,10 @@ module Phlex
       template(&@_content)
       super
     end
+    
+    def render_in(_view_context)
+      call
+    end
 
     def target
       @_target || self
