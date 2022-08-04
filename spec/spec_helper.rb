@@ -1,5 +1,10 @@
-require "phlex"
-require "rspec-html-matchers"
+require 'bundler'
+
+Bundler.require :default
+
+Combustion.initialize! :action_controller, :active_model
+
+require "phlex/rails"
 
 RSpec.configure do |config|
   config.include RSpecHtmlMatchers

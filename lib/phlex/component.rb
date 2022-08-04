@@ -6,7 +6,12 @@ module Phlex
   class Component
     module Overrides
       def initialize(*args, **kwargs, &block)
+        if block_given? && !block.binding.receiver.is_a?(Block)
+          block = Block.new(self, &block)
+        end
+
         @_content = block
+
         super(*args, **kwargs)
       end
 
@@ -71,7 +76,9 @@ module Phlex
     def render_block(new_target, ...)
       old_target = target
       @_target = new_target
+      @_rendering_block = true
       instance_exec(...)
+      @_rendering_block = false
       @_target = old_target
     end
   end

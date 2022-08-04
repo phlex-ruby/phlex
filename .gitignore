@@ -7,3 +7,4 @@
 /spec/reports/
 /tmp/
 /spec/examples.txt
+/spec/internal/**/log/*

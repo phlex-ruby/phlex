@@ -6,9 +6,22 @@ class CardComponent < Phlex::Component
   end
 end
 
+class Article
+  include ActiveModel::Model
+  attr_accessor :title
+end
+
 RSpec.describe Phlex::Component do
   let(:output) { example.call }
   let(:example) { component.new }
+
+  let(:component) do
+    Class.new Phlex::Component do
+      def template
+        h1 "Hi"
+      end
+    end
+  end
 
   describe "with text" do
     let :component do
@@ -419,6 +432,69 @@ RSpec.describe Phlex::Component do
 
     it "produces the correct markup" do
       expect(output).to eq %{<article class="p-5 rounded drop-shadow">Hello World!</article>}
+    end
+  end
+
+  describe "#format" do
+    it "returns :html" do
+      expect(example.format).to eq :html
+    end
+  end
+
+  describe "#render_in" do
+    let(:component) { CardComponent }
+    let(:output) { example.render_in(Phlex::Rails::VIEW_CONTEXT) { "<span>Hi</span>" } }
+
+    it "renders the component with raw contents captured form the block" do
+      expect(output).to eq %{<article class="p-5 rounded drop-shadow"><span>Hi</span></article>}
+    end
+  end
+
+  describe "#render" do
+    describe "while not rendering" do
+      let(:output) { example.render }
+
+      it "renders the component to an html_safe string" do
+        expect(output).to eq %{<h1>Hi</h1>}
+        expect(output).to be_html_safe
+      end
+    end
+
+    describe "while rendering" do
+      describe "with locals" do
+        let(:component) do
+          Class.new Phlex::Component do
+            def template
+              component CardComponent do
+                render "shared/content", name: "Alexandre"
+              end
+            end
+          end
+        end
+
+        it "produces the correct markup" do
+          expect(output).to eq %{<article class="p-5 rounded drop-shadow">Welcome Alexandre!\n</article>}
+        end
+      end
+
+      describe "with a model" do
+        let(:article) { Article.new(title: "Phlex documentation") }
+        let(:example) { component.new(article:) }
+
+        let(:component) do
+          Class.new Phlex::Component do
+            def template
+              component CardComponent do
+                render @article
+              end
+            end
+          end
+        end
+
+        it "produces the correct markup" do
+          expect(output).to eq %{<article class="p-5 rounded drop-shadow">Title: Phlex documentation\n</article>}
+        end
+      end
     end
   end
 end
