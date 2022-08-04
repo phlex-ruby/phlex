@@ -16,7 +16,12 @@ module Phlex
       end
 
       def template(...)
-        if @_rendering
+        called_from = caller_locations(1,1)[0].label.to_sym
+
+        # If we're rendering a template and not being called from
+        # another override in the ancestry, we render the template tag.
+
+        if @_rendering && (called_from != __method__)
           _template_tag(...)
         else
           @_rendering = true
