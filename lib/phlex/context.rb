@@ -50,14 +50,11 @@ module Phlex
       end
 
       Block.new(self) { text content }.call(tag) if content
-
-      Tag::ClassCollector.new(self, tag)
     end
 
     def _void_element(**kwargs)
       tag = Tag::VoidElement.new(__callee__.name, **kwargs)
       self << tag
-      Tag::ClassCollector.new(self, tag)
     end
 
     Tag::StandardElement::ELEMENTS.each do |tag_name|

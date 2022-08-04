@@ -23,9 +23,9 @@ module Example
 
           tbody do
             100.times do
-              tr.a.b.c.d.e.f.g id: "something" do
+              tr class: "a b c d e f g", id: "something" do
                 10.times do
-                  td.f.g.h.i.j.k.l do
+                  td class: "f g h i j k l" do
                     span "Test"
                   end
                 end
