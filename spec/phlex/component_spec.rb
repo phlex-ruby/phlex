@@ -23,6 +23,14 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "when subclassing another component" do
+    let(:component) { Class.new CardComponent }
+
+    it "produces the correct output" do
+      expect(output).to eq %{<article class=\"p-5 rounded drop-shadow\"></article>}
+    end
+  end
+
   describe "with text" do
     let :component do
       Class.new Phlex::Component do
