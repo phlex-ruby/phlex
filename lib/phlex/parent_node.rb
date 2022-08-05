@@ -5,12 +5,11 @@ module Phlex
     include Callable
 
     def children
-      @_children ||= []
+      @_children ||= +""
     end
 
     def call(buffer = +"")
-      children.each { _1.call(buffer) }
-      buffer
+      buffer << children
     end
   end
 end
