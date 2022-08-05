@@ -213,20 +213,6 @@ RSpec.describe Phlex::Component do
     end
   end
 
-  describe "with an Array<String> of classes" do
-    let :component do
-      Class.new Phlex::Component do
-        def template
-          div class: %w(a b c)
-        end
-      end
-    end
-
-    it "produces the classes" do
-      expect(output).to eq %{<div class="a b c"></div>}
-    end
-  end
-
   describe "with component attributes" do
     let :component do
       Class.new Phlex::Component do
