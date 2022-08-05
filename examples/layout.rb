@@ -12,16 +12,16 @@ module Example
           link href: "/assets/tailwind.css", rel: "stylesheet"
         end
 
-        body.bg_zinc_100 do
-          nav.p_5 id: "main_nav" do
+        body class: "bg-zinc-100" do
+          nav class: "p-5", id: "main_nav" do
             ul do
-              li.p_5 { a "Home", href: "/" }
-              li.p_5 { a "About", href: "/about" }
-              li.p_5 { a "Contact", href: "/contact" }
+              li(class: "p-5") { a "Home", href: "/" }
+              li(class: "p-5") { a "About", href: "/about" }
+              li(class: "p-5") { a "Contact", href: "/contact" }
             end
           end
 
-          div.container.mx_auto.p_5(&)
+          div class: "container mx-auto p-5", &
         end
       end
     end

@@ -2,7 +2,7 @@
 
 class CardComponent < Phlex::Component
   def template(&)
-    article.p_5.rounded.drop_shadow(&)
+    article class: "p-5 rounded drop-shadow", &
   end
 end
 
@@ -199,38 +199,6 @@ RSpec.describe Phlex::Component do
     end
   end
 
-  describe "with Emmet-style classes" do
-    let :component do
-      Class.new Phlex::Component do
-        def template
-          div.a.b.c.tap do
-            h1.a.b.c "Hello", id: "foo"
-          end
-        end
-      end
-    end
-
-    it "supports a wide variety of methods" do
-      expect(output).to have_tag :div, with: { class: "tap" }
-    end
-
-    it "produces the block content" do
-      expect(output).to have_tag "div>h1"
-    end
-
-    it "produces the text content" do
-      expect(output).to have_tag :h1, text: "Hello"
-    end
-
-    it "produces the tag attributes" do
-      expect(output).to have_tag :h1, with: { id: "foo" }
-    end
-
-    it "produces the correct markup" do
-      expect(output).to eq %{<div class="a b c tap"><h1 id="foo" class="a b c">Hello</h1></div>}
-    end
-  end
-
   describe "with a String of classes" do
     let :component do
       Class.new Phlex::Component do
@@ -256,34 +224,6 @@ RSpec.describe Phlex::Component do
 
     it "produces the classes" do
       expect(output).to eq %{<div class="a b c"></div>}
-    end
-  end
-
-  describe "with underscore in class name" do
-    let :component do
-      Class.new Phlex::Component do
-        def template
-          div class: "a_b"
-        end
-      end
-    end
-
-    describe "when default configuration used" do
-      it "converts underscores to dashes and produces the classes" do
-        expect(output).to eq %{<div class="a-b"></div>}
-      end
-    end
-
-    describe "when configured convert_underscores_to_dashes to false" do
-      around(:each) do |example|
-        Phlex.configure { |config| config.convert_underscores_to_dashes = false }
-        example.run
-        Phlex.configure { |config| config.convert_underscores_to_dashes = true }
-      end
-
-      it "does not converts underscores to dashes and produces the classes" do
-        expect(output).to eq %{<div class="a_b"></div>}
-      end
     end
   end
 

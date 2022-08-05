@@ -33,18 +33,6 @@ class NavComponent < Phlex::Component
 end
 ```
 
-### Emmet-style CSS classes
-
-It’s also possible to add classes to a tag by chaining methods calls like CSS selectors.
-
-```ruby
-class CardComponent
-  def template(&)
-    div.shadow.rounded.p_5(&)
-  end
-end
-```
-
 ### Component Attributes
 
 Components can accept arguments by defining an initializer.
@@ -84,7 +72,7 @@ Here the content is passed to a `div` tag:
 ```ruby
 class CardComponent < Phlex::Component
   def template(&)
-    div.rounded.drop_shadow.p_5(&)
+    div class: "rounded drop-shadow p-5", &
   end
 end
 ```
@@ -98,7 +86,7 @@ class CardComponent < Phlex::Component
   end
 
   def template(&)
-    div.rounded.drop_shadow.p_5 do
+    div class: "rounded drop-shadow p-5" do
       h1 @title
       content(&)
     end

@@ -49,7 +49,6 @@ module Phlex
 
     def classes
       return if @classes.empty?
-      @classes.gsub!(UNDERSCORE, DASH) if Phlex.configuration.convert_underscores_to_dashes
       @classes.strip!
       @classes
     end
