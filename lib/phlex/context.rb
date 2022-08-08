@@ -3,7 +3,7 @@
 module Phlex
   module Context
     def text(content)
-      self << Text.new(content)
+      Text.new(content).call(target.children)
     end
 
     def whitespace
@@ -11,7 +11,7 @@ module Phlex
     end
 
     def _raw(content)
-      self << Raw.new(content)
+      target.children << content
     end
 
     def component(component, *args, **kwargs, &block)
@@ -24,9 +24,9 @@ module Phlex
       end
 
       if args.one? && !block_given?
-        self << component.new(**kwargs) { text(args.first) }
+        component.new(**kwargs) { text(args.first) }.call(target.children)
       else
-        self << component.new(*args, **kwargs, &block)
+        component.new(*args, **kwargs, &block).call(target.children)
       end
     end
 
@@ -39,7 +39,6 @@ module Phlex
 
       name = _name ||= __callee__.name
       tag = Tag::StandardElement.new(name, **kwargs)
-      self << tag
 
       if block_given?
         if block.binding.receiver.is_a?(Block)
@@ -50,11 +49,13 @@ module Phlex
       end
 
       Block.new(self) { text content }.call(tag) if content
+
+      tag.call(target.children)
     end
 
     def _void_element(**kwargs)
       tag = Tag::VoidElement.new(__callee__.name, **kwargs)
-      self << tag
+      tag.call(target.children)
     end
 
     Tag::StandardElement::ELEMENTS.each do |tag_name|

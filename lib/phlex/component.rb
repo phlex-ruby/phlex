@@ -70,10 +70,6 @@ module Phlex
       @_target || self
     end
 
-    def <<(node)
-      target.children << node
-    end
-
     def content
       yield(target) if block_given?
     end
