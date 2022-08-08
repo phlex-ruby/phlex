@@ -9,8 +9,8 @@ module Phlex
       @block = block
     end
 
-    def call(target, *args, **kwargs)
-      @context._render_block(target, *args, **kwargs, &@block)
+    def call(*args, **kwargs)
+      @context.instance_exec(*args, **kwargs, &@block)
     end
   end
 end

@@ -34,15 +34,6 @@ module Phlex
       end
     end
 
-    def _render_block(new_target, ...)
-      old_target = @_target
-      @_target = new_target
-      @_rendering_block = true
-      instance_exec(...)
-      @_rendering_block = false
-      @_target = old_target
-    end
-
     def _template_tag(*args, **kwargs, &)
       _standard_element(*args, _name: "template", **kwargs, &)
     end
