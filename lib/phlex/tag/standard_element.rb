@@ -102,11 +102,11 @@ module Phlex
       ].freeze
 
       def call(buffer = +"")
-        buffer << "<" << name
+        buffer << LEFT << name
         attributes(buffer)
-        buffer << ">"
+        buffer << RIGHT
         super
-        buffer << "</" << name << ">"
+        buffer << CLOSE_LEFT << name << RIGHT
       end
     end
   end

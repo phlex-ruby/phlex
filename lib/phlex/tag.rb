@@ -7,6 +7,11 @@ module Phlex
     UNDERSCORE = "_"
     NAMESPACE_DELINEATOR = "::"
 
+    LEFT = "<"
+    RIGHT = ">"
+    CLOSE_LEFT = "</"
+    CLOSE_VOID_RIGHT = " />"
+
     attr_reader :name
 
     def initialize(name, **attributes)
