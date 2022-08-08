@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "digest"
-
 module Phlex
   class Component
+    include Context
+
     module Overrides
       def initialize(*args, **kwargs, &block)
         if block_given? && !block.binding.receiver.is_a?(Block)
@@ -30,8 +30,6 @@ module Phlex
         end
       end
     end
-
-    include ParentNode, Context
 
     class << self
       def register_element(*tag_names)
@@ -62,25 +60,9 @@ module Phlex
       raise "The same component instance shouldn't be rendered twice" if @_rendered
       @_rendered = true
 
+      @_target = buffer
       template(&@_content)
-      super
-    end
-
-    def target
-      @_target || self
-    end
-
-    def content
-      yield(target) if block_given?
-    end
-
-    def render_block(new_target, ...)
-      old_target = target
-      @_target = new_target
-      @_rendering_block = true
-      instance_exec(...)
-      @_rendering_block = false
-      @_target = old_target
+      buffer
     end
   end
 end

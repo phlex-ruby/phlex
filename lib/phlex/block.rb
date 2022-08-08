@@ -10,7 +10,7 @@ module Phlex
     end
 
     def call(target, *args, **kwargs)
-      @context.render_block(target, *args, **kwargs, &@block)
+      @context._render_block(target, *args, **kwargs, &@block)
     end
   end
 end

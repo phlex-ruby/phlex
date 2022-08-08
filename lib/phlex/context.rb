@@ -2,16 +2,20 @@
 
 module Phlex
   module Context
+    def content(&)
+      yield(@_target) if block_given?
+    end
+
     def text(content)
-      Text.new(content).call(target.children)
+      @_target << CGI.escape_html(content)
     end
 
     def whitespace
-      _raw(" ")
+      @_target << " "
     end
 
     def _raw(content)
-      target.children << content
+      @_target << content
     end
 
     def component(component, *args, **kwargs, &block)
@@ -24,10 +28,19 @@ module Phlex
       end
 
       if args.one? && !block_given?
-        component.new(**kwargs) { text(args.first) }.call(target.children)
+        component.new(**kwargs) { text(args.first) }.call(@_target)
       else
-        component.new(*args, **kwargs, &block).call(target.children)
+        component.new(*args, **kwargs, &block).call(@_target)
       end
+    end
+
+    def _render_block(new_target, ...)
+      old_target = @_target
+      @_target = new_target
+      @_rendering_block = true
+      instance_exec(...)
+      @_rendering_block = false
+      @_target = old_target
     end
 
     def _template_tag(*args, **kwargs, &)
@@ -38,31 +51,42 @@ module Phlex
       raise ArgumentError if content && block_given?
 
       name = _name ||= __callee__.name
-      tag = Tag::StandardElement.new(name, **kwargs)
+
+      @_target << Tag::LEFT << name
+      _attributes(kwargs)
+      @_target << Tag::RIGHT
+
 
       if block_given?
         if block.binding.receiver.is_a?(Block)
-          block.call(tag)
+          block.call(@_target)
         else
-          Block.new(self, &block).call(tag)
+          Block.new(self, &block).call(@_target)
         end
       end
 
-      Block.new(self) { text content }.call(tag) if content
+      Block.new(self) { text content }.call(@_target) if content
 
-      tag.call(target.children)
+      @_target << Tag::CLOSE_LEFT << name << Tag::RIGHT
     end
 
     def _void_element(**kwargs)
-      tag = Tag::VoidElement.new(__callee__.name, **kwargs)
-      tag.call(target.children)
+      @_target << Tag::LEFT << __callee__.name
+      _attributes(kwargs)
+      @_target << Tag::CLOSE_VOID_RIGHT
     end
 
-    Tag::StandardElement::ELEMENTS.each do |tag_name|
+    def _attributes(attributes)
+      attributes.transform_values! { CGI.escape_html(_1) }
+      attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
+      attributes.each { |k, v| @_target << Tag::SPACE << k.name << '="' << v << '"' }
+    end
+
+    Tag::STANDARD_ELEMENTS.each do |tag_name|
       alias_method tag_name, :_standard_element
     end
 
-    Tag::VoidElement::ELEMENTS.each do |tag_name|
+    Tag::VOID_ELEMENTS.each do |tag_name|
       alias_method tag_name, :_void_element
     end
   end
