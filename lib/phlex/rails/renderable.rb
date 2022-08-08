@@ -7,8 +7,8 @@ module Phlex
 
     module Renderable
       def render(...)
-        if @_rendering || @_rendering_block
-          _raw VIEW_CONTEXT.render(...)
+        if @_rendering
+          @_target << VIEW_CONTEXT.render(...)
         else
           call.html_safe
         end
@@ -18,7 +18,7 @@ module Phlex
         if block_given?
           content = nil
           context.with_output_buffer { content = yield }
-          @_content = Phlex::Block.new(self) { _raw content }
+          @_content = Phlex::Block.new(self) { @_target << content }
         end
 
         render
