@@ -175,6 +175,15 @@ Or install it yourself as:
     $ gem install phlex
 
 
+### Using with Rails
+
+Update the Gemfile to require rails support
+
+```ruby
+gem 'phlex', require: 'phlex/rails'
+```
+
+or `require 'phlex/rails'` in application.rb
 
 ## License
 
