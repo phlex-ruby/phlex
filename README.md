@@ -157,10 +157,6 @@ component Table::Fabricator, @articles, layout: :column do |t|
 end
 ```
 
-### Other examples
-
-This badge component takes a color argument and uses [Ecase](https://github.com/joeldrapper/ecase) to build a list of Tailwind classes.
-
 
 ## Installation
 
