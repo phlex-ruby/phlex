@@ -9,6 +9,8 @@ loader.setup
 module Phlex
   extend self
 
+  ATTRIBUTE_CACHE = {}
+
   def configuration
     @configuration ||= Configuration.new
   end

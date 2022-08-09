@@ -68,9 +68,24 @@ module Phlex
     end
 
     def _attributes(attributes)
+      if (cached = Phlex::ATTRIBUTE_CACHE[attributes.hash])
+        return @_target << cached
+      end
+
+      first_render = !self.class.rendered_at_least_once
+
+      buffer = first_render ? buffer = +"" : buffer = @_target
+
       attributes.transform_values! { CGI.escape_html(_1) }
       attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
-      attributes.each { |k, v| @_target << Tag::SPACE << k.name << '="' << v << '"' }
+
+      attributes.each do |k, v|
+        buffer << Tag::SPACE << k.name << Tag::EQUALS_QUOTE << v << Tag::QUOTE
+      end
+
+      if first_render
+        @_target << Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
+      end
     end
 
     Tag::STANDARD_ELEMENTS.each do |tag_name|

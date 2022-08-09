@@ -23,6 +23,26 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "with unique attributes" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          div class: SecureRandom.hex
+        end
+      end
+    end
+
+    it "doesn't leak memory" do
+      component.new.call
+
+      report = MemoryProfiler.report do
+        10.times { component.new.call }
+      end
+
+      expect(report.total_retained).to eq(0)
+    end
+  end
+
   describe "when subclassing another component" do
     let(:component) { Class.new CardComponent }
 

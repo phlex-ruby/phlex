@@ -32,6 +32,8 @@ module Phlex
     end
 
     class << self
+      attr_accessor :rendered_at_least_once
+
       def register_element(*tag_names)
         tag_names.each do |tag_name|
           unless tag_name.is_a? Symbol
@@ -62,6 +64,7 @@ module Phlex
 
       @_target = buffer
       template(&@_content)
+      self.class.rendered_at_least_once ||= true
       buffer
     end
   end
