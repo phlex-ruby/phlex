@@ -44,7 +44,7 @@ module Phlex
       name = _name ||= __callee__.name
 
       @_target << Tag::LEFT << name
-      _attributes(kwargs)
+      _attributes(kwargs) if kwargs.length > 0
       @_target << Tag::RIGHT
 
 
@@ -63,7 +63,7 @@ module Phlex
 
     def _void_element(**kwargs)
       @_target << Tag::LEFT << __callee__.name
-      _attributes(kwargs)
+      _attributes(kwargs) if kwargs.length > 0
       @_target << Tag::CLOSE_VOID_RIGHT
     end
 
