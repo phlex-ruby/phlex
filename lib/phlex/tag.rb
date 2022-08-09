@@ -12,6 +12,9 @@ module Phlex
     CLOSE_LEFT = "</"
     CLOSE_VOID_RIGHT = " />"
 
+    EQUALS_QUOTE = '="'
+    QUOTE = '"'
+
     STANDARD_ELEMENTS = %w[
       a
       abbr
