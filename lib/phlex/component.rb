@@ -96,8 +96,9 @@ module Phlex
       @_target = buffer
       template(&@_content)
       self.class.rendered_at_least_once ||= true
-      Thread.current[:phlex_buffer] = nil
       buffer
+    ensure
+      Thread.current[:phlex_buffer] = nil
     end
   end
 end
