@@ -11,6 +11,42 @@ class Article
   attr_accessor :title
 end
 
+class Example < Phlex::Component
+  def template
+    CardComponent do
+      h1 "Hi"
+    end
+  end
+end
+
+class Table < Phlex::Component
+  def template(&)
+    table(&)
+  end
+
+  class Row < Phlex::Component
+    def template(&)
+      tr(&)
+    end
+  end
+
+  class Column < Phlex::Component
+    def template(&)
+      td(&)
+    end
+  end
+
+  class Fabricator < Phlex::Component
+    def template(&)
+      Table {
+        Row {
+          Table::Column() { text "Hello" }
+        }
+      }
+    end
+  end
+end
+
 RSpec.describe Phlex::Component do
   let(:output) { example.call }
   let(:example) { component.new }
@@ -22,6 +58,15 @@ RSpec.describe Phlex::Component do
       end
     end
   end
+
+  describe "with complex nesting constant methods" do
+    let(:component) { Table::Fabricator }
+
+    it "produces the correct output" do
+      expect(output).to eq("<table><tr><td>Hello</td></tr></table>")
+    end
+  end
+
 
   describe "with unique attributes" do
     let :component do

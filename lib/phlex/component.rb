@@ -49,6 +49,37 @@ module Phlex
       end
 
       def inherited(child)
+        if child.name
+          namespace = child.name.split("::")[0..-2]
+          if namespace.any?
+            ns = namespace.join("::").constantize
+
+            ns.define_singleton_method(child.name.demodulize) do |*args, **kwargs, &block|
+              if block_given? && !block.binding.receiver.is_a?(Block)
+                block = Block.new(self, &block)
+              end
+
+              child.new(*args, **kwargs, &block).call
+            end
+
+            ns.define_method(child.name.demodulize) do |*args, **kwargs, &block|
+              if block_given? && !block.binding.receiver.is_a?(Block)
+                block = Block.new(self, &block)
+              end
+
+              child.new(*args, **kwargs, &block).call(@_target)
+            end
+          else
+            define_method(child.name.demodulize) do |*args, **kwargs, &block|
+              if block_given? && !block.binding.receiver.is_a?(Block)
+                block = Block.new(self, &block)
+              end
+
+              child.new(*args, **kwargs, &block).call(@_target)
+            end
+          end
+        end
+
         child.prepend(Overrides)
         super
       end
@@ -58,13 +89,14 @@ module Phlex
       attributes.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
-    def call(buffer = +"")
+    def call(buffer = Thread.current[:phlex_buffer] ||= +"")
       raise "The same component instance shouldn't be rendered twice" if @_rendered
       @_rendered = true
 
       @_target = buffer
       template(&@_content)
       self.class.rendered_at_least_once ||= true
+      Thread.current[:phlex_buffer] = nil
       buffer
     end
   end
