@@ -52,9 +52,9 @@ module Phlex
         if child.name
           namespace = child.name.split("::")[0..-2]
           if namespace.any?
-            ns = namespace.join("::").constantize
+            ns = const_get namespace.join("::")
 
-            ns.define_singleton_method(child.name.demodulize) do |*args, **kwargs, &block|
+            ns.define_singleton_method(child.name.split("::").last) do |*args, **kwargs, &block|
               if block_given? && !block.binding.receiver.is_a?(Block)
                 block = Block.new(self, &block)
               end
@@ -62,7 +62,7 @@ module Phlex
               child.new(*args, **kwargs, &block).call
             end
 
-            ns.define_method(child.name.demodulize) do |*args, **kwargs, &block|
+            ns.define_method(child.name.split("::").last) do |*args, **kwargs, &block|
               if block_given? && !block.binding.receiver.is_a?(Block)
                 block = Block.new(self, &block)
               end
@@ -70,7 +70,7 @@ module Phlex
               child.new(*args, **kwargs, &block).call(@_target)
             end
           else
-            define_method(child.name.demodulize) do |*args, **kwargs, &block|
+            define_method(child.name.split("::").last) do |*args, **kwargs, &block|
               if block_given? && !block.binding.receiver.is_a?(Block)
                 block = Block.new(self, &block)
               end
