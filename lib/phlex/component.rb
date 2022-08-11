@@ -10,7 +10,9 @@ module Phlex
           block = Block.new(self, &block)
         end
 
-        if !block_given? && args[0] && !method(__method__).super_method.parameters.to_h[:req]
+        super_method_params = method(__method__).super_method.parameters.to_h
+
+        if !block_given? && args[0] && !super_method_params[:req] && !super_method_params[:opt]
           content = args.delete_at(0)
           block = Block.new(self) { text content }
         end
