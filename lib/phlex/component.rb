@@ -5,14 +5,32 @@ module Phlex
     include Context
 
     module Overrides
-      def initialize(*args, **kwargs, &block)
-        if block_given? && !block.binding.receiver.is_a?(Block)
-          block = Block.new(self, &block)
+      module InitWithContent
+        def initialize(content = nil, *args, **kwargs, &block)
+          raise ArgumentError if block_given? && content
+
+          if block_given? && !block.binding.receiver.is_a?(Block)
+            block = Block.new(self, &block)
+          elsif content
+            block = Block.new(self) { text content }
+          end
+
+          @_content = block
+
+          super(*args, **kwargs)
         end
+      end
 
-        @_content = block
+      module InitWithoutContent
+        def initialize(*args, **kwargs, &block)
+          if block_given? && !block.binding.receiver.is_a?(Block)
+            block = Block.new(self, &block)
+          end
 
-        super(*args, **kwargs)
+          @_content = block
+
+          super(*args, **kwargs)
+        end
       end
 
       def template(...)
@@ -49,7 +67,14 @@ module Phlex
       end
 
       def inherited(child)
+        if child.instance_method(:initialize).parameters.to_h[:req]
+          child.prepend(Overrides::InitWithoutContent)
+        else
+          child.prepend(Overrides::InitWithContent)
+        end
+
         child.prepend(Overrides)
+
         super
       end
     end
