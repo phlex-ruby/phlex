@@ -7,11 +7,7 @@ module Phlex
 
     module Renderable
       def render(...)
-        if @_rendering
-          @_target << VIEW_CONTEXT.render(...)
-        else
-          call.html_safe
-        end
+        @_target << VIEW_CONTEXT.render(...)
       end
 
       def render_in(context, &)
@@ -21,7 +17,7 @@ module Phlex
           @_content = Phlex::Block.new(self) { @_target << content }
         end
 
-        render
+        call.html_safe
       end
 
       def format
