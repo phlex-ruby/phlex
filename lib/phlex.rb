@@ -7,6 +7,9 @@ loader = Zeitwerk::Loader.for_gem
 loader.setup
 
 module Phlex
+  Error = Module.new
+  ArgumentError = Class.new(ArgumentError) { include Error }
+
   extend self
 
   ATTRIBUTE_CACHE = {}

@@ -123,6 +123,26 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "with unsafe attributes" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          article **attributes
+        end
+
+        def attributes
+          {
+            %{"><script type="text/javascript">alert(1);</script>} => "test"
+          }
+        end
+      end
+    end
+
+    it "escapes the content" do
+      expect { output }.to raise_error ArgumentError
+    end
+  end
+
   describe "with javascript link protocol in hypertext reference" do
     let :component do
       Class.new Phlex::Component do

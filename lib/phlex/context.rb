@@ -76,7 +76,17 @@ module Phlex
 
       buffer = first_render ? buffer = +"" : buffer = @_target
 
+      attributes.each_key do |key|
+        if key.match? /[<>&"']/
+          raise ArgumentError, <<~MESSAGE
+            Unsafe attribute name detected.
+            Attributes names shouldn't contain `<`, `>`, `&`, `"` or `'`.
+          MESSAGE
+        end
+      end
+
       attributes.transform_values! { CGI.escape_html(_1) }
+
       attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
 
       attributes.each do |k, v|
