@@ -27,11 +27,7 @@ module Phlex
         block = Block.new(self, &block)
       end
 
-      if args.one? && !block_given?
-        component.new(**kwargs) { text(args.first) }.call(@_target)
-      else
-        component.new(*args, **kwargs, &block).call(@_target)
-      end
+      component.new(*args, **kwargs, &block).call(@_target)
     end
 
     def _template_tag(*args, **kwargs, &)
