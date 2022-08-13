@@ -38,12 +38,13 @@ module Phlex
       attributes.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
-    def call(buffer = +"")
+    def call(buffer = +"", &)
       raise "The same component instance shouldn't be rendered twice" if @_rendered
       @_rendered = true
-
       @_target = buffer
-      template(&@_content)
+
+      block_given? ? template(&) : template(&@_content)
+
       self.class.rendered_at_least_once ||= true
       buffer
     end
