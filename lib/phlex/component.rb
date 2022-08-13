@@ -2,11 +2,12 @@
 
 module Phlex
   class Component
-    include Context
+    include Context, Renderable
 
     module Overrides
-      def initialize(*args, **kwargs, &block)
+      def initialize(*args, _view_context: nil, **kwargs, &block)
         @_content = block
+        @_view_context = _view_context
         super(*args, **kwargs)
       end
     end

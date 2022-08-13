@@ -27,7 +27,7 @@ module Phlex
         block = Phlex::Block.new(self, &block)
       end
 
-      component.new(*args, **kwargs).call(@_target, &block)
+      component.new(*args, _view_context: @_view_context, **kwargs).call(@_target, &block)
     end
 
     def _template_tag(*args, **kwargs, &)
