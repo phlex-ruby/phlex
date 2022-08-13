@@ -14,7 +14,7 @@ module Phlex
         if block_given?
           content = nil
           context.with_output_buffer { content = yield }
-          @_content = Phlex::Block.new(self) { @_target << content }
+          @_content = -> { @_target << content }
         end
 
         call.html_safe
