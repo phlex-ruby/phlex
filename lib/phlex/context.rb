@@ -3,7 +3,7 @@
 module Phlex
   module Context
     def content(&)
-      yield(@_target) if block_given?
+      yield if block_given?
     end
 
     def text(content)
@@ -23,15 +23,11 @@ module Phlex
         raise ArgumentError, "#{component.name} isn't a Phlex::Component."
       end
 
-      if block_given? && !block.binding.receiver.is_a?(Block)
-        block = Block.new(self, &block)
+      if block_given? && !block.binding.receiver.is_a?(Phlex::Block)
+        block = Phlex::Block.new(self, &block)
       end
 
-      if args.one? && !block_given?
-        component.new(**kwargs) { text(args.first) }.call(@_target)
-      else
-        component.new(*args, **kwargs, &block).call(@_target)
-      end
+      component.new(*args, **kwargs, &block).call(@_target)
     end
 
     def _template_tag(*args, **kwargs, &)
@@ -47,16 +43,11 @@ module Phlex
       _attributes(kwargs) if kwargs.length > 0
       @_target << Tag::RIGHT
 
-
       if block_given?
-        if block.binding.receiver.is_a?(Block)
-          block.call(@_target)
-        else
-          Block.new(self, &block).call(@_target)
-        end
+        instance_exec(&block)
+      else
+        text content if content
       end
-
-      Block.new(self) { text content }.call(@_target) if content
 
       @_target << Tag::CLOSE_LEFT << name << Tag::RIGHT
     end

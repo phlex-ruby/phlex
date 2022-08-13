@@ -6,12 +6,7 @@ module Phlex
 
     module Overrides
       def initialize(*args, **kwargs, &block)
-        if block_given? && !block.binding.receiver.is_a?(Block)
-          block = Block.new(self, &block)
-        end
-
         @_content = block
-
         super(*args, **kwargs)
       end
     end
