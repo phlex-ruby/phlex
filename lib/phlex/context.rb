@@ -3,7 +3,11 @@
 module Phlex
   module Context
     def content(&)
-      yield if block_given?
+      original_bytesize = @_target.size
+      output = yield if block_given?
+      unchanged = (original_bytesize == @_target.size)
+
+      text(output) if unchanged && output.is_a?(String)
     end
 
     def text(content)
@@ -44,7 +48,7 @@ module Phlex
       @_target << Tag::RIGHT
 
       if block_given?
-        instance_exec(&block)
+        content(&block)
       else
         text content if content
       end
