@@ -12,3 +12,10 @@ gem "benchmark-memory"
 gem "rspec-html-matchers"
 gem 'combustion', '~> 1.3'
 gem "rails"
+gem "listen"
+gem "webrick"
+gem "benchmark-ips"
+gem "rouge", group: [:docs]
+gem "htmlbeautifier", group: [:docs]
+gem "redcarpet", group: [:docs]
+gem "zeitwerk", group: [:docs]
