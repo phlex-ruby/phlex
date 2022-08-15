@@ -80,12 +80,21 @@ module Phlex
         end
       end
 
-      attributes.transform_values! { CGI.escape_html(_1) }
+      attributes.transform_values! do |value|
+        next value if (value == true || value == false)
+        CGI.escape_html(value)
+      end
 
       attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
 
       attributes.each do |k, v|
-        buffer << Tag::SPACE << k.name << Tag::EQUALS_QUOTE << v << Tag::QUOTE
+        next unless v
+
+        if v == true
+          buffer << Tag::SPACE << k.name
+        else
+          buffer << Tag::SPACE << k.name << Tag::EQUALS_QUOTE << v << Tag::QUOTE
+        end
       end
 
       if first_render
