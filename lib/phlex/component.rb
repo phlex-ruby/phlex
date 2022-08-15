@@ -5,9 +5,10 @@ module Phlex
     include Context, Renderable
 
     module Overrides
-      def initialize(*args, _view_context: nil, **kwargs, &block)
-        @_content = block
+      def initialize(*args, _view_context: nil, _parent: nil, **kwargs, &block)
         @_view_context = _view_context
+        @_parent = _parent
+        @_content = block
         super(*args, **kwargs)
       end
     end
