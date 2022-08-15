@@ -34,7 +34,7 @@ module Phlex
       component.new(*args, _view_context: @_view_context, _parent: self, **kwargs).call(@_target, &block)
     end
 
-    def _template_tag(*args, **kwargs, &)
+    def template_tag(*args, **kwargs, &)
       _standard_element(*args, _name: "template", **kwargs, &)
     end
 
@@ -82,7 +82,7 @@ module Phlex
 
       attributes.transform_values! do |value|
         next value if (value == true || value == false)
-        CGI.escape_html(value)
+        CGI.escape_html(value.to_s)
       end
 
       attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
