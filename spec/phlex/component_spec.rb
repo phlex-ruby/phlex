@@ -1,8 +1,15 @@
 # frozen_string_literal: true
+ApplicationController = Class.new(ActionController::Base)
 
 class CardComponent < Phlex::Component
   def template(&)
     article class: "p-5 rounded drop-shadow", &
+  end
+end
+
+class ArticleComponent < Phlex::Component
+  def template
+    render @article
   end
 end
 
@@ -385,7 +392,11 @@ RSpec.describe Phlex::Component do
 
   describe "#render_in" do
     let(:component) { CardComponent }
-    let(:output) { example.render_in(Phlex::Rails::VIEW_CONTEXT) { "<span>Hi</span>" } }
+    let(:output) do
+      example.render_in ApplicationController.new.view_context do
+        "<span>Hi</span>"
+      end
+    end
 
     it "renders the component with raw contents captured form the block" do
       expect(output).to eq %{<article class="p-5 rounded drop-shadow"><span>Hi</span></article>}
@@ -404,6 +415,8 @@ RSpec.describe Phlex::Component do
         end
       end
 
+      let(:output) { example.render_in ApplicationController.new.view_context }
+
       it "produces the correct markup" do
         expect(output).to eq %{<article class="p-5 rounded drop-shadow">Welcome Alexandre!\n</article>}
       end
@@ -412,12 +425,13 @@ RSpec.describe Phlex::Component do
     describe "with a model" do
       let(:article) { Article.new(title: "Phlex documentation") }
       let(:example) { component.new(article:) }
+      let(:output) { example.render_in ApplicationController.new.view_context }
 
       let(:component) do
         Class.new Phlex::Component do
           def template
             component CardComponent do
-              render @article
+              component ArticleComponent, article: @article
             end
           end
         end
