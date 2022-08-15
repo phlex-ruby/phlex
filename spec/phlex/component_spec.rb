@@ -72,6 +72,20 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "with text content" do
+    let(:component) do
+      Class.new Phlex::Component do
+        def template
+          component(CardComponent) { "Hello World!" }
+        end
+      end
+    end
+
+    it "produces the correct markup" do
+      expect(output).to eq %{<article class="p-5 rounded drop-shadow">Hello World!</article>}
+    end
+  end
+
   describe "with raw content" do
     let :component do
       Class.new Phlex::Component do
