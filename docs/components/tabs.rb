@@ -5,7 +5,7 @@ module Components
     end
 
     def template(&)
-      div class: "tabs flex flex-wrap relative my-5" do
+      div class: "tabs flex flex-wrap relative my-5", role: "tablist" do
         yield(self)
       end
     end
@@ -13,6 +13,10 @@ module Components
     def tab(name, &)
       component Tab, name:, content: phlex_block(&), checked: first?
       @index += 1
+    end
+
+    def unique_identifier
+      @unique_identifier ||= SecureRandom.hex
     end
 
     private
