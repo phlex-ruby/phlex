@@ -182,7 +182,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          h1 "Hello", id: "foo", disabled: true, visible: false
+          h1 "Hello", id: "foo", disabled: true, visible: false, aria_hidden: "true"
         end
       end
     end
@@ -196,7 +196,7 @@ RSpec.describe Phlex::Component do
     end
 
     it "produces the correct markup" do
-      expect(output).to eq %{<h1 id="foo" disabled>Hello</h1>}
+      expect(output).to eq %{<h1 id="foo" disabled aria-hidden="true">Hello</h1>}
     end
   end
 
