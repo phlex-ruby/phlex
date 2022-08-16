@@ -5,6 +5,7 @@ require "zeitwerk"
 
 loader = Zeitwerk::Loader.for_gem
 loader.ignore("#{__dir__}/generators")
+loader.inflector.inflect "dsl" => "DSL"
 loader.setup
 
 module Phlex

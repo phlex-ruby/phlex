@@ -1,63 +1,39 @@
 module Components
   class Example < Phlex::Component
-    class DSL
-      def initialize
-        @tabs = {}
+    class DSL < DSL
+      def initialize(component, t)
+        super(component)
+        @t = t
+        @sandbox = Module.new
       end
 
       def tab(name, code)
-        @tabs[name] = code
+        @t.tab(name) do
+          component CodeBlock, code, syntax: :ruby
+        end
+
+        @sandbox.instance_eval(code)
       end
 
-      def execute(value)
-        @execute = value
-      end
-    end
+      def execute(code)
+        output = @sandbox.instance_eval(code)
 
-    def initialize
-      @dsl = DSL.new
+        @t.tab("HTML Output") do
+          component CodeBlock, HtmlBeautifier.beautify(output), syntax: :html
+        end
+      end
+
+      private
+
+      def beautify_html(code)
+        HtmlBeautifier.beautify(output)
+      end
     end
 
     def template(&)
-      yield(@dsl)
-
       component Tabs do |t|
-        tabs.each do |name, code|
-          t.tab name do
-            component CodeBlock, code, syntax: :ruby
-          end
-        end
-
-        pretty_output.tap do |pretty_output|
-          t.tab "HTML Output" do
-            component CodeBlock, pretty_output, syntax: :html
-          end
-        end
+        yield DSL.new(self, t)
       end
-    end
-
-    private
-
-    def pretty_output
-      HtmlBeautifier.beautify(output, new_lines: true)
-    end
-
-    def output
-      return @output if defined? @output
-
-      tabs.each_value do |code|
-        sandbox.instance_eval(code)
-      end
-
-      @output = sandbox.instance_eval(@dsl.instance_variable_get(:@execute))
-    end
-
-    def tabs
-      @dsl.instance_variable_get(:@tabs)
-    end
-
-    def sandbox
-      @sandbox ||= Module.new
     end
   end
 end
