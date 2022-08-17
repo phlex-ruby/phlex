@@ -4,17 +4,20 @@ module Phlex
   class Component
     include Context, Renderable
 
-    module Overrides
-      def initialize(*args, _view_context: nil, _parent: nil, **kwargs, &block)
-        @_view_context = _view_context
-        @_parent = _parent
-        @_content = block
-        super(*args, **kwargs)
-      end
-    end
-
     class << self
       attr_accessor :rendered_at_least_once
+
+      def new(*args, _view_context: nil, _parent: nil, **kwargs, &block)
+        component = super(*args, **kwargs)
+
+        component.instance_exec do
+          @_view_context = _view_context
+          @_parent = _parent
+          @_content = block
+        end
+
+        component
+      end
 
       def register_element(*tag_names)
         tag_names.each do |tag_name|
@@ -28,11 +31,6 @@ module Phlex
             end
           RUBY
         end
-      end
-
-      def inherited(child)
-        child.prepend(Overrides)
-        super
       end
     end
 
