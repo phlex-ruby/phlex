@@ -124,7 +124,7 @@ module Pages
         component Markdown, <<~MD
           ## Whitespace
 
-          The examples here have been formatted for readability but by default, there is no whitespace between HTML tags. If you need to add some whitespace, you can use the `whitespace` method explicitly. This can be helpful for adding space between inline elemetns.
+          The examples here have been formatted for readability but by default, there is no whitespace between HTML tags. If you need to add some whitespace, you can use the `whitespace` method explicitly. This is useful for adding space between inline elements.
         MD
 
         component Example do |e|
