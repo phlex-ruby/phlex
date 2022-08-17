@@ -120,6 +120,28 @@ module Pages
 
           e.execute "ExampleComponent.new.call"
         end
+
+        component Markdown, <<~MD
+          ## Whitespace
+
+          The examples here have been formatted for readability but by default, there is no whitespace between HTML tags. If you need to add some whitespace, you can use the `whitespace` method explicitly. This can be helpful for adding space between inline elemetns.
+        MD
+
+        component Example do |e|
+          e.tab "example_component.rb", <<~RUBY
+            class LinksComponent < Phlex::Component
+              def template
+                a "Home", href: "/"
+                whitespace
+                a "About", href: "/about"
+                whitespace
+                a "Contact", href: "/contact"
+              end
+            end
+          RUBY
+
+          e.execute "LinksComponent.new.call"
+        end
       end
     end
   end
