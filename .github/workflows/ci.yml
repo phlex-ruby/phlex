@@ -15,3 +15,6 @@ jobs:
 
       - name: Run specs
         run: bundle exec rspec
+
+      - name: Build docs
+        run: bundle exec docs/build.rb
