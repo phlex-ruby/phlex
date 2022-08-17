@@ -71,29 +71,22 @@ module Phlex
 
       buffer = first_render ? buffer = +"" : buffer = @_target
 
-      attributes.each_key do |key|
-        if key.match? /[<>&"']/
+      attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "") if attributes[:href]
+
+      attributes.each do |k, v|
+        next unless v
+
+        if k.match? /[<>&"']/
           raise ArgumentError, <<~MESSAGE
             Unsafe attribute name detected.
             Attributes names shouldn't contain `<`, `>`, `&`, `"` or `'`.
           MESSAGE
         end
-      end
-
-      attributes.transform_values! do |value|
-        next value if (value == true || value == false)
-        CGI.escape_html(value.to_s)
-      end
-
-      attributes[:href].sub!(/^\s*(javascript:)+/, "") if attributes[:href]
-
-      attributes.each do |k, v|
-        next unless v
 
         if v == true
-          buffer << Tag::SPACE << k.name
+          buffer << Tag::SPACE << k.name.gsub(Tag::UNDERSCORE, Tag::DASH)
         else
-          buffer << Tag::SPACE << k.name << Tag::EQUALS_QUOTE << v << Tag::QUOTE
+          buffer << Tag::SPACE << k.name.gsub(Tag::UNDERSCORE, Tag::DASH) << Tag::EQUALS_QUOTE << CGI.escape_html(v.to_s) << Tag::QUOTE
         end
       end
 
