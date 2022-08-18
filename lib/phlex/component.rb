@@ -14,6 +14,7 @@ module Phlex
           @_view_context = _view_context
           @_parent = _parent
           @_content = block
+          @_rendered = false
         end
 
         component

@@ -148,7 +148,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          article **attributes
+          article(**attributes)
         end
 
         def attributes

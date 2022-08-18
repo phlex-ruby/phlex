@@ -76,7 +76,7 @@ module Phlex
       attributes.each do |k, v|
         next unless v
 
-        if k.match? /[<>&"']/
+        if k.match?(/[<>&"']/)
           raise ArgumentError, <<~MESSAGE
             Unsafe attribute name detected.
             Attributes names shouldn't contain `<`, `>`, `&`, `"` or `'`.
