@@ -1,15 +1,15 @@
 module Pages
   class Index < ApplicationPage
-    include Components
-
     def template
       component Layout, title: "Introduction" do
         component Markdown, <<~MD
-          # Getting started
+          # Templates
 
-          You can create a component class by subclassing `Phlex::Component` and defining a method called `template`. Within the template method, you can build up HTML markup by calling the name of any HTML tag.
+          Rather than use another langauge like ERB, HAML or Slim, Phlex provides a Ruby DSL for defining HTML templates.
 
-          The first argument is the content. For example, here’s a component with an `<h1>` tag that says “Hello World!”
+          You can create a component class by subclassing `Phlex::Component` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+
+          The first argument to an HTML element method is the _text content_ for that element. For example, here’s a component with an `<h1>` element that says “Hello World!”
         MD
 
         component Example do |e|
@@ -25,16 +25,20 @@ module Pages
         end
 
         component Markdown, <<~MD
+          The text content is always HTML-escaped, so it’s safe to use with user input.
+
           ## Attributes
 
-          Add attributes to HTML tags by passing keyword arguments to the tag method.
+          You can add attributes to HTML elements by passing keyword arguments to the tag method. Underscores (`_`) in attribute names are automatically converted to dashes (`-`).
         MD
 
         component Example do |e|
           e.tab "heading_component.rb", <<~RUBY
             class HeadingComponent < Phlex::Component
               def template
-                h1 "Hello World!", id: "main-heading", class: "text-xl font-bold"
+                h1 "Hello World!",
+                  class: "text-xl font-bold",
+                  aria_details: "details"
               end
             end
           RUBY
@@ -43,7 +47,7 @@ module Pages
         end
 
         component Markdown, <<~MD
-          You can also use *boolean* attributes (`true` or `false`).
+          You can also use *boolean* attributes. When set to `true`, the attribute will be rendered without a value, when _falsy_, the attribute isn’t rendered at all.
         MD
 
         component Example do |e|
@@ -62,7 +66,7 @@ module Pages
         component Markdown, <<~MD
           ## Nesting
 
-          Pass a block to a tag to nest other elements inside it.
+          Pass a block to an element method to nest other elements inside it.
         MD
 
         component Example do |e|
@@ -84,9 +88,9 @@ module Pages
         end
 
         component Markdown, <<~MD
-          ## Text
+          ## Stand-alone text
 
-          You can also output text without wrapping it in a tag using the `text` method. All text content is HTML-escaped by default so it’s safe to use user input.
+          You can also output text without wrapping it in an element by using the `text` method. All text content is HTML-escaped, so it’s safe to use with user input.
         MD
 
         component Example do |e|
@@ -102,29 +106,9 @@ module Pages
         end
 
         component Markdown, <<~MD
-          ## The template tag
-
-          Because the `template` method is used to define the component template, you need to use `template_tag` to render an HTML `<template>` tag.
-        MD
-
-        component Example do |e|
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
-              def template
-                template_tag do
-                  img src: "hidden.jpg", alt: "A hidden image."
-                end
-              end
-            end
-          RUBY
-
-          e.execute "ExampleComponent.new.call"
-        end
-
-        component Markdown, <<~MD
           ## Whitespace
 
-          The examples here have been formatted for readability but by default, there is no whitespace between HTML tags. If you need to add some whitespace, you can use the `whitespace` method explicitly. This is useful for adding space between inline elements.
+          While the examples on this page have been formatted for readability, there is usually no whitespace between HTML tags. If you need to add some whitespace, you can use the `whitespace` method. This is useful for adding space between _inline_ elements to allow them to wrap.
         MD
 
         component Example do |e|
@@ -141,6 +125,26 @@ module Pages
           RUBY
 
           e.execute "LinksComponent.new.call"
+        end
+
+        component Markdown, <<~MD
+          ## The template element
+
+          Because the `template` method is used to define the component template itself, you need to use the method `template_tag` if you want to to render an HTML `<template>` tag.
+        MD
+
+        component Example do |e|
+          e.tab "example_component.rb", <<~RUBY
+            class ExampleComponent < Phlex::Component
+              def template
+                template_tag do
+                  img src: "hidden.jpg", alt: "A hidden image."
+                end
+              end
+            end
+          RUBY
+
+          e.execute "ExampleComponent.new.call"
         end
       end
     end
