@@ -4,6 +4,25 @@ jobs:
   specs:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        ruby-version: ['3.0', '3.1']
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+
+      - name: Run specs
+        run: bundle exec rspec
+
+  docs:
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -12,9 +31,6 @@ jobs:
         with:
           ruby-version: "3.1"
           bundler-cache: true
-
-      - name: Run specs
-        run: bundle exec rspec
 
       - name: Build docs
         run: bundle exec docs/build.rb
