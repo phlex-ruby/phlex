@@ -2,8 +2,8 @@
 ApplicationController = Class.new(ActionController::Base)
 
 class CardComponent < Phlex::Component
-  def template(&)
-    article class: "p-5 rounded drop-shadow", &
+  def template(&block)
+    article class: "p-5 rounded drop-shadow", &block
   end
 end
 
@@ -438,7 +438,7 @@ RSpec.describe Phlex::Component do
 
     describe "with a model" do
       let(:article) { Article.new(title: "Phlex documentation") }
-      let(:example) { component.new(article:) }
+      let(:example) { component.new(article: article) }
       let(:output) { example.render_in ApplicationController.new.view_context }
 
       let(:component) do

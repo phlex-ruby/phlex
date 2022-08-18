@@ -4,7 +4,7 @@ module Example
       super
     end
 
-    def template(&)
+    def template(&block)
       html do
         head do
           title @title
@@ -21,7 +21,7 @@ module Example
             end
           end
 
-          div class: "container mx-auto p-5", &
+          div class: "container mx-auto p-5", &block
         end
       end
     end

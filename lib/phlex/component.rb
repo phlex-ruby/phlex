@@ -26,8 +26,8 @@ module Phlex
           end
 
           class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-            def #{tag_name}(*args, **kwargs, &)
-              _standard_element(*args, _name: "#{tag_name.to_s.gsub('_', '-')}", **kwargs, &)
+            def #{tag_name}(*args, **kwargs, &block)
+              _standard_element(*args, _name: "#{tag_name.to_s.gsub('_', '-')}", **kwargs, &block)
             end
           RUBY
         end
@@ -38,12 +38,12 @@ module Phlex
       attributes.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
-    def call(buffer = +"", &)
+    def call(buffer = +"", &block)
       raise "The same component instance shouldn't be rendered twice" if @_rendered
       @_rendered = true
       @_target = buffer
 
-      block_given? ? template(&) : template(&@_content)
+      block_given? ? template(&block) : template(&@_content)
 
       self.class.rendered_at_least_once ||= true
       buffer
