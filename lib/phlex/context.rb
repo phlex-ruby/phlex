@@ -2,7 +2,7 @@
 
 module Phlex
   module Context
-    def content(&)
+    def content(&block)
       original_bytesize = @_target.size
       output = yield if block_given?
       unchanged = (original_bytesize == @_target.size)
@@ -34,8 +34,8 @@ module Phlex
       component.new(*args, _view_context: @_view_context, _parent: self, **kwargs).call(@_target, &block)
     end
 
-    def template_tag(*args, **kwargs, &)
-      _standard_element(*args, _name: "template", **kwargs, &)
+    def template_tag(*args, **kwargs, &block)
+      _standard_element(*args, _name: "template", **kwargs, &block)
     end
 
     def _standard_element(content = nil, _name: nil, **kwargs, &block)

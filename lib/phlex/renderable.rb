@@ -9,7 +9,7 @@ module Phlex
       @_target << @_view_context.render(renderable, ...)
     end
 
-    def render_in(context, &)
+    def render_in(context, &block)
       @_view_context = context
 
       if block_given?
