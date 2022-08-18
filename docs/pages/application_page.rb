@@ -1,5 +1,5 @@
 module Pages
   class ApplicationPage < Phlex::Component
-    include Components
+    include ::Components
   end
 end
