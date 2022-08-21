@@ -1,26 +1,28 @@
 # frozen_string_literal: true
 module Phlex
   module Renderable
-    def render(renderable, ...)
+    def render(renderable, *args, **kwargs, &block)
       if renderable.is_a?(Component)
-        raise ArgumentError, "Please use #component instead of #render."
-      end
+        if block_given? && !block.binding.receiver.is_a?(Phlex::Block)
+          block = Phlex::Block.new(self, &block)
+        end
 
-      @_target << @_view_context.render(renderable, ...)
+        renderable.call(@_target, view_context: @_view_context, parent: self, &block)
+      else
+        @_target << @_view_context.render(renderable, *args, **kwargs, &block)
+      end
     end
 
-    def render_in(context, &block)
-      @_view_context = context
-
+    def render_in(view_context, &block)
       if block_given?
         content = nil
-        @_view_context.with_output_buffer { content = yield }
+        view_context.with_output_buffer { content = yield }
       end
 
       if content
-        call { @_target << content }.html_safe
+        call(view_context: view_context) { @_target << content }.html_safe
       else
-        call.html_safe
+        call(view_context: view_context).html_safe
       end
     end
 

@@ -22,18 +22,6 @@ module Phlex
       @_target << content
     end
 
-    def component(component, *args, **kwargs, &block)
-      unless component < Component
-        raise ArgumentError, "#{component.name} isn't a Phlex::Component."
-      end
-
-      if block_given? && !block.binding.receiver.is_a?(Phlex::Block)
-        block = Phlex::Block.new(self, &block)
-      end
-
-      component.new(*args, _view_context: @_view_context, _parent: self, **kwargs).call(@_target, &block)
-    end
-
     def template_tag(*args, **kwargs, &block)
       _standard_element(*args, _name: "template", **kwargs, &block)
     end
