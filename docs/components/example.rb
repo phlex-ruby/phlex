@@ -5,7 +5,7 @@ module Components
     end
 
     def template(&)
-      component Tabs do |t|
+      render Tabs.new do |t|
         @t = t
         yield self
       end
@@ -13,7 +13,7 @@ module Components
 
     def tab(name, code)
       @t.tab(name) do
-        component CodeBlock, code, syntax: :ruby
+        render CodeBlock.new(code, syntax: :ruby)
       end
 
       @sandbox.instance_eval(code)
@@ -23,7 +23,7 @@ module Components
       output = @sandbox.instance_eval(code)
 
       @t.tab("HTML Output") do
-        component CodeBlock, HtmlBeautifier.beautify(output), syntax: :html
+        render CodeBlock.new(HtmlBeautifier.beautify(output), syntax: :html)
       end
     end
   end

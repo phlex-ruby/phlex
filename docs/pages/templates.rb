@@ -1,8 +1,8 @@
 module Pages
   class Templates < ApplicationPage
     def template
-      component Layout, title: "Templates in Phlex" do
-        component Markdown, <<~MD
+      render Layout.new(title: "Templates in Phlex") do
+        render Markdown.new(<<~MD)
           # Templates
 
           Rather than use another langauge like ERB, HAML or Slim, Phlex provides a Ruby DSL for defining HTML templates.
@@ -12,7 +12,7 @@ module Pages
           The first argument to an HTML element method is the _text content_ for that element. For example, here’s a component with an `<h1>` element that says “Hello World!”
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "heading_component.rb", <<~RUBY
             class HeadingComponent < Phlex::Component
               def template
@@ -24,7 +24,7 @@ module Pages
           e.execute "HeadingComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           The text content is always HTML-escaped, so it’s safe to use with user input.
 
           ## Attributes
@@ -32,7 +32,7 @@ module Pages
           You can add attributes to HTML elements by passing keyword arguments to the tag method. Underscores (`_`) in attribute names are automatically converted to dashes (`-`).
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "heading_component.rb", <<~RUBY
             class HeadingComponent < Phlex::Component
               def template
@@ -46,11 +46,11 @@ module Pages
           e.execute "HeadingComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           You can also use *boolean* attributes. When set to `true`, the attribute will be rendered without a value, when _falsy_, the attribute isn’t rendered at all.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template
@@ -63,13 +63,13 @@ module Pages
           e.execute "ExampleComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           ## Nesting
 
           Pass a block to an element method to nest other elements inside it.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "nav_component.rb", <<~RUBY
             class NavComponent < Phlex::Component
               def template
@@ -87,13 +87,13 @@ module Pages
           e.execute "NavComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           ## Stand-alone text
 
           You can also output text without wrapping it in an element by using the `text` method. All text content is HTML-escaped, so it’s safe to use with user input.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "heading_component.rb", <<~RUBY
             class HeadingComponent < Phlex::Component
               def template
@@ -105,13 +105,13 @@ module Pages
           e.execute "HeadingComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           ## Whitespace
 
           While the examples on this page have been formatted for readability, there is usually no whitespace between HTML tags. If you need to add some whitespace, you can use the `whitespace` method. This is useful for adding space between _inline_ elements to allow them to wrap.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "example_component.rb", <<~RUBY
             class LinksComponent < Phlex::Component
               def template
@@ -127,13 +127,13 @@ module Pages
           e.execute "LinksComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           ## The template element
 
           Because the `template` method is used to define the component template itself, you need to use the method `template_tag` if you want to to render an HTML `<template>` tag.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template

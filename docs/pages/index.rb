@@ -1,8 +1,8 @@
 module Pages
   class Index < ApplicationPage
     def template
-      component Layout, title: "Introduction to Phlex" do
-        component Markdown, <<~MD
+      render Layout.new(title: "Introduction to Phlex") do
+        render Markdown.new(<<~MD)
           # Introduction
 
           Phlex is a framework for building fast, reusable, testable view components in pure Ruby.

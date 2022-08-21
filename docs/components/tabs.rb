@@ -11,7 +11,7 @@ module Components
     end
 
     def tab(name, &)
-      component Tab, name:, checked: first?, &phlex_block(&)
+      render Tab.new(name:, checked: first?, &phlex_block(&))
       @index += 1
     end
 
