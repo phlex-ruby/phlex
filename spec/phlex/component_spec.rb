@@ -76,7 +76,7 @@ RSpec.describe Phlex::Component do
     let(:component) do
       Class.new Phlex::Component do
         def template
-          component(CardComponent) { "Hello World!" }
+          render(CardComponent.new) { "Hello World!" }
         end
       end
     end
@@ -339,7 +339,7 @@ RSpec.describe Phlex::Component do
 
           def template
             main {
-              component(CardComponent) {
+              render(CardComponent.new) {
                 h1 @status
                 h2 status_emoji
               }
@@ -367,20 +367,6 @@ RSpec.describe Phlex::Component do
 
       it "produces the correct markup" do
         expect(output).to eq %{<main><article class="p-5 rounded drop-shadow"><h1>done</h1><h2>✅</h2></article></main>}
-      end
-    end
-
-    describe "that isn't a component" do
-      let :component do
-        Class.new Phlex::Component do
-          def template
-            component Set
-          end
-        end
-      end
-
-      it "raises an ArgumentError" do
-        expect { output }.to raise_error(ArgumentError, "Set isn't a Phlex::Component.")
       end
     end
 
@@ -441,7 +427,7 @@ RSpec.describe Phlex::Component do
       let(:component) do
         Class.new Phlex::Component do
           def template
-            component CardComponent do
+            render CardComponent.new do
               render "shared/content", name: "Alexandre"
             end
           end
@@ -463,8 +449,8 @@ RSpec.describe Phlex::Component do
       let(:component) do
         Class.new Phlex::Component do
           def template
-            component CardComponent do
-              component ArticleComponent, article: @article
+            render CardComponent.new do
+              render ArticleComponent.new(article: @article)
             end
           end
         end

@@ -1,7 +1,7 @@
 module Example
   class Page < Phlex::Component
     def template
-      component LayoutComponent do
+      render LayoutComponent.new do
         h1 "Hi"
 
         5.times do

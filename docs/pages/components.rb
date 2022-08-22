@@ -1,8 +1,8 @@
 module Pages
   class Components < ApplicationPage
     def template
-      component Layout, title: "Components in Phlex" do
-        component Markdown, <<~MD
+      render Layout.new(title: "Components in Phlex") do
+        render Markdown.new(<<~MD)
           # Components
 
           ## Yielding content
@@ -10,7 +10,7 @@ module Pages
           Your components can accept content as a block passed to the template method. You can capture the content block and pass it to the `content` method to yield it.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "card_component.rb", <<~RUBY
             class CardComponent < Phlex::Component
               def template(&)
@@ -25,13 +25,13 @@ module Pages
           e.execute "CardComponent.new.call { 'Your content here.\n' }"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           ## Delegating content
 
           Alternatively, you can pass the content down as an argument to another component or tag.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "card_component.rb", <<~RUBY
             class CardComponent < Phlex::Component
               def template(&)
@@ -43,17 +43,17 @@ module Pages
           e.execute "CardComponent.new.call { 'Your content here.' }"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           ## Nested components
 
           Components can render other components and optionally pass them content as a block.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template
-                component CardComponent do
+                render CardComponent.new do
                   h1 "Hello"
                 end
               end
@@ -71,15 +71,15 @@ module Pages
           e.execute "ExampleComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           If the block just wraps a string, the string is treated as _text content_.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template
-                component(CardComponent) { "Hi" }
+                render(CardComponent.new) { "Hi" }
               end
             end
           RUBY
@@ -95,13 +95,13 @@ module Pages
           e.execute "ExampleComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           ## Component attributes
 
           Besides content, components can define attributes in an initializer, which can then be rendered in the template.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "hello_component.rb", <<~RUBY
             class HelloComponent < Phlex::Component
               def initialize(name:)
@@ -117,7 +117,7 @@ module Pages
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template
-                component HelloComponent, name: "Joel"
+                render HelloComponent.new(name: "Joel")
               end
             end
           RUBY
@@ -125,11 +125,11 @@ module Pages
           e.execute "ExampleComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           The default initializer in `Phlex::Component` sets each given keyword argument to an instance variable, so the above could be re-written to call `super` instead.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "hello_component.rb", <<~RUBY
             class HelloComponent < Phlex::Component
               def initialize(name:)
@@ -145,7 +145,7 @@ module Pages
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template
-                component HelloComponent, name: "Joel"
+                render HelloComponent.new(name: "Joel")
               end
             end
           RUBY
@@ -153,7 +153,7 @@ module Pages
           e.execute "ExampleComponent.new.call"
         end
 
-        component Markdown, <<~MD
+        render Markdown.new(<<~MD)
           It’s usually a good idea to use instance variables directly rather than creating accessor methods for them. Otherwise it’s easy to run into naming conflicts. For example, your layout component might have the attribute `title`, to render into a `<title>` element in the document head. If you define `attr_accessor :title`, that would overwrite the `title` method for creating `<title>` elements.
 
           ## Calculations with methods
@@ -161,7 +161,7 @@ module Pages
           Components are just Ruby classes, so you can perform calculations on component attributes by defining your own methods.
         MD
 
-        component Example do |e|
+        render Example.new do |e|
           e.tab "status_component.rb", <<~RUBY
             class StatusComponent < Phlex::Component
               def initialize(status:)
@@ -188,7 +188,7 @@ module Pages
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template
-                component StatusComponent, status: :success
+                render StatusComponent.new(status: :success)
               end
             end
           RUBY

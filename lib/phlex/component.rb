@@ -7,12 +7,10 @@ module Phlex
     class << self
       attr_accessor :rendered_at_least_once
 
-      def new(*args, _view_context: nil, _parent: nil, **kwargs, &block)
+      def new(*args, **kwargs, &block)
         component = super(*args, **kwargs)
 
         component.instance_exec do
-          @_view_context = _view_context
-          @_parent = _parent
           @_content = block
           @_rendered = false
         end
@@ -39,10 +37,12 @@ module Phlex
       attributes.each { |k, v| instance_variable_set("@#{k}", v) }
     end
 
-    def call(buffer = +"", &block)
+    def call(buffer = +"", view_context: nil, parent: nil, &block)
       raise "The same component instance shouldn't be rendered twice" if @_rendered
       @_rendered = true
       @_target = buffer
+      @_view_context = view_context
+      @_parent = parent
 
       block_given? ? template(&block) : template(&@_content)
 
