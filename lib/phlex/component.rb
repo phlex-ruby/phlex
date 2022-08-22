@@ -13,6 +13,7 @@ module Phlex
         component.instance_exec do
           @_content = block
           @_rendered = false
+          @_allow_unsafe_attributes = false
         end
 
         component
