@@ -178,7 +178,21 @@ RSpec.describe Phlex::Component do
       end
     end
 
-    it "escapes the content" do
+    it "raises an ArgumentError" do
+      expect { output }.to raise_error ArgumentError
+    end
+  end
+
+  describe "with event attributes" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          article(onkeyup: "alert(1);")
+        end
+      end
+    end
+
+    it "raises an ArgumentError" do
       expect { output }.to raise_error ArgumentError
     end
   end

@@ -72,11 +72,8 @@ module Phlex
       attributes.each do |k, v|
         next unless v
 
-        if k.match?(/[<>&"']/)
-          raise ArgumentError, <<~MESSAGE
-            Unsafe attribute name detected.
-            Attributes names shouldn't contain `<`, `>`, `&`, `"` or `'`.
-          MESSAGE
+        if Tag::EVENT_ATTRIBUTES[k] || k.match?(/[<>&"']/)
+          raise ArgumentError, "Unsafe attribute name detected: #{k}."
         end
 
         if v == true
