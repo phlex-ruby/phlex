@@ -3,19 +3,9 @@
 require "cgi"
 require "zeitwerk"
 
-loader = Zeitwerk::Loader.for_gem
+loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.ignore("#{__dir__}/generators")
 loader.setup
-
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-  unless Symbol.instance_methods.include?(:name)
-    class Symbol
-      def name
-        to_s.freeze
-      end
-    end
-  end
-end
 
 module Phlex
   Error = Module.new

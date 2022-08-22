@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
+  using Overrides::Symbol::Name
+end
+
 module Phlex
   module Context
     def content(&block)
