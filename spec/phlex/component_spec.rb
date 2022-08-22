@@ -116,6 +116,25 @@ RSpec.describe Phlex::Component do
     end
   end
 
+  describe "with doctype" do
+    let :component do
+      Class.new Phlex::Component do
+        def template
+          doctype
+          html do
+            head do
+              title "Hello"
+            end
+          end
+        end
+      end
+    end
+
+    it "produces the correct output" do
+      expect(output).to eq "<!DOCTYPE html><html><head><title>Hello</title></head></html>"
+    end
+  end
+
   describe "with dangerous tag attributes" do
     let :component do
       Class.new Phlex::Component do

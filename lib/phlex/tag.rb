@@ -15,6 +15,8 @@ module Phlex
     EQUALS_QUOTE = '="'
     QUOTE = '"'
 
+    DOCTYPE = "<!DOCTYPE html>"
+
     STANDARD_ELEMENTS = %w[
       a
       abbr

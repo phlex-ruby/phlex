@@ -7,6 +7,8 @@ module Components
     end
 
     def template(&)
+      doctype
+
       html do
         head do
           meta charset: "utf-8"

@@ -18,6 +18,10 @@ module Phlex
       @_target << " "
     end
 
+    def doctype
+      @_target << Tag::DOCTYPE
+    end
+
     def _raw(content)
       @_target << content
     end
