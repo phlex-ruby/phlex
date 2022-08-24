@@ -67,10 +67,12 @@ module Phlex
       label
       legend
       li
+      link
       main
       map
       mark
       menuitem
+      meta
       meter
       nav
       noscript
@@ -96,6 +98,7 @@ module Phlex
       small
       span
       strong
+      style
       sub
       summary
       sup
