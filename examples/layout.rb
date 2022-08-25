@@ -5,23 +5,23 @@ module Example
     end
 
     def template(&block)
-      html do
-        head do
-          title @title
-          meta name: "viewport", content: "width=device-width,initial-scale=1"
-          link href: "/assets/tailwind.css", rel: "stylesheet"
+      HTML do
+        HEAD do
+          TITLE @title
+          META name: "viewport", content: "width=device-width,initial-scale=1"
+          LINK href: "/assets/tailwind.css", rel: "stylesheet"
         end
 
-        body class: "bg-zinc-100" do
-          nav class: "p-5", id: "main_nav" do
-            ul do
-              li(class: "p-5") { a "Home", href: "/" }
-              li(class: "p-5") { a "About", href: "/about" }
-              li(class: "p-5") { a "Contact", href: "/contact" }
+        BODY class: "bg-zinc-100" do
+          NAV class: "p-5", id: "main_nav" do
+            UL do
+              LI(class: "p-5") { A "Home", href: "/" }
+              LI(class: "p-5") { A "About", href: "/about" }
+              LI(class: "p-5") { A "Contact", href: "/contact" }
             end
           end
 
-          div class: "container mx-auto p-5", &block
+          DIV class: "container mx-auto p-5", &block
         end
       end
     end

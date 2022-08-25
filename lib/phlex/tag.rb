@@ -2,6 +2,7 @@
 
 module Phlex
   module Tag
+    TAGS = {}
     DASH = "-"
     SPACE = " "
     UNDERSCORE = "_"

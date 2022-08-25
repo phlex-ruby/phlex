@@ -9,32 +9,32 @@ module Components
     def template(&)
       doctype
 
-      html do
-        head do
-          meta charset: "utf-8"
-          title @title
-          link href: "/application.css", rel: "stylesheet"
-          style { _raw Rouge::Theme.find("github").render(scope: '.highlight') }
+      HTML do
+        HEAD do
+          META charset: "utf-8"
+          TITLE @title
+          LINK href: "/application.css", rel: "stylesheet"
+          STYLE { _raw Rouge::Theme.find("github").render(scope: '.highlight') }
         end
 
-        body class: "p-12" do
-          div class: "max-w-screen-lg mx-auto grid grid-cols-4 gap-10" do
-            header class: "col-span-1" do
-              a(href: "/", class: "block") { img src: "/assets/logo.png", width: "150" }
+        BODY class: "p-12" do
+          DIV class: "max-w-screen-lg mx-auto grid grid-cols-4 gap-10" do
+            HEADER class: "col-span-1" do
+              A(href: "/", class: "block") { IMG src: "/assets/logo.png", width: "150" }
 
-              nav do
-                ul do
-                  li { a "Introduction", href: "/" }
-                  li { a "Templates", href: "/templates" }
-                  li { a "Components", href: "/components" }
-                  li { a "Source code", href: "https://github.com/joeldrapper/phlex" }
+              NAV do
+                UL do
+                  LI { A "Introduction", href: "/" }
+                  LI { A "Templates", href: "/templates" }
+                  LI { A "Components", href: "/components" }
+                  LI { A "Source code", href: "https://github.com/joeldrapper/phlex" }
                 end
               end
             end
 
-            main(class: "col-span-3", &)
+            MAIN(class: "col-span-3", &)
 
-            footer class: "text-sm text-right col-span-4 py-10"
+            FOOTER class: "text-sm text-right col-span-4 py-10"
           end
         end
       end

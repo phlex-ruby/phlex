@@ -24,11 +24,7 @@ module Phlex
             raise ArgumentError, "Custom elements must be provided as Symbols"
           end
 
-          class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-            def #{tag_name}(*args, **kwargs, &block)
-              _standard_element(*args, _name: "#{tag_name.to_s.gsub('_', '-')}", **kwargs, &block)
-            end
-          RUBY
+          alias_method tag_name.upcase, :_standard_element
         end
       end
     end

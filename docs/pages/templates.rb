@@ -7,7 +7,7 @@ module Pages
 
           Rather than use another langauge like ERB, HAML or Slim, Phlex provides a Ruby DSL for defining HTML templates.
 
-          You can create a component class by subclassing `Phlex::Component` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+          You can create a component class by subclassing `Phlex::Component` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the all-caps name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
           The first argument to an HTML element method is the _text content_ for that element. For example, here’s a component with an `<h1>` element that says “Hello World!”
         MD
@@ -16,7 +16,7 @@ module Pages
           e.tab "heading_component.rb", <<~RUBY
             class HeadingComponent < Phlex::Component
               def template
-                h1 "Hello World!"
+                H1 "Hello World!"
               end
             end
           RUBY
@@ -36,7 +36,7 @@ module Pages
           e.tab "heading_component.rb", <<~RUBY
             class HeadingComponent < Phlex::Component
               def template
-                h1 "Hello World!",
+                H1 "Hello World!",
                   class: "text-xl font-bold",
                   aria_details: "details"
               end
@@ -54,8 +54,8 @@ module Pages
           e.tab "example_component.rb", <<~RUBY
             class ExampleComponent < Phlex::Component
               def template
-                input type: "radio", name: "channel", id: "1", checked: true
-                input type: "radio", name: "channel", id: "2", checked: false
+                INPUT type: "radio", name: "channel", id: "1", checked: true
+                INPUT type: "radio", name: "channel", id: "2", checked: false
               end
             end
           RUBY
@@ -73,11 +73,11 @@ module Pages
           e.tab "nav_component.rb", <<~RUBY
             class NavComponent < Phlex::Component
               def template
-                nav do
-                  ul do
-                    li { a "Home", href: "/" }
-                    li { a "About", href: "/about" }
-                    li { a "Contact", href: "/contact" }
+                NAV do
+                  UL do
+                    LI { A "Home", href: "/" }
+                    LI { A "About", href: "/about" }
+                    LI { A "Contact", href: "/contact" }
                   end
                 end
               end
@@ -97,7 +97,7 @@ module Pages
           e.tab "heading_component.rb", <<~RUBY
             class HeadingComponent < Phlex::Component
               def template
-                h1 { strong "Hello "; text "World!" }
+                H1 { STRONG "Hello "; text "World!" }
               end
             end
           RUBY
@@ -115,36 +115,16 @@ module Pages
           e.tab "example_component.rb", <<~RUBY
             class LinksComponent < Phlex::Component
               def template
-                a "Home", href: "/"
+                A "Home", href: "/"
                 whitespace
-                a "About", href: "/about"
+                A "About", href: "/about"
                 whitespace
-                a "Contact", href: "/contact"
+                A "Contact", href: "/contact"
               end
             end
           RUBY
 
           e.execute "LinksComponent.new.call"
-        end
-
-        render Markdown.new(<<~MD)
-          ## The template element
-
-          Because the `template` method is used to define the component template itself, you need to use the method `template_tag` if you want to to render an HTML `<template>` tag.
-        MD
-
-        render Example.new do |e|
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
-              def template
-                template_tag do
-                  img src: "hidden.jpg", alt: "A hidden image."
-                end
-              end
-            end
-          RUBY
-
-          e.execute "ExampleComponent.new.call"
         end
       end
     end

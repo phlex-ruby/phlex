@@ -14,8 +14,8 @@ module Pages
           e.tab "card_component.rb", <<~RUBY
             class CardComponent < Phlex::Component
               def template(&)
-                article(class: "drop-shadow rounded p-5") {
-                  h1 "Amazing content!"
+                ARTICLE(class: "drop-shadow rounded p-5") {
+                  H1 "Amazing content!"
                   content(&)
                 }
               end
@@ -35,7 +35,7 @@ module Pages
           e.tab "card_component.rb", <<~RUBY
             class CardComponent < Phlex::Component
               def template(&)
-                article(class: "drop-shadow rounded p-5", &)
+                ARTICLE(class: "drop-shadow rounded p-5", &)
               end
             end
           RUBY
@@ -54,7 +54,7 @@ module Pages
             class ExampleComponent < Phlex::Component
               def template
                 render CardComponent.new do
-                  h1 "Hello"
+                  H1 "Hello"
                 end
               end
             end
@@ -63,7 +63,7 @@ module Pages
           e.tab "card_component.rb", <<~RUBY
             class CardComponent < Phlex::Component
               def template(&)
-                article(class: "drop-shadow rounded p-5", &)
+                ARTICLE(class: "drop-shadow rounded p-5", &)
               end
             end
           RUBY
@@ -87,7 +87,7 @@ module Pages
           e.tab "card_component.rb", <<~RUBY
             class CardComponent < Phlex::Component
               def template(&)
-                article(class: "drop-shadow rounded p-5", &)
+                ARTICLE(class: "drop-shadow rounded p-5", &)
               end
             end
           RUBY
@@ -109,7 +109,7 @@ module Pages
               end
 
               def template
-                h1 "Hello \#{@name}!"
+                H1 "Hello \#{@name}!"
               end
             end
           RUBY
@@ -137,7 +137,7 @@ module Pages
               end
 
               def template
-                h1 "Hello \#{@name}!"
+                H1 "Hello \#{@name}!"
               end
             end
           RUBY
@@ -169,7 +169,7 @@ module Pages
               end
 
               def template
-                span status_emoji
+                SPAN status_emoji
               end
 
               private

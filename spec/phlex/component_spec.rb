@@ -3,7 +3,7 @@ ApplicationController = Class.new(ActionController::Base)
 
 class CardComponent < Phlex::Component
   def template(&block)
-    article class: "p-5 rounded drop-shadow", &block
+    ARTICLE class: "p-5 rounded drop-shadow", &block
   end
 end
 
@@ -25,7 +25,7 @@ RSpec.describe Phlex::Component do
   let(:component) do
     Class.new Phlex::Component do
       def template
-        h1 "Hi"
+        H1 "Hi"
       end
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          div class: SecureRandom.hex
+          DIV class: SecureRandom.hex
         end
       end
     end
@@ -104,9 +104,9 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          a "Home"
+          A "Home"
           whitespace
-          a "About"
+          A "About"
         end
       end
     end
@@ -121,9 +121,9 @@ RSpec.describe Phlex::Component do
       Class.new Phlex::Component do
         def template
           doctype
-          html do
-            head do
-              title "Hello"
+          HTML do
+            HEAD do
+              TITLE "Hello"
             end
           end
         end
@@ -139,7 +139,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          article id: %{"><script type="text/javascript" src="bad_script.js"></script>}
+          ARTICLE id: %{"><script type="text/javascript" src="bad_script.js"></script>}
         end
       end
     end
@@ -153,7 +153,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          article %{"><script type="text/javascript" src="bad_script.js"></script>}
+          ARTICLE %{"><script type="text/javascript" src="bad_script.js"></script>}
         end
       end
     end
@@ -167,7 +167,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          article(**attributes)
+          ARTICLE(**attributes)
         end
 
         def attributes
@@ -187,7 +187,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          article(onkeyup: "alert(1);")
+          ARTICLE(onkeyup: "alert(1);")
         end
       end
     end
@@ -201,7 +201,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          a "Javascript link", href: "javascript:javascript:alert(1)"
+          A "Javascript link", href: "javascript:javascript:alert(1)"
         end
       end
     end
@@ -215,7 +215,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          h1 "Hello", id: "foo", disabled: true, visible: false, aria_hidden: "true"
+          H1 "Hello", id: "foo", disabled: true, visible: false, aria_hidden: "true"
         end
       end
     end
@@ -237,7 +237,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          img src: "/logo.png", alt: "Logo"
+          IMG src: "/logo.png", alt: "Logo"
         end
       end
     end
@@ -263,10 +263,10 @@ RSpec.describe Phlex::Component do
         end
 
         def template
-          nav {
-            ul {
-              li @status
-              li status_emoji
+          NAV {
+            UL {
+              LI @status
+              LI status_emoji
             }
           }
         end
@@ -297,7 +297,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          div class: "a b c"
+          DIV class: "a b c"
         end
       end
     end
@@ -315,7 +315,7 @@ RSpec.describe Phlex::Component do
         end
 
         def template
-          html { head { title @title } }
+          HTML { HEAD { TITLE @title } }
         end
       end
     end
@@ -331,7 +331,7 @@ RSpec.describe Phlex::Component do
     let :component do
       Class.new Phlex::Component do
         def template
-          h1 "Rendered twice"
+          H1 "Rendered twice"
         end
       end
     end
@@ -352,10 +352,10 @@ RSpec.describe Phlex::Component do
           end
 
           def template
-            main {
+            MAIN {
               render(CardComponent.new) {
-                h1 @status
-                h2 status_emoji
+                H1 @status
+                H2 status_emoji
               }
             }
           end
@@ -390,9 +390,9 @@ RSpec.describe Phlex::Component do
           register_element :trix_editor, :trix_toolbar
 
           def template
-            div {
-              trix_toolbar
-              trix_editor "Hello"
+            DIV {
+              TRIX_TOOLBAR()
+              TRIX_EDITOR "Hello"
             }
           end
         end
