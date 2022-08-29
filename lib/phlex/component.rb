@@ -2,6 +2,7 @@
 
 module Phlex
   class Component
+    extend Tag
     include Context, Renderable
 
     class << self
@@ -16,20 +17,6 @@ module Phlex
         end
 
         component
-      end
-
-      def register_element(*tag_names)
-        tag_names.each do |tag_name|
-          unless tag_name.is_a? Symbol
-            raise ArgumentError, "Custom elements must be provided as Symbols"
-          end
-
-          class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-            def #{tag_name}(*args, **kwargs, &block)
-              _standard_element(*args, _name: "#{tag_name.to_s.gsub('_', '-')}", **kwargs, &block)
-            end
-          RUBY
-        end
       end
     end
 
