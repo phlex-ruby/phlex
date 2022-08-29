@@ -5,6 +5,7 @@ require "zeitwerk"
 
 loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.ignore("#{__dir__}/generators")
+loader.inflector.inflect("html" => "HTML")
 loader.setup
 
 module Phlex
