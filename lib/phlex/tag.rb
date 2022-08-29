@@ -27,6 +27,8 @@ module Phlex
 
     def register_element(element, tag: element.name.gsub(Tag::UNDERSCORE, Tag::DASH))
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+        # frozen_string_literal: true
+
         def #{element}(content = nil, _name: nil, **kwargs, &block)
           raise ArgumentError if content && block_given?
 
@@ -51,6 +53,8 @@ module Phlex
 
     def register_void_element(element, tag: element.name.gsub(Tag::UNDERSCORE, Tag::DASH))
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+        # frozen_string_literal: true
+
         def #{element}(**kwargs)
           if kwargs.length > 0
             @_target << "<#{tag}"
