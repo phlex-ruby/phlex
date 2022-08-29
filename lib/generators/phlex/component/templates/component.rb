@@ -1,6 +1,8 @@
 <% module_namespacing do -%>
-class <%= class_name %>Component < Phlex::Component
-  def template
+module Views
+  class <%= class_name %> < Phlex::Component
+    def template
+    end
   end
 end
 <% end %>
