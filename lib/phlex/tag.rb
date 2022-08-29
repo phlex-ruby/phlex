@@ -30,9 +30,13 @@ module Phlex
         def #{element}(content = nil, _name: nil, **kwargs, &block)
           raise ArgumentError if content && block_given?
 
-          @_target << "<#{tag}"
-          _attributes(kwargs) if kwargs.length > 0
-          @_target << Tag::RIGHT
+          if kwargs.length > 0
+            @_target << "<#{tag}"
+            _attributes(kwargs)
+            @_target << Tag::RIGHT
+          else
+            @_target << "<#{tag}>"
+          end
 
           if block_given?
             content(&block)
@@ -48,9 +52,13 @@ module Phlex
     def register_void_element(element, tag: element.name.gsub(Tag::UNDERSCORE, Tag::DASH))
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
         def #{element}(**kwargs)
-          @_target << "<#{tag}"
-          _attributes(kwargs) if kwargs.length > 0
-          @_target << Tag::CLOSE_VOID_RIGHT
+          if kwargs.length > 0
+            @_target << "<#{tag}"
+            _attributes(kwargs)
+            @_target << Tag::CLOSE_VOID_RIGHT
+          else
+            @_target << "<#{tag} />"
+          end
         end
       RUBY
     end
