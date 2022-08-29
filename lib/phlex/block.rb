@@ -2,11 +2,13 @@
 
 module Phlex
   class Block
-    include Callable
-
     def initialize(context, &block)
       @context = context
       @block = block
+    end
+
+    def to_proc
+      method(:call).to_proc
     end
 
     def call(*args, **kwargs)
