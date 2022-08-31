@@ -17,8 +17,8 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
-      - name: Run specs
-        run: bundle exec rspec
+      - name: Run tests
+        run: bundle exec sus
 
   docs:
     runs-on: ubuntu-latest

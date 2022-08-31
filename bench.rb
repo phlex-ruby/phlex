@@ -3,8 +3,8 @@
 require "phlex"
 require "benchmark/ips"
 
-require_relative "examples/page"
-require_relative "examples/layout"
+require_relative "fixtures/page"
+require_relative "fixtures/layout"
 
 puts RUBY_DESCRIPTION
 
