@@ -11,8 +11,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "card_component.rb", <<~RUBY
-            class CardComponent < Phlex::Component
+          e.tab "card.rb", <<~RUBY
+            class Card < Phlex::Component
               def template(&)
                 article(class: "drop-shadow rounded p-5") {
                   h1 "Amazing content!"
@@ -22,7 +22,7 @@ module Pages
             end
           RUBY
 
-          e.execute "CardComponent.new.call { 'Your content here.\n' }"
+          e.execute "Card.new.call { 'Your content here.\n' }"
         end
 
         render Markdown.new(<<~MD)
@@ -32,15 +32,15 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "card_component.rb", <<~RUBY
-            class CardComponent < Phlex::Component
+          e.tab "card.rb", <<~RUBY
+            class Card < Phlex::Component
               def template(&)
                 article(class: "drop-shadow rounded p-5", &)
               end
             end
           RUBY
 
-          e.execute "CardComponent.new.call { 'Your content here.' }"
+          e.execute "Card.new.call { 'Your content here.' }"
         end
 
         render Markdown.new(<<~MD)
@@ -50,25 +50,25 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
+          e.tab "example.rb", <<~RUBY
+            class Example < Phlex::Component
               def template
-                render CardComponent.new do
+                render Card.new do
                   h1 "Hello"
                 end
               end
             end
           RUBY
 
-          e.tab "card_component.rb", <<~RUBY
-            class CardComponent < Phlex::Component
+          e.tab "card.rb", <<~RUBY
+            class Card < Phlex::Component
               def template(&)
                 article(class: "drop-shadow rounded p-5", &)
               end
             end
           RUBY
 
-          e.execute "ExampleComponent.new.call"
+          e.execute "Example.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -76,23 +76,23 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
+          e.tab "example.rb", <<~RUBY
+            class Example < Phlex::Component
               def template
-                render(CardComponent.new) { "Hi" }
+                render(Card.new) { "Hi" }
               end
             end
           RUBY
 
-          e.tab "card_component.rb", <<~RUBY
-            class CardComponent < Phlex::Component
+          e.tab "card.rb", <<~RUBY
+            class Card < Phlex::Component
               def template(&)
                 article(class: "drop-shadow rounded p-5", &)
               end
             end
           RUBY
 
-          e.execute "ExampleComponent.new.call"
+          e.execute "Example.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -102,8 +102,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "hello_component.rb", <<~RUBY
-            class HelloComponent < Phlex::Component
+          e.tab "hello.rb", <<~RUBY
+            class Hello < Phlex::Component
               def initialize(name:)
                 @name = name
               end
@@ -114,15 +114,15 @@ module Pages
             end
           RUBY
 
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
+          e.tab "example.rb", <<~RUBY
+            class Example < Phlex::Component
               def template
-                render HelloComponent.new(name: "Joel")
+                render Hello.new(name: "Joel")
               end
             end
           RUBY
 
-          e.execute "ExampleComponent.new.call"
+          e.execute "Example.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -130,8 +130,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "hello_component.rb", <<~RUBY
-            class HelloComponent < Phlex::Component
+          e.tab "hello.rb", <<~RUBY
+            class Hello < Phlex::Component
               def initialize(name:)
                 super
               end
@@ -142,15 +142,15 @@ module Pages
             end
           RUBY
 
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
+          e.tab "example.rb", <<~RUBY
+            class Example < Phlex::Component
               def template
-                render HelloComponent.new(name: "Joel")
+                render Hello.new(name: "Joel")
               end
             end
           RUBY
 
-          e.execute "ExampleComponent.new.call"
+          e.execute "Example.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -162,8 +162,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "status_component.rb", <<~RUBY
-            class StatusComponent < Phlex::Component
+          e.tab "status.rb", <<~RUBY
+            class Status < Phlex::Component
               def initialize(status:)
                 super
               end
@@ -185,15 +185,15 @@ module Pages
             end
           RUBY
 
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
+          e.tab "example.rb", <<~RUBY
+            class Example < Phlex::Component
               def template
-                render StatusComponent.new(status: :success)
+                render Status.new(status: :success)
               end
             end
           RUBY
 
-          e.execute "ExampleComponent.new.call"
+          e.execute "Example.new.call"
         end
       end
     end

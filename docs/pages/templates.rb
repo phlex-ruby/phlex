@@ -13,15 +13,15 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "heading_component.rb", <<~RUBY
-            class HeadingComponent < Phlex::Component
+          e.tab "heading.rb", <<~RUBY
+            class Heading < Phlex::Component
               def template
                 h1 "Hello World!"
               end
             end
           RUBY
 
-          e.execute "HeadingComponent.new.call"
+          e.execute "Heading.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -33,8 +33,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "heading_component.rb", <<~RUBY
-            class HeadingComponent < Phlex::Component
+          e.tab "heading.rb", <<~RUBY
+            class Heading < Phlex::Component
               def template
                 h1 "Hello World!",
                   class: "text-xl font-bold",
@@ -43,7 +43,7 @@ module Pages
             end
           RUBY
 
-          e.execute "HeadingComponent.new.call"
+          e.execute "Heading.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -51,8 +51,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
+          e.tab "example.rb", <<~RUBY
+            class Example < Phlex::Component
               def template
                 input type: "radio", name: "channel", id: "1", checked: true
                 input type: "radio", name: "channel", id: "2", checked: false
@@ -60,7 +60,7 @@ module Pages
             end
           RUBY
 
-          e.execute "ExampleComponent.new.call"
+          e.execute "Example.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -70,8 +70,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "nav_component.rb", <<~RUBY
-            class NavComponent < Phlex::Component
+          e.tab "nav.rb", <<~RUBY
+            class Nav < Phlex::Component
               def template
                 nav do
                   ul do
@@ -84,7 +84,7 @@ module Pages
             end
           RUBY
 
-          e.execute "NavComponent.new.call"
+          e.execute "Nav.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -94,15 +94,15 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "heading_component.rb", <<~RUBY
-            class HeadingComponent < Phlex::Component
+          e.tab "heading.rb", <<~RUBY
+            class Heading < Phlex::Component
               def template
                 h1 { strong "Hello "; text "World!" }
               end
             end
           RUBY
 
-          e.execute "HeadingComponent.new.call"
+          e.execute "Heading.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -112,8 +112,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "example_component.rb", <<~RUBY
-            class LinksComponent < Phlex::Component
+          e.tab "links.rb", <<~RUBY
+            class Links < Phlex::Component
               def template
                 a "Home", href: "/"
                 whitespace
@@ -124,7 +124,7 @@ module Pages
             end
           RUBY
 
-          e.execute "LinksComponent.new.call"
+          e.execute "Links.new.call"
         end
 
         render Markdown.new(<<~MD)
@@ -134,8 +134,8 @@ module Pages
         MD
 
         render Example.new do |e|
-          e.tab "example_component.rb", <<~RUBY
-            class ExampleComponent < Phlex::Component
+          e.tab "example.rb", <<~RUBY
+            class Example < Phlex::Component
               def template
                 template_tag do
                   img src: "hidden.jpg", alt: "A hidden image."
@@ -144,7 +144,7 @@ module Pages
             end
           RUBY
 
-          e.execute "ExampleComponent.new.call"
+          e.execute "Example.new.call"
         end
       end
     end
