@@ -2,20 +2,18 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in phlex.gemspec
 gemspec
 
-gem "rake", "~> 13.0"
+gem "rake"
 
-gem "rspec"
-gem "benchmark-memory"
-gem "rspec-html-matchers"
-gem 'combustion', '~> 1.3'
-gem "rails"
-gem "listen"
-gem "webrick"
-gem "benchmark-ips"
+gem "sus", group: [:test]
+gem "rails", group: [:test]
 gem "rouge", group: [:docs]
-gem "htmlbeautifier", group: [:docs]
-gem "redcarpet", group: [:docs]
+gem "listen", group: [:docs]
+gem "webrick", group: [:docs]
 gem "zeitwerk", group: [:docs]
+gem "redcarpet", group: [:docs]
+gem 'combustion', group: [:test]
+gem "benchmark-ips"
+gem "htmlbeautifier", group: [:docs]
+gem "benchmark-memory"
