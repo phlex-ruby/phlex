@@ -9,6 +9,8 @@ module Phlex
         end
 
         renderable.call(@_target, view_context: @_view_context, parent: self, &block)
+      elsif renderable < Component
+        raise ArgumentError, "You tried to render the Phlex component class: #{renderable.name} but you probably meant to render an instance of that class instead."
       else
         @_target << @_view_context.render(renderable, *args, **kwargs, &block)
       end
