@@ -18,24 +18,30 @@ module Phlex
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
         # frozen_string_literal: true
 
-        def #{element}(content = nil, _name: nil, **kwargs, &block)
-          raise ArgumentError if content && block_given?
-
-          if kwargs.length > 0
+        def #{element}(content = nil, **attributes, &block)
+          if attributes.length > 0
             @_target << "<#{tag}"
-            _attributes(kwargs)
-            @_target << ">"
+            _attributes(attributes)
+            if content
+              @_target << ">" << CGI.escape_html(content) << "</#{tag}>"
+            elsif block_given?
+              @_target << ">"
+              content(&block)
+              @_target << "</#{tag}>"
+            else
+              @_target << "></#{tag}>"
+            end
           else
-            @_target << "<#{tag}>"
+            if content
+              @_target << "<#{tag}>" << CGI.escape_html(content) << "</#{tag}>"
+            elsif block_given?
+              @_target << "<#{tag}>"
+              content(&block)
+              @_target << "</#{tag}>"
+            else
+              @_target << "<#{tag}></#{tag}>"
+            end
           end
-
-          if block_given?
-            content(&block)
-          else
-            text content if content
-          end
-
-          @_target << "</#{tag}>"
         end
       RUBY
     end
@@ -44,10 +50,10 @@ module Phlex
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
         # frozen_string_literal: true
 
-        def #{element}(**kwargs)
-          if kwargs.length > 0
+        def #{element}(**attributes)
+          if attributes.length > 0
             @_target << "<#{tag}"
-            _attributes(kwargs)
+            _attributes(attributes)
             @_target << " />"
           else
             @_target << "<#{tag} />"
