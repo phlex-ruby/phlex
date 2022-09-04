@@ -96,9 +96,9 @@ module Phlex
         end
 
         if v == true
-          buffer << " " << k.name.gsub("_", "-")
+          buffer << " " << k.name.tr("_", "-")
         else
-          buffer << " " << k.name.gsub("_", "-") << '="' << CGI.escape_html(v.to_s) << '"'
+          buffer << " " << k.name.tr("_", "-") << '="' << CGI.escape_html(v.to_s) << '"'
         end
       end
 
