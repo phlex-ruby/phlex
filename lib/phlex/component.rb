@@ -86,7 +86,9 @@ module Phlex
 
       buffer = first_render ? buffer = +"" : buffer = @_target
 
-      attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "") if attributes[:href]
+      if attributes[:href]&.start_with?(/\s*javascript/)
+        attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
+      end
 
       attributes.each do |k, v|
         next unless v
