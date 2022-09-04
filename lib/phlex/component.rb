@@ -78,10 +78,6 @@ module Phlex
     end
 
     def _attributes(attributes)
-      if (cached = Phlex::ATTRIBUTE_CACHE[attributes.hash])
-        return @_target << cached
-      end
-
       first_render = !self.class.rendered_at_least_once
 
       buffer = first_render ? buffer = +"" : buffer = @_target
@@ -97,8 +93,13 @@ module Phlex
           raise ArgumentError, "Unsafe attribute name detected: #{k}."
         end
 
-        if v == true
+        case v
+        when true
           buffer << " " << k.name.tr("_", "-")
+        when String
+          buffer << " " << k.name.tr("_", "-") << '="' << CGI.escape_html(v) << '"'
+        when Symbol
+          buffer << " " << k.name.tr("_", "-") << '="' << CGI.escape_html(v.name) << '"'
         else
           buffer << " " << k.name.tr("_", "-") << '="' << CGI.escape_html(v.to_s) << '"'
         end
