@@ -20,8 +20,12 @@ module Phlex
 
         def #{element}(content = nil, **attributes, &block)
           if attributes.length > 0
-            @_target << "<#{tag}"
-            _attributes(attributes)
+            if (cached = Phlex::ATTRIBUTE_CACHE[attributes.hash])
+              @_target << "<#{tag}" << cached
+            else
+              @_target << "<#{tag}"
+              _attributes(attributes)
+            end
             if content
               @_target << ">" << CGI.escape_html(content) << "</#{tag}>"
             elsif block_given?
@@ -52,9 +56,13 @@ module Phlex
 
         def #{element}(**attributes)
           if attributes.length > 0
-            @_target << "<#{tag}"
-            _attributes(attributes)
-            @_target << " />"
+            if (cached = Phlex::ATTRIBUTE_CACHE[attributes.hash])
+              @_target << "<#{tag}" << cached << " />"
+            else
+              @_target << "<#{tag}"
+              _attributes(attributes)
+              @_target << " />"
+            end
           else
             @_target << "<#{tag} />"
           end
