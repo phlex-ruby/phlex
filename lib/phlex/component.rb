@@ -73,36 +73,51 @@ module Phlex
       @_target << content
     end
 
-    def _attributes(attributes)
-      first_render = !self.class.rendered_at_least_once
-
-      buffer = first_render ? buffer = +"" : buffer = @_target
-
+    def _attributes(attributes, buffer: +"")
       if attributes[:href]&.start_with?(/\s*javascript/)
         attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
       end
 
+      _build_attributes(attributes, buffer: buffer)
+
+      unless self.class.rendered_at_least_once
+        Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
+      end
+
+      buffer
+    end
+
+    def _build_attributes(attributes, buffer:)
       attributes.each do |k, v|
         next unless v
 
-        if HTML::EVENT_ATTRIBUTES[k] || k.match?(/[<>&"']/)
+        name = case k
+        when String
+          k
+        when Symbol
+          k.name.tr("_", "-")
+        else
+          k.to_s
+        end
+
+        if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
           raise ArgumentError, "Unsafe attribute name detected: #{k}."
         end
 
         case v
         when true
-          buffer << " " << k.name.tr("_", "-")
+          buffer << " " << name
         when String
-          buffer << " " << k.name.tr("_", "-") << '="' << CGI.escape_html(v) << '"'
+          buffer << " " << name << '="' << CGI.escape_html(v) << '"'
         when Symbol
-          buffer << " " << k.name.tr("_", "-") << '="' << CGI.escape_html(v.name) << '"'
+          buffer << " " << name << '="' << CGI.escape_html(v.name) << '"'
+        when Hash
+          _build_attributes(v.transform_keys { "#{k}-#{_1}" }, buffer: buffer)
         else
-          buffer << " " << k.name.tr("_", "-") << '="' << CGI.escape_html(v.to_s) << '"'
+          buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
         end
-      end
 
-      if first_render
-        @_target << Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
+        buffer
       end
     end
   end
