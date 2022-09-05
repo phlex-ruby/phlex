@@ -24,10 +24,6 @@ module Phlex
       end
     end
 
-    def initialize(**attributes)
-      attributes.each { |k, v| instance_variable_set("@#{k}", v) }
-    end
-
     def call(buffer = +"", view_context: nil, parent: nil, &block)
       raise "The same component instance shouldn't be rendered twice" if @_rendered
 

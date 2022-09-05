@@ -126,34 +126,6 @@ module Pages
         end
 
         render Markdown.new(<<~MD)
-          The default initializer in `Phlex::Component` sets each given keyword argument to an instance variable, so the above could be re-written to call `super` instead.
-        MD
-
-        render Example.new do |e|
-          e.tab "hello.rb", <<~RUBY
-            class Hello < Phlex::Component
-              def initialize(name:)
-                super
-              end
-
-              def template
-                h1 "Hello \#{@name}!"
-              end
-            end
-          RUBY
-
-          e.tab "example.rb", <<~RUBY
-            class Example < Phlex::Component
-              def template
-                render Hello.new(name: "Joel")
-              end
-            end
-          RUBY
-
-          e.execute "Example.new.call"
-        end
-
-        render Markdown.new(<<~MD)
           It’s usually a good idea to use instance variables directly rather than creating accessor methods for them. Otherwise it’s easy to run into naming conflicts. For example, your layout component might have the attribute `title`, to render into a `<title>` element in the document head. If you define `attr_accessor :title`, that would overwrite the `title` method for creating `<title>` elements.
 
           ## Calculations with methods
@@ -165,7 +137,7 @@ module Pages
           e.tab "status.rb", <<~RUBY
             class Status < Phlex::Component
               def initialize(status:)
-                super
+                @status = status
               end
 
               def template
