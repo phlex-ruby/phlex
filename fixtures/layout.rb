@@ -1,7 +1,7 @@
 module Example
   class LayoutComponent < Phlex::Component
     def initialize(title: "Example")
-      super
+      @title = title
     end
 
     def template(&block)

@@ -3,7 +3,7 @@ module Components
     register_element :style
 
     def initialize(title:)
-      super
+      @title = title
     end
 
     def template(&)

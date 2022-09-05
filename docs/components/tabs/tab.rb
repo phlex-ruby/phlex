@@ -2,7 +2,8 @@ module Components
   class Tabs
     class Tab < Phlex::Component
       def initialize(name:, checked:)
-        super
+        @name = name
+        @checked = checked
       end
 
       def template(&)
