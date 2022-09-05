@@ -11,7 +11,7 @@ module Components
     end
 
     def tab(name, &)
-      render Tab.new(name:, checked: first?, &)
+      render(Tab.new(name:, checked: first?), &)
       @index += 1
     end
 
