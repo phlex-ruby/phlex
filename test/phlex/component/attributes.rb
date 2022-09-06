@@ -5,6 +5,18 @@ require "test_helper"
 describe Phlex::Component do
   extend ComponentHelper
 
+  with "hash attributes" do
+    component do
+      def template
+        div data: { name: { first: "Joel" } }
+      end
+    end
+
+    it "flattens the attributes" do
+      expect(output).to be == %{<div data-name-first="Joel"></div>}
+    end
+  end
+
   with "unique tag attributes" do
     component do
       def template

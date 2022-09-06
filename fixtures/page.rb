@@ -7,7 +7,7 @@ module Example
         5.times do
           div do
             10.times do
-              a "Test", href: "something", unique: SecureRandom.uuid
+              a "Test", href: "something", unique: SecureRandom.uuid, data: { value: 1 }
             end
           end
         end

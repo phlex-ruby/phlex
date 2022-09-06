@@ -12,7 +12,7 @@ module Phlex
 
     VOID_ELEMENTS = %i[area embed img input link meta param track col].freeze
 
-    EVENT_ATTRIBUTES = %i[onabort onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick oncontextmenu oncopy oncuechange oncut ondblclick ondrag ondragend ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onerror onfocus onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpaste onpause onplay onplaying onpopstate onprogress onratechange onreset onresize onscroll onsearch onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate ontoggle onunload onvolumechange onwaiting onwheel].to_h { [_1, true] }.freeze
+    EVENT_ATTRIBUTES = %w[onabort onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick oncontextmenu oncopy oncuechange oncut ondblclick ondrag ondragend ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onerror onfocus onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpaste onpause onplay onplaying onpopstate onprogress onratechange onreset onresize onscroll onsearch onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate ontoggle onunload onvolumechange onwaiting onwheel].to_h { [_1, true] }.freeze
 
     def register_element(element, tag: element.name.tr("_", "-"))
       class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
@@ -20,20 +20,14 @@ module Phlex
 
         def #{element}(content = nil, **attributes, &block)
           if attributes.length > 0
-            if (cached = Phlex::ATTRIBUTE_CACHE[attributes.hash])
-              @_target << "<#{tag}" << cached
-            else
-              @_target << "<#{tag}"
-              _attributes(attributes)
-            end
             if content
-              @_target << ">" << CGI.escape_html(content) << "</#{tag}>"
+              @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << ">" << CGI.escape_html(content) << "</#{tag}>"
             elsif block_given?
-              @_target << ">"
+              @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << ">"
               content(&block)
               @_target << "</#{tag}>"
             else
-              @_target << "></#{tag}>"
+              @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << "></#{tag}>"
             end
           else
             if content
@@ -56,13 +50,7 @@ module Phlex
 
         def #{element}(**attributes)
           if attributes.length > 0
-            if (cached = Phlex::ATTRIBUTE_CACHE[attributes.hash])
-              @_target << "<#{tag}" << cached << " />"
-            else
-              @_target << "<#{tag}"
-              _attributes(attributes)
-              @_target << " />"
-            end
+            @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << " />"
           else
             @_target << "<#{tag} />"
           end
