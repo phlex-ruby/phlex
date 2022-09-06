@@ -17,23 +17,25 @@ describe Phlex::Component do
     end
   end
 
-  with "unique tag attributes" do
-    component do
-      def template
-        div class: SecureRandom.hex
+  if RUBY_ENGINE == "ruby"
+    with "unique tag attributes" do
+      component do
+        def template
+          div class: SecureRandom.hex
+        end
       end
-    end
 
-    let :report do
-      component.new.call
+      let :report do
+        component.new.call
 
-      MemoryProfiler.report do
-        2.times { component.new.call }
+        MemoryProfiler.report do
+          2.times { component.new.call }
+        end
       end
-    end
 
-    it "doesn't leak memory" do
-      expect(report.total_retained).to be == 0
+      it "doesn't leak memory" do
+        expect(report.total_retained).to be == 0
+      end
     end
   end
 end
