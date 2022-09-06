@@ -1,13 +1,15 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+    branches: ['main']
 jobs:
   specs:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        ruby-version: ['2.7', '3.0', '3.1']
-
+        os: ['ubuntu-latest', 'macos-latest']
+        ruby-version: ['2.7', '3.0', '3.1', 'head', 'truffleruby+graalvm-22.2']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
 
