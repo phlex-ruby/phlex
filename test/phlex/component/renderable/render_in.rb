@@ -21,7 +21,7 @@ describe Phlex::Component do
     end
 
     it "renders the component with raw contents captured from the block" do
-      expect(output).to be == %{<article><span>Hi</span></article>}
+      expect(output).to be == %(<article><span>Hi</span></article>)
     end
   end
 end

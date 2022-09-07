@@ -109,9 +109,9 @@ module Phlex
         else
           buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
         end
-
-        buffer
       end
+
+      buffer
     end
   end
 end

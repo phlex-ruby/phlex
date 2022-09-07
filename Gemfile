@@ -13,7 +13,8 @@ gem "listen", group: [:docs]
 gem "webrick", group: [:docs]
 gem "zeitwerk", group: [:docs]
 gem "redcarpet", group: [:docs]
-gem 'combustion', group: [:test]
+gem "combustion", group: [:test]
 gem "benchmark-ips"
 gem "htmlbeautifier", group: [:docs]
 gem "benchmark-memory"
+gem "rubocop", require: false

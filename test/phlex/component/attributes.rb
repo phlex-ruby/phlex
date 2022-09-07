@@ -13,7 +13,7 @@ describe Phlex::Component do
     end
 
     it "flattens the attributes" do
-      expect(output).to be == %{<div data-name-first="Joel"></div>}
+      expect(output).to be == %(<div data-name-first="Joel"></div>)
     end
   end
 

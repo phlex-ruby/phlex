@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Pages
   class Components < ApplicationPage
     def template

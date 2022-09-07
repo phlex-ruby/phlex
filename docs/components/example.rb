@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Components
   class Example < Phlex::Component
     def initialize
       @sandbox = Module.new
     end
 
-    def template(&)
+    def template(&block)
       render Tabs.new do |t|
         @t = t
         yield self

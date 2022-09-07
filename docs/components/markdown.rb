@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Components
   class Markdown < Phlex::Component
     class Render < Redcarpet::Render::HTML

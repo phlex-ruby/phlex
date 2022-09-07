@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Components
   class Layout < Phlex::Component
     register_element :style
@@ -6,7 +8,7 @@ module Components
       @title = title
     end
 
-    def template(&)
+    def template(&block)
       doctype
 
       html do
@@ -14,7 +16,7 @@ module Components
           meta charset: "utf-8"
           title @title
           link href: "/application.css", rel: "stylesheet"
-          style { _raw Rouge::Theme.find("github").render(scope: '.highlight') }
+          style { _raw Rouge::Theme.find("github").render(scope: ".highlight") }
         end
 
         body class: "p-12" do
@@ -32,7 +34,7 @@ module Components
               end
             end
 
-            main(class: "col-span-3", &)
+            main(class: "col-span-3", &block)
 
             footer class: "text-sm text-right col-span-4 py-10"
           end

@@ -10,3 +10,4 @@
 /spec/internal/**/log/*
 /node_modules/
 /docs/dist
+Gemfile.lock
