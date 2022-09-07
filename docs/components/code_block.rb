@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Components
   class CodeBlock < Phlex::Component
     FORMATTER = Rouge::Formatters::HTML.new

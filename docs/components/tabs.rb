@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module Components
   class Tabs < Phlex::Component
     def initialize
       @index = 1
     end
 
-    def template(&)
+    def template(&block)
       div class: "tabs flex flex-wrap relative my-5", role: "tablist" do
         yield(self)
       end
     end
 
-    def tab(name, &)
-      render(Tab.new(name:, checked: first?), &)
+    def tab(name, &block)
+      render(Tab.new(name: name, checked: first?), &block)
       @index += 1
     end
 

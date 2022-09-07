@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require "phlex"
 require "bundler"
 require "fileutils"
@@ -12,7 +14,7 @@ Zeitwerk::Loader.new.tap do |loader|
   loader.eager_load
 end
 
-FileUtils.mkdir("#{__dir__}/dist") unless Dir.exist? "#{__dir__}/dist"
+FileUtils.mkdir_p("#{__dir__}/dist")
 FileUtils.cp_r("#{__dir__}/assets", "#{__dir__}/dist")
 
 PageBuilder.build_all

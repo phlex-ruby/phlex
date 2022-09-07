@@ -8,7 +8,7 @@ describe Phlex::Component do
   with "naughty text" do
     component do
       def template
-        text %{"><script type="text/javascript" src="bad_script.js"></script>}
+        text %("><script type="text/javascript" src="bad_script.js"></script>)
       end
     end
 
@@ -20,12 +20,12 @@ describe Phlex::Component do
   with "naughty tag attribute values" do
     component do
       def template
-        article id: %{"><script type="text/javascript" src="bad_script.js"></script>}
+        article id: %("><script type="text/javascript" src="bad_script.js"></script>)
       end
     end
 
     it "escapes the attributes" do
-      expect(output).to be == %{<article id="&quot;&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;bad_script.js&quot;&gt;&lt;/script&gt;"></article>}
+      expect(output).to be == %(<article id="&quot;&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;bad_script.js&quot;&gt;&lt;/script&gt;"></article>)
     end
   end
 
@@ -58,7 +58,7 @@ describe Phlex::Component do
     end
   end
 
-  %w{< > & " '}.each do |naughty_character|
+  %w[< > & " '].each do |naughty_character|
     with "naughty attribute name containing #{naughty_character}" do
       naughty_attribute = "abc#{naughty_character}123"
       naughty_attributes = { naughty_attribute => "alert(1);" }

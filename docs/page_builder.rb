@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PageBuilder
   ROOT = Pages::ApplicationPage
 
@@ -10,14 +12,14 @@ class PageBuilder
   end
 
   def call
-    FileUtils.mkdir_p(directory) unless Dir.exist?(directory)
+    FileUtils.mkdir_p(directory)
     File.write(file, @page.new.call)
   end
 
   private
 
   def file
-    directory + "/index.html"
+    "#{directory}/index.html"
   end
 
   def directory

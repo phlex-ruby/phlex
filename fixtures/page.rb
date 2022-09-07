@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Example
   class Page < Phlex::Component
     def template

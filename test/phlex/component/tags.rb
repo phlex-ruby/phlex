@@ -14,7 +14,7 @@ describe Phlex::Component do
       end
 
       it "produces the correct output" do
-        expect(output).to be == %{<#{element} class="class" id="id" disabled>content</#{element}>}
+        expect(output).to be == %(<#{element} class="class" id="id" disabled>content</#{element}>)
       end
     end
 
@@ -26,7 +26,7 @@ describe Phlex::Component do
       end
 
       it "produces the correct output" do
-        expect(output).to be == %{<#{element} class="class" id="id" disabled><h1>Hello</h1></#{element}>}
+        expect(output).to be == %(<#{element} class="class" id="id" disabled><h1>Hello</h1></#{element}>)
       end
     end
 
@@ -38,7 +38,7 @@ describe Phlex::Component do
       end
 
       it "produces the correct output" do
-        expect(output).to be == %{<#{element} class="class" id="id" disabled>content</#{element}>}
+        expect(output).to be == %(<#{element} class="class" id="id" disabled>content</#{element}>)
       end
     end
   end
@@ -52,7 +52,7 @@ describe Phlex::Component do
       end
 
       it "produces the correct output" do
-        expect(output).to be == %{<#{element} class="class" id="id" disabled />}
+        expect(output).to be == %(<#{element} class="class" id="id" disabled />)
       end
     end
   end

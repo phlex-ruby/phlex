@@ -8,12 +8,12 @@ describe Phlex::Component do
   with "raw content" do
     component do
       def template
-        _raw %{<h1 class="test">Hello</h1>}
+        _raw %(<h1 class="test">Hello</h1>)
       end
     end
 
     it "renders produces the correct output" do
-      expect(output).to be == %{<h1 class="test">Hello</h1>}
+      expect(output).to be == %(<h1 class="test">Hello</h1>)
     end
   end
 end
