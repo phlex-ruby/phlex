@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gemspec
 
@@ -17,4 +18,4 @@ gem "combustion", group: [:test]
 gem "benchmark-ips"
 gem "htmlbeautifier", group: [:docs]
 gem "benchmark-memory"
-gem "rubocop", require: false
+gem "rubocop", require: false, github: "joeldrapper/rubocop", branch: "rubocop-user-agent"
