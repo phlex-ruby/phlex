@@ -66,6 +66,32 @@ module Phlex
       @_target << content
     end
 
+    def classes(*tokens, **conditional_tokens)
+      { class: self.tokens(*tokens, **conditional_tokens) }
+    end
+
+    def tokens(*tokens, **conditional_tokens)
+      conditional_tokens.each do |condition, token|
+        case condition
+        when Symbol then next unless send(condition)
+        when Proc then next unless condition.call
+        else
+          raise ArgumentError, "The class condition must be a Symbol or a Proc."
+        end
+
+        case token
+        when Symbol then tokens << token.name
+        when String then tokens << token
+        when Array then tokens.concat(t)
+        else
+          raise ArgumentError,
+            "Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
+        end
+      end
+
+      tokens.compact.join(" ")
+    end
+
     def _attributes(attributes, buffer: +"")
       if attributes[:href]&.start_with?(/\s*javascript/)
         attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
