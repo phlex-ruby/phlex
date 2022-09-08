@@ -6,9 +6,9 @@ module Components
       def header(text, level)
         case level
         when 1
-          Title.new { text }.call
+          Title.new.call { text }
         else
-          Heading.new { text }.call
+          Heading.new.call { text }
         end
       end
     end
