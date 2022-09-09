@@ -1,0 +1,11 @@
+<p>Before</p>
+<%= render Views::Card.new do |a| %>
+  <p>Start Card A</p>
+  <%= a.title "Hello from A" %>
+  <%= render Views::Card.new do |b| %>
+    <p>Start Card B</p>
+    <%= b.title "Hello from B" %>
+    <p>End Card B</p>
+  <% end %>
+  <p>End Card A</p>
+<% end %>
