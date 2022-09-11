@@ -20,6 +20,7 @@ module Phlex
       @_target = buffer
       @_view_context = view_context
       @_parent = parent
+      @output_buffer = self
 
       template(&block)
 
@@ -43,27 +44,62 @@ module Phlex
     register_element :template_tag, tag: "template"
 
     def content(&block)
-      original_bytesize = @_target.size
-      output = yield if block_given?
-      unchanged = (original_bytesize == @_target.size)
+      return unless block_given?
+
+      original_length = @_target.length
+      output = yield(self) if block_given?
+      unchanged = (original_length == @_target.length)
 
       text(output) if unchanged && output.is_a?(String)
+      nil
     end
 
     def text(content)
       @_target << CGI.escape_html(content)
+      nil
     end
 
     def whitespace
       @_target << " "
+      nil
     end
 
     def doctype
       @_target << HTML::DOCTYPE
+      nil
     end
 
     def raw(content)
       @_target << content
+      nil
+    end
+
+    def html_safe?
+      true
+    end
+
+    def safe_append=(value)
+      return unless value
+
+      @_target << case value
+      when String then value
+      when Symbol then value.name
+      else value.to_s
+      end
+    end
+
+    def append=(value)
+      return unless value
+
+      if value.html_safe?
+        self.safe_append = value
+      else
+        @_target << case value
+        when String then CGI.escape_html(value)
+        when Symbol then CGI.escape_html(value.name)
+        else CGI.escape_html(value.to_s)
+        end
+      end
     end
 
     def classes(*tokens, **conditional_tokens)
@@ -75,17 +111,16 @@ module Phlex
         case condition
         when Symbol then next unless send(condition)
         when Proc then next unless condition.call
-        else
-          raise ArgumentError, "The class condition must be a Symbol or a Proc."
+        else raise ArgumentError,
+          "The class condition must be a Symbol or a Proc."
         end
 
         case token
         when Symbol then tokens << token.name
         when String then tokens << token
         when Array then tokens.concat(t)
-        else
-          raise ArgumentError,
-            "Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
+        else raise ArgumentError,
+          "Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
         end
       end
 

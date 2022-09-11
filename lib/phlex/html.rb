@@ -40,6 +40,8 @@ module Phlex
               @_target << "<#{tag}></#{tag}>"
             end
           end
+
+          nil
         end
       RUBY
     end
@@ -54,6 +56,8 @@ module Phlex
           else
             @_target << "<#{tag} />"
           end
+
+          nil
         end
       RUBY
     end

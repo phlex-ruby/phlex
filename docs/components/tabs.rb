@@ -8,7 +8,7 @@ module Components
 
     def template(&block)
       div class: "tabs flex flex-wrap relative my-5", role: "tablist" do
-        yield(self)
+        content(&block)
       end
     end
 
