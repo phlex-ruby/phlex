@@ -8,7 +8,7 @@ describe Phlex::Component do
   with "raw content" do
     component do
       def template
-        _raw %(<h1 class="test">Hello</h1>)
+        raw %(<h1 class="test">Hello</h1>)
       end
     end
 

@@ -20,7 +20,7 @@ module Components
     end
 
     def template
-      _raw MARKDOWN.render(@content)
+      raw MARKDOWN.render(@content)
     end
   end
 end

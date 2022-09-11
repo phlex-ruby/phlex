@@ -16,7 +16,7 @@ module Components
           meta charset: "utf-8"
           title @title
           link href: "/application.css", rel: "stylesheet"
-          style { _raw Rouge::Theme.find("github").render(scope: ".highlight") }
+          style { raw Rouge::Theme.find("github").render(scope: ".highlight") }
         end
 
         body class: "p-12" do

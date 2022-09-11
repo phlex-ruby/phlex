@@ -62,7 +62,7 @@ module Phlex
       @_target << HTML::DOCTYPE
     end
 
-    def _raw(content)
+    def raw(content)
       @_target << content
     end
 
