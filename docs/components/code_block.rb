@@ -11,7 +11,7 @@ module Components
 
     def template
       pre(class: "highlight p-5 whitespace-pre-wrap bg-stone-50") {
-        _raw FORMATTER.format(
+        raw FORMATTER.format(
           lexer.lex(@code)
         )
       }
