@@ -8,15 +8,16 @@ Gem::Specification.new do |spec|
   spec.authors = ["Joel Drapper"]
   spec.email = ["joel@drapper.me"]
 
-  spec.summary = "Flexible components"
-  spec.description = "Better view components"
-  spec.homepage = "https://github.com/joeldrapper/phlex"
+  spec.summary = "A framework for building view components with a Ruby DSL."
+  spec.description = "A high-performance view component framework optimised for developer happiness."
+  spec.homepage = "https://www.phlex.fun"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.7"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/joeldrapper/phlex"
-  spec.metadata["changelog_uri"] = "https://github.com/joeldrapper/phlex"
+  spec.metadata["changelog_uri"] = "https://github.com/joeldrapper/phlex/releases"
+  spec.metadata["funding_uri"] = "https://github.com/sponsors/joeldrapper"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
