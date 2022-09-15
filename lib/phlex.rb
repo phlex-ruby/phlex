@@ -24,3 +24,7 @@ module Phlex
     yield configuration
   end
 end
+
+if defined?(Rails::Engine)
+  require "rails"
+end
