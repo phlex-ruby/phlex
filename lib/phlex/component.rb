@@ -102,6 +102,19 @@ module Phlex
       end
     end
 
+    def capture(&block)
+      return unless block_given?
+
+      original_buffer = @_target
+      new_buffer = +""
+      @_target = new_buffer
+
+      yield
+
+      @_target = original_buffer
+      new_buffer.html_safe
+    end
+
     def classes(*tokens, **conditional_tokens)
       { class: self.tokens(*tokens, **conditional_tokens) }
     end
