@@ -21,7 +21,13 @@ module Phlex
     def render_in(view_context, &block)
       if block_given?
         call(view_context: view_context) do |*args, **kwargs|
-          view_context.with_output_buffer(self) { yield(*args, **kwargs) }
+          view_context.with_output_buffer(self) do
+            original_length = @_target.length
+            output = yield(*args, **kwargs)
+            unchanged = (original_length == @_target.length)
+
+            text(output) if unchanged && output.is_a?(String)
+          end
         end.html_safe
       else
         call(view_context: view_context).html_safe

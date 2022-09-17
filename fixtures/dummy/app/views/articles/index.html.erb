@@ -1,4 +1,7 @@
 <p>Before</p>
+
+<%= render(Views::Heading.new) { "Hello World!" } %>
+
 <%= render Views::Card.new do |a| %>
   <p>Start Card A</p>
   <%= a.title "Hello from A" %>
