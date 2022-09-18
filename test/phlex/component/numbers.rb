@@ -5,39 +5,34 @@ require "test_helper"
 describe Phlex::Component do
   extend ComponentHelper
 
-  with "text" do
+  with "numbers" do
     component do
       def template
-        text "Hi"
+        span 1
+        span 2.0
       end
     end
 
     it "produces the correct output" do
-      expect(output).to be == "Hi"
+      expect(output).to be == "<span>1</span><span>2.0</span>"
     end
   end
 
-  with "int as text" do
+  with "numbers in block" do
     component do
       def template
-        text 1
+        span do
+          1
+        end
+
+        span do
+          2.0
+        end
       end
     end
 
     it "produces the correct output" do
-      expect(output).to be == "1"
-    end
-  end
-
-  with "float as text" do
-    component do
-      def template
-        text 2.0
-      end
-    end
-
-    it "produces the correct output" do
-      expect(output).to be == "2.0"
+      expect(output).to be == "<span>1</span><span>2.0</span>"
     end
   end
 end

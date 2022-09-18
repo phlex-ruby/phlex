@@ -47,15 +47,20 @@ module Phlex
       return unless block_given?
 
       original_length = @_target.length
-      output = yield(self) if block_given?
+      output = yield(self)
       unchanged = (original_length == @_target.length)
 
-      text(output) if unchanged && output.is_a?(String)
+      text(output) if unchanged
       nil
     end
 
     def text(content)
-      @_target << CGI.escape_html(content)
+      @_target << case content
+      when String then CGI.escape_html(content)
+      when Symbol then CGI.escape_html(content.name)
+      else CGI.escape_html(content.to_s)
+      end
+
       nil
     end
 
