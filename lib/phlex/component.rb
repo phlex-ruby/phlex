@@ -179,7 +179,7 @@ module Phlex
         when Symbol
           buffer << " " << name << '="' << CGI.escape_html(v.name) << '"'
         when Hash
-          _build_attributes(v.transform_keys { "#{k}-#{_1}" }, buffer: buffer)
+          _build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer: buffer)
         else
           buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
         end

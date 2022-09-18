@@ -8,12 +8,12 @@ describe Phlex::Component do
   with "hash attributes" do
     component do
       def template
-        div data: { name: { first: "Joel" } }
+        div data: { name: { first_name: "Joel" } }
       end
     end
 
     it "flattens the attributes" do
-      expect(output).to be == %(<div data-name-first="Joel"></div>)
+      expect(output).to be == %(<div data-name-first-name="Joel"></div>)
     end
   end
 
