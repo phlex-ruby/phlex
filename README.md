@@ -16,7 +16,7 @@ Everyone interacting in Phlex codebases, issue trackers, chat rooms and mailing 
 
 ### Sponsorship 💖
 
-Maintaining a library like this is a lot of work. Phlex is being actively developed and maintained by **[Joel Drapper](https://github.com/sponsors/joeldrapper)**. If your company benefits from this work or is likely to benefit from it in the future, please consider sponsorship.
+Maintaining a library is a lot of work. If your company benefits from this work or is likely to benefit from it in the future, please consider [sponsorship](https://github.com/sponsors/joeldrapper). Phlex is actively developed and maintained by **[Joel Drapper](https://github.com/sponsors/joeldrapper)**.
 
 ### Security 👮
 
