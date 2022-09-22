@@ -9,22 +9,22 @@ loader.inflector.inflect("html" => "HTML")
 loader.setup
 
 module Phlex
-  Error = Module.new
-  ArgumentError = Class.new(ArgumentError) { include Error }
+	Error = Module.new
+	ArgumentError = Class.new(ArgumentError) { include Error }
 
-  extend self
+	extend self
 
-  ATTRIBUTE_CACHE = {}
+	ATTRIBUTE_CACHE = {}
 
-  def configuration
-    @configuration ||= Configuration.new
-  end
+	def configuration
+		@configuration ||= Configuration.new
+	end
 
-  def configure
-    yield configuration
-  end
+	def configure
+		yield configuration
+	end
 end
 
 if defined?(Rails::Engine)
-  require "rails"
+	require "rails"
 end

@@ -8,10 +8,10 @@ require "fileutils"
 Bundler.require :docs
 
 Zeitwerk::Loader.new.tap do |loader|
-  loader.push_dir(__dir__)
-  loader.ignore(__FILE__)
-  loader.setup
-  loader.eager_load
+	loader.push_dir(__dir__)
+	loader.ignore(__FILE__)
+	loader.setup
+	loader.eager_load
 end
 
 FileUtils.mkdir_p("#{__dir__}/dist")
