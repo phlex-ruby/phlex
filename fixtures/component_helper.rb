@@ -2,7 +2,7 @@
 
 module ComponentHelper
 	def self.extended(parent)
-		parent.instance_exec do
+		parent.class_exec do
 			let(:output) { example.call }
 			let(:example) { component.new }
 		end
