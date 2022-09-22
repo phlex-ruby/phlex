@@ -2,3 +2,9 @@ inherit_from: "https://www.goodcop.style"
 
 AllCops:
   TargetRubyVersion: 2.7
+
+Layout/IndentationStyle:
+  EnforcedStyle: tabs
+
+Layout/IndentationWidth:
+  Width: 1
