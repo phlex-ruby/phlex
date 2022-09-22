@@ -70,7 +70,7 @@ module Phlex
 		end
 
 		def comment(content = "")
-			@_target << "<!-- " << content.to_s << " -->"
+			@_target << "<!-- " << CGI.escape_html(content.to_s) << " -->"
 			nil
 		end
 

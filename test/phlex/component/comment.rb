@@ -40,4 +40,16 @@ describe Phlex::Component do
 			expect(output).to be == "<!-- 1 -->"
 		end
 	end
+
+	with "escaped comment" do
+		component do
+			def template
+				comment "<b>Important</b>"
+			end
+		end
+
+		it "produces the correct output" do
+			expect(output).to be == "<!-- &lt;b&gt;Important&lt;/b&gt; -->"
+		end
+	end
 end
