@@ -11,7 +11,7 @@ module Phlex
 
 		class << self
 			attr_accessor :rendered_at_least_once
-				end
+		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
 			raise "The same component instance shouldn't be rendered twice" if rendered?
@@ -66,6 +66,11 @@ module Phlex
 
 		def whitespace
 			@_target << " "
+			nil
+		end
+
+		def comment(content = "")
+			@_target << "<!-- " << CGI.escape_html(content.to_s) << " -->"
 			nil
 		end
 
