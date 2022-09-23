@@ -25,4 +25,10 @@ module Phlex
 	end
 end
 
-require "phlex/engine"
+
+begin
+  require "rails"
+  require "phlex/engine"
+rescue LoadError
+  # Rails isnt in this env, dont load the engine.
+end
