@@ -25,6 +25,4 @@ module Phlex
 	end
 end
 
-if defined?(Rails::Engine)
-	require "rails"
-end
+require "phlex/engine"
