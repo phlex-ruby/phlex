@@ -29,6 +29,7 @@ module Components
 									li { a "Introduction", href: "/" }
 									li { a "Templates", href: "/templates" }
 									li { a "Components", href: "/components" }
+									li { a "Rails integration", href: "/rails-integration" }
 									li { a "Source code", href: "https://github.com/joeldrapper/phlex" }
 								end
 							end

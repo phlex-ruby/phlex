@@ -31,6 +31,6 @@ class PageBuilder
 	end
 
 	def path
-		@page.name.downcase.split("::")[1..].join("/")
+		@page.name.split("::")[1..].map { _1.gsub(/(.)([A-Z])/, '\1-\2') }.map(&:downcase).join("/")
 	end
 end
