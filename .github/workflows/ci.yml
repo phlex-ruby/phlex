@@ -38,5 +38,14 @@ jobs:
           ruby-version: "3.1"
           bundler-cache: true
 
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install JavaScript dependencies
+        run: npm install
+
       - name: Build docs
         run: bundle exec docs/build.rb
