@@ -18,11 +18,11 @@ module Components
 				render CodeBlock.new(code, syntax: :ruby)
 			end
 
-			@sandbox.instance_eval(code)
+			@sandbox.class_eval(code)
 		end
 
 		def execute(code)
-			output = @sandbox.instance_eval(code)
+			output = @sandbox.class_eval(code)
 
 			@t.tab("HTML Output") do
 				render CodeBlock.new(HtmlBeautifier.beautify(output), syntax: :html)
