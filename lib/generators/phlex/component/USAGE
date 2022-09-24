@@ -5,4 +5,4 @@ Example:
   rails generate phlex:component Sidebar
 
 This will create:
-  app/views/components/sidebar_component.rb
+  app/views/components/sidebar.rb
