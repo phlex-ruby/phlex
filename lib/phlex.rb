@@ -25,6 +25,9 @@ module Phlex
 	end
 end
 
-if defined?(Rails::Engine)
+begin
 	require "rails"
+	require "phlex/engine"
+rescue LoadError
+	# Rails isn't in this env, don't load the engine.
 end
