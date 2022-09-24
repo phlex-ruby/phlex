@@ -29,5 +29,5 @@ begin
 	require "rails"
 	require "phlex/engine"
 rescue LoadError
-	# Rails isnt in this env, dont load the engine.
+	# Rails isn't in this env, don't load the engine.
 end
