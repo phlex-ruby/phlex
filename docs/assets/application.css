@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+pre { tab-size: 2; }
+
 .tabs input[type="radio"]:checked + label {
   background: #f8f8f8;
   z-index: 1;
