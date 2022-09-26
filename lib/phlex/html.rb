@@ -50,7 +50,7 @@ module Phlex
 
           nil
         end
-						RUBY
+			RUBY
 		end
 
 		def register_void_element(element, tag: element.name.tr("_", "-"))
@@ -66,7 +66,7 @@ module Phlex
 
           nil
         end
-						RUBY
+			RUBY
 		end
 	end
 end

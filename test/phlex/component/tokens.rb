@@ -23,7 +23,7 @@ describe Phlex::Component do
 
 			it "works" do
 				expect(output).to be ==
-										%(<a href="/" class="a b c primary">Home</a>)
+					%(<a href="/" class="a b c primary">Home</a>)
 			end
 		end
 
@@ -31,14 +31,14 @@ describe Phlex::Component do
 			component do
 				def template
 					a "Home", href: "/", **classes("a", "b", "c",
-												-> { true } => "true",
-												-> { false } => "false")
+						-> { true } => "true",
+						-> { false } => "false")
 				end
 			end
 
 			it "works" do
 				expect(output).to be ==
-										%(<a href="/" class="a b c true">Home</a>)
+					%(<a href="/" class="a b c true">Home</a>)
 			end
 		end
 	end

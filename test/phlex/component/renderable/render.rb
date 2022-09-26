@@ -16,8 +16,8 @@ describe Phlex::Component do
 			end
 
 			it "raises an ArgumentError" do
-				expect { output }.to raise_exception ArgumentError, message:
-										"You tried to render the Phlex component class: #{Example.name} but you probably meant to render an instance of that class instead."
+				expect { output }.to raise_exception ArgumentError,
+					message: "You tried to render the Phlex component class: #{Example.name} but you probably meant to render an instance of that class instead."
 			end
 		end
 

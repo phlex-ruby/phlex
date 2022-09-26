@@ -21,7 +21,7 @@ describe Phlex::Component do
 
 			it "raises an ArgumentError" do
 				expect { example.call }.to raise_exception RuntimeError,
-										message: "The same component instance shouldn't be rendered twice"
+					message: "The same component instance shouldn't be rendered twice"
 			end
 		end
 	end

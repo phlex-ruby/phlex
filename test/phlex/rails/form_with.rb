@@ -8,7 +8,7 @@ describe Phlex::Component do
 	with "form_with" do
 		it "renders the form" do
 			expect(output).to be ==
-								%(<form action="test" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="text" name="name" /></form>\n)
+				%(<form action="test" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="text" name="name" /></form>\n)
 		end
 	end
 end
