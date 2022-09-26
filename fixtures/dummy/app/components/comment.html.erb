@@ -1,0 +1,15 @@
+<div>
+  <span>
+    <%= @name %>
+  </span>
+  <span>
+    <%= @body %>
+  </span>
+
+  <%= content %>
+
+  <%= render Views::Card.new do |a| %>
+    <p>Start Card A</p>
+    <%= a.title "Hello from A" %>
+  <% end %>
+</div>
