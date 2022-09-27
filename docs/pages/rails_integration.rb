@@ -7,6 +7,10 @@ module Pages
 				render Markdown.new(<<~MD)
 					# Ruby on Rails integration
 
+					## Installation
+
+					To install Phlex into your Rails application, you can run the `bin/rails phlex:install` command.
+
 					## Component generator
 
 					You can generate new views with the `rails g phlex:view` command.
