@@ -2,12 +2,12 @@
 
 module Phlex
 	class Compiler
-		def initialize(component)
-			@component = component
+		def initialize(view)
+			@view = view
 		end
 
 		def inspect
-			"#{self.class.name} for #{@component.name} component class"
+			"#{self.class.name} for #{@view.name} view class"
 		end
 
 		def call
@@ -15,14 +15,14 @@ module Phlex
 		end
 
 		def redefined?(method_name)
-			prototype = @component.allocate
+			prototype = @view.allocate
 
-			@component.instance_method(method_name).bind(prototype) !=
+			@view.instance_method(method_name).bind(prototype) !=
 				Phlex::View.instance_method(method_name).bind(prototype)
 		end
 
 		def redefine(method)
-			@component.class_eval(method)
+			@view.class_eval(method)
 		end
 
 		def line
@@ -44,7 +44,7 @@ module Phlex
 		end
 
 		def location
-			::Module.const_source_location(@component.name)
+			::Module.const_source_location(@view.name)
 		end
 	end
 end
