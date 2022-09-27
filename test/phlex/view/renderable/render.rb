@@ -8,7 +8,7 @@ describe Phlex::View do
 	extend ViewHelper
 
 	with "#render" do
-		with "a component class" do
+		with "a view class" do
 			view do
 				def template
 					render Example
@@ -17,11 +17,11 @@ describe Phlex::View do
 
 			it "raises an ArgumentError" do
 				expect { output }.to raise_exception ArgumentError,
-					message: "You tried to render the Phlex component class: #{Example.name} but you probably meant to render an instance of that class instead."
+					message: "You tried to render the Phlex view class: #{Example.name} but you probably meant to render an instance of that class instead."
 			end
 		end
 
-		with "another component" do
+		with "another view" do
 			other_view = Class.new Phlex::View do
 				def template(&block)
 					div(&block)
@@ -37,7 +37,7 @@ describe Phlex::View do
 					end
 				end
 
-				it "renders the other component" do
+				it "renders the other view" do
 					expect(output).to be == "<div><h1>Hi!</h1></div>"
 				end
 			end
@@ -49,7 +49,7 @@ describe Phlex::View do
 					end
 				end
 
-				it "renders the other component" do
+				it "renders the other view" do
 					expect(output).to be == "<div>Hello world!</div>"
 				end
 			end

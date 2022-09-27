@@ -9,7 +9,7 @@ module Pages
 
 					## Yielding content
 
-					Your components can accept content as a block passed to the template method. You can capture the content block and pass it to the `content` method to yield it.
+					Your views can accept content as a block passed to the template method. You can capture the content block and pass it to the `content` method to yield it.
 				MD
 
 				render Example.new do |e|
@@ -30,7 +30,7 @@ module Pages
 				render Markdown.new(<<~MD)
 					## Delegating content
 
-					Alternatively, you can pass the content down as an argument to another component or tag.
+					Alternatively, you can pass the content down as an argument to another view or tag.
 				MD
 
 				render Example.new do |e|
@@ -46,9 +46,9 @@ module Pages
 				end
 
 				render Markdown.new(<<~MD)
-					## Nested components
+					## Nested views
 
-					Components can render other components and optionally pass them content as a block.
+					Components can render other views and optionally pass them content as a block.
 				MD
 
 				render Example.new do |e|
@@ -100,7 +100,7 @@ module Pages
 				render Markdown.new(<<~MD)
 					## Component attributes
 
-					Besides content, components can define attributes in an initializer, which can then be rendered in the template.
+					Besides content, views can define attributes in an initializer, which can then be rendered in the template.
 				MD
 
 				render Example.new do |e|
@@ -128,11 +128,11 @@ module Pages
 				end
 
 				render Markdown.new(<<~MD)
-					It’s usually a good idea to use instance variables directly rather than creating accessor methods for them. Otherwise it’s easy to run into naming conflicts. For example, your layout component might have the attribute `title`, to render into a `<title>` element in the document head. If you define `attr_accessor :title`, that would overwrite the `title` method for creating `<title>` elements.
+					It’s usually a good idea to use instance variables directly rather than creating accessor methods for them. Otherwise it’s easy to run into naming conflicts. For example, your layout view might have the attribute `title`, to render into a `<title>` element in the document head. If you define `attr_accessor :title`, that would overwrite the `title` method for creating `<title>` elements.
 
 					## Calculations with methods
 
-					Components are just Ruby classes, so you can perform calculations on component attributes by defining your own methods.
+					Views are just Ruby classes, so you can perform calculations on view attributes by defining your own methods.
 				MD
 
 				render Example.new do |e|

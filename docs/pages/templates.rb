@@ -9,9 +9,9 @@ module Pages
 
 					Rather than use another langauge like ERB, HAML or Slim, Phlex provides a Ruby DSL for defining HTML templates.
 
-					You can create a component class by subclassing `Phlex::View` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+					You can create a view class by subclassing `Phlex::View` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
-					The first argument to an HTML element method is the _text content_ for that element. For example, here’s a component with an `<h1>` element that says “Hello World!”
+					The first argument to an HTML element method is the _text content_ for that element. For example, here’s a view with an `<h1>` element that says “Hello World!”
 				MD
 
 				render Example.new do |e|
@@ -138,7 +138,7 @@ module Pages
 
 					The keyword arguments allow you to specify under which conditions certain tokens are applicable. The keyword argument keys are the conditions and the values are the tokens. Conditions can be Procs or Symbols that map to a relevant method. The `:active?` Symbol, for example, maps to the `active?` instance method.
 
-					Here we have a `Link` component that produces an `<a>` tag with the CSS class `nav-item`. And if the link is _active_, we also apply the CSS class `nav-item-active`.
+					Here we have a `Link` view that produces an `<a>` tag with the CSS class `nav-item`. And if the link is _active_, we also apply the CSS class `nav-item-active`.
 				MD
 
 				render Example.new do |e|
@@ -220,7 +220,7 @@ module Pages
 				render Markdown.new(<<~MD)
 					## The template element
 
-					Because the `template` method is used to define the component template itself, you need to use the method `template_tag` if you want to to render an HTML `<template>` tag.
+					Because the `template` method is used to define the view template itself, you need to use the method `template_tag` if you want to to render an HTML `<template>` tag.
 				MD
 
 				render Example.new do |e|

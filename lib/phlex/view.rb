@@ -28,7 +28,7 @@ module Phlex
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
-			raise "The same component instance shouldn't be rendered twice" if rendered?
+			raise "The same view instance shouldn't be rendered twice" if rendered?
 
 			@_rendered = true
 			@_target = buffer
