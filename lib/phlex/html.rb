@@ -134,7 +134,7 @@ module Phlex
               @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << ">" << CGI.escape_html(content) << "</#{tag}>"
             elsif block_given?
               @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << ">"
-              content(&block)
+              yield_content(&block)
               @_target << "</#{tag}>"
             else
               @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << "></#{tag}>"
@@ -151,7 +151,7 @@ module Phlex
               end
             elsif block_given?
               @_target << "<#{tag}>"
-              content(&block)
+              yield_content(&block)
               @_target << "</#{tag}>"
             else
               @_target << "<#{tag}></#{tag}>"
