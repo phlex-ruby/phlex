@@ -18,7 +18,7 @@ module Pages
 							def template(&)
 								article(class: "drop-shadow rounded p-5") {
 									h1 "Amazing content!"
-									content(&)
+									yield_content(&)
 								}
 							end
 						end

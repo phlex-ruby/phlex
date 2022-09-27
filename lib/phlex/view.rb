@@ -55,7 +55,7 @@ module Phlex
 			register_void_element(method_name, tag: tag)
 		end
 
-		def content(&block)
+		def yield_content(&block)
 			return unless block_given?
 
 			original_length = @_target.length
