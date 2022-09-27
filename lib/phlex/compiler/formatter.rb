@@ -15,25 +15,50 @@ module Phlex
 			end
 
 			def flush
-				text "" if @open_append
+				text "" if @open_string_append
 
 				super
 			end
 
 			def breakable(*args, **kwargs)
-				if !@texting && @open_append
+				if !@texting && @open_string_append
 					@broken = kwargs
 				else
 					super
 				end
 			end
 
+			def chain_append(&block)
+				@appending = true
+
+				if @open_string_append
+					text '" << '
+				elsif @open_chain_append
+					text " << "
+				else
+					text "@_target << "
+				end
+
+				@open_string_append = false
+				@open_chain_append = true
+
+				yield(self)
+
+				@appending = false
+			end
+
 			def append(&block)
 				@appending = true
 
-				unless @open_append
-					text %(@_target << ")
-					@open_append = true
+				unless @open_string_append
+					if @open_chain_append
+						text ' << "'
+					else
+						text '@_target << "'
+					end
+
+					@open_chain_append = false
+					@open_string_append = true
 				end
 
 				yield(self)
@@ -45,10 +70,12 @@ module Phlex
 				@texting = true
 
 				unless @appending
-					if @open_append
+					if @open_string_append
 						super('"')
-						@open_append = false
+						@open_string_append = false
 					end
+
+					@open_chain_append = false
 
 					breakable(**@broken) if @broken
 				end
