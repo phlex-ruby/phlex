@@ -3,7 +3,7 @@
 module Phlex
 	class Compiler
 		module Optimizers
-			module VCall
+			class VCall < BaseOptimizer
 				module StandardElement
 					def format(formatter)
 						Generators::StandardElement.new(formatter,
@@ -16,6 +16,12 @@ module Phlex
 						Generators::VoidElement.new(formatter,
 							method_name: value.value.to_sym).call
 					end
+				end
+
+				private
+
+				def name
+					@node.value.value.to_sym
 				end
 			end
 		end
