@@ -28,7 +28,7 @@ module Components
 								ul do
 									li { a "Introduction", href: "/" }
 									li { a "Templates", href: "/templates" }
-									li { a "Views", href: "/components" }
+									li { a "Views", href: "/views" }
 									li { a "Rails integration", href: "/rails-integration" }
 									li { a "Source code", href: "https://github.com/joeldrapper/phlex" }
 								end
