@@ -3,7 +3,7 @@
 module Phlex
 	class Compiler
 		module Visitors
-			class Base < SyntaxTree::Visitor
+			class BaseVisitor < SyntaxTree::Visitor
 				def initialize(compiler = nil)
 					@compiler = compiler
 				end

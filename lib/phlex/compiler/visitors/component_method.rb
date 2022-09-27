@@ -3,7 +3,7 @@
 module Phlex
 	class Compiler
 		module Visitors
-			class ComponentMethod < Base
+			class ComponentMethod < BaseVisitor
 				def optimized_something?
 					!!@optimized_something
 				end

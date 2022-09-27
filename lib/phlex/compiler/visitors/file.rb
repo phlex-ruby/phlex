@@ -3,7 +3,7 @@
 module Phlex
 	class Compiler
 		module Visitors
-			class File < Base
+			class File < BaseVisitor
 				visit_method def visit_class(node)
 					if node.location.start_line == @compiler.line
 						Visitors::Component.new(@compiler).visit_all(node.child_nodes)
