@@ -8,7 +8,7 @@ describe Phlex::Component do
 
 		it "renders comments" do
 			expect(output).to be ==
-        %(<div>\n  <span>\n    Matz\n  </span>\n  <span>\n    hey, folks\n  </span>\n\n  \n  Hello, World from a ViewComponent!\n\n\n  \n    <p>Emoji reaction for a comment from Matz with body hey, folks</p>\n<p>{:emoji=&gt;&quot;hamburger&quot;}</p>&lt;/p&gt;\n</div>\n)
+        %(<div>\n  <span>\n    Matz\n  </span>\n  <span>\n    hey, folks\n  </span>\n\n  \n  Hello, World from a ViewComponent!\n\n\n  \n    <p>Emoji reaction for a comment from Matz with body hey, folks</p>\n<p emoji=\"hamburger\"></p>&lt;/p&gt;\n</div>\n)
 		end
 	end
 
