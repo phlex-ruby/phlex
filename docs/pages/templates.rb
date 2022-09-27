@@ -7,7 +7,7 @@ module Pages
 				render Markdown.new(<<~MD)
 					# Templates
 
-					Rather than use another langauge like ERB, HAML or Slim, Phlex provides a Ruby DSL for defining HTML templates.
+					Rather than use another language like ERB, HAML or Slim, Phlex provides a Ruby DSL for defining HTML templates.
 
 					You can create a view class by subclassing `Phlex::View` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
