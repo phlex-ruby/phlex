@@ -8,7 +8,7 @@ describe Phlex::Component do
 
 		it "renders comments" do
 			expect(output).to be ==
-										%(<div>\n  <span>\n    Matz\n  </span>\n  <span>\n    hey, folks\n  </span>\n\n  \n  Hello, World from a ViewComponent!\n\n\n  \n    <p>Start Card A</p>\n    \n<article class=\"drop-shadow p-5 rounded\"><h3 class=\"font-bold\">Hello from A</h3></article></div>\n)
+        %(<div>\n  <span>\n    Matz\n  </span>\n  <span>\n    hey, folks\n  </span>\n\n  \n  Hello, World from a ViewComponent!\n\n\n  \n    <p>Emoji reaction for a comment from Matz with body hey, folks</p>\n<p>{:emoji=&gt;&quot;hamburger&quot;}</p>&lt;/p&gt;\n</div>\n)
 		end
 	end
 
@@ -17,7 +17,7 @@ describe Phlex::Component do
 
 		it "renders comments" do
 			expect(output).to be ==
-										%(<div>\n  <span>\n    _why\n  </span>\n  <span>\n    I&#39;m back\n  </span>\n\n  \n\n  \n    <p>Start Card A</p>\n    \n<article class=\"drop-shadow p-5 rounded\"><h3 class=\"font-bold\">Hello from A</h3></article></div>\n\n)
+        %(<div><span>_why</span><span>I&#39;m back</span>\n  Hello, World from a Phlex Component!\n<p>Emoji reaction for a comment from _why with body I&#39;m back</p><p>hamburger</p>\n\n\n</div>)
 		end
 	end
 end

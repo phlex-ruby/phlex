@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Comment < ViewComponent::Base
+class CommentComponent < ViewComponent::Base
 	def initialize(name:, body:)
 		@name = name
 		@body = body
