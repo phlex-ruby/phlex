@@ -147,7 +147,7 @@ module Phlex
 				when Symbol then next unless send(condition)
 				when Proc then next unless condition.call
 				else raise ArgumentError,
-										"The class condition must be a Symbol or a Proc."
+					"The class condition must be a Symbol or a Proc."
 				end
 
 				case token
@@ -155,7 +155,7 @@ module Phlex
 				when String then tokens << token
 				when Array then tokens.concat(t)
 				else raise ArgumentError,
-										"Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
+					"Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
 				end
 			end
 

@@ -9,15 +9,8 @@ module Phlex
 				end
 
 				visit_method def visit_vcall(node)
-					name = node.value.value.to_sym
-
-					if HTML::STANDARD_ELEMENTS[name] && !@compiler.redefined?(name)
-						@optimized_something = true
-						node.extend(Optimizers::VCall::StandardElement)
-					elsif HTML::VOID_ELEMENTS[name] && !@compiler.redefined?(name)
-						@optimized_something = true
-						node.extend(Optimizers::VCall::VoidElement)
-					end
+					@optimized_something = Optimizers::VCall.new(node,
+						compiler: @compiler).call
 
 					super
 				end
