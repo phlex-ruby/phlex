@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
 	spec.authors = ["Joel Drapper"]
 	spec.email = ["joel@drapper.me"]
 
-	spec.summary = "A framework for building view components with a Ruby DSL."
-	spec.description = "A high-performance view component framework optimised for developer happiness."
+	spec.summary = "A framework for building views with a Ruby DSL."
+	spec.description = "A high-performance view framework optimised for developer happiness."
 	spec.homepage = "https://www.phlex.fun"
 	spec.license = "MIT"
 	spec.required_ruby_version = ">= 2.7"

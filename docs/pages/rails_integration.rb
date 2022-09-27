@@ -9,9 +9,9 @@ module Pages
 
 					## Component generator
 
-					You can generate new components with the `rails g phlex:component` command.
+					You can generate new views with the `rails g phlex:view` command.
 
-					For example, running `rails g phlex:component Card` will create the following file:
+					For example, running `rails g phlex:view Card` will create the following file:
 				MD
 
 				render CodeBlock.new(<<~RUBY, syntax: :ruby)
