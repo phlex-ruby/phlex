@@ -5,7 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex
-	class Component
+	class View
 		extend HTML
 		include Renderable
 

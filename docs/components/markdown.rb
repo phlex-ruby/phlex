@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class Markdown < Phlex::Component
+	class Markdown < Phlex::View
 		class Render < Redcarpet::Render::HTML
 			def header(text, level)
 				case level

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Pages
-	class Components < ApplicationPage
+	class Views < ApplicationPage
 		def template
 			render Layout.new(title: "Components in Phlex") do
 				render Markdown.new(<<~MD)
-					# Components
+					#  Views
 
 					## Yielding content
 
@@ -14,7 +14,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::Component
+						class Card < Phlex::View
 							def template(&)
 								article(class: "drop-shadow rounded p-5") {
 									h1 "Amazing content!"
@@ -35,7 +35,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::Component
+						class Card < Phlex::View
 							def template(&)
 								article(class: "drop-shadow rounded p-5", &)
 							end
@@ -53,7 +53,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								render Card.new do
 									h1 "Hello"
@@ -63,7 +63,7 @@ module Pages
 					RUBY
 
 					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::Component
+						class Card < Phlex::View
 							def template(&)
 								article(class: "drop-shadow rounded p-5", &)
 							end
@@ -79,7 +79,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								render(Card.new) { "Hi" }
 							end
@@ -87,7 +87,7 @@ module Pages
 					RUBY
 
 					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::Component
+						class Card < Phlex::View
 							def template(&)
 								article(class: "drop-shadow rounded p-5", &)
 							end
@@ -105,7 +105,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "hello.rb", <<~RUBY
-						class Hello < Phlex::Component
+						class Hello < Phlex::View
 							def initialize(name:)
 								@name = name
 							end
@@ -117,7 +117,7 @@ module Pages
 					RUBY
 
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								render Hello.new(name: "Joel")
 							end
@@ -137,7 +137,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "status.rb", <<~RUBY
-						class Status < Phlex::Component
+						class Status < Phlex::View
 							def initialize(status:)
 								@status = status
 							end
@@ -160,7 +160,7 @@ module Pages
 					RUBY
 
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								render Status.new(status: :success)
 							end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class CodeBlock < Phlex::Component
+	class CodeBlock < Phlex::View
 		FORMATTER = Rouge::Formatters::HTML.new
 
 		def initialize(code, syntax:)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class Layout < Phlex::Component
+	class Layout < Phlex::View
 		register_element :style
 
 		def initialize(title:)
@@ -28,7 +28,7 @@ module Components
 								ul do
 									li { a "Introduction", href: "/" }
 									li { a "Templates", href: "/templates" }
-									li { a "Components", href: "/components" }
+									li { a "Views", href: "/components" }
 									li { a "Rails integration", href: "/rails-integration" }
 									li { a "Source code", href: "https://github.com/joeldrapper/phlex" }
 								end

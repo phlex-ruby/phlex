@@ -2,10 +2,10 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
-	component do
+	view do
 		def template
 			text "Hi"
 		end
@@ -17,7 +17,7 @@ describe Phlex::Component do
 		end
 
 		with "a spent component" do
-			let(:example) { component.new.tap(&:call) }
+			let(:example) { view.new.tap(&:call) }
 
 			it "raises an ArgumentError" do
 				expect { example.call }.to raise_exception RuntimeError,

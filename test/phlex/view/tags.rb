@@ -2,12 +2,12 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	Phlex::HTML::STANDARD_ELEMENTS.each do |method_name, tag|
 		with "<#{method_name}> with text content and attributes" do
-			component do
+			view do
 				define_method :template do
 					send(method_name, "content", class: "class", id: "id", disabled: true, selected: false)
 				end
@@ -19,7 +19,7 @@ describe Phlex::Component do
 		end
 
 		with "<#{method_name}> with block content and attributes" do
-			component do
+			view do
 				define_method :template do
 					send(method_name, class: "class", id: "id", disabled: true, selected: false) { h1 "Hello" }
 				end
@@ -31,7 +31,7 @@ describe Phlex::Component do
 		end
 
 		with "<#{method_name}> with block text content and attributes" do
-			component do
+			view do
 				define_method :template do
 					send(method_name, class: "class", id: "id", disabled: true, selected: false) { "content" }
 				end
@@ -45,7 +45,7 @@ describe Phlex::Component do
 
 	Phlex::HTML::VOID_ELEMENTS.each do |method_name, tag|
 		with "<#{method_name}> with attributes" do
-			component do
+			view do
 				define_method :template do
 					send(method_name, class: "class", id: "id", disabled: true, selected: false)
 				end

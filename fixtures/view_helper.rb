@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-module ComponentHelper
+module ViewHelper
 	def self.extended(parent)
 		parent.class_exec do
 			let(:output) { example.call }
-			let(:example) { component.new }
+			let(:example) { view.new }
 		end
 	end
 
-	def component(&block)
-		let :component do
-			Class.new(Phlex::Component, &block)
+	def view(&block)
+		let :view do
+			Class.new(Phlex::View, &block)
 		end
 	end
 end

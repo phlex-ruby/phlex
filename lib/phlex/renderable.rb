@@ -3,13 +3,13 @@
 module Phlex
 	module Renderable
 		def render(renderable, *args, **kwargs, &block)
-			if renderable.is_a?(Component)
+			if renderable.is_a?(View)
 				if block_given? && !block.binding.receiver.is_a?(Phlex::Block)
 					block = Phlex::Block.new(self, &block)
 				end
 
 				renderable.call(@_target, view_context: @_view_context, parent: self, &block)
-			elsif renderable.is_a?(Class) && renderable < Component
+			elsif renderable.is_a?(Class) && renderable < View
 				raise ArgumentError, "You tried to render the Phlex component class: #{renderable.name} but you probably meant to render an instance of that class instead."
 			else
 				@_target << @_view_context.render(renderable, *args, **kwargs, &block)

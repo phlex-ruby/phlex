@@ -3,19 +3,19 @@
 module Fixtures
 	module Compilation
 		module VCall
-			class WithStandardElement < Phlex::Component
+			class WithStandardElement < Phlex::View
 				def template
 					div
 				end
 			end
 
-			class WithVoidElement < Phlex::Component
+			class WithVoidElement < Phlex::View
 				def template
 					img
 				end
 			end
 
-			class WithAnotherMethodCall < Phlex::Component
+			class WithAnotherMethodCall < Phlex::View
 				def template
 					article
 					some_other_method
@@ -23,7 +23,7 @@ module Fixtures
 				end
 			end
 
-			class WithRedefinedTagMethod < Phlex::Component
+			class WithRedefinedTagMethod < Phlex::View
 				def template
 					title
 					article

@@ -2,14 +2,14 @@
 
 require "test_helper"
 
-Example = Class.new(Phlex::Component)
+Example = Class.new(Phlex::View)
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "#render" do
 		with "a component class" do
-			component do
+			view do
 				def template
 					render Example
 				end
@@ -22,16 +22,16 @@ describe Phlex::Component do
 		end
 
 		with "another component" do
-			other_component = Class.new Phlex::Component do
+			other_view = Class.new Phlex::View do
 				def template(&block)
 					div(&block)
 				end
 			end
 
 			with "markup" do
-				component do
+				view do
 					define_method :template do
-						render(other_component.new) do
+						render(other_view.new) do
 							h1 "Hi!"
 						end
 					end
@@ -43,9 +43,9 @@ describe Phlex::Component do
 			end
 
 			with "text" do
-				component do
+				view do
 					define_method :template do
-						render(other_component.new) { "Hello world!" }
+						render(other_view.new) { "Hello world!" }
 					end
 				end
 
