@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "hash attributes" do
-		component do
+		view do
 			def template
 				div data: { name: { first_name: "Joel" } }
 			end
@@ -19,17 +19,17 @@ describe Phlex::Component do
 
 	if RUBY_ENGINE == "ruby"
 		with "unique tag attributes" do
-			component do
+			view do
 				def template
 					div class: SecureRandom.hex
 				end
 			end
 
 			let :report do
-				component.new.call
+				view.new.call
 
 				MemoryProfiler.report do
-					2.times { component.new.call }
+					2.times { view.new.call }
 				end
 			end
 

@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "text" do
-		component do
+		view do
 			def template
 				text "Hi"
 			end
@@ -18,7 +18,7 @@ describe Phlex::Component do
 	end
 
 	with "int as text" do
-		component do
+		view do
 			def template
 				text 1
 			end
@@ -30,7 +30,7 @@ describe Phlex::Component do
 	end
 
 	with "float as text" do
-		component do
+		view do
 			def template
 				text 2.0
 			end

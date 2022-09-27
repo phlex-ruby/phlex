@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Views
-	class Card < Phlex::Component
+	class Card < Phlex::View
 		def template(&block)
 			article class: "drop-shadow p-5 rounded", &block
 		end

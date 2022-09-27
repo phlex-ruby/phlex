@@ -14,10 +14,19 @@ loader.setup
 module Phlex
 	Error = Module.new
 	ArgumentError = Class.new(ArgumentError) { include Error }
+	NameError = Class.new(NameError) { include Error }
 
 	extend self
 
 	ATTRIBUTE_CACHE = {}
+
+	def const_missing(name)
+		if name == :Component
+			raise NameError, "👋 Phlex::Component is now Phlex::View"
+		else
+			super
+		end
+	end
 
 	def configuration
 		@configuration ||= Configuration.new

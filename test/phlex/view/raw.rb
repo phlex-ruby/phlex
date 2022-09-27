@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "raw content" do
-		component do
+		view do
 			def template
 				raw %(<h1 class="test">Hello</h1>)
 			end

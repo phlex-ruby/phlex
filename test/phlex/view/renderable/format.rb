@@ -2,10 +2,10 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
-	component
+	view
 
 	with "format" do
 		it "returns :html" do

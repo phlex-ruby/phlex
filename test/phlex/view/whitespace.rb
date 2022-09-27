@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "whitespace" do
-		component do
+		view do
 			def template
 				a "Home"
 				whitespace

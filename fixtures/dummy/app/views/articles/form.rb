@@ -2,7 +2,7 @@
 
 module Views
 	module Articles
-		class Form < Phlex::Component
+		class Form < Phlex::View
 			def template
 				form_with url: "test" do |f|
 					f.text_field :name

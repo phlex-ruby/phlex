@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Example
-	class Page < Phlex::Component
+	class Page < Phlex::View
 		def template
 			render LayoutComponent.new do
 				h1 "Hi"

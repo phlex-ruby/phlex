@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "simple comment" do
-		component do
+		view do
 			def template
 				comment "This is an HTML comment"
 			end
@@ -18,7 +18,7 @@ describe Phlex::Component do
 	end
 
 	with "empty comment" do
-		component do
+		view do
 			def template
 				comment
 			end
@@ -30,7 +30,7 @@ describe Phlex::Component do
 	end
 
 	with "number comment" do
-		component do
+		view do
 			def template
 				comment 1
 			end
@@ -42,7 +42,7 @@ describe Phlex::Component do
 	end
 
 	with "escaped comment" do
-		component do
+		view do
 			def template
 				comment "<b>Important</b>"
 			end

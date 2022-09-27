@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-describe Phlex::Component do
+describe Phlex::View do
 	with "rendered in an ERB view" do
 		let(:output) { ArticlesController.render "index" }
 

@@ -18,7 +18,7 @@ module Pages
 					# app/views/card.rb
 
 					module Views
-						class Card < Phlex::Component
+						class Card < Phlex::View
 							def template
 							end
 						end

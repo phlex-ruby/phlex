@@ -2,7 +2,7 @@
 
 module Components
 	class Tabs
-		class Tab < Phlex::Component
+		class Tab < Phlex::View
 			def initialize(name:, checked:)
 				@name = name
 				@checked = checked

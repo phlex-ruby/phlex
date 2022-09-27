@@ -5,7 +5,7 @@ module Phlex
 		class ComponentGenerator < ::Rails::Generators::NamedBase
 			source_root File.expand_path("templates", __dir__)
 
-			def create_component
+			def create_view
 				template "component.rb.erb", File.join("app/views", class_path, "#{file_name}.rb")
 			end
 		end

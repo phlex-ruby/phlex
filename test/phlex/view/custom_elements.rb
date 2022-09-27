@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "custom elements" do
-		component do
+		view do
 			register_element :trix_editor
 			register_element :trix_toolbar
 

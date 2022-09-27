@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class Example < Phlex::Component
+	class Example < Phlex::View
 		def initialize
 			@sandbox = Module.new
 		end

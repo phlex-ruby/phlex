@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "numbers" do
-		component do
+		view do
 			def template
 				span 1
 				span 2.0
@@ -19,7 +19,7 @@ describe Phlex::Component do
 	end
 
 	with "numbers in block" do
-		component do
+		view do
 			def template
 				span do
 					1

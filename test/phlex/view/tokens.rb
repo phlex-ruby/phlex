@@ -2,12 +2,12 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "conditional classes" do
 		with "symbol conditionals" do
-			component do
+			view do
 				def template
 					a "Home", href: "/", **classes("a", "b", "c", active?: "active", primary?: "primary")
 				end
@@ -28,7 +28,7 @@ describe Phlex::Component do
 		end
 
 		with "proc conditionals" do
-			component do
+			view do
 				def template
 					a "Home", href: "/", **classes("a", "b", "c",
 						-> { true } => "true",

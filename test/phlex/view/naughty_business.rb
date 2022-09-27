@@ -2,11 +2,11 @@
 
 require "test_helper"
 
-describe Phlex::Component do
-	extend ComponentHelper
+describe Phlex::View do
+	extend ViewHelper
 
 	with "naughty text" do
-		component do
+		view do
 			def template
 				text %("><script type="text/javascript" src="bad_script.js"></script>)
 			end
@@ -18,7 +18,7 @@ describe Phlex::Component do
 	end
 
 	with "naughty tag attribute values" do
-		component do
+		view do
 			def template
 				article id: %("><script type="text/javascript" src="bad_script.js"></script>)
 			end
@@ -30,7 +30,7 @@ describe Phlex::Component do
 	end
 
 	with "naughty javascript link protocol in href" do
-		component do
+		view do
 			def template
 				a "naughty link", href: "javascript:javascript:alert(1)"
 			end
@@ -45,7 +45,7 @@ describe Phlex::Component do
 		with "with naughty #{event_attribute} attribute" do
 			naughty_attributes = { event_attribute => "alert(1);" }
 
-			component do
+			view do
 				define_method :template do
 					send(:div, **naughty_attributes)
 				end
@@ -63,7 +63,7 @@ describe Phlex::Component do
 			naughty_attribute = "abc#{naughty_character}123"
 			naughty_attributes = { naughty_attribute => "alert(1);" }
 
-			component do
+			view do
 				define_method :template do
 					send(:div, **naughty_attributes)
 				end

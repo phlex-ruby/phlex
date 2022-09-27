@@ -9,14 +9,14 @@ module Pages
 
 					Rather than use another langauge like ERB, HAML or Slim, Phlex provides a Ruby DSL for defining HTML templates.
 
-					You can create a component class by subclassing `Phlex::Component` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+					You can create a component class by subclassing `Phlex::View` and defining a method called `template`. Within the `template` method, you can compose HTML markup by calling the name of any [HTML element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
 					The first argument to an HTML element method is the _text content_ for that element. For example, here’s a component with an `<h1>` element that says “Hello World!”
 				MD
 
 				render Example.new do |e|
 					e.tab "heading.rb", <<~RUBY
-						class Heading < Phlex::Component
+						class Heading < Phlex::View
 							def template
 								h1 "Hello World!"
 							end
@@ -36,7 +36,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "heading.rb", <<~RUBY
-						class Heading < Phlex::Component
+						class Heading < Phlex::View
 							def template
 								h1 "Hello World!",
 									class: "text-xl font-bold",
@@ -54,7 +54,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								input type: "radio", name: "channel", id: "1", checked: true
 								input type: "radio", name: "channel", id: "2", checked: false
@@ -73,7 +73,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "nav.rb", <<~RUBY
-						class Nav < Phlex::Component
+						class Nav < Phlex::View
 							def template
 								nav do
 									ul do
@@ -97,7 +97,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "heading.rb", <<~RUBY
-						class Heading < Phlex::Component
+						class Heading < Phlex::View
 							def template
 								h1 { strong "Hello "; text "World!" }
 							end
@@ -115,7 +115,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "links.rb", <<~RUBY
-						class Links < Phlex::Component
+						class Links < Phlex::View
 							def template
 								a "Home", href: "/"
 								whitespace
@@ -143,7 +143,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "link.rb", <<~RUBY
-						class Link < Phlex::Component
+						class Link < Phlex::View
 							def initialize(text, to:, active:)
 								@text = text
 								@to = to
@@ -162,7 +162,7 @@ module Pages
 					RUBY
 
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								nav do
 									ul do
@@ -183,7 +183,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "link.rb", <<~RUBY
-						class Link < Phlex::Component
+						class Link < Phlex::View
 							def initialize(text, to:, active:)
 								@text = text
 								@to = to
@@ -202,7 +202,7 @@ module Pages
 					RUBY
 
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								nav do
 									ul do
@@ -225,7 +225,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::Component
+						class Example < Phlex::View
 							def template
 								template_tag do
 									img src: "hidden.jpg", alt: "A hidden image."

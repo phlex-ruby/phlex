@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-describe Phlex::Component do
+describe Phlex::View do
 	let(:output) { ArticlesController.render "new" }
 
 	with "form_with" do

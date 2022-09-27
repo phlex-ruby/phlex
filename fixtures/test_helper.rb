@@ -10,4 +10,4 @@ Combustion.initialize! :action_controller do
 	config.autoload_paths << "#{root}/app"
 end
 
-require "component_helper"
+require "view_helper"
