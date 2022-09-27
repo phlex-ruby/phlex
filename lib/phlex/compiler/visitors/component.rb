@@ -3,7 +3,7 @@
 module Phlex
 	class Compiler
 		module Visitors
-			class Component < Base
+			class Component < BaseVisitor
 				visit_method def visit_def(node)
 					visitor = Visitors::ComponentMethod.new(@compiler)
 					visitor.visit_all(node.child_nodes)
