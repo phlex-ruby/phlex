@@ -24,6 +24,30 @@ module Pages
 						end
 					end
 				RUBY
+
+				render Markdown.new(<<~MD)
+					## Helpers
+
+					You can use the `helpers` proxy to access helpers within a `Phlex::View`.
+
+					For example, you can use the `#t` helper for translations:
+				MD
+
+				render CodeBlock.new(<<~RUBY, syntax: :ruby)
+					# app/views/hello.rb
+
+					module Views
+						class Hello < Phlex::View
+						  delegate :t, to: :helpers
+
+							def template
+							  h1 do
+								  t "hello"
+								end
+							end
+						end
+					end
+				RUBY
 			end
 		end
 	end
