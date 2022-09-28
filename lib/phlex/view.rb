@@ -162,6 +162,10 @@ module Phlex
 			tokens.compact.join(" ")
 		end
 
+		def helpers
+			@_view_context
+		end
+
 		def _attributes(attributes, buffer: +"")
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
