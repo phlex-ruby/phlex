@@ -62,7 +62,13 @@ module Phlex
 			output = yield(self)
 			unchanged = (original_length == @_target.length)
 
-			text(output) if unchanged
+			if unchanged
+				case output
+				when String, Symbol, Integer, Float
+					text(output)
+				end
+			end
+
 			nil
 		end
 
