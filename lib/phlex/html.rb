@@ -40,6 +40,7 @@ module Phlex
 			figure: "figure",
 			footer: "footer",
 			form: "form",
+			g: "g",
 			h1: "h1",
 			h2: "h2",
 			h3: "h3",
