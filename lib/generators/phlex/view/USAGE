@@ -1,0 +1,8 @@
+Description:
+  Generates a Phlex view with the given name
+
+Example:
+  rails generate phlex:view Sidebar
+
+This will create:
+  app/views/sidebar.rb

@@ -1,8 +1,0 @@
-Description:
-  Generates a phlex component with the given name
-
-Example:
-  rails generate phlex:component Sidebar
-
-This will create:
-  app/views/components/sidebar.rb
