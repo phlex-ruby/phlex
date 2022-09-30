@@ -6,6 +6,7 @@ require "syntax_tree"
 
 loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.ignore("#{__dir__}/generators")
+loader.ignore("#{__dir__}/install")
 loader.inflector.inflect("html" => "HTML")
 loader.inflector.inflect("vcall" => "VCall")
 loader.inflector.inflect("fcall" => "FCall")
