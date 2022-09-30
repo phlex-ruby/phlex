@@ -17,11 +17,13 @@ end
 
 unless Rails.root.join("app/views/application_view.rb").exist?
 	create_file(Rails.root.join("app/views/application_view.rb"), <<~RUBY)
-  # frozen_string_literal: true
+		# frozen_string_literal: true
 
-  class Views::ApplicationView < Phlex::View
-    # Base class for your views
-  end
+		module Views
+		  class ApplicationView < Phlex::View
+		    include Rails.application.routes.url_helpers
+		  end
+		end
 	RUBY
 end
 
