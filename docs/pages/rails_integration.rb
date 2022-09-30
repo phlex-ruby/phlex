@@ -11,7 +11,7 @@ module Pages
 
 					To install Phlex into your Rails application, you can run the `bin/rails phlex:install` command.
 
-					## Component generator
+					## View generator
 
 					You can generate new views with the `rails g phlex:view` command.
 
@@ -22,7 +22,7 @@ module Pages
 					# app/views/card.rb
 
 					module Views
-						class Card < Phlex::View
+						class Card < ApplicationView
 							def template
 							end
 						end
@@ -32,7 +32,7 @@ module Pages
 				render Markdown.new(<<~MD)
 					## Helpers
 
-					You can use the `helpers` proxy to access helpers within a `Phlex::View`.
+					You can use the `helpers` proxy to access helpers within your views.
 
 					For example, you can use the `#t` helper for translations:
 				MD
@@ -41,7 +41,7 @@ module Pages
 					# app/views/hello.rb
 
 					module Views
-						class Hello < Phlex::View
+						class Hello < ApplicationView
 						  delegate :t, to: :helpers
 
 							def template

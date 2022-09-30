@@ -15,4 +15,14 @@ unless application_configuration_content.match?(pattern)
 	)
 end
 
+unless Rails.root.join("app/views/application_view.rb").exist?
+	create_file(Rails.root.join("app/views/application_view.rb"), <<~RUBY)
+  # frozen_string_literal: true
+
+  class Views::ApplicationView < Phlex::View
+    # Base class for your views
+  end
+	RUBY
+end
+
 say "Phlex successfully installed!"
