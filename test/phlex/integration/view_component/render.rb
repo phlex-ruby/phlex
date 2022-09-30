@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-describe Phlex::Component do
+describe Phlex::View do
 	with "ViewComponent renders a Phlex component" do
 		let(:output) { CommentsController.render "index" }
 

@@ -2,7 +2,7 @@
 
 module Views
 	module Comments
-		class Comment < Phlex::Component
+		class Comment < Phlex::View
 			def initialize(name:, body:)
 				@name = name
 				@body = body
@@ -13,7 +13,7 @@ module Views
 					span @name
 					span @body
 
-					content(&block)
+					yield_content(&block)
 
 					render(::ReactionComponent.new(emoji: "hamburger")) do
 						p "Emoji reaction for a comment from #{@name} with body #{@body}"

@@ -2,7 +2,7 @@
 
 module Views
 	module Comments
-		class Reaction < Phlex::Component
+		class Reaction < Phlex::View
 			def initialize(emoji:)
 				@emoji = emoji
 			end
@@ -10,7 +10,7 @@ module Views
 			def template(&block)
 				p @emoji
 
-				content(&block)
+				yield_content(&block)
 			end
 		end
 	end
