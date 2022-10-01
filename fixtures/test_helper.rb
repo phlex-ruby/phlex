@@ -11,3 +11,5 @@ Combustion.initialize! :action_controller do
 end
 
 require "view_helper"
+
+Zeitwerk::Loader.eager_load_all
