@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require "rails_test_helper"
 
 describe Phlex::View do
 	with "rendered in an ERB view" do

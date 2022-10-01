@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require "isolated_test_helper"
 
 describe Phlex::Compiler::Formatter do
 	let(:formatter) { Phlex::Compiler::Formatter.new("") }

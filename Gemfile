@@ -5,18 +5,28 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gemspec
 
-gem "rake"
+group :rails do
+	gem "rails"
+end
 
-gem "sus", group: [:test]
-gem "rails", group: [:test]
-gem "rouge", group: [:docs]
-gem "listen", group: [:docs]
-gem "webrick", group: [:docs]
-gem "zeitwerk", group: [:docs]
-gem "redcarpet", group: [:docs]
-gem "combustion", group: [:test]
-gem "benchmark-ips"
-gem "htmlbeautifier", group: [:docs]
-gem "benchmark-memory"
+group :test do
+	gem "sus"
+	gem "memory_profiler"
+	gem "combustion"
+end
+
+group :docs do
+	gem "rouge"
+	gem "listen"
+	gem "webrick"
+	gem "zeitwerk"
+	gem "redcarpet"
+	gem "htmlbeautifier"
+end
+
+group :benchmark do
+	gem "benchmark-ips"
+end
+
 gem "rubocop", require: false, github: "joeldrapper/rubocop", branch: "rubocop-user-agent"
 gem "syntax_suggest"

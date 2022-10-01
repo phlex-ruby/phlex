@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
-require "phlex"
-require "bundler"
+require "isolated_test_helper"
 
-Bundler.require :test
+Bundler.require :rails
 
 Combustion.path = "fixtures/dummy"
 Combustion.initialize! :action_controller do
 	config.autoload_paths << "#{root}/app"
 end
-
-require "view_helper"
-
-Zeitwerk::Loader.eager_load_all

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require "isolated_test_helper"
 
 describe Phlex::View do
 	extend ViewHelper

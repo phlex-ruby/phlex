@@ -20,8 +20,11 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
-      - name: Tests
-        run: bundle exec sus
+      - name: Isolated tests
+        run: /bin/bash -c "bundle exec sus test/isolated/**/*.rb"
+
+      - name: Rails tests
+        run: /bin/bash -c "bundle exec sus test/rails/**/*.rb"
 
       - name: Rubocop
         run: bundle exec rubocop
