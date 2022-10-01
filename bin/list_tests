@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+args = ARGV
+folder_path = args[0]
+
+tests = Dir["test/#{folder_path}/**/*.rb"]
+
+# remove the debugging echo if you prefer
+exec "echo #{tests.join(' ')}"

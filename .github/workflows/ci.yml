@@ -20,8 +20,20 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
-      - name: Tests
-        run: bundle exec sus
+      - name: Tests - compilation
+        run: bundle exec sus $(bin/list_tests phlex/compilation)
+
+      - name: Tests - compiler
+        run: bundle exec sus $(bin/list_tests phlex/compiler)
+
+      - name: Tests - integration
+        run: bundle exec sus $(bin/list_tests phlex/integration)
+
+      - name: Tests - rails
+        run: bundle exec sus $(bin/list_tests phlex/rails)
+
+      - name: Tests - view
+        run: bundle exec sus $(bin/list_tests phlex/view)
 
       - name: Rubocop
         run: bundle exec rubocop
