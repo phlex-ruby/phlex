@@ -12,7 +12,7 @@ describe Phlex::Compiler do
 		}
 
 		it "compiles the method" do
-			expect(compiler).to receive(:redefine).with_arguments <<~RUBY.chomp
+			expect(compiler).to receive(:redefine).with <<~RUBY.chomp
 				def template
 					@_target << "<div></div>"
 				end
@@ -30,7 +30,7 @@ describe Phlex::Compiler do
 		}
 
 		it "compiles the method" do
-			expect(compiler).to receive(:redefine).with_arguments <<~RUBY.chomp
+			expect(compiler).to receive(:redefine).with <<~RUBY.chomp
 				def template
 					@_target << "<img />"
 				end
@@ -48,7 +48,7 @@ describe Phlex::Compiler do
 		}
 
 		it "retains the original method call" do
-			expect(compiler).to receive(:redefine).with_arguments <<~RUBY.chomp
+			expect(compiler).to receive(:redefine).with <<~RUBY.chomp
 				def template
 					@_target << "<article></article>"
 					some_other_method

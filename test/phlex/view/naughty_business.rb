@@ -53,7 +53,7 @@ describe Phlex::View do
 
 			it "raises an ArgumentError" do
 				expect { output }.to raise_exception ArgumentError,
-					message: "Unsafe attribute name detected: #{event_attribute}."
+					message: be == "Unsafe attribute name detected: #{event_attribute}."
 			end
 		end
 	end
@@ -71,7 +71,7 @@ describe Phlex::View do
 
 			it "raises an ArgumentError" do
 				expect { output }.to raise_exception ArgumentError,
-					message: "Unsafe attribute name detected: #{naughty_attribute}."
+					message: be == "Unsafe attribute name detected: #{naughty_attribute}."
 			end
 		end
 	end

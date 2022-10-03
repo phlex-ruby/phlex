@@ -21,7 +21,7 @@ describe Phlex::View do
 
 			it "raises an ArgumentError" do
 				expect { example.call }.to raise_exception RuntimeError,
-					message: "The same view instance shouldn't be rendered twice"
+					message: be == "The same view instance shouldn't be rendered twice"
 			end
 		end
 	end
