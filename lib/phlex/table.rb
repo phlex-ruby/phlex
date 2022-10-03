@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 module Phlex
-	class Table < Phlex::Collection
-		class << self
+	module Table
+		include Collection
+
+		module ClassMethods
 			def property(header, &block)
 				if header.is_a?(String)
 					header_text = header
@@ -18,6 +20,10 @@ module Phlex
 			def properties
 				@properties ||= []
 			end
+		end
+
+		def self.included(child)
+			child.extend(ClassMethods)
 		end
 
 		def collection_template

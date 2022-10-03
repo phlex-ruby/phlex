@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Phlex
-	class Collection < Phlex::View
+	module Collection
 		def initialize(collection: nil, item: nil)
 			unless collection || item
 				raise ArgumentError,
