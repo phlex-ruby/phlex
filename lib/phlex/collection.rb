@@ -17,7 +17,11 @@ module Phlex
 		end
 
 		def template
-			@collection ? collection_template : item_template
+			if @collection
+				collection_template { yield_items }
+			else
+				item_template
+			end
 		end
 
 		private
