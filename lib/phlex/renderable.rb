@@ -26,8 +26,13 @@ module Phlex
 						output = yield(*args, **kwargs)
 						unchanged = (original_length == @_target.length)
 
-						if unchanged && output.is_a?(String)
-							output.html_safe? ? raw(output) : text(output)
+						if unchanged
+							case output
+							when ActiveSupport::SafeBuffer
+								raw(output)
+							when String
+								text(output)
+							end
 						end
 					end
 				end.html_safe
