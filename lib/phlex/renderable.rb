@@ -26,7 +26,9 @@ module Phlex
 						output = yield(*args, **kwargs)
 						unchanged = (original_length == @_target.length)
 
-						text(output) if unchanged && output.is_a?(String)
+						if unchanged && output.is_a?(String)
+							output.html_safe? ? raw(output) : text(output)
+						end
 					end
 				end.html_safe
 			else
