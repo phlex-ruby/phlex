@@ -1,0 +1,15 @@
+<% module_namespacing do -%>
+module Views
+  class <%= class_name %> < ApplicationView
+    include Phlex::Collection
+
+    def collection_template(&)
+      ul(&)
+    end
+
+    def item_template
+      li @item
+    end
+  end
+end
+<% end %>

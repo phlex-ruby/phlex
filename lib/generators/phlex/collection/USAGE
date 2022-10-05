@@ -1,0 +1,8 @@
+Description:
+  Generates a Phlex collection view with the given name
+
+Example:
+  rails generate phlex:collection Articles::List
+
+This will create:
+  app/views/articles/list.rb
