@@ -1,0 +1,8 @@
+Description:
+  Generates a Phlex layout view with the given name
+
+Example:
+  rails generate phlex:layout Application
+
+This will create:
+  app/views/layouts/application.rb
