@@ -4,7 +4,7 @@ module Phlex
 	module Collection
 		def initialize(collection: nil, item: nil, index: nil, position: nil, first: nil, last: nil, collection_size: nil)
 			unless collection || item
-				raise ArgumentError, "You must pass a collection or an item as a keyword argument."
+				@collection = []
 			end
 
 			if collection && item
@@ -22,7 +22,9 @@ module Phlex
 			end
 		end
 
-		def template
+		def template(&)
+			yield(self) if block_given?
+
 			if @collection
 				collection_template { yield_items }
 			else
