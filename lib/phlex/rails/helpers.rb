@@ -4,8 +4,8 @@ module Phlex
 	module Rails
 		module Helpers
 			module CSPMetaTag
-				def csp_meta_tag
-					if (output = @_view_context.csp_meta_tag)
+				def csp_meta_tag(**options)
+					if (output = @_view_context.csp_meta_tag(**options))
 						@_target << output
 					end
 				end
@@ -36,6 +36,38 @@ module Phlex
 							)
 						end
 					}
+				end
+			end
+
+			module StylesheetLinkTag
+				def stylesheet_link_tag(*sources)
+					if (output = @_view_context.stylesheet_link_tag(*sources))
+						@_target << output
+					end
+				end
+			end
+
+			module FaviconLinkTag
+				def favicon_link_tag(*args)
+					if (output = @_view_context.favicon_link_tag(*args))
+						@_target << output
+					end
+				end
+			end
+
+			module PreloadLinkTag
+				def preload_link_tag(*args)
+					if (output = @_view_context.preload_link_tag(*args))
+						@_target << output
+					end
+				end
+			end
+
+			module JavaScriptIncludeTag
+				def javascript_include_tag(*sources)
+					if (output = @_view_context.javascript_include_tag(*sources))
+						@_target << output
+					end
 				end
 			end
 		end
