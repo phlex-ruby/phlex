@@ -2,31 +2,20 @@
 
 module Phlex
 	module Collection
-		def initialize(collection: nil, item: nil, index: nil, position: nil, first: nil, last: nil, collection_size: nil)
+		def initialize(collection: nil, item: nil)
 			unless collection || item
 				raise ArgumentError, "You must pass a collection or an item as a keyword argument."
 			end
 
-			if collection && item
-				raise ArgumentError, "You can pass either a collection or an item as a keyword argument but not both."
-			end
-
-			if (@item = item)
-				@index = index
-				@position = position
-				@first = first
-				@last = last
-				@collection_size = collection_size
-			else
-				@collection = collection
-			end
+			@collection = collection
+			@item = item
 		end
 
 		def template
-			if @collection
-				collection_template { yield_items }
-			else
+			if @item
 				item_template
+			else
+				collection_template { yield_items }
 			end
 		end
 
@@ -34,29 +23,34 @@ module Phlex
 
 		def yield_items
 			if @item
-				raise ArgumentError, "You can only yield_items when rendering a collection. This instance is rendering an item."
+				raise ArgumentError, "You can only yield_items when rendering a collection. You are currently rendering an item."
 			end
 
 			@collection.each_with_index do |item, index|
-				render self.class.new(
-					item: item,
-					index: index,
-					first: (index == 0),
-					last: (index == @collection.size - 1),
-					position: (index + 1),
-					collection_size: @collection.size
-				)
+				@item = item
+				@index = index
+				@first = (index == 0)
+				@last = (index == @collection.size - 1)
+				@position = (index + 1)
+
+				item_template
 			end
+
+			@item = nil
+			@index = nil
+			@first = nil
+			@last = nil
+			@position = nil
 		end
 
 		def first?
-			raise ArgumentError if @collection
+			raise ArgumentError unless @item
 
 			@first
 		end
 
 		def last?
-			raise ArgumentError if @collection
+			raise ArgumentError unless @item
 
 			@last
 		end
