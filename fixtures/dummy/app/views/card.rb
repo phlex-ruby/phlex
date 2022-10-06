@@ -7,7 +7,9 @@ module Views
 		end
 
 		def title(text)
-			h3 text, class: "font-bold"
+			h3 class: "font-bold" do
+				text
+			end
 		end
 	end
 end

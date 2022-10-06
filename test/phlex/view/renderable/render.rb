@@ -32,7 +32,7 @@ describe Phlex::View do
 				view do
 					define_method :template do
 						render(other_view.new) do
-							h1 "Hi!"
+							h1 { "Hi!" }
 						end
 					end
 				end
