@@ -17,7 +17,7 @@ module Pages
 						class Card < Phlex::View
 							def template(&)
 								article(class: "drop-shadow rounded p-5") {
-									h1 "Amazing content!"
+									h1 { "Amazing content!" }
 									yield_content(&)
 								}
 							end
@@ -56,7 +56,7 @@ module Pages
 						class Example < Phlex::View
 							def template
 								render Card.new do
-									h1 "Hello"
+									h1 { "Hello" }
 								end
 							end
 						end
@@ -111,7 +111,7 @@ module Pages
 							end
 
 							def template
-								h1 "Hello \#{@name}!"
+								h1 { "Hello \#{@name}!" }
 							end
 						end
 					RUBY
@@ -143,7 +143,7 @@ module Pages
 							end
 
 							def template
-								span status_emoji
+								span { status_emoji }
 							end
 
 							private

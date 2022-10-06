@@ -3,7 +3,7 @@ module Views
   class <%= class_name %> < ApplicationView
     def template
       render Layout.new(title: "<%= class_name.gsub("::", " ") %>") do
-        h1 "👋 Hello World!"
+        h1 { "👋 Hello World!" }
       end
     end
   end

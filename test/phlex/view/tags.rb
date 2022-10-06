@@ -6,22 +6,10 @@ describe Phlex::View do
 	extend ViewHelper
 
 	Phlex::HTML::STANDARD_ELEMENTS.each do |method_name, tag|
-		with "<#{method_name}> with text content and attributes" do
-			view do
-				define_method :template do
-					send(method_name, "content", class: "class", id: "id", disabled: true, selected: false)
-				end
-			end
-
-			it "produces the correct output" do
-				expect(output).to be == %(<#{tag} class="class" id="id" disabled>content</#{tag}>)
-			end
-		end
-
 		with "<#{method_name}> with block content and attributes" do
 			view do
 				define_method :template do
-					send(method_name, class: "class", id: "id", disabled: true, selected: false) { h1 "Hello" }
+					send(method_name, class: "class", id: "id", disabled: true, selected: false) { h1 { "Hello" } }
 				end
 			end
 

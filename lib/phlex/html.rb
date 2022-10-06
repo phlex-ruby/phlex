@@ -129,11 +129,9 @@ module Phlex
 			class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
         # frozen_string_literal: true
 
-        def #{element}(content = nil, **attributes, &block)
+        def #{element}(**attributes, &block)
           if attributes.length > 0
-            if content
-              @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << ">" << CGI.escape_html(content) << "</#{tag}>"
-            elsif block_given?
+            if block_given?
               @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << ">"
               yield_content(&block)
               @_target << "</#{tag}>"
@@ -141,16 +139,7 @@ module Phlex
               @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << "></#{tag}>"
             end
           else
-            if content
-              case content
-              when String
-                @_target << "<#{tag}>" << CGI.escape_html(content) << "</#{tag}>"
-              when Symbol
-                @_target << "<#{tag}>" << CGI.escape_html(content.name) << "</#{tag}>"
-              else
-                @_target << "<#{tag}>" << CGI.escape_html(content.to_s) << "</#{tag}>"
-              end
-            elsif block_given?
+            if block_given?
               @_target << "<#{tag}>"
               yield_content(&block)
               @_target << "</#{tag}>"
