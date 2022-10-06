@@ -5,17 +5,18 @@ module Phlex
 		include Collection
 
 		module ClassMethods
-			def property(header_content, header: {}, cell: {}, &cell_content)
-				if header_content.is_a?(String)
-					header_content_text = header_content
-					header_content = -> { text header_content_text }
+			attr_accessor :header
+
+			def property(header = nil, **attributes, &body)
+				if header.is_a?(String)
+					header_text = header
+					header = -> { head_header(scope: "col") { header_text } }
 				end
 
 				properties << {
-					header_content: header_content,
-					header_attributes: header,
-					cell_content: cell_content,
-					cell_attributes: cell,
+					header: header,
+					body: body,
+					attributes: attributes,
 				}
 			end
 
@@ -27,36 +28,74 @@ module Phlex
 		def self.included(child)
 			child.extend ClassMethods
 
-			child.alias_method :table_template, :table
-			child.alias_method :head_template, :thead
-			child.alias_method :header_template, :th
-			child.alias_method :body_template, :tbody
-			child.alias_method :row_template, :tr
-			child.alias_method :head_row_template, :row_template
-			child.alias_method :cell_template, :td
+			child.alias_method :head, :thead
+			child.alias_method :body, :tbody
+			child.alias_method :foot, :tfoot
+
+			child.alias_method :row, :tr
+
+			child.alias_method :header, :th
+			child.alias_method :cell, :td
+
+			child.alias_method :head_row, :row
+			child.alias_method :body_row, :row
+			child.alias_method :foot_row, :row
+
+			child.alias_method :head_header, :header
+			child.alias_method :foot_header, :header
+
+			child.alias_method :head_cell, :cell
+			child.alias_method :body_cell, :cell
+			child.alias_method :foot_cell, :cell
 		end
 
-		def collection_template
-			table_template do
-				head_template do
-					head_row_template do
-						self.class.properties.each do |property|
-							header_template(**property[:header_attributes], scope: "col") do
-								instance_exec(&property[:header_content])
-							end
-						end
-					end
-				end
+		private
 
-				body_template { yield_items }
+		def properties
+			self.class.properties
+		end
+
+		def collection_template(&block)
+			table do
+				head_template
+				body_template(&block)
+				foot_template
 			end
 		end
 
 		def item_template
-			row_template do
+			row_template
+		end
+
+		def head_template
+			if self.class.properties.any? { |p| p[:header] }
+				head do
+					head_row do
+						self.class.properties.each do |property|
+							case property[:header]
+							when Proc
+								instance_exec(&property[:header])
+							when Symbol
+								send(property[:header])
+							end
+						end
+					end
+				end
+			end
+		end
+
+		def body_template
+			body { yield_items }
+		end
+
+		def foot_template
+		end
+
+		def row_template
+			body_row do
 				self.class.properties.each do |property|
-					cell_template(**property[:cell_attributes]) do
-						instance_exec(@item, &property[:cell_content])
+					body_cell(**property[:attributes]) do
+						instance_exec(@item, &property[:body])
 					end
 				end
 			end
