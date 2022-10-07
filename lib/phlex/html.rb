@@ -113,6 +113,7 @@ module Phlex
 			area: "area",
 			br: "br",
 			embed: "embed",
+			hr: "hr",
 			img: "img",
 			input: "input",
 			link: "link",
