@@ -9,7 +9,9 @@ describe Phlex::View do
 		with "symbol conditionals" do
 			view do
 				def template
-					a "Home", href: "/", **classes("a", "b", "c", active?: "active", primary?: "primary")
+					a href: "/", **classes("a", "b", "c", active?: "active", primary?: "primary") do
+						"Home"
+					end
 				end
 
 				def active?
@@ -30,9 +32,11 @@ describe Phlex::View do
 		with "proc conditionals" do
 			view do
 				def template
-					a "Home", href: "/", **classes("a", "b", "c",
+					a href: "/", **classes("a", "b", "c",
 						-> { true } => "true",
-						-> { false } => "false")
+						-> { false } => "false") do
+						"Home"
+					end
 				end
 			end
 

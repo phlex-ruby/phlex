@@ -4,33 +4,55 @@ module Phlex
 	module Collection
 		def initialize(collection: nil, item: nil)
 			unless collection || item
-				raise ArgumentError,
-					"You must pass a collection or an item as a keyword argument."
+				raise ArgumentError, "You must pass a collection or an item as a keyword argument."
 			end
 
-			if collection && item
-				raise ArgumentError,
-					"You can pass either a collection or an item as a keyword argument but not both."
-			end
-
-			@collection = collection or @item = item
+			@collection = collection
+			@item = item
 		end
 
 		def template
-			@collection ? collection_template : item_template
+			if @item
+				item_template
+			else
+				collection_template { yield_items }
+			end
 		end
 
 		private
 
 		def yield_items
 			if @item
-				raise NoMethodError,
-					"You can only yield_items when rendering a collection. You're already rendering an item."
+				raise ArgumentError, "You can only yield_items when rendering a collection. You are currently rendering an item."
 			end
 
-			@collection.each do |item|
-				render self.class.new(item: item)
+			@collection.each_with_index do |item, index|
+				@item = item
+				@index = index
+				@first = (index == 0)
+				@last = (index == @collection.size - 1)
+				@position = (index + 1)
+
+				item_template
 			end
+
+			@item = nil
+			@index = nil
+			@first = nil
+			@last = nil
+			@position = nil
+		end
+
+		def first?
+			raise ArgumentError unless @item
+
+			@first
+		end
+
+		def last?
+			raise ArgumentError unless @item
+
+			@last
 		end
 	end
 end

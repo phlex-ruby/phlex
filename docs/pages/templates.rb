@@ -18,7 +18,7 @@ module Pages
 					e.tab "heading.rb", <<~RUBY
 						class Heading < Phlex::View
 							def template
-								h1 "Hello World!"
+								h1 { "Hello World!" }
 							end
 						end
 					RUBY
@@ -38,9 +38,9 @@ module Pages
 					e.tab "heading.rb", <<~RUBY
 						class Heading < Phlex::View
 							def template
-								h1 "Hello World!",
-									class: "text-xl font-bold",
-									aria_details: "details"
+								h1 class: "text-xl font-bold", aria_details: "details" do
+									"Hello World!"
+								end
 							end
 						end
 					RUBY
@@ -77,9 +77,9 @@ module Pages
 							def template
 								nav do
 									ul do
-										li { a "Home", href: "/" }
-										li { a "About", href: "/about" }
-										li { a "Contact", href: "/contact" }
+										li { a(href: "/") { "Home" } }
+										li { a(href: "/about") { "About" } }
+										li { a(href: "/contact") { "Contact" } }
 									end
 								end
 							end
@@ -99,7 +99,10 @@ module Pages
 					e.tab "heading.rb", <<~RUBY
 						class Heading < Phlex::View
 							def template
-								h1 { strong "Hello "; text "World!" }
+								h1 do
+									strong { "Hello " }
+									text "World!"
+								end
 							end
 						end
 					RUBY
@@ -117,11 +120,11 @@ module Pages
 					e.tab "links.rb", <<~RUBY
 						class Links < Phlex::View
 							def template
-								a "Home", href: "/"
+								a(href: "/") { "Home" }
 								whitespace
-								a "About", href: "/about"
+								a(href: "/about") { "About" }
 								whitespace
-								a "Contact", href: "/contact"
+								a(href: "/contact") { "Contact" }
 							end
 						end
 					RUBY
@@ -151,8 +154,8 @@ module Pages
 							end
 
 							def template
-								a @text, href: @to, class: tokens("nav-item",
-									active?: "nav-item-active")
+								a(href: @to, class: tokens("nav-item",
+									active?: "nav-item-active")) { @text }
 							end
 
 							private
@@ -191,8 +194,8 @@ module Pages
 							end
 
 							def template
-								a @text, href: @to, **classes("nav-item",
-									active?: "nav-item-active")
+								a(href: @to, **classes("nav-item",
+									active?: "nav-item-active")) { @text }
 							end
 
 							private

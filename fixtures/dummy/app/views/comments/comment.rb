@@ -10,13 +10,13 @@ module Views
 
 			def template(&block)
 				div {
-					span @name
-					span @body
+					span { @name }
+					span { @body }
 
 					yield_content(&block)
 
 					render(::ReactionComponent.new(emoji: "hamburger")) do
-						p "Emoji reaction for a comment from #{@name} with body #{@body}"
+						p { "Emoji reaction for a comment from #{@name} with body #{@body}" }
 					end
 				}
 			end

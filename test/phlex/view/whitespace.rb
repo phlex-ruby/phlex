@@ -8,9 +8,9 @@ describe Phlex::View do
 	with "whitespace" do
 		view do
 			def template
-				a "Home"
+				a { "Home" }
 				whitespace
-				a "About"
+				a { "About" }
 			end
 		end
 

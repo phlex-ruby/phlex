@@ -32,7 +32,9 @@ describe Phlex::View do
 	with "naughty javascript link protocol in href" do
 		view do
 			def template
-				a "naughty link", href: "javascript:javascript:alert(1)"
+				a href: "javascript:javascript:alert(1)" do
+					"naughty link"
+				end
 			end
 		end
 

@@ -13,7 +13,7 @@ describe Phlex::View do
 			def template
 				div do
 					trix_toolbar
-					trix_editor "Hello"
+					trix_editor { "Hello" }
 				end
 			end
 		end

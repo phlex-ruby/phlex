@@ -1,0 +1,9 @@
+<% module_namespacing do -%>
+module Views
+  class <%= class_name %> < ApplicationView
+    include Phlex::Table
+    <% options["properties"].each do |property| %>
+    property "<%= property.humanize %>", &:<%= property.underscore %><% end %>
+  end
+end
+<% end %>

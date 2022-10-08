@@ -14,7 +14,7 @@ module Components
 			html do
 				head do
 					meta charset: "utf-8"
-					title @title
+					title { @title }
 					link href: "/application.css", rel: "stylesheet"
 					style { raw Rouge::Theme.find("github").render(scope: ".highlight") }
 				end
@@ -26,11 +26,11 @@ module Components
 
 							nav do
 								ul do
-									li { a "Introduction", href: "/" }
-									li { a "Templates", href: "/templates" }
-									li { a "Views", href: "/views" }
-									li { a "Rails integration", href: "/rails-integration" }
-									li { a "Source code", href: "https://github.com/joeldrapper/phlex" }
+									li { a(href: "/") { "Introduction" } }
+									li { a(href: "/templates") { "Templates" } }
+									li { a(href: "/views") { "Views" } }
+									li { a(href: "/rails-integration") { "Rails integration" } }
+									li { a(href: "https://github.com/joeldrapper/phlex") { "Source code" } }
 								end
 							end
 						end
