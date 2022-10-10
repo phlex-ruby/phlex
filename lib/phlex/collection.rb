@@ -29,9 +29,9 @@ module Phlex
 			@collection.each_with_index do |item, index|
 				@item = item
 				@index = index
-				@first = (index == 0)
-				@last = (index == @collection.size - 1)
 				@position = (index + 1)
+				@first = (index == 0)
+				@last = (@position == @collection.size)
 
 				item_template
 			end
