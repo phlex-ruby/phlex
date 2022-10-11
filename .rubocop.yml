@@ -8,3 +8,6 @@ Layout/IndentationStyle:
 
 Layout/IndentationWidth:
   Width: 1
+
+Style/WordArray:
+  Enabled: false
