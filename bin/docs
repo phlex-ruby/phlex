@@ -1,18 +1,1 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
-
-require "listen"
-
-system "bundle exec docs/build.rb"
-
-Listen.to("#{__dir__}/../docs/pages", "#{__dir__}/../docs/components") do |modified, added, removed|
-	puts modified
-	puts added
-	puts removed
-
-	system "bundle exec docs/build.rb"
-end.start
-
-system "ruby -run -e httpd docs/dist"
-
-Process.waitall
+foreman start -f Procfile.dev

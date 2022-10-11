@@ -4,6 +4,8 @@ class PageBuilder
 	ROOT = Pages::ApplicationPage
 
 	def self.build_all
+		FileUtils.mkdir_p("#{__dir__}/dist")
+		FileUtils.cp_r("#{__dir__}/assets", "#{__dir__}/dist")
 		ROOT.subclasses.each { |page| new(page).call }
 	end
 
@@ -12,6 +14,7 @@ class PageBuilder
 	end
 
 	def call
+		puts "Building #{@page.name}"
 		FileUtils.mkdir_p(directory)
 		File.write(file, @page.new.call)
 	end

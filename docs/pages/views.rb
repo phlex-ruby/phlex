@@ -3,104 +3,35 @@
 module Pages
 	class Views < ApplicationPage
 		def template
-			render Layout.new(title: "Components in Phlex") do
+			render Layout.new(title: "Phlex Views") do
 				render Markdown.new(<<~MD)
 					#  Views
 
-					## Yielding content
+					Phlex Views are Ruby objects that represent your app's user interface — from pages and layouts and nav-bars, to headings and buttons and links.
 
-					Your views can accept content as a block passed to the template method. You can capture the content block and pass it to the `content` method to yield it.
+					You can create a view class by subclassing `Phlex::View` and defining a `template` instance method.
 				MD
 
 				render Example.new do |e|
-					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::View
-							def template(&)
-								article(class: "drop-shadow rounded p-5") {
-									h1 { "Amazing content!" }
-									yield_content(&)
-								}
-							end
-						end
-					RUBY
-
-					e.execute "Card.new.call { 'Your content here.\n' }"
-				end
-
-				render Markdown.new(<<~MD)
-					## Delegating content
-
-					Alternatively, you can pass the content down as an argument to another view or tag.
-				MD
-
-				render Example.new do |e|
-					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::View
-							def template(&)
-								article(class: "drop-shadow rounded p-5", &)
-							end
-						end
-					RUBY
-
-					e.execute "Card.new.call { 'Your content here.' }"
-				end
-
-				render Markdown.new(<<~MD)
-					## Nested views
-
-					Components can render other views and optionally pass them content as a block.
-				MD
-
-				render Example.new do |e|
-					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
+					e.tab "hello.rb", <<~RUBY
+						class Hello < Phlex::View
 							def template
-								render Card.new do
-									h1 { "Hello" }
-								end
+								h1 { "👋 Hello World!" }
 							end
 						end
 					RUBY
 
-					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::View
-							def template(&)
-								article(class: "drop-shadow rounded p-5", &)
-							end
-						end
-					RUBY
-
-					e.execute "Example.new.call"
+					e.execute "Hello.new.call"
 				end
 
 				render Markdown.new(<<~MD)
-					If the block just wraps a string, the string is treated as _text content_.
-				MD
+					The `template` method determines what your view will output when its rendered. The above example will output an `<h1>` tag with the content `👋 Hello world!`. Click on the "Output" tab above to see for yourself.
 
-				render Example.new do |e|
-					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
-							def template
-								render(Card.new) { "Hi" }
-							end
-						end
-					RUBY
+					## Accepting arguments
 
-					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::View
-							def template(&)
-								article(class: "drop-shadow rounded p-5", &)
-							end
-						end
-					RUBY
+					You can define an initializer for your views just like any other Ruby class. Let's make our `Hello` view take a `name` as a keyword argument, save it in an instance variable and render that variable in the template.
 
-					e.execute "Example.new.call"
-				end
-
-				render Markdown.new(<<~MD)
-					## Component attributes
-
-					Besides content, views can define attributes in an initializer, which can then be rendered in the template.
+					We'll render this view with the arguments `name: "Joel"` and see what it produces.
 				MD
 
 				render Example.new do |e|
@@ -111,15 +42,38 @@ module Pages
 							end
 
 							def template
-								h1 { "Hello \#{@name}!" }
+								h1 { "👋 Hello \#{@name}!" }
 							end
 						end
 					RUBY
 
+					e.execute "Hello.new(name: 'Joel').call"
+				end
+
+				render Markdown.new(<<~MD)
+					## Rendering views
+
+					Views can render other views in their templates using the `render` method. Let's try rendering a couple of instances of this `Hello` view from a new `Example` view and look at the output of the `Example` view.
+				MD
+
+				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
 						class Example < Phlex::View
 							def template
 								render Hello.new(name: "Joel")
+								render Hello.new(name: "Alexandre")
+							end
+						end
+					RUBY
+
+					e.tab "hello.rb", <<~RUBY
+						class Hello < Phlex::View
+							def initialize(name:)
+								@name = name
+							end
+
+							def template
+								h1 { "👋 Hello \#{@name}!" }
 							end
 						end
 					RUBY
@@ -128,32 +82,17 @@ module Pages
 				end
 
 				render Markdown.new(<<~MD)
-					It’s usually a good idea to use instance variables directly rather than creating accessor methods for them. Otherwise it’s easy to run into naming conflicts. For example, your layout view might have the attribute `title`, to render into a `<title>` element in the document head. If you define `attr_accessor :title`, that would overwrite the `title` method for creating `<title>` elements.
+					## Passing content blocks
 
-					## Calculations with methods
-
-					Views are just Ruby classes, so you can perform calculations on view attributes by defining your own methods.
+					Views can also yield content blocks, which can be passed in when rendering. Let's make a `Card` component that yields content in an `<article>` element with a `drop-shadow` class on it.
 				MD
 
 				render Example.new do |e|
-					e.tab "status.rb", <<~RUBY
-						class Status < Phlex::View
-							def initialize(status:)
-								@status = status
-							end
-
-							def template
-								span { status_emoji }
-							end
-
-							private
-
-							def status_emoji
-								case @status
-								when :success
-									"✅"
-								when :failure
-									"❌"
+					e.tab "card.rb", <<~RUBY
+						class Card < Phlex::View
+							def template(&content)
+								article(class: "drop-shadow") do
+									yield_content(&content)
 								end
 							end
 						end
@@ -162,13 +101,35 @@ module Pages
 					e.tab "example.rb", <<~RUBY
 						class Example < Phlex::View
 							def template
-								render Status.new(status: :success)
+								render Card.new do
+									h1 { "👋 Hello!" }
+								end
 							end
 						end
 					RUBY
 
 					e.execute "Example.new.call"
 				end
+
+				render Markdown.new(<<~MD)
+					The template in the `Card` view accepts a block argument `&content` and uses the `yield_content` method to yield it in an `<article>` element.
+
+					The `Example` view renders a `Card` and passes it a block with an `<h1>` element.
+
+					Looking at the output of the `Example` view, we can see the `<h1>` element was rendered inside the `<article>` element from the `Card` view.
+
+					## Delegating content blocks
+
+					Since the block of content was the only thing we need in the `<article>` element, we could have just passed the content block to the element instead.
+
+					```ruby
+					class Card < Phlex::View
+						def template(&content)
+							article(class: "drop-shadow", &content)
+						end
+					end
+					```
+				MD
 			end
 		end
 	end

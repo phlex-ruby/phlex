@@ -70,6 +70,12 @@ module Phlex
 					end
 				end
 			end
+
+			module ContentFor
+				def content_for(slot, &block)
+					@_view_context.content_for(slot, capture(&block))
+				end
+			end
 		end
 	end
 end
