@@ -9,7 +9,7 @@ describe Phlex::View do
 		with "symbol conditionals" do
 			view do
 				def template
-					a href: "/", **classes("a", "b", "c", active?: "active", primary?: "primary") do
+					a href: "/", **classes("a", "b", "c", active?: "active", primary?: ["primary", "d"]) do
 						"Home"
 					end
 				end
@@ -25,7 +25,7 @@ describe Phlex::View do
 
 			it "works" do
 				expect(output).to be ==
-					%(<a href="/" class="a b c primary">Home</a>)
+					%(<a href="/" class="a b c primary d">Home</a>)
 			end
 		end
 

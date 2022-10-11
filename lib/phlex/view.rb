@@ -165,7 +165,7 @@ module Phlex
 				case token
 				when Symbol then tokens << token.name
 				when String then tokens << token
-				when Array then tokens.concat(t)
+				when Array then tokens.concat(token)
 				else raise ArgumentError,
 					"Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
 				end
