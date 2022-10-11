@@ -97,8 +97,8 @@ module Phlex
 			nil
 		end
 
-		def raw(content)
-			@_target << content
+		def raw(content = nil, &block)
+			@_target << (content || instance_exec(&block))
 			nil
 		end
 
@@ -144,7 +144,13 @@ module Phlex
 		end
 
 		def classes(*tokens, **conditional_tokens)
-			{ class: self.tokens(*tokens, **conditional_tokens) }
+			tokens = self.tokens(*tokens, **conditional_tokens)
+
+			if tokens.present?
+				{ class: tokens }
+			else
+				{}
+			end
 		end
 
 		def tokens(*tokens, **conditional_tokens)

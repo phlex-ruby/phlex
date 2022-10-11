@@ -24,7 +24,7 @@ module Components
 		def execute(code)
 			output = @sandbox.class_eval(code)
 
-			@t.tab("HTML Output") do
+			@t.tab("👀 Output") do
 				render CodeBlock.new(HtmlBeautifier.beautify(output), syntax: :html)
 			end
 		end

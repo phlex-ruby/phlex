@@ -1,22 +1,27 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+$stdout.sync = true
+
 require "phlex"
 require "bundler"
 require "fileutils"
 
 Bundler.require :docs
 
-Zeitwerk::Loader.new.tap do |loader|
-	loader.push_dir(__dir__)
-	loader.ignore(__FILE__)
-	loader.setup
-	loader.eager_load
-end
-
-FileUtils.mkdir_p("#{__dir__}/dist")
-FileUtils.cp_r("#{__dir__}/assets", "#{__dir__}/dist")
+loader = Zeitwerk::Loader.new
+loader.push_dir(__dir__)
+loader.ignore(__FILE__)
+loader.enable_reloading
+loader.setup
+loader.eager_load
 
 PageBuilder.build_all
 
-system "npx tailwindcss -i ./docs/assets/application.css -o ./docs/dist/application.css"
+if ARGV.include? "--watch"
+	Filewatcher.new("#{__dir__}/**/*rb").watch do |_changes|
+		loader.reload
+		loader.eager_load
+		PageBuilder.build_all
+	end
+end
