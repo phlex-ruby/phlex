@@ -38,7 +38,9 @@ jobs:
         run: npm install
 
       - name: Build site
-        run: bundle exec docs/build.rb
+        run: |
+          bundle exec docs/build.rb
+          npx tailwindcss -i ./docs/assets/application.css -o ./docs/dist/application.css
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
