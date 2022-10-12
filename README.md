@@ -20,7 +20,7 @@ Maintaining a library is a lot of work. If your company benefits from this work 
 
 ### Security 🚨
 
-If you’ve found a potential security issue, please email [joel+security@drapper.me](mailto:joel+security@drapper.me).
+If you’ve found a potential security issue, please email [security@phlex.fun](mailto:security@phlex.fun).
 
 ### Thanks 🙏
 
