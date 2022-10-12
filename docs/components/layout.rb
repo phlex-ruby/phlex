@@ -47,7 +47,7 @@ module Components
 							ul do
 								render Nav::Item.new("Getting started", to: Pages::Rails::GettingStarted, active_page: @_parent)
 								render Nav::Item.new("Rendering views", to: Pages::Rails::RenderingViews, active_page: @_parent)
-								render Nav::Item.new("Laouts", to: Pages::Rails::Layouts, active_page: @_parent)
+								render Nav::Item.new("Layouts", to: Pages::Rails::Layouts, active_page: @_parent)
 								render Nav::Item.new("Helpers", to: Pages::Rails::Helpers, active_page: @_parent)
 								render Nav::Item.new("Migrating to Phlex", to: Pages::Rails::Migrating, active_page: @_parent)
 							end
