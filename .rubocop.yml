@@ -1,13 +1,6 @@
-inherit_from: "https://www.goodcop.style"
+inherit_from:
+  - "https://www.goodcop.style"
+  - "https://www.goodcop.style/tabs.yml"
 
 AllCops:
   TargetRubyVersion: 2.7
-
-Layout/IndentationStyle:
-  EnforcedStyle: tabs
-
-Layout/IndentationWidth:
-  Width: 1
-
-Style/WordArray:
-  Enabled: false
