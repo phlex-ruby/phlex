@@ -22,7 +22,7 @@ unless Rails.root.join("app/views/application_view.rb").exist?
 		module Views
 		  class ApplicationView < Phlex::View
 		    include Rails.application.routes.url_helpers
-		    include Phlex::I18n
+		    include Phlex::Translation
 		  end
 		end
 	RUBY

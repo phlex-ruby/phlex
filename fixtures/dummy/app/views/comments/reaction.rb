@@ -2,7 +2,7 @@
 
 module Views
 	module Comments
-		class Reaction < Phlex::View
+		class Reaction < ApplicationView
 			def initialize(emoji:)
 				@emoji = emoji
 			end
