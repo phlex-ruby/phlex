@@ -43,6 +43,12 @@ module Phlex
 			buffer
 		end
 
+		# Experimental implementation (probably quite slow)
+		def method_missing(name, *args, **kwargs, &block)
+			view_class = (@_wrapper || self).instance_eval name.to_s.gsub("_", "::")
+			render view_class.new(*args, **kwargs), &block
+		end
+
 		def rendered?
 			@_rendered ||= false
 		end
