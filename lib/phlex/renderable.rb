@@ -27,10 +27,9 @@ module Phlex
 						unchanged = (original_length == @_target.length)
 
 						if unchanged
-							case output
-							when ActiveSupport::SafeBuffer
+							if defined?(ActiveSupport::SafeBuffer) && output.is_a?(ActiveSupport::SafeBuffer)
 								raw(output)
-							when String
+							else
 								text(output)
 							end
 						end
