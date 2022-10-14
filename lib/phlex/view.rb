@@ -9,6 +9,16 @@ module Phlex
 		extend HTML
 		include Renderable
 
+		module TemplateOverride
+			def template(**kwargs, &block)
+				if block.instance_variable_get(:@rendering)
+					super(&block)
+				else
+					template_tag(**kwargs, &block)
+				end
+			end
+		end
+
 		class << self
 			attr_accessor :rendered_at_least_once
 
@@ -25,6 +35,10 @@ module Phlex
 			def compiled?
 				!!@compiled
 			end
+
+			def inherited(child)
+				child.prepend(TemplateOverride)
+			end
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
@@ -36,6 +50,8 @@ module Phlex
 			@_parent = parent
 			@output_buffer = self
 
+			block ||= -> {}
+			block.instance_variable_set(:@rendering, true)
 			template(&block)
 
 			self.class.rendered_at_least_once ||= true
