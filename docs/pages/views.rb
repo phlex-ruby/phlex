@@ -134,19 +134,13 @@ module Pages
 				render Markdown.new(<<~MD)
 					## Registering custom elements
 
-					Here's how you can register custom elements. The custom element will only be available in the view where it is registered and subclasses of that view.
+					You can register custom elements with the `register_element` macro. The custom element will only be available in the view where it is registered and subclasses of that view.
 				MD
 
 				render Example.new do |e|
 					e.tab "hello.rb", <<~RUBY
             class Hello < Phlex::View
-              CUSTOM_ELEMENTS = {
-                hello: "hello"
-              }.freeze
-
-              CUSTOM_ELEMENTS.each do |method_name, tag|
-                register_element(method_name, tag)
-              end
+              register_element :hello
 
               def template
                 hello do
