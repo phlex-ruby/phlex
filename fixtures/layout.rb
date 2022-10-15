@@ -9,7 +9,7 @@ module Example
 		def template(&block)
 			html do
 				head do
-					title @title
+					title { @title }
 					meta name: "viewport", content: "width=device-width,initial-scale=1"
 					link href: "/assets/tailwind.css", rel: "stylesheet"
 				end
@@ -17,9 +17,9 @@ module Example
 				body class: "bg-zinc-100" do
 					nav class: "p-5", id: "main_nav" do
 						ul do
-							li(class: "p-5") { a "Home", href: "/" }
-							li(class: "p-5") { a "About", href: "/about" }
-							li(class: "p-5") { a "Contact", href: "/contact" }
+							li(class: "p-5") { a(href: "/") { "Home" } }
+							li(class: "p-5") { a(href: "/about") { "About" } }
+							li(class: "p-5") { a(href: "/contact") { "Contact" } }
 						end
 					end
 

@@ -4,12 +4,12 @@ module Example
 	class Page < Phlex::View
 		def template
 			render LayoutComponent.new do
-				h1 "Hi"
+				h1 { "Hi" }
 
 				5.times do
 					div do
 						10.times do
-							a "Test", href: "something", unique: SecureRandom.uuid, data: { value: 1 }
+							a(href: "something", unique: SecureRandom.uuid, data: { value: 1 }) { "Test" }
 						end
 					end
 				end
@@ -18,7 +18,7 @@ module Example
 					thead do
 						10.times do
 							tr do
-								th "Hi"
+								th { "Hi" }
 							end
 						end
 					end
@@ -28,7 +28,7 @@ module Example
 							tr class: "a b c d e f g", id: "something" do
 								10.times do
 									td class: "f g h i j k l" do
-										span "Test"
+										span { "Test" }
 									end
 								end
 							end
