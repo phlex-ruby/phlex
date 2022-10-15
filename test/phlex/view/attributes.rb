@@ -17,10 +17,10 @@ describe Phlex::View do
 		end
 	end
 
-	with '@class name' do
+	with "@class name" do
 		view do
 			def template
-				div class: 'header'
+				div class: "header"
 			end
 
 			def class_attribute(value)
