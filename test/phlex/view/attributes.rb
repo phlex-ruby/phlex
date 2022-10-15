@@ -17,6 +17,22 @@ describe Phlex::View do
 		end
 	end
 
+	with '@class name' do
+		view do
+			def template
+				div class: 'header'
+			end
+
+			def class_attribute(value)
+				"#{value}123abc"
+			end
+		end
+
+		it "compiles the class name" do
+			expect(output).to be == %(<div class="header123abc"></div>)
+		end
+	end
+
 	if RUBY_ENGINE == "ruby"
 		with "unique tag attributes" do
 			view do

@@ -183,9 +183,10 @@ module Phlex
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
 			end
 
-			_build_attributes(attributes, buffer: buffer)
+			attr_method_used = _build_attributes(attributes, buffer: buffer)
 
-			unless self.class.rendered_at_least_once
+			# Don't cache if an attribute method was used.
+			if !attr_method_used && !self.class.rendered_at_least_once
 				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
 			end
 
@@ -193,6 +194,8 @@ module Phlex
 		end
 
 		def _build_attributes(attributes, buffer:)
+			attr_method_used = false
+
 			attributes.each do |k, v|
 				next unless v
 
@@ -209,6 +212,11 @@ module Phlex
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 
+				if respond_to?(:"#{k}_attribute", true)
+					v = send :"#{k}_attribute", v
+					attr_method_used = true
+				end
+
 				case v
 				when true
 					buffer << " " << name
@@ -223,7 +231,7 @@ module Phlex
 				end
 			end
 
-			buffer
+			attr_method_used
 		end
 	end
 end
