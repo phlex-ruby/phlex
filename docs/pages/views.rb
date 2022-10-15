@@ -134,7 +134,7 @@ module Pages
 				render Markdown.new(<<~MD)
 					## Registering custom elements
 
-					Here's how you can register custom elements.
+					Here's how you can register custom elements. The custom element will only be available in the view where it is registered and subclasses of that view.
 				MD
 
 				render Example.new do |e|
