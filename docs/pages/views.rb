@@ -130,6 +130,34 @@ module Pages
 					end
 					```
 				MD
+
+				render Markdown.new(<<~MD)
+					## Registering custom elements
+
+					Here's how you can register custom elements.
+				MD
+
+				render Example.new do |e|
+					e.tab "hello.rb", <<~RUBY
+            class Hello < Phlex::View
+              CUSTOM_ELEMENTS = {
+                hello: "hello"
+              }.freeze
+
+              CUSTOM_ELEMENTS.each do |method_name, tag|
+                register_element(method_name, tag)
+              end
+
+              def template
+                hello do
+                  "World!"
+                end
+              end
+            end
+					RUBY
+
+					e.execute "Example.new.call"
+				end
 			end
 		end
 	end
