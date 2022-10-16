@@ -143,9 +143,7 @@ module Pages
               register_element :trix_editor
 
               def template
-                hello do
-                  "World!"
-                end
+                trix_editor input: "content" autofocus: true
               end
             end
 					RUBY
