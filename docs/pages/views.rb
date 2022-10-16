@@ -138,8 +138,8 @@ module Pages
 				MD
 
 				render Example.new do |e|
-					e.tab "hello.rb", <<~RUBY
-            class Hello < Phlex::View
+					e.tab "example.rb", <<~RUBY
+            class Example < Phlex::View
               register_element :trix_editor
 
               def template
