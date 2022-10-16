@@ -140,7 +140,7 @@ module Pages
 				render Example.new do |e|
 					e.tab "hello.rb", <<~RUBY
             class Hello < Phlex::View
-              register_element :hello
+              register_element :trix_editor
 
               def template
                 hello do
