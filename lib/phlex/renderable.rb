@@ -8,7 +8,10 @@ module Phlex
 					block = Phlex::Block.new(self, &block)
 				end
 
+				@_original_wrapper = @_wrapper
+				@_wrapper = renderable
 				renderable.call(@_target, view_context: @_view_context, parent: self, &block)
+				@_wrapper = @_original_wrapper
 			elsif renderable.is_a?(Class) && renderable < View
 				raise ArgumentError, "You tried to render the Phlex view class: #{renderable.name} but you probably meant to render an instance of that class instead."
 			else

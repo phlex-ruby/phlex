@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "benchmark"
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 	using Overrides::Symbol::Name
@@ -42,6 +43,15 @@ module Phlex
 
 			buffer
 		end
+
+		def method_missing(name, *args, **kwargs, &block)
+			view_class = ComponentRegistry.instance.fetch(name, self.class)
+
+			# we can include the slow method as fallback / when eager loading is disabled, omitted while trying it out
+
+			render view_class.new(*args, **kwargs), &block
+		end
+
 
 		def rendered?
 			@_rendered ||= false

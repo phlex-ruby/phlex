@@ -3,6 +3,8 @@
 module Components
 	class Tabs
 		class Tab < Phlex::View
+			include Phlex::RegisterableComponent
+
 			def initialize(name:, checked:)
 				@name = name
 				@checked = checked
