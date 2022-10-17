@@ -35,8 +35,12 @@ module Phlex
                        .find(&:itself)
 
       component ||= @components[""][component_name]
-      @cache[[component_name, context]] = component
+      cache_fetch(component_name, context, component)
       component
+    end
+
+    def cache_fetch(component_name, context, component)
+      @cache[[component_name, context]] = component
     end
   end
 end

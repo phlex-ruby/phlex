@@ -48,6 +48,7 @@ module Phlex
 			view_class = ComponentRegistry.instance.fetch(name, self.class)
 
 			# we can include the slow method as fallback / when eager loading is disabled, omitted while trying it out
+			view_class ||= (@_wrapper || self).instance_eval name.to_s.gsub("_", "::")
 
 			render view_class.new(*args, **kwargs), &block
 		end
