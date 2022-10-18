@@ -27,4 +27,12 @@ unless Rails.root.join("app/views/application_view.rb").exist?
 	RUBY
 end
 
+tailwind_config_path = Rails.root.join("config/tailwind.config.js")
+
+if tailwind_config_path.exist?
+	insert_into_file tailwind_config_path, after: "content: [" do
+		"\n    './app/views/**/*.rb',"
+	end
+end
+
 say "Phlex successfully installed!"
