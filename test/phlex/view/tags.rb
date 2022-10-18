@@ -40,7 +40,7 @@ describe Phlex::View do
 			end
 
 			it "produces the correct output" do
-				expect(output).to be == %(<#{tag} class="class" id="id" disabled />)
+				expect(output).to be == %(<#{tag} class="class" id="id" disabled>)
 			end
 		end
 	end
