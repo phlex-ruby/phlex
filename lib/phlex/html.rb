@@ -164,9 +164,9 @@ module Phlex
 
         def #{element}(**attributes)
           if attributes.length > 0
-            @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << " />"
+            @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(attributes)) << ">"
           else
-            @_target << "<#{tag} />"
+            @_target << "<#{tag}>"
           end
 
           nil
