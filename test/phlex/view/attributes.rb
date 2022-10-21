@@ -17,18 +17,20 @@ describe Phlex::View do
 		end
 	end
 
-	with "@class name" do
+	with "attribute method" do
 		view do
 			def template
 				div class: "header"
 			end
 
-			def class_attribute(value)
-				"#{value}123abc"
+			def resolve_attributes(attributes)
+				attributes.tap do |attrs|
+					attrs[:class] = "#{attrs[:class]}123abc" if attributes.key?(:class)
+				end
 			end
 		end
 
-		it "compiles the class name" do
+		it "calls the attribute method" do
 			expect(output).to be == %(<div class="header123abc"></div>)
 		end
 	end

@@ -178,15 +178,21 @@ module Phlex
 			@_view_context
 		end
 
+		def resolve_attributes(attributes)
+			attributes
+		end
+
 		def _attributes(attributes, buffer: +"")
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
 			end
 
-			attr_method_used = _build_attributes(attributes, buffer: buffer)
+			attributes = resolve_attributes(attributes)
+
+			_build_attributes(attributes, buffer: buffer)
 
 			# Don't cache if an attribute method was used.
-			if !attr_method_used && !self.class.rendered_at_least_once
+			unless self.class.rendered_at_least_once
 				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
 			end
 
@@ -210,11 +216,6 @@ module Phlex
 
 				if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
-				end
-
-				if respond_to?(:"#{k}_attribute", true)
-					v = send :"#{k}_attribute", v
-					attr_method_used = true
 				end
 
 				case v
