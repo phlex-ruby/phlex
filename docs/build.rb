@@ -12,6 +12,7 @@ Bundler.require :docs
 loader = Zeitwerk::Loader.new
 loader.push_dir(__dir__)
 loader.ignore(__FILE__)
+loader.inflector.inflect("rspec" => "RSpec")
 loader.enable_reloading
 loader.setup
 loader.eager_load

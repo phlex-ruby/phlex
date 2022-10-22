@@ -51,7 +51,14 @@ module Components
 										render Nav::Item.new("Views", to: Pages::Views, active_page: @_parent)
 										render Nav::Item.new("Templates", to: Pages::Templates, active_page: @_parent)
 										render Nav::Item.new("Helpers", to: Pages::Helpers, active_page: @_parent)
-										render Nav::Item.new("Testing", to: Pages::Testing, active_page: @_parent)
+									end
+
+									h2(class: "text-lg font-semibold pt-5") { "Testing" }
+
+									ul do
+										render Nav::Item.new("Getting Started", to: Pages::Testing::GettingStarted, active_page: @_parent)
+										render Nav::Item.new("RSpec", to: Pages::Testing::RSpec, active_page: @_parent)
+										render Nav::Item.new("Minitest", to: Pages::Testing::Minitest, active_page: @_parent)
 									end
 
 									h2(class: "text-lg font-semibold pt-5") { "Rails" }
