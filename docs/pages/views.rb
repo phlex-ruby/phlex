@@ -130,6 +130,26 @@ module Pages
 					end
 					```
 				MD
+
+				render Markdown.new(<<~MD)
+					## Registering custom elements
+
+					You can register custom elements with the `register_element` macro. The custom element will only be available in the view where it is registered and subclasses of that view.
+				MD
+
+				render Example.new do |e|
+					e.tab "example.rb", <<~RUBY
+						class Example < Phlex::View
+							register_element :trix_editor
+
+							def template
+								trix_editor input: "content", autofocus: true
+							end
+						end
+					RUBY
+
+					e.execute "Example.new.call"
+				end
 			end
 		end
 	end
