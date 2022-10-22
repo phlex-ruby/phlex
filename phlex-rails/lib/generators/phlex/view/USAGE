@@ -6,3 +6,4 @@ Example:
 
 This will create:
   app/views/sidebar.rb
+  spec/views/sidebar_spec.rb or test/views/sidebar_test.rb

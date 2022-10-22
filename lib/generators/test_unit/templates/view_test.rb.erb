@@ -1,0 +1,12 @@
+require "test_helper"
+require "phlex/test_helpers"
+
+class Views::<%= class_name %>Test < ActionView::TestCase
+  include Phlex::TestHelpers
+
+  def it_renders_without_problem
+    result = render_view(Views::<%= class_name %>.new)
+
+    assert_equal result.css("h1").first.text, "Hello World"
+  end
+end
