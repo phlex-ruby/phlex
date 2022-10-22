@@ -139,13 +139,13 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-            class Example < Phlex::View
-              register_element :trix_editor
+						class Example < Phlex::View
+							register_element :trix_editor
 
-              def template
-                trix_editor input: "content" autofocus: true
-              end
-            end
+							def template
+								trix_editor input: "content", autofocus: true
+							end
+						end
 					RUBY
 
 					e.execute "Example.new.call"
