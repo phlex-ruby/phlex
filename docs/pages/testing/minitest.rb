@@ -73,16 +73,22 @@ module Pages
 
 						In addition to `css` you can use other Nokogiri finders like `xpath`, `at_css`, `at_xpath`. Read more about Nokogiri here: [https://nokogiri.org/](https://nokogiri.org/).
 
-						## Asserting with capybara (Coming Soon)
+						## Asserting with capybara
+
 						Setup capybara following the documentation: [https://github.com/teamcapybara/capybara#using-capybara-with-minitest](https://github.com/teamcapybara/capybara#using-capybara-with-minitest)
 
 						You are now able to use capybara matchers:
 
 						```ruby
 						# menu_spec.rb
+						require 'capybara/minitest'
+
 						class MenuTest < ActionView::TestCase # or Minitest::Test
+							include Phlex::TestHelpers
+							include Capybara::Minitest::Assertions
+
 							def test_it_renders_home_menu
-								render_view(MenuTest)
+								render_view(Menu.new)
 
 								assert_link "Home", href: "/"
 							end
@@ -90,12 +96,18 @@ module Pages
 						```
 
 						You can find more Capybara matchers here: [https://github.com/teamcapybara/capybara](https://github.com/teamcapybara/capybara).
+
 						### Passing blocks
 
 						You can pass blocks to `render_view`:
 
 						```ruby
+						require 'capybara/minitest'
+
 						class NavTest < ActionView::TestCase # or Minitest::Test
+							include Phlex::TestHelpers
+							include Capybara::Minitest::Assertions
+
 							def test_it_accepts_items
 								render_view(Nav.new) do |nav|
 									nav.item(href: "/products/new") { "New Product" }

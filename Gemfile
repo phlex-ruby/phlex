@@ -9,6 +9,7 @@ gem "rake"
 
 gem "sus", group: [:test]
 gem "rails", group: [:test]
+gem "capybara", group: [:test]
 gem "rouge", group: [:docs]
 gem "webrick", group: [:docs]
 gem "zeitwerk", group: [:docs]
