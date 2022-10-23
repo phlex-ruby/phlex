@@ -6,7 +6,7 @@ module Pages
 			I18n.backend.store_translations(
 				"pt-BR", {
 					hello: "Olá",
-					views: { layouts: { feedback: { welcome_message: { hello: "Olá" } } } }
+					views: { feedback: { welcome_message: { hello: "Olá" } } }
 				}
 			)
 			I18n.locale = "pt-BR"
@@ -17,58 +17,62 @@ module Pages
 				render Markdown.new(<<~MD)
 					# Translations
 
-					If your application is using [I18n gem](https://github.com/ruby-i18n/i18n) you are able to use `translate`
-					or `t` helper methods by including `Phlex::Translation` module to your view class or including it to your
-					main class, eg. `ApplicationView`.
+					Phlex has built-in support for translations with the **[I18n Gem](https://github.com/ruby-i18n/i18n)**.
+
+					Just include `Phlex::Translation` in your view and use the `translate` method to access a translation.
 				MD
 
 				render Example.new do |e|
 					e.tab "welcome_message.rb", <<~RUBY
-						# Your translation file `pt-BR.yml`
-						# pt-BR:
-						#  hello: "Olá"
-
 						class WelcomeMessage < Phlex::View
 							include Phlex::Translation
 
 							def template
-								h1 { t("hello") }
+								h1 { translate("hello") }
 							end
 						end
 					RUBY
+
+					e.tab "pt-PR.yml", <<~YAML, syntax: :yaml
+						pt-BR:
+						  hello: "Olá"
+					YAML
 
 					e.execute "WelcomeMessage.new.call"
 				end
 
 				render Markdown.new(<<~MD)
-					## "Lazy" lookup
-					Phlex implements a convenient way to look up the locale inside views. If your view class name is
-					`Views::Layouts::Feedback::WelcomeMessage.rb`, you can define translation string following the
-					`views.layouts.feedback.welcome_message.hello` structure and access its value using `t(".hello")`.
+					## Implicit scoopes
+
+					Start your translate key with a `.` to use the name of the view as an implicit scope.
 				MD
 
 				render Example.new do |e|
 					e.tab "welcome_message.rb", <<~RUBY
-						# Your translation file `pt-BR.yml`
-						# pt-BR:
-						# 	layouts:
-						# 		feedback:
-						# 			welcome_message:
-						# 				hello: Olá
+						module Views
+							module Feedback
+								class WelcomeMessage < Phlex::View
+									include Phlex::Translation
 
-						# app/views/layouts/feedback/welcome_message.rb
-						class WelcomeMessage < Phlex::View
-							include Phlex::Translation
-
-							def template
-								h1 { t(".hello") }
+									def template
+										h1 { translate(".hello") }
+									end
+								end
 							end
 						end
 					RUBY
 
+					e.tab "pt-BR.yml", <<~YAML, syntax: :yaml
+						pt-BR:
+						  views:
+						    feedback:
+						      welcome_message:
+						        hello: Olá
+					YAML
+
 					e.execute <<~RUBY
-						WelcomeMessage.translation_path = 'views.layouts.feedback.welcome_message'
-						WelcomeMessage.new.call
+						Views::Feedback::WelcomeMessage.translation_path = 'views.feedback.welcome_message'
+						Views::Feedback::WelcomeMessage.new.call
 					RUBY
 				end
 			end
