@@ -43,16 +43,6 @@ describe Phlex::Translation do
 		end
 	end
 
-	it "defines alias t for translate method" do
-		dummy_class = Class.new(Phlex::View) do
-			include Phlex::Translation
-		end
-
-		instance = dummy_class.new
-
-		expect(instance.method(:translate)).to be == instance.method(:t)
-	end
-
 	describe ".translation_path" do
 		with "valid class name" do
 			it "returns I18n scope using class anme" do
