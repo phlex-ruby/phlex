@@ -3,28 +3,19 @@
 module Phlex
 	module Rails
 		module Helpers
-			module CSPMetaTag
-				def csp_meta_tag(**options)
-					if (output = @_view_context.csp_meta_tag(**options))
-						@_target << output
-					end
-				end
-			end
+			HELPERS = %w[csp_meta_tag csrf_meta_tags action_cable_meta_tag stylesheet_link_tag
+				favicon_link_tag preload_link_tag javascript_include_tag link_to mail_to].freeze
 
-			module CSRFMetaTags
-				def csrf_meta_tags
-					if (output = @_view_context.csrf_meta_tags)
-						@_target << output
-					end
-				end
-			end
+			HELPERS.each do |name|
+				class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+        	# frozen_string_literal: true
 
-			module ActionCableMetaTag
-				def action_cable_meta_tag
-					if (output = @_view_context.action_cable_meta_tag)
-						@_target << output
+					def #{name}(...)
+						if (output = @_view_context.#{name}(...))
+							@_target << output
+						end
 					end
-				end
+				RUBY
 			end
 
 			module FormWith
@@ -36,38 +27,6 @@ module Phlex
 							)
 						end
 					}
-				end
-			end
-
-			module StylesheetLinkTag
-				def stylesheet_link_tag(*sources)
-					if (output = @_view_context.stylesheet_link_tag(*sources))
-						@_target << output
-					end
-				end
-			end
-
-			module FaviconLinkTag
-				def favicon_link_tag(*args)
-					if (output = @_view_context.favicon_link_tag(*args))
-						@_target << output
-					end
-				end
-			end
-
-			module PreloadLinkTag
-				def preload_link_tag(*args)
-					if (output = @_view_context.preload_link_tag(*args))
-						@_target << output
-					end
-				end
-			end
-
-			module JavaScriptIncludeTag
-				def javascript_include_tag(*sources)
-					if (output = @_view_context.javascript_include_tag(*sources))
-						@_target << output
-					end
 				end
 			end
 
