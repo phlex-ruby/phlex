@@ -3,7 +3,7 @@
 module Views
 	module Articles
 		class Form < Phlex::View
-			include Phlex::Rails::Helpers::FormWith
+			include Phlex::Rails::Helpers
 
 			def template
 				form_with url: "test" do |f|

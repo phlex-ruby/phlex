@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-	# Rails routes here
+	root to: "articles#index"
 end
