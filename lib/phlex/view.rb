@@ -200,8 +200,6 @@ module Phlex
 		end
 
 		def _build_attributes(attributes, buffer:)
-			attr_method_used = false
-
 			attributes.each do |k, v|
 				next unless v
 
@@ -232,7 +230,7 @@ module Phlex
 				end
 			end
 
-			attr_method_used
+			buffer
 		end
 	end
 end
