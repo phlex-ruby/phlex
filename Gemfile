@@ -14,6 +14,7 @@ gem "webrick", group: [:docs]
 gem "zeitwerk", group: [:docs]
 gem "redcarpet", group: [:docs]
 gem "combustion", group: [:test]
+gem "i18n", group: [:test]
 gem "benchmark-ips"
 gem "htmlbeautifier", group: [:docs]
 gem "benchmark-memory"

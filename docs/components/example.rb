@@ -13,12 +13,12 @@ module Components
 			end
 		end
 
-		def tab(name, code)
+		def tab(name, code, syntax: :ruby)
 			@t.tab(name) do
-				render CodeBlock.new(code, syntax: :ruby)
+				render CodeBlock.new(code, syntax: syntax)
 			end
 
-			@sandbox.class_eval(code)
+			@sandbox.class_eval(code) if syntax == :ruby
 		end
 
 		def execute(code)

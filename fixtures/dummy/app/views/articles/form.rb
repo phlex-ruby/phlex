@@ -2,7 +2,7 @@
 
 module Views
 	module Articles
-		class Form < Phlex::View
+		class Form < ApplicationView
 			include Phlex::Rails::Helpers::FormWith
 
 			def template

@@ -2,7 +2,7 @@
 
 module Views
 	module Comments
-		class Comment < Phlex::View
+		class Comment < ApplicationView
 			def initialize(name:, body:)
 				@name = name
 				@body = body

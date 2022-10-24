@@ -3,7 +3,7 @@
 module Pages
 	class Helpers < ApplicationPage
 		def template
-			render Layout.new(title: "Templates in Phlex") do
+			render Layout.new(title: "Helpers") do
 				render Markdown.new(<<~MD)
 					# Helpers
 
