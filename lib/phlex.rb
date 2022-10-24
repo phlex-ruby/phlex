@@ -8,6 +8,9 @@ loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
 loader.ignore("#{__dir__}/generators")
 loader.ignore("#{__dir__}/install")
 loader.ignore("#{__dir__}/phlex/test_helpers.rb")
+loader.ignore("#{__dir__}/phlex/capybara/test_helpers.rb")
+loader.ignore("#{__dir__}/phlex/nokogiri/test_helpers.rb")
+loader.ignore("#{__dir__}/phlex/rails/test_helpers.rb")
 loader.inflector.inflect("html" => "HTML")
 loader.inflector.inflect("vcall" => "VCall")
 loader.inflector.inflect("fcall" => "FCall")
@@ -21,14 +24,6 @@ module Phlex
 	extend self
 
 	ATTRIBUTE_CACHE = {}
-
-	def const_missing(name)
-		if name == :Component
-			raise NameError, "👋 Phlex::Component is now Phlex::View"
-		else
-			super
-		end
-	end
 
 	def configuration
 		@configuration ||= Configuration.new

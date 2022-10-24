@@ -3,7 +3,7 @@
 module Phlex
 	module TestHelpers
 		def render(view, &block)
-			@output = view.render_in(view_context, &block)
+			@output = view.call(view_context: view_context, &block)
 		end
 
 		def view_context

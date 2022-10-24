@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "phlex/test_helpers"
+
 module Phlex
 	module Rails
 		module TestHelpers
