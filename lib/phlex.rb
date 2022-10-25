@@ -22,14 +22,6 @@ module Phlex
 
 	ATTRIBUTE_CACHE = {}
 
-	def const_missing(name)
-		if name == :Component
-			raise NameError, "👋 Phlex::Component is now Phlex::View"
-		else
-			super
-		end
-	end
-
 	def configuration
 		@configuration ||= Configuration.new
 	end
