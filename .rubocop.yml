@@ -4,3 +4,20 @@ inherit_from:
 
 AllCops:
   TargetRubyVersion: 2.7
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Layout/CaseIndentation:
+  Enabled: false
+
+Style/StringConcatenation:
+  Enabled: false
+
+
+
+Security/Eval:
+  Enabled: false
+
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: false
