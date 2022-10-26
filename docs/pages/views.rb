@@ -150,6 +150,34 @@ module Pages
 
 					e.execute "Example.new.call"
 				end
+
+				render Markdown.new(<<~MD)
+					## Callbacks
+
+					Prepend the `Phlex::View::Callbacks` module, and if you define `#before_rendering_template` and/or `#after_rendering_template` method in your view, they will be called immediately before and after your template is compiled.
+				MD
+
+				render Example.new do |e|
+					e.tab "example.rb", <<~RUBY
+						class Example < Phlex::View
+      				prepend Phlex::View::Callbacks
+
+      				def before_rendering_template
+								h1 { "Hello" }
+							end
+
+							def template
+								h2 { "World" }
+							end
+
+              def after_rendering_template
+								h3 { "Bye" }
+							end
+      			end
+					RUBY
+
+					e.execute "Example.new.call"
+				end
 			end
 		end
 	end
