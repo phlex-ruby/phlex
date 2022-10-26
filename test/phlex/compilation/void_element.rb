@@ -26,7 +26,7 @@ describe Phlex::Compiler do
 
 		expected = <<~RUBY
 			def template
-				@_target << "<img" << fetch_attrs(class: "a b c") << ">"
+				@_target << "<img" << process_attributes(class: "a b c") << ">"
 			end
 		RUBY
 
