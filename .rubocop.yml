@@ -1,5 +1,5 @@
 inherit_from:
-  - "https://www.goodcop.style"
+  - "https://www.goodcop.style/rubocop.yml"
   - "https://www.goodcop.style/tabs.yml"
 
 AllCops:
