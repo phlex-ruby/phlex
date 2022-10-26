@@ -12,3 +12,4 @@
 /docs/dist
 Gemfile.lock
 .rubocop-*
+lib/.rbnext
