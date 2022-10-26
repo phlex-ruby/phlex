@@ -182,7 +182,7 @@ module Phlex
 			@_view_context
 		end
 
-		def process_attributes(buffer: +"", **attributes)
+		def process_attributes(buffer = +"", **attributes)
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
 			end
