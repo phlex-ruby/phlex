@@ -1,6 +1,16 @@
+require:
+  - ruby-next/rubocop
+
 inherit_from:
   - "https://www.goodcop.style/rubocop.yml"
   - "https://www.goodcop.style/tabs.yml"
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: next
+
+AllCops:
+  Exclude:
+    - 'lib/.rbnext/**/*'
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
