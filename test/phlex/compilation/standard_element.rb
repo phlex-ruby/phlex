@@ -26,7 +26,7 @@ describe Phlex::Compiler do
 
 		expected = <<~RUBY
 			def template
-				@_target << "<h1" << process_attributes(class: "font-bold") << "></h1>"
+				@_target << "<h1" << _attributes(class: "font-bold") << "></h1>"
 			end
 		RUBY
 
@@ -53,7 +53,7 @@ describe Phlex::Compiler do
 
 		expect(output.first).to be == <<~RUBY
 			def template
-				@_target << "<h1" << process_attributes(class: "font-bold") << ">Hi</h1>"
+				@_target << "<h1" << _attributes(class: "font-bold") << ">Hi</h1>"
 			end
 		RUBY
 	end
@@ -78,7 +78,7 @@ describe Phlex::Compiler do
 
 		expected = <<~RUBY
 			def template
-				@_target << "<h1" << process_attributes(class: "font-bold") << ">Hi</h1>"
+				@_target << "<h1" << _attributes(class: "font-bold") << ">Hi</h1>"
 			end
 		RUBY
 
