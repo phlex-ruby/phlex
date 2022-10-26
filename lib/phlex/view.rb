@@ -182,11 +182,7 @@ module Phlex
 			@_view_context
 		end
 
-		def fetch_attrs(**kwargs)
-			Phlex::ATTRIBUTE_CACHE[kwargs.hash] || _attributes(kwargs)
-		end
-
-		def _attributes(attributes, buffer: +"")
+		def process_attributes(buffer = +"", **attributes)
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
 			end
