@@ -19,7 +19,7 @@ gem "simplecov", group: [:test]
 gem "benchmark-ips"
 gem "htmlbeautifier", group: [:docs]
 gem "benchmark-memory"
-gem "rubocop", require: false, github: "joeldrapper/rubocop", branch: "rubocop-user-agent"
+gem "rubocop", require: false
 gem "syntax_suggest"
 gem "foreman"
 gem "filewatcher", group: [:docs]
