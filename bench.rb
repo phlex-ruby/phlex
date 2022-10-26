@@ -9,6 +9,13 @@ require_relative "fixtures/layout"
 
 puts RUBY_DESCRIPTION
 
+a = Example::Page.new.call
+# Example::Page.compile
+# Example::LayoutComponent.compile
+b = Example::Page.new.call
+
+raise unless a == b
+
 Benchmark.ips do |x|
 	x.report("Page") { Example::Page.new.call }
 end

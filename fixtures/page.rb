@@ -6,32 +6,26 @@ module Example
 			render LayoutComponent.new do
 				h1 { "Hi" }
 
-				5.times do
-					div do
-						10.times do
-							a(href: "something", unique: SecureRandom.uuid, data: { value: 1 }) { "Test" }
+				table id: "test", class: "a b c d e f g" do
+					tr do
+						td id: "test", class: "a b c d e f g" do
+							span { "Hi" }
 						end
-					end
-				end
 
-				table do
-					thead do
-						10.times do
-							tr do
-								th { "Hi" }
-							end
+						td id: "test", class: "a b c d e f g" do
+							span { "Hi" }
 						end
-					end
 
-					tbody do
-						100.times do
-							tr class: "a b c d e f g", id: "something" do
-								10.times do
-									td class: "f g h i j k l" do
-										span { "Test" }
-									end
-								end
-							end
+						td id: "test", class: "a b c d e f g" do
+							span { "Hi" }
+						end
+
+						td id: "test", class: "a b c d e f g" do
+							span { "Hi" }
+						end
+
+						td id: "test", class: "a b c d e f g" do
+							span { "Hi" }
 						end
 					end
 				end
