@@ -12,7 +12,7 @@ describe Phlex::Compiler::Formatter do
 			formatter.append { _1.text "b" }
 			formatter.append { _1.text "c" }
 
-			expect(output).to be == %(@_target << \"abc")
+			expect(output).to be == %(@_target << "abc")
 		end
 
 		it "allows for breaks" do
