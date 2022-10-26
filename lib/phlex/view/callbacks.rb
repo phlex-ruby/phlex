@@ -2,10 +2,10 @@
 
 module Phlex::View::Callbacks
 	def template(&block)
-		respond_to?(:before_template) && before_template
+		before_rendering_template if respond_to?(:before_rendering_template)
 
 		super(&block)
 
-		respond_to?(:after_template) && after_template
+		after_rendering_template if respond_to?(:after_rendering_template)
 	end
 end

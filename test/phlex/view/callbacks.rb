@@ -9,7 +9,7 @@ describe Phlex::View do
 		view do
 			prepend Phlex::View::Callbacks
 
-			def before_template
+			def before_rendering_template
 				h1 { "Hello" }
 			end
 
@@ -17,7 +17,7 @@ describe Phlex::View do
 				h2 { "World" }
 			end
 
-			def after_template
+			def after_rendering_template
 				h3 { "Bye" }
 			end
 		end
