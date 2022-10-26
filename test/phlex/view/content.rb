@@ -7,9 +7,9 @@ describe Phlex::View do
 
 	with "content" do
 		view do
-			def template(&block)
+			def template(&)
 				div do
-					yield_content(&block)
+					yield_content(&)
 				end
 			end
 		end

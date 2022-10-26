@@ -18,9 +18,9 @@ module Phlex
 			nil
 		end
 
-		def render_in(view_context, &block)
+		def render_in(view_context, &)
 			if block_given?
-				call(view_context: view_context) do |*args, **kwargs|
+				call(view_context:) do |*args, **kwargs|
 					view_context.with_output_buffer(self) do
 						original_length = @_target.length
 						output = yield(*args, **kwargs)
@@ -36,7 +36,7 @@ module Phlex
 					end
 				end.html_safe
 			else
-				call(view_context: view_context).html_safe
+				call(view_context:).html_safe
 			end
 		end
 

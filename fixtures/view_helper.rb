@@ -8,9 +8,9 @@ module ViewHelper
 		end
 	end
 
-	def view(&block)
+	def view(&)
 		let :view do
-			Class.new(Phlex::View, &block)
+			Class.new(Phlex::View, &)
 		end
 	end
 end

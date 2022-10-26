@@ -4,11 +4,11 @@ module Phlex
 	module TestHelpers
 		class MissingTestDependency < StandardError; end
 
-		def render_view(view, &block)
+		def render_view(view, &)
 			ensure_presence_of_nokogiri
 
 			view_context = controller&.view_context
-			rendered = view.call(view_context: view_context, &block)
+			rendered = view.call(view_context:, &)
 			Nokogiri::HTML.fragment(rendered)
 		end
 

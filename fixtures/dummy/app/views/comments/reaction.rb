@@ -7,10 +7,10 @@ module Views
 				@emoji = emoji
 			end
 
-			def template(&block)
+			def template(&)
 				p { @emoji }
 
-				yield_content(&block)
+				yield_content(&)
 			end
 		end
 	end

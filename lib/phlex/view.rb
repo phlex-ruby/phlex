@@ -48,14 +48,14 @@ module Phlex
 		end
 
 		HTML::STANDARD_ELEMENTS.each do |method_name, tag|
-			register_element(method_name, tag: tag)
+			register_element(method_name, tag:)
 		end
 
 		HTML::VOID_ELEMENTS.each do |method_name, tag|
-			register_void_element(method_name, tag: tag)
+			register_void_element(method_name, tag:)
 		end
 
-		def yield_content(&block)
+		def yield_content(&)
 			return unless block_given?
 
 			original_length = @_target.length
@@ -97,8 +97,8 @@ module Phlex
 			nil
 		end
 
-		def raw(content = nil, &block)
-			@_target << (content || instance_exec(&block))
+		def raw(content = nil, &)
+			@_target << (content || instance_exec(&))
 			nil
 		end
 
@@ -130,7 +130,7 @@ module Phlex
 			end
 		end
 
-		def capture(&block)
+		def capture(&)
 			return unless block_given?
 
 			original_buffer = @_target
@@ -183,7 +183,7 @@ module Phlex
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
 			end
 
-			_build_attributes(attributes, buffer: buffer)
+			_build_attributes(attributes, buffer:)
 
 			unless self.class.rendered_at_least_once
 				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
@@ -217,7 +217,7 @@ module Phlex
 				when Symbol
 					buffer << " " << name << '="' << CGI.escape_html(v.name) << '"'
 				when Hash
-					_build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer: buffer)
+					_build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer:)
 				else
 					buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
 				end

@@ -6,14 +6,14 @@ module Components
 			@index = 1
 		end
 
-		def template(&block)
+		def template(&)
 			div class: "tabs flex flex-wrap relative my-5", role: "tablist" do
-				yield_content(&block)
+				yield_content(&)
 			end
 		end
 
-		def tab(name, &block)
-			render(Tab.new(name: name, checked: first?), &block)
+		def tab(name, &)
+			render(Tab.new(name:, checked: first?), &)
 			@index += 1
 		end
 

@@ -21,12 +21,12 @@ describe Phlex::TestHelpers do
 
 		it "accepts content block" do
 			nav_view = Class.new(Phlex::View) do
-				def template(&content)
-					ul(&content)
+				def template(&)
+					ul(&)
 				end
 
-				def item(&content)
-					li(&content)
+				def item(&)
+					li(&)
 				end
 			end
 
@@ -53,7 +53,7 @@ describe Phlex::TestHelpers do
 				end
 			end
 
-			expect(example).to receive(:call).with(view_context: view_context)
+			expect(example).to receive(:call).with(view_context:)
 
 			render_view(example)
 		end

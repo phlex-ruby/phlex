@@ -2,8 +2,8 @@
 
 module Views
 	class Heading < ApplicationView
-		def template(&block)
-			h1(&block)
+		def template(&)
+			h1(&)
 		end
 	end
 end

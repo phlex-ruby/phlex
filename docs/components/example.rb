@@ -6,7 +6,7 @@ module Components
 			@sandbox = Module.new
 		end
 
-		def template(&block)
+		def template(&)
 			render Tabs.new do |t|
 				@t = t
 				yield self
@@ -15,7 +15,7 @@ module Components
 
 		def tab(name, code, syntax: :ruby)
 			@t.tab(name) do
-				render CodeBlock.new(code, syntax: syntax)
+				render CodeBlock.new(code, syntax:)
 			end
 
 			@sandbox.class_eval(code) if syntax == :ruby

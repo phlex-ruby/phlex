@@ -28,7 +28,7 @@ module Phlex
 			end
 
 			module FormWith
-				def form_with(*args, **kwargs, &block)
+				def form_with(*args, **kwargs, &)
 					raw @_view_context.form_with(*args, **kwargs) { |form|
 						capture do
 							yield(
@@ -72,8 +72,8 @@ module Phlex
 			end
 
 			module ContentFor
-				def content_for(slot, &block)
-					@_view_context.content_for(slot, capture(&block))
+				def content_for(slot, &)
+					@_view_context.content_for(slot, capture(&))
 				end
 			end
 		end

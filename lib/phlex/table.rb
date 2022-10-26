@@ -14,9 +14,9 @@ module Phlex
 				end
 
 				properties << {
-					header: header,
-					body: body,
-					attributes: attributes,
+					header:,
+					body:,
+					attributes:,
 				}
 			end
 
@@ -55,10 +55,10 @@ module Phlex
 			self.class.properties
 		end
 
-		def collection_template(&block)
+		def collection_template(&)
 			table do
 				head_template
-				body_template(&block)
+				body_template(&)
 				foot_template
 			end
 		end

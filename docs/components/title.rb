@@ -2,8 +2,8 @@
 
 module Components
 	class Title < Phlex::View
-		def template(&block)
-			h1(class: "text-3xl font-semibold my-5") { raw(&block) }
+		def template(&)
+			h1(class: "text-3xl font-semibold my-5") { raw(&) }
 		end
 	end
 end

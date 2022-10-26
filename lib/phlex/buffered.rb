@@ -6,8 +6,8 @@ module Phlex
 			@object, @buffer = object, buffer
 		end
 
-		def method_missing(name, *args, **kwargs, &block)
-			output = @object.public_send(name, *args, **kwargs, &block)
+		def method_missing(name, *args, **kwargs, &)
+			output = @object.public_send(name, *args, **kwargs, &)
 			@buffer << output if output.is_a? String
 			nil
 		end

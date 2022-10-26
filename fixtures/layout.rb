@@ -6,7 +6,7 @@ module Example
 			@title = title
 		end
 
-		def template(&block)
+		def template(&)
 			html do
 				head do
 					title { @title }
@@ -23,7 +23,7 @@ module Example
 						end
 					end
 
-					div class: "container mx-auto p-5", &block
+					div(class: "container mx-auto p-5", &)
 				end
 			end
 		end

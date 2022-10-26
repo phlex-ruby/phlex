@@ -28,7 +28,7 @@ module Phlex
 				end
 			end
 
-			def chain_append(&block)
+			def chain_append(&)
 				@appending = true
 
 				if @open_string_append
@@ -47,7 +47,7 @@ module Phlex
 				@appending = false
 			end
 
-			def append(&block)
+			def append(&)
 				@appending = true
 
 				unless @open_string_append

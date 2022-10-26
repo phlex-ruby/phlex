@@ -23,8 +23,8 @@ describe Phlex::View do
 
 		with "another view" do
 			other_view = Class.new Phlex::View do
-				def template(&block)
-					div(&block)
+				def template(&)
+					div(&)
 				end
 			end
 

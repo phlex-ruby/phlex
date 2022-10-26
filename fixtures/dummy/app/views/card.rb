@@ -2,8 +2,8 @@
 
 module Views
 	class Card < ApplicationView
-		def template(&block)
-			article class: "drop-shadow p-5 rounded", &block
+		def template(&)
+			article(class: "drop-shadow p-5 rounded", &)
 		end
 
 		def title(text)
