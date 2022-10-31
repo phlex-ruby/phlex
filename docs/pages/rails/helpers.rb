@@ -35,7 +35,7 @@ module Pages
 						Using these is equvalent to passing the output of the original Rails helpers to `raw`, e.g:
 
 						```ruby
-						raw helpers.javascript_include_tag
+						unsafe_raw helpers.javascript_include_tag
 						```
 
 						## Including proxies

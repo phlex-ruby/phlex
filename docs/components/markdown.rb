@@ -34,7 +34,7 @@ module Components
 		end
 
 		def template
-			raw MARKDOWN.render(@content)
+			unsafe_raw MARKDOWN.render(@content)
 		end
 	end
 end
