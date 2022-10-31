@@ -8,7 +8,7 @@ describe Phlex::View do
 	with "raw content" do
 		view do
 			def template
-				raw %(<h1 class="test">Hello</h1>)
+				unsafe_raw %(<h1 class="test">Hello</h1>)
 			end
 		end
 

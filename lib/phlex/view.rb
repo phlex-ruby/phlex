@@ -101,7 +101,7 @@ module Phlex
 			nil
 		end
 
-		def raw(content = nil, &block)
+		def unsafe_raw(content = nil, &block)
 			@_target << (content || instance_exec(&block))
 			nil
 		end

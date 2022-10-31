@@ -29,7 +29,7 @@ module Phlex
 
 			module FormWith
 				def form_with(*args, **kwargs, &block)
-					raw @_view_context.form_with(*args, **kwargs) { |form|
+					@_target << @_view_context.form_with(*args, **kwargs) { |form|
 						capture do
 							yield(
 								Phlex::Buffered.new(form, buffer: @_target)

@@ -17,7 +17,7 @@ module Components
 					meta name: "viewport", content: "width=device-width, initial-scale=1"
 					title { @title }
 					link href: "/application.css", rel: "stylesheet"
-					style { raw Rouge::Theme.find("github").render(scope: ".highlight") }
+					style { unsafe_raw Rouge::Theme.find("github").render(scope: ".highlight") }
 				end
 
 				body class: "text-stone-700" do
@@ -25,7 +25,7 @@ module Components
 						header class: "border-b py-4 px-4 lg:px-10 flex justify-between items-center sticky top-0 left-0 bg-white z-50" do
 							div class: "flex flex-row items-center gap-2" do
 								label for: "nav-toggle", class: "cursor-pointer lg:hidden" do
-									raw '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"> <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" /> </svg>'
+									unsafe_raw '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"> <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" /> </svg>'
 								end
 
 								a(href: "/", class: "block") { img src: "/assets/logo.png", width: "100" }

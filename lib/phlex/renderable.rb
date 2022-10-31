@@ -28,7 +28,7 @@ module Phlex
 
 						if unchanged
 							if defined?(ActiveSupport::SafeBuffer) && output.is_a?(ActiveSupport::SafeBuffer)
-								raw(output)
+								unsafe_raw(output)
 							else
 								text(output)
 							end
