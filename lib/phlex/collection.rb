@@ -46,13 +46,13 @@ module Phlex
 		def first?
 			raise ArgumentError unless @item
 
-			@first
+			!!@first
 		end
 
 		def last?
 			raise ArgumentError unless @item
 
-			@last
+			!!@last
 		end
 	end
 end
