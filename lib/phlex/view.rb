@@ -182,9 +182,17 @@ module Phlex
 			@_view_context
 		end
 
-		def process_attributes(buffer = +"", **attributes)
+		def _attributes(buffer = +"", **attributes)
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
+			end
+
+			if respond_to?(:process_attributes)
+				attributes = process_attributes(**attributes)
+
+				unless attributes.is_a?(Hash)
+					raise "`#{self.class.name}#process_attributes` must return a hash of attributes"
+				end
 			end
 
 			_build_attributes(attributes, buffer: buffer)

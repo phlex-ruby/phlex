@@ -18,7 +18,7 @@ module Phlex
 
 					if @node.arguments&.parts&.any?
 						@formatter.chain_append do |f|
-							f.text "process_attributes("
+							f.text "_attributes("
 							@node.arguments.format(@formatter)
 							f.text ")"
 						end
