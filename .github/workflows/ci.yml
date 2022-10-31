@@ -20,8 +20,14 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
-      - name: Tests
-        run: bundle exec sus
+      - name: Isolated tests
+        run: bundle exec sus test/phlex
+
+      - name: Rails integration tests
+        run: bundle exec sus test/rails
+
+      - name: Type check
+        run: bundle exec solargraph typecheck
 
       - name: Rubocop
         run: bundle exec rubocop

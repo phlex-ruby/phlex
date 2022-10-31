@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require "rails_helper"
 
 describe Phlex::View do
 	let(:output) { ArticlesController.render "new" }

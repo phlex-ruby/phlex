@@ -19,11 +19,6 @@ require "view_component"
 
 Bundler.require :test
 
-Combustion.path = "fixtures/dummy"
-Combustion.initialize! :action_controller do
-	config.autoload_paths << "#{root}/app"
-end
-
 require "view_helper"
 require "compiler_test_helpers"
 
