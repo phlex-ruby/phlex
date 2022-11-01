@@ -12,11 +12,7 @@ module Phlex
 		end
 
 		def template
-			if @item
-				item_template
-			else
-				collection_template { yield_items }
-			end
+			@item ? item_template : collection_template { yield_items }
 		end
 
 		private
@@ -26,33 +22,12 @@ module Phlex
 				raise ArgumentError, "You can only yield_items when rendering a collection. You are currently rendering an item."
 			end
 
-			@collection.each_with_index do |item, index|
+			@collection.each do |item|
 				@item = item
-				@index = index
-				@position = (index + 1)
-				@first = (index == 0)
-				@last = (@position == @collection.size)
-
 				item_template
 			end
 
 			@item = nil
-			@index = nil
-			@first = nil
-			@last = nil
-			@position = nil
-		end
-
-		def first?
-			raise ArgumentError unless @item
-
-			!!@first
-		end
-
-		def last?
-			raise ArgumentError unless @item
-
-			!!@last
 		end
 	end
 end

@@ -32,16 +32,6 @@ module Pages
 						end
 						```
 
-						You can also access the predicates `first?` and `last?` and the instance variables `@index`, `@position` and `@collection`.
-
-						```ruby
-						def item_template
-							li **classes(first?: "border-t") do
-								"\#{@position}/\#{@collection.size} \#{@item}"
-							end
-						end
-						```
-
 						## Rendering a collection
 
 						Putting it all together, we can create a `List` view that renders each item in an `<li>`, all wrapped up in an outer `<ul>`.
@@ -59,9 +49,7 @@ module Pages
 								end
 
 								def item_template
-									li **classes(first?: "font-bold") do
-										"(\#{@position}/\#{@collection.size}) \#{@item}"
-									end
+									li { @item }
 								end
 							end
 						RUBY
@@ -86,12 +74,6 @@ module Pages
 
 						```ruby
 						render List.new(item: "A")
-						```
-
-						If you've used any of the iteration variables and predicates — `first?`, `last?`, `@position`, `@index`, etc. you'll need to pass these manually to simulate this item's position.
-
-						```ruby
-						render List.new(item: "A", first: true, position: 1)
 						```
 					MD
 				end
