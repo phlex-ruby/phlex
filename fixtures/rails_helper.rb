@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "phlex/rails"
+
 Bundler.require :rails
 
 Combustion.path = "fixtures/dummy"

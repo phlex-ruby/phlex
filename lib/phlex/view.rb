@@ -7,24 +7,25 @@ end
 module Phlex
 	class View
 		extend HTML
+		include Helpers
 		include Renderable
 
 		class << self
 			attr_accessor :rendered_at_least_once
 
-			def compile
-				return if @compiled
-				return unless name
-				return if name.start_with? "#"
-
-				Compiler.new(self).call
-
-				@compiled = true
-			end
-
-			def compiled?
-				!!@compiled
-			end
+			# 			def compile
+			# 				return if @compiled
+			# 				return unless name
+			# 				return if name.start_with? "#"
+			#
+			# 				Compiler.new(self).call
+			#
+			# 				@compiled = true
+			# 			end
+			#
+			# 			def compiled?
+			# 				!!@compiled
+			# 			end
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
@@ -145,37 +146,6 @@ module Phlex
 
 			@_target = original_buffer
 			new_buffer.html_safe
-		end
-
-		def classes(*tokens, **conditional_tokens)
-			tokens = self.tokens(*tokens, **conditional_tokens)
-
-			if tokens.present?
-				{ class: tokens }
-			else
-				{}
-			end
-		end
-
-		def tokens(*tokens, **conditional_tokens)
-			conditional_tokens.each do |condition, token|
-				case condition
-				when Symbol then next unless send(condition)
-				when Proc then next unless condition.call
-				else raise ArgumentError,
-					"The class condition must be a Symbol or a Proc."
-				end
-
-				case token
-				when Symbol then tokens << token.name
-				when String then tokens << token
-				when Array then tokens.concat(token)
-				else raise ArgumentError,
-					"Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
-				end
-			end
-
-			tokens.compact.join(" ")
 		end
 
 		def helpers

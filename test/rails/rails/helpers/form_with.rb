@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe Phlex::View do
+describe Phlex::Rails::Helpers::FormWith do
 	let(:output) { ArticlesController.render "new" }
 
 	with "form_with" do

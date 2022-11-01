@@ -5,7 +5,7 @@ Example = Class.new(Phlex::View)
 describe Phlex::View do
 	extend ViewHelper
 
-	with "#render" do
+	describe "#render" do
 		with "a view class" do
 			view do
 				def template

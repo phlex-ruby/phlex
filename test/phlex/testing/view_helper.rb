@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "phlex/view/test"
+require "phlex/testing/view_helper"
 
 class Example < Phlex::View
 	def template
@@ -8,8 +8,8 @@ class Example < Phlex::View
 	end
 end
 
-describe Phlex::View::Test do
-	include Phlex::View::Test
+describe Phlex::Testing::ViewHelper do
+	include Phlex::Testing::ViewHelper
 
 	describe "#render" do
 		it "returns the output" do

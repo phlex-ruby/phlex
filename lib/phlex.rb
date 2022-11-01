@@ -8,8 +8,12 @@ module Phlex
 	Loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false).tap do |loader|
 		loader.ignore("#{__dir__}/generators")
 		loader.ignore("#{__dir__}/install")
-		loader.ignore("#{__dir__}/phlex/view/test.rb")
-		loader.ignore("#{__dir__}/phlex/view/test")
+
+		loader.ignore("#{__dir__}/phlex/testing")
+
+		loader.ignore("#{__dir__}/phlex/rails.rb")
+		loader.ignore("#{__dir__}/phlex/rails")
+
 		loader.inflector.inflect("html" => "HTML")
 		loader.inflector.inflect("vcall" => "VCall")
 		loader.inflector.inflect("fcall" => "FCall")
@@ -31,11 +35,4 @@ module Phlex
 	def configure
 		yield configuration
 	end
-end
-
-begin
-	require "rails"
-	require "phlex/engine"
-rescue LoadError
-	# Rails isn't in this env, don't load the engine.
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "phlex/rails"
+
 module Pages
 	module Rails
 		class Helpers < ApplicationPage
