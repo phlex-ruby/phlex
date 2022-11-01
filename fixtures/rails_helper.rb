@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 Bundler.require :rails
 
 Combustion.path = "fixtures/dummy"

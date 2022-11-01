@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 Example = Class.new(Phlex::View)
 
 describe Phlex::View do

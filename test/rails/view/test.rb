@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 class Example < Phlex::View
 	def template
 		h1 { "👋" }
