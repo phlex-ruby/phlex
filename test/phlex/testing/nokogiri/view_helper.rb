@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "phlex/view/test/nokogiri"
+require "phlex/testing/nokogiri/view_helper"
 
 class Example < Phlex::View
 	def template
@@ -8,8 +8,8 @@ class Example < Phlex::View
 	end
 end
 
-describe Phlex::View::Test::Nokogiri do
-	include Phlex::View::Test::Nokogiri
+describe Phlex::Testing::Nokogiri::ViewHelper do
+	include Phlex::Testing::Nokogiri::ViewHelper
 
 	describe "#render" do
 		it "returns a Nokogiri fragment" do

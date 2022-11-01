@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "phlex/view/test/capybara"
+require "phlex/testing/capybara/view_helper"
 
 class Example < Phlex::View
 	def template
@@ -8,8 +8,8 @@ class Example < Phlex::View
 	end
 end
 
-describe Phlex::View::Test::Capybara do
-	include Phlex::View::Test::Capybara
+describe Phlex::Testing::Capybara::ViewHelper do
+	include Phlex::Testing::Capybara::ViewHelper
 
 	describe "#render" do
 		it "sets the page" do

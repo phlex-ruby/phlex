@@ -8,6 +8,7 @@ gemspec
 gem "benchmark-ips"
 gem "benchmark-memory"
 gem "capybara"
+gem "rails"
 gem "rubocop"
 gem "solargraph"
 gem "sus"
@@ -22,7 +23,6 @@ end
 
 group :rails do
 	gem "combustion"
-	gem "rails"
 end
 
 group :docs do

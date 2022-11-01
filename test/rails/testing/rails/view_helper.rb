@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-class Example < Phlex::View
-	def template
-		h1 { "👋" }
-	end
-end
+require "phlex/testing/rails/view_helper"
 
-describe Phlex::Rails::View::Test do
-	include Phlex::Rails::View::Test
+describe Phlex::Testing::Rails::ViewHelper do
+	include Phlex::Testing::Rails::ViewHelper
 
 	describe "#controller" do
 		it "is an ActionView::TestCase::TestController" do

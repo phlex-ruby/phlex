@@ -6,6 +6,7 @@ $stdout.sync = true
 require "phlex"
 require "bundler"
 require "fileutils"
+require "i18n"
 
 Bundler.require :docs
 
