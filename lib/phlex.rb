@@ -4,16 +4,18 @@ require "cgi"
 require "zeitwerk"
 require "syntax_tree"
 
-loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false)
-loader.ignore("#{__dir__}/generators")
-loader.ignore("#{__dir__}/install")
-loader.ignore("#{__dir__}/phlex/test_helpers.rb")
-loader.inflector.inflect("html" => "HTML")
-loader.inflector.inflect("vcall" => "VCall")
-loader.inflector.inflect("fcall" => "FCall")
-loader.setup
-
 module Phlex
+	Loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false).tap do |loader|
+		loader.ignore("#{__dir__}/generators")
+		loader.ignore("#{__dir__}/install")
+		loader.ignore("#{__dir__}/phlex/view/test.rb")
+		loader.ignore("#{__dir__}/phlex/view/test")
+		loader.inflector.inflect("html" => "HTML")
+		loader.inflector.inflect("vcall" => "VCall")
+		loader.inflector.inflect("fcall" => "FCall")
+		loader.setup
+	end
+
 	Error = Module.new
 	ArgumentError = Class.new(ArgumentError) { include Error }
 	NameError = Class.new(NameError) { include Error }
