@@ -20,7 +20,7 @@ unless Rails.root.join("app/views/application_view.rb").exist?
 		# frozen_string_literal: true
 
 		module Views
-		  class ApplicationView < Phlex::View
+		  module ApplicationView
 		    include Rails.application.routes.url_helpers
 		    include Phlex::Translation
 		  end
