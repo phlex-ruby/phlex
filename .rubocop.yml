@@ -21,3 +21,6 @@ Security/Eval:
 
 Style/MethodCallWithoutArgsParentheses:
   Enabled: false
+
+Style/MixinUsage:
+  Enabled: false

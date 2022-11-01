@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "phlex/view/test"
 
 class Example < Phlex::View

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "standard_element"
 
 describe Phlex::Compiler do

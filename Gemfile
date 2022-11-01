@@ -16,8 +16,8 @@ gem "zeitwerk"
 
 group :test do
 	gem "i18n"
-	gem "simplecov"
 	gem "memory_profiler"
+	gem "covered"
 end
 
 group :rails do

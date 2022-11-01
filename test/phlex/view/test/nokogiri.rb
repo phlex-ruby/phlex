@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "phlex/view/test/nokogiri"
 
 class Example < Phlex::View

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
 require "phlex/view/test/capybara"
 
 class Example < Phlex::View

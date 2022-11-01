@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_helper"
-
 describe Phlex::Compiler::Formatter do
 	let(:formatter) { Phlex::Compiler::Formatter.new("") }
 	let(:output) { formatter.tap(&:flush).output }
