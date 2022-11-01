@@ -1,6 +1,8 @@
 <% module_namespacing do -%>
 module Views
-  class <%= class_name %> < ApplicationView
+  class <%= class_name %> < Phlex::View
+    include ApplicationView
+
     def template
     end
   end
