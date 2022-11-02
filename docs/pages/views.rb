@@ -154,7 +154,7 @@ module Pages
 				render Markdown.new(<<~MD)
 					## Callbacks
 
-					Prepend the `Phlex::View::Callbacks` module, and if you define `#before_rendering_template` and/or `#after_rendering_template` method in your view, they will be called immediately before and after your template is rendered.
+					Prepend the `Phlex::View::Callbacks` module, and if you define `#before_rendering_template` and/or `#after_rendering_template` method in your view, they will be called immediately before and after your template is compiled.
 				MD
 
 				render Example.new do |e|
