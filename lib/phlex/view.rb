@@ -8,6 +8,7 @@ module Phlex
 	class View
 		extend HTML
 		include Helpers
+		include Callable
 		include Renderable
 
 		class << self
