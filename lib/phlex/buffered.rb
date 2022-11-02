@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
 module Phlex
-	class Buffered
+	class Buffered < SimpleDelegator
 		def initialize(object, buffer:)
-			@object, @buffer = object, buffer
+			super(object)
+			@buffer = buffer
 		end
 
-		def method_missing(name, *args, **kwargs, &block)
-			output = @object.public_send(name, *args, **kwargs, &block)
+		# Alias output methods to this
+		def __output_method__(*args, **kwargs, &block)
+			output = __getobj__.public_send(__callee__, *args, **kwargs, &block)
 			@buffer << output if output.is_a? String
 			nil
-		end
-
-		def respond_to_missing?(name)
-			@object.respond_to?(name)
 		end
 	end
 end
