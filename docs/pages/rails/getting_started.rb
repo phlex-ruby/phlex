@@ -23,7 +23,7 @@ module Pages
 						This script will:
 
 						1. update `config/application.rb` to include `/app` in your auto-load paths;
-						2. generate `views/application_view.rb`
+						2. generate `views/application_view.rb`.
 
 						Like `ApplicationRecord`, `ApplicationView` is your base view which all your other views should inherit from.
 

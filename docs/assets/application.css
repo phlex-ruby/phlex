@@ -24,3 +24,11 @@ pre { tab-size: 2; }
 p {
   @apply my-5
 }
+
+ol,
+ul,
+menu {
+  list-style: revert;
+  margin: 0 0 0 1rem;
+  padding: 0 0 0 1rem;
+}
