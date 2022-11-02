@@ -23,4 +23,21 @@ describe Phlex::View do
 			end
 		end
 	end
+
+	with "`render?` method returning false" do
+		view do
+			def template
+				text "Hi"
+			end
+
+			def render?
+				false
+			end
+		end
+
+		it "returns buffer content" do
+			buffer = "xyz"
+			expect(example.call(buffer)).to be == "xyz"
+		end
+	end
 end
