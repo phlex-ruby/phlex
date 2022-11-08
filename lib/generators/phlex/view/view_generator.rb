@@ -6,7 +6,15 @@ module Phlex
 			source_root File.expand_path("templates", __dir__)
 
 			def create_view
-				template "view.rb.erb", File.join("app/views", class_path, "#{file_name}.rb")
+				@layout = layout
+				@path = File.join("app/views", class_path, "#{file_name}.rb")
+				template "view.rb.erb", @path
+			end
+
+			private
+
+			def layout
+				Rails.root.join("app/views/layout.rb").exist?
 			end
 		end
 	end
