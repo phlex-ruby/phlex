@@ -18,7 +18,7 @@ module Pages
 					render Example.new do |e|
 						e.tab "layout.rb", <<~RUBY
 							module Views
-								class Layout < Phlex::View
+								class Layout < Phlex::HTML
 									def initialize(title:)
 										@title = title
 									end
@@ -38,7 +38,7 @@ module Pages
 
 						e.tab "index.rb", <<~RUBY
 							module Views
-								class Index < Phlex::View
+								class Index < Phlex::HTML
 									def template
 										render Layout.new(title: "Hello") do
 											h1 { "👋" }

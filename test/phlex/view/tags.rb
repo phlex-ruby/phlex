@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-describe Phlex::View do
+describe Phlex::HTML do
 	extend ViewHelper
 
-	Phlex::View::STANDARD_ELEMENTS.each do |method_name, tag|
+	Phlex::HTML::STANDARD_ELEMENTS.each do |method_name, tag|
 		with "<#{method_name}> with block content and attributes" do
 			view do
 				define_method :template do
@@ -29,7 +29,7 @@ describe Phlex::View do
 		end
 	end
 
-	Phlex::View::VOID_ELEMENTS.each do |method_name, tag|
+	Phlex::HTML::VOID_ELEMENTS.each do |method_name, tag|
 		with "<#{method_name}> with attributes" do
 			view do
 				define_method :template do

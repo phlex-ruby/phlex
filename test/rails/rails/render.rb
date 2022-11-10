@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe Phlex::View do
+describe Phlex::HTML do
 	# 	with "ViewComponent renders a Phlex component" do
 	# 		let(:output) { CommentsController.render "index" }
 	#

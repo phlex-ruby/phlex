@@ -56,11 +56,11 @@ class Phlex::Compiler
 		end
 
 		def standard_element?
-			Phlex::View::STANDARD_ELEMENTS.key?(@node.name)
+			Phlex::HTML::STANDARD_ELEMENTS.key?(@node.name)
 		end
 
 		def void_element?
-			Phlex::View::VOID_ELEMENTS.key?(@node.name)
+			Phlex::HTML::VOID_ELEMENTS.key?(@node.name)
 		end
 	end
 end

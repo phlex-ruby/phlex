@@ -16,7 +16,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "hello.rb", <<~RUBY
-						class Hello < Phlex::View
+						class Hello < Phlex::HTML
 							def template
 								h1(class: "text-xl font-bold") { "👋 Hello World!" }
 							end
@@ -34,7 +34,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "hello.rb", <<~RUBY
-						class Hello < Phlex::View
+						class Hello < Phlex::HTML
 							def template
 								div(data: { controller: "hello" }) do
 									# ...
@@ -54,7 +54,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "channel_controls.rb", <<~RUBY
-						class ChannelControls < Phlex::View
+						class ChannelControls < Phlex::HTML
 							def template
 								input(
 									value: "1",
@@ -84,7 +84,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
+						class Example < Phlex::HTML
 							def template
 								template_tag do
 									img src: "hidden.jpg", alt: "A hidden image."
@@ -104,7 +104,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "heading.rb", <<~RUBY
-						class Heading < Phlex::View
+						class Heading < Phlex::HTML
 							def template
 								h1 do
 									strong { "Hello " }
@@ -125,7 +125,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "links.rb", <<~RUBY
-						class Links < Phlex::View
+						class Links < Phlex::HTML
 							def template
 								a(href: "/") { "Home" }
 								whitespace

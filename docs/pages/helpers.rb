@@ -18,7 +18,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "link.rb", <<~RUBY
-						class Link < Phlex::View
+						class Link < Phlex::HTML
 							def initialize(text, to:, active:)
 								@text = text
 								@to = to
@@ -37,7 +37,7 @@ module Pages
 					RUBY
 
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
+						class Example < Phlex::HTML
 							def template
 								nav do
 									ul do
@@ -58,7 +58,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "link.rb", <<~RUBY
-						class Link < Phlex::View
+						class Link < Phlex::HTML
 							def initialize(text, to:, active:)
 								@text = text
 								@to = to
@@ -77,7 +77,7 @@ module Pages
 					RUBY
 
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
+						class Example < Phlex::HTML
 							def template
 								nav do
 									ul do

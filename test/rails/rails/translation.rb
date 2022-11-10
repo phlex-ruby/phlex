@@ -52,7 +52,7 @@ describe Phlex::Translation do
 
 		with "invalid class_name" do
 			it "returns empty string" do
-				view = Class.new(Phlex::View) do
+				view = Class.new(Phlex::HTML) do
 					include Phlex::Translation
 				end
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-Example = Class.new(Phlex::View)
+Example = Class.new(Phlex::HTML)
 
-describe Phlex::View do
+describe Phlex::HTML do
 	extend ViewHelper
 
 	describe "#render" do
@@ -20,7 +20,7 @@ describe Phlex::View do
 		end
 
 		with "another view" do
-			other_view = Class.new Phlex::View do
+			other_view = Class.new Phlex::HTML do
 				def template(&block)
 					div(&block)
 				end

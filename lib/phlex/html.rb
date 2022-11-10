@@ -5,7 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex
-	class View
+	class HTML
 		DOCTYPE = "<!DOCTYPE html>"
 
 		STANDARD_ELEMENTS = {
@@ -307,7 +307,7 @@ module Phlex
 					k.to_s
 				end
 
-				if View::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
+				if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 

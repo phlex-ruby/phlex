@@ -49,11 +49,11 @@ module Phlex
 				private
 
 				def tag
-					View::STANDARD_ELEMENTS[@node.name] || View::VOID_ELEMENTS[@node.name]
+					HTML::STANDARD_ELEMENTS[@node.name] || HTML::VOID_ELEMENTS[@node.name]
 				end
 
 				def void?
-					View::VOID_ELEMENTS.key?(@node.name)
+					HTML::VOID_ELEMENTS.key?(@node.name)
 				end
 			end
 		end

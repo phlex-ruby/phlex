@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Phlex::View do
+describe Phlex::HTML do
 	extend ViewHelper
 
 	with "naughty text" do
@@ -41,7 +41,7 @@ describe Phlex::View do
 		end
 	end
 
-	Phlex::View::EVENT_ATTRIBUTES.each_key do |event_attribute|
+	Phlex::HTML::EVENT_ATTRIBUTES.each_key do |event_attribute|
 		with "with naughty #{event_attribute} attribute" do
 			naughty_attributes = { event_attribute => "alert(1);" }
 

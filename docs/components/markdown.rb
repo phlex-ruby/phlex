@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class Markdown < Phlex::View
+	class Markdown < Phlex::HTML
 		class Render < Redcarpet::Render::HTML
 			include Redcarpet::Render::SmartyPants
 

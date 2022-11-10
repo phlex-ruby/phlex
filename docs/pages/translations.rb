@@ -24,7 +24,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "welcome_message.rb", <<~RUBY
-						class WelcomeMessage < Phlex::View
+						class WelcomeMessage < Phlex::HTML
 							include Phlex::Translation
 
 							def template
@@ -51,7 +51,7 @@ module Pages
 					e.tab "welcome_message.rb", <<~RUBY
 						module Views
 							module Feedback
-								class WelcomeMessage < Phlex::View
+								class WelcomeMessage < Phlex::HTML
 									include Phlex::Translation
 
 									def template

@@ -17,14 +17,14 @@ module Phlex
 		end
 
 		def tag_method?(method_name)
-			(View::STANDARD_ELEMENTS.key?(method_name) || View::VOID_ELEMENTS.key?(method_name)) && !redefined?(method_name)
+			(HTML::STANDARD_ELEMENTS.key?(method_name) || HTML::VOID_ELEMENTS.key?(method_name)) && !redefined?(method_name)
 		end
 
 		def redefined?(method_name)
 			prototype = @view.allocate
 
 			@view.instance_method(method_name).bind(prototype) !=
-				Phlex::View.instance_method(method_name).bind(prototype)
+				Phlex::HTML.instance_method(method_name).bind(prototype)
 		end
 
 		def redefine(method, line:)
