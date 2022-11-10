@@ -6,7 +6,127 @@ end
 
 module Phlex
 	class View
-		extend HTML
+		DOCTYPE = "<!DOCTYPE html>"
+
+		STANDARD_ELEMENTS = {
+			a: "a",
+			abbr: "abbr",
+			address: "address",
+			article: "article",
+			aside: "aside",
+			b: "b",
+			bdi: "bdi",
+			bdo: "bdo",
+			blockquote: "blockquote",
+			body: "body",
+			button: "button",
+			caption: "caption",
+			cite: "cite",
+			code: "code",
+			colgroup: "colgroup",
+			data: "data",
+			datalist: "datalist",
+			dd: "dd",
+			del: "del",
+			details: "details",
+			dfn: "dfn",
+			dialog: "dialog",
+			div: "div",
+			dl: "dl",
+			dt: "dt",
+			em: "em",
+			fieldset: "fieldset",
+			figcaption: "figcaption",
+			figure: "figure",
+			footer: "footer",
+			form: "form",
+			g: "g",
+			h1: "h1",
+			h2: "h2",
+			h3: "h3",
+			h4: "h4",
+			h5: "h5",
+			h6: "h6",
+			head: "head",
+			header: "header",
+			html: "html",
+			i: "i",
+			iframe: "iframe",
+			ins: "ins",
+			kbd: "kbd",
+			label: "label",
+			legend: "legend",
+			li: "li",
+			main: "main",
+			map: "map",
+			mark: "mark",
+			menuitem: "menuitem",
+			meter: "meter",
+			nav: "nav",
+			noscript: "noscript",
+			object: "object",
+			ol: "ol",
+			optgroup: "optgroup",
+			option: "option",
+			output: "output",
+			p: "p",
+			path: "path",
+			picture: "picture",
+			pre: "pre",
+			progress: "progress",
+			q: "q",
+			rp: "rp",
+			rt: "rt",
+			ruby: "ruby",
+			s: "s",
+			samp: "samp",
+			script: "script",
+			section: "section",
+			select: "select",
+			slot: "slot",
+			small: "small",
+			span: "span",
+			strong: "strong",
+			style: "style",
+			sub: "sub",
+			summary: "summary",
+			sup: "sup",
+			svg: "svg",
+			table: "table",
+			tbody: "tbody",
+			td: "td",
+			template_tag: "template",
+			textarea: "textarea",
+			tfoot: "tfoot",
+			th: "th",
+			thead: "thead",
+			time: "time",
+			title: "title",
+			tr: "tr",
+			u: "u",
+			ul: "ul",
+			video: "video",
+			wbr: "wbr",
+		}.freeze
+
+		VOID_ELEMENTS = {
+			area: "area",
+			br: "br",
+			embed: "embed",
+			hr: "hr",
+			img: "img",
+			input: "input",
+			link: "link",
+			meta: "meta",
+			param: "param",
+			source: "source",
+			track: "track",
+			col: "col",
+		}.freeze
+
+		EVENT_ATTRIBUTES = %w[onabort onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick oncontextmenu oncopy oncuechange oncut ondblclick ondrag ondragend ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onerror onfocus onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpaste onpause onplay onplaying onpopstate onprogress onratechange onreset onresize onscroll onsearch onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate ontoggle onunload onvolumechange onwaiting onwheel].to_h { [_1, true] }.freeze
+
+		extend Elements
 		include Helpers
 		include Callable
 		include Renderable
@@ -55,11 +175,11 @@ module Phlex
 			true
 		end
 
-		HTML::STANDARD_ELEMENTS.each do |method_name, tag|
+		STANDARD_ELEMENTS.each do |method_name, tag|
 			register_element(method_name, tag: tag)
 		end
 
-		HTML::VOID_ELEMENTS.each do |method_name, tag|
+		VOID_ELEMENTS.each do |method_name, tag|
 			register_void_element(method_name, tag: tag)
 		end
 
@@ -105,7 +225,7 @@ module Phlex
 		end
 
 		def doctype
-			@_target << HTML::DOCTYPE
+			@_target << DOCTYPE
 			nil
 		end
 
@@ -187,7 +307,7 @@ module Phlex
 					k.to_s
 				end
 
-				if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
+				if View::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 

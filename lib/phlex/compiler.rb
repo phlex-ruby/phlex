@@ -17,7 +17,7 @@ module Phlex
 		end
 
 		def tag_method?(method_name)
-			(HTML::STANDARD_ELEMENTS.key?(method_name) || HTML::VOID_ELEMENTS.key?(method_name)) && !redefined?(method_name)
+			(View::STANDARD_ELEMENTS.key?(method_name) || View::VOID_ELEMENTS.key?(method_name)) && !redefined?(method_name)
 		end
 
 		def redefined?(method_name)

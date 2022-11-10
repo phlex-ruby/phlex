@@ -3,7 +3,7 @@
 describe Phlex::View do
 	extend ViewHelper
 
-	Phlex::HTML::STANDARD_ELEMENTS.each do |method_name, tag|
+	Phlex::View::STANDARD_ELEMENTS.each do |method_name, tag|
 		with "<#{method_name}> with block content and attributes" do
 			view do
 				define_method :template do
@@ -29,7 +29,7 @@ describe Phlex::View do
 		end
 	end
 
-	Phlex::HTML::VOID_ELEMENTS.each do |method_name, tag|
+	Phlex::View::VOID_ELEMENTS.each do |method_name, tag|
 		with "<#{method_name}> with attributes" do
 			view do
 				define_method :template do
