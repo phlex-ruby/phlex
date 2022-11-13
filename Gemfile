@@ -29,6 +29,7 @@ group :docs do
 	gem "filewatcher"
 	gem "htmlbeautifier"
 	gem "redcarpet"
+	gem "markly"
 	gem "webrick"
 	gem "rouge"
 end

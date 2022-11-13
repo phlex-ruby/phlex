@@ -272,6 +272,7 @@ module Phlex
 			yield
 
 			@_target = original_buffer
+
 			new_buffer.html_safe
 		end
 
