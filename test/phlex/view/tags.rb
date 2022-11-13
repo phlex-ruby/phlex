@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe Phlex::View do
+describe Phlex::HTML do
 	extend ViewHelper
 
 	Phlex::HTML::STANDARD_ELEMENTS.each do |method_name, tag|

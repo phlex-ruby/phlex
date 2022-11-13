@@ -2,26 +2,26 @@
 
 module Fixtures
 	module VoidElement
-		class WithParens < Phlex::View
+		class WithParens < Phlex::HTML
 			def template
 				img()
 			end
 		end
 
-		class WithoutParens < Phlex::View
+		class WithoutParens < Phlex::HTML
 			def template
 				img
 			end
 		end
 
 		module WithAttributes
-			class WithParens < Phlex::View
+			class WithParens < Phlex::HTML
 				def template
 					img(class: "a b c")
 				end
 			end
 
-			class WithoutParens < Phlex::View
+			class WithoutParens < Phlex::HTML
 				def template
 					img class: "a b c"
 				end

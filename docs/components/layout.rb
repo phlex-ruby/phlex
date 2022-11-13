@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class Layout < Phlex::View
+	class Layout < Phlex::HTML
 		register_element :style
 
 		def initialize(title:)

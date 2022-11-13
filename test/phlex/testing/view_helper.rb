@@ -2,7 +2,7 @@
 
 require "phlex/testing/view_helper"
 
-class Example < Phlex::View
+class Example < Phlex::HTML
 	def template
 		h1 { "👋" }
 	end

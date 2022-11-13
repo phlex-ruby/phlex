@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-describe Phlex::View do
+describe Phlex::HTML do
 	extend ViewHelper
 
 	with "callbacks" do
 		view do
-			prepend Phlex::View::Callbacks
+			prepend Phlex::HTML::Callbacks
 
 			def before_rendering_template
 				h1 { "Hello" }

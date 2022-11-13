@@ -49,7 +49,7 @@ module Pages
 
 						```ruby
 						# menu.rb
-						class Menu < Phlex::View
+						class Menu < Phlex::HTML
 							def template
 								ul do
 									li do

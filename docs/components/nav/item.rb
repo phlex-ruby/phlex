@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class Nav::Item < Phlex::View
+	class Nav::Item < Phlex::HTML
 		def initialize(text, to:, active_page:)
 			@text = text
 			@to = to

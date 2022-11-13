@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-	class Tabs < Phlex::View
+	class Tabs < Phlex::HTML
 		def initialize
 			@index = 1
 		end

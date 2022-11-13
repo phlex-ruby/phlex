@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Phlex::View::Callbacks
+module Phlex::HTML::Callbacks
 	def template(&block)
 		before_rendering_template if respond_to?(:before_rendering_template)
 

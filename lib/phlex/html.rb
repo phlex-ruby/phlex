@@ -5,7 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex
-	module HTML
+	class HTML
 		DOCTYPE = "<!DOCTYPE html>"
 
 		STANDARD_ELEMENTS = {
@@ -126,52 +126,206 @@ module Phlex
 
 		EVENT_ATTRIBUTES = %w[onabort onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick oncontextmenu oncopy oncuechange oncut ondblclick ondrag ondragend ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onerror onfocus onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpaste onpause onplay onplaying onpopstate onprogress onratechange onreset onresize onscroll onsearch onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate ontoggle onunload onvolumechange onwaiting onwheel].to_h { [_1, true] }.freeze
 
-		def register_element(element, tag: element.name.tr("_", "-"))
-			class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-        # frozen_string_literal: true
+		extend Elements
+		include Helpers
+		include Callable
+		include Renderable
 
-        def #{element}(content = nil, **attributes, &block)
-					if content
-						raise ArgumentError, %(👋 You can no longer pass content to #{element} as a positional argument.\n Instead, you can pass it as a block, e.g. #{element} { "Hello" })
-					end
+		class << self
+			attr_accessor :rendered_at_least_once
 
-          if attributes.length > 0
-            if block_given?
-              @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(**attributes)) << ">"
-              yield_content(&block)
-              @_target << "</#{tag}>"
-            else
-              @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(**attributes)) << "></#{tag}>"
-            end
-          else
-            if block_given?
-              @_target << "<#{tag}>"
-              yield_content(&block)
-              @_target << "</#{tag}>"
-            else
-              @_target << "<#{tag}></#{tag}>"
-            end
-          end
-
-          nil
-        end
-			RUBY
+			# 			def compile
+			# 				return if @compiled
+			# 				return unless name
+			# 				return if name.start_with? "#"
+			#
+			# 				Compiler.new(self).call
+			#
+			# 				@compiled = true
+			# 			end
+			#
+			# 			def compiled?
+			# 				!!@compiled
+			# 			end
 		end
 
-		def register_void_element(element, tag: element.name.tr("_", "-"))
-			class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
-        # frozen_string_literal: true
+		def call(buffer = +"", view_context: nil, parent: nil, &block)
+			return buffer unless render?
 
-        def #{element}(**attributes)
-          if attributes.length > 0
-            @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(**attributes)) << ">"
-          else
-            @_target << "<#{tag}>"
-          end
+			raise "The same view instance shouldn't be rendered twice" if rendered?
 
-          nil
-        end
-			RUBY
+			@_rendered = true
+			@_target = buffer
+			@_view_context = view_context
+			@_parent = parent
+			@output_buffer = self
+
+			template(&block)
+
+			self.class.rendered_at_least_once ||= true
+
+			buffer
+		end
+
+		def rendered?
+			@_rendered ||= false
+		end
+
+		def render?
+			true
+		end
+
+		STANDARD_ELEMENTS.each do |method_name, tag|
+			register_element(method_name, tag: tag)
+		end
+
+		VOID_ELEMENTS.each do |method_name, tag|
+			register_void_element(method_name, tag: tag)
+		end
+
+		def yield_content(&block)
+			return unless block_given?
+
+			original_length = @_target.length
+			output = yield(self)
+			unchanged = (original_length == @_target.length)
+
+			if unchanged
+				case output
+				when String, Symbol, Integer, Float
+					text(output)
+				end
+			end
+
+			nil
+		end
+
+		def text(content)
+			@_target << _output(content)
+
+			nil
+		end
+
+		def _output(content)
+			case content
+			when String then CGI.escape_html(content)
+			when Symbol then CGI.escape_html(content.name)
+			else CGI.escape_html(content.to_s)
+			end
+		end
+
+		def whitespace
+			@_target << " "
+			nil
+		end
+
+		def comment(content = "")
+			@_target << "<!-- " << CGI.escape_html(content.to_s) << " -->"
+			nil
+		end
+
+		def doctype
+			@_target << DOCTYPE
+			nil
+		end
+
+		def unsafe_raw(content = nil, &block)
+			@_target << (content || instance_exec(&block))
+			nil
+		end
+
+		def html_safe?
+			true
+		end
+
+		def safe_append=(value)
+			return unless value
+
+			@_target << case value
+			when String then value
+			when Symbol then value.name
+			else value.to_s
+			end
+		end
+
+		def append=(value)
+			return unless value
+
+			if value.html_safe?
+				self.safe_append = value
+			else
+				@_target << case value
+				when String then CGI.escape_html(value)
+				when Symbol then CGI.escape_html(value.name)
+				else CGI.escape_html(value.to_s)
+				end
+			end
+		end
+
+		def capture(&block)
+			return unless block_given?
+
+			original_buffer = @_target
+			new_buffer = +""
+			@_target = new_buffer
+
+			yield
+
+			@_target = original_buffer
+			new_buffer.html_safe
+		end
+
+		def helpers
+			@_view_context
+		end
+
+		def _attributes(**attributes)
+			if attributes[:href]&.start_with?(/\s*javascript/)
+				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
+			end
+
+			buffer = +""
+			_build_attributes(attributes, buffer: buffer)
+
+			unless self.class.rendered_at_least_once
+				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
+			end
+
+			buffer
+		end
+
+		def _build_attributes(attributes, buffer:)
+			attributes.each do |k, v|
+				next unless v
+
+				name = case k
+				when String
+					k
+				when Symbol
+					k.name.tr("_", "-")
+				else
+					k.to_s
+				end
+
+				if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
+					raise ArgumentError, "Unsafe attribute name detected: #{k}."
+				end
+
+				case v
+				when true
+					buffer << " " << name
+				when String
+					buffer << " " << name << '="' << CGI.escape_html(v) << '"'
+				when Symbol
+					buffer << " " << name << '="' << CGI.escape_html(v.name) << '"'
+				when Hash
+					_build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer: buffer)
+				else
+					buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
+				end
+			end
+
+			buffer
 		end
 	end
 end

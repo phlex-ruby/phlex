@@ -9,12 +9,12 @@ module Pages
 
 					Phlex Views are Ruby objects that represent your app's user interface — from pages and layouts and nav-bars, to headings and buttons and links.
 
-					You can create a view class by subclassing `Phlex::View` and defining a `template` instance method.
+					You can create a view class by subclassing `Phlex::HTML` and defining a `template` instance method.
 				MD
 
 				render Example.new do |e|
 					e.tab "hello.rb", <<~RUBY
-						class Hello < Phlex::View
+						class Hello < Phlex::HTML
 							def template
 								h1 { "👋 Hello World!" }
 							end
@@ -36,7 +36,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "hello.rb", <<~RUBY
-						class Hello < Phlex::View
+						class Hello < Phlex::HTML
 							def initialize(name:)
 								@name = name
 							end
@@ -58,7 +58,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
+						class Example < Phlex::HTML
 							def template
 								render Hello.new(name: "Joel")
 								render Hello.new(name: "Alexandre")
@@ -67,7 +67,7 @@ module Pages
 					RUBY
 
 					e.tab "hello.rb", <<~RUBY
-						class Hello < Phlex::View
+						class Hello < Phlex::HTML
 							def initialize(name:)
 								@name = name
 							end
@@ -89,7 +89,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "card.rb", <<~RUBY
-						class Card < Phlex::View
+						class Card < Phlex::HTML
 							def template(&content)
 								article(class: "drop-shadow") do
 									yield_content(&content)
@@ -99,7 +99,7 @@ module Pages
 					RUBY
 
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
+						class Example < Phlex::HTML
 							def template
 								render Card.new do
 									h1 { "👋 Hello!" }
@@ -123,7 +123,7 @@ module Pages
 					Since the block of content was the only thing we need in the `<article>` element, we could have just passed the content block to the element instead.
 
 					```ruby
-					class Card < Phlex::View
+					class Card < Phlex::HTML
 						def template(&content)
 							article(class: "drop-shadow", &content)
 						end
@@ -139,7 +139,7 @@ module Pages
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
+						class Example < Phlex::HTML
 							register_element :trix_editor
 
 							def template
@@ -154,13 +154,13 @@ module Pages
 				render Markdown.new(<<~MD)
 					## Callbacks
 
-					Prepend the `Phlex::View::Callbacks` module, and if you define `#before_rendering_template` and/or `#after_rendering_template` method in your view, they will be called immediately before and after your template is rendered.
+					Prepend the `Phlex::HTML::Callbacks` module, and if you define `#before_rendering_template` and/or `#after_rendering_template` method in your view, they will be called immediately before and after your template is rendered.
 				MD
 
 				render Example.new do |e|
 					e.tab "example.rb", <<~RUBY
-						class Example < Phlex::View
-      				prepend Phlex::View::Callbacks
+						class Example < Phlex::HTML
+      				prepend Phlex::HTML::Callbacks
 
       				def before_rendering_template
 								h1 { "Hello" }

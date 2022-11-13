@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe Phlex::View do
+describe Phlex::HTML do
 	with "rendered in an ERB view" do
 		let(:output) { ArticlesController.render "index" }
 

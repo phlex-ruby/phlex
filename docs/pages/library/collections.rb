@@ -10,7 +10,7 @@ module Pages
 
 						Phlex comes with an abstract pattern for views that represent collections of resources — lists, grids, tables, etc. Collections have two parts: one part wraps the whole collection, the other part is repeated once for each item in that collection.
 
-						When you include `Phlex::Collection` in a `Phlex::View`, the `template` and `initialize` methods are defined for you. You don't need to define these. Instead, you define a `collection_template` and `item_template`.
+						When you include `Phlex::Collection` in a `Phlex::HTML`, the `template` and `initialize` methods are defined for you. You don't need to define these. Instead, you define a `collection_template` and `item_template`.
 
 						## Collection template
 
@@ -41,7 +41,7 @@ module Pages
 
 					render Example.new do |e|
 						e.tab "list.rb", <<~RUBY
-							class List < Phlex::View
+							class List < Phlex::HTML
 								include Phlex::Collection
 
 								def collection_template(&content)
@@ -55,7 +55,7 @@ module Pages
 						RUBY
 
 						e.tab "example.rb", <<~RUBY
-							class Example < Phlex::View
+							class Example < Phlex::HTML
 								def template
 									render List.new(
 										collection: ["A", "B", "C"]

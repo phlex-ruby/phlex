@@ -2,26 +2,26 @@
 
 module Fixtures
 	module StandardElement
-		class WithParens < Phlex::View
+		class WithParens < Phlex::HTML
 			def template
 				h1()
 			end
 		end
 
-		class WithoutParens < Phlex::View
+		class WithoutParens < Phlex::HTML
 			def template
 				h1
 			end
 		end
 
 		module WithAttributes
-			class WithParens < Phlex::View
+			class WithParens < Phlex::HTML
 				def template
 					h1(class: "font-bold")
 				end
 			end
 
-			class WithoutParens < Phlex::View
+			class WithoutParens < Phlex::HTML
 				def template
 					h1 class: "font-bold"
 				end
@@ -29,19 +29,19 @@ module Fixtures
 		end
 
 		module WithBraceBlock
-			class WithParens < Phlex::View
+			class WithParens < Phlex::HTML
 				def template
 					h1() { "Hi" }
 				end
 			end
 
-			class WithoutParens < Phlex::View
+			class WithoutParens < Phlex::HTML
 				def template
 					h1 { "Hi" }
 				end
 			end
 
-			class WithAttributes < Phlex::View
+			class WithAttributes < Phlex::HTML
 				def template
 					h1(class: "font-bold") { "Hi" }
 				end
@@ -49,7 +49,7 @@ module Fixtures
 		end
 
 		module WithDoBlock
-			class WithParens < Phlex::View
+			class WithParens < Phlex::HTML
 				def template
 					h1() do
 						"Hi"
@@ -57,7 +57,7 @@ module Fixtures
 				end
 			end
 
-			class WithoutParens < Phlex::View
+			class WithoutParens < Phlex::HTML
 				def template
 					h1 do
 						"Hi"
@@ -66,7 +66,7 @@ module Fixtures
 			end
 
 			module WithAttributes
-				class WithParens < Phlex::View
+				class WithParens < Phlex::HTML
 					def template
 						h1(class: "font-bold") do
 							"Hi"
@@ -74,7 +74,7 @@ module Fixtures
 					end
 				end
 
-				class WithoutParens < Phlex::View
+				class WithoutParens < Phlex::HTML
 					def template
 						h1 class: "font-bold" do
 							"Hi"

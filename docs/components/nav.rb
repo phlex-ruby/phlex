@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Components
-	class Nav < Phlex::View
+	class Nav < Phlex::HTML
 	end
 end

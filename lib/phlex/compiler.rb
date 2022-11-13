@@ -24,7 +24,7 @@ module Phlex
 			prototype = @view.allocate
 
 			@view.instance_method(method_name).bind(prototype) !=
-				Phlex::View.instance_method(method_name).bind(prototype)
+				Phlex::HTML.instance_method(method_name).bind(prototype)
 		end
 
 		def redefine(method, line:)

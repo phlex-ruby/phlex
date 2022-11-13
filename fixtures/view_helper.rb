@@ -10,7 +10,7 @@ module ViewHelper
 
 	def view(&block)
 		let :view do
-			Class.new(Phlex::View, &block)
+			Class.new(Phlex::HTML, &block)
 		end
 	end
 end

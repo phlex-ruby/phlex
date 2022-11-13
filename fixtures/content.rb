@@ -2,44 +2,44 @@
 
 module Fixtures
 	module Content
-		class BareString < Phlex::View
+		class BareString < Phlex::HTML
 			def template
 				h1 { "Hello" }
 			end
 		end
 
-		class Symbol < Phlex::View
+		class Symbol < Phlex::HTML
 			def template
 				h1 { :hello }
 			end
 		end
 
-		class Float < Phlex::View
+		class Float < Phlex::HTML
 			def template
 				h1 { 1.2 }
 			end
 		end
 
-		class Integer < Phlex::View
+		class Integer < Phlex::HTML
 			def template
 				h1 { 1 }
 			end
 		end
 
-		class Variable < Phlex::View
+		class Variable < Phlex::HTML
 			def template
 				greeting = "Hello"
 				h1 { greeting }
 			end
 		end
 
-		class InstanceVariable < Phlex::View
+		class InstanceVariable < Phlex::HTML
 			def template
 				h1 { @hello }
 			end
 		end
 
-		class NestedTags < Phlex::View
+		class NestedTags < Phlex::HTML
 			def template
 				article {
 					h1 { "Inside" }
@@ -47,7 +47,7 @@ module Fixtures
 			end
 		end
 
-		class NonMutatingNestedContent < Phlex::View
+		class NonMutatingNestedContent < Phlex::HTML
 			def template
 				div { say_hello }
 			end
