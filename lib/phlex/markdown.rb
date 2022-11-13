@@ -51,7 +51,7 @@ module Phlex
 			in :list_item
 				li { visit_children(node) }
 			in :code
-				code { text(node.string_content) }
+				whitespace { code { text(node.string_content) } }
 			in :code_block
 				code_block(node.string_content, language: node.fence_info) do |**attributes|
 					pre(**attributes) { text(node.string_content) }

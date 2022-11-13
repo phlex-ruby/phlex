@@ -216,6 +216,12 @@ module Phlex
 
 		def whitespace
 			@_target << " "
+
+			if block_given?
+				yield
+				@_target << " "
+			end
+
 			nil
 		end
 
