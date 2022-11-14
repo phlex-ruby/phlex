@@ -208,9 +208,9 @@ module Phlex
 
 		def _output(content)
 			case content
-			when String then CGI.escape_html(content)
-			when Symbol then CGI.escape_html(content.name)
-			else CGI.escape_html(content.to_s)
+			when String then Hescape.escape_html(content)
+			when Symbol then Hescape.escape_html(content.name)
+			else Hescape.escape_html(content.to_s)
 			end
 		end
 
@@ -226,7 +226,7 @@ module Phlex
 		end
 
 		def comment(content = "")
-			@_target << "<!-- " << CGI.escape_html(content.to_s) << " -->"
+			@_target << "<!-- " << Hescape.escape_html(content.to_s) << " -->"
 			nil
 		end
 
@@ -261,9 +261,9 @@ module Phlex
 				self.safe_append = value
 			else
 				@_target << case value
-				when String then CGI.escape_html(value)
-				when Symbol then CGI.escape_html(value.name)
-				else CGI.escape_html(value.to_s)
+				when String then Hescape.escape_html(value)
+				when Symbol then Hescape.escape_html(value.name)
+				else Hescape.escape_html(value.to_s)
 				end
 			end
 		end
@@ -322,13 +322,13 @@ module Phlex
 				when true
 					buffer << " " << name
 				when String
-					buffer << " " << name << '="' << CGI.escape_html(v) << '"'
+					buffer << " " << name << '="' << Hescape.escape_html(v) << '"'
 				when Symbol
-					buffer << " " << name << '="' << CGI.escape_html(v.name) << '"'
+					buffer << " " << name << '="' << Hescape.escape_html(v.name) << '"'
 				when Hash
 					_build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer: buffer)
 				else
-					buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
+					buffer << " " << name << '="' << Hescape.escape_html(v.to_s) << '"'
 				end
 			end
 

@@ -54,7 +54,7 @@ module Phlex
 
 				def bare_string_value
 					@formatter.append do |f|
-						f.text CGI.escape_html(
+						f.text Hescape.escape_html(
 							@content.parts.first.value
 						)
 					end
@@ -62,7 +62,7 @@ module Phlex
 
 				def symbol_value
 					@formatter.append do |f|
-						f.text CGI.escape_html(
+						f.text Hescape.escape_html(
 							@content.value.value
 						)
 					end
@@ -70,7 +70,7 @@ module Phlex
 
 				def numeric_value
 					@formatter.append do |f|
-						f.text CGI.escape_html(
+						f.text Hescape.escape_html(
 							@content.value
 						)
 					end
@@ -78,7 +78,7 @@ module Phlex
 
 				def variable_value
 					@formatter.chain_append do |f|
-						f.text "CGI.escape_html("
+						f.text "Hescape.escape_html("
 						@content.format(f)
 						f.text ")"
 					end
