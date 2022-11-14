@@ -17,5 +17,9 @@ module Components
 		def h2(&content)
 			render Heading.new, &content
 		end
+
+		def a(**attributes, &content)
+			super(class: "font-bold text-red-600 underline underline-offset-4", **attributes, &content)
+		end
 	end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "phlex/testing/rails/view_helper"
+require "phlex/testing/rails"
 
 describe Phlex::Testing::Rails::ViewHelper do
 	include Phlex::Testing::Rails::ViewHelper

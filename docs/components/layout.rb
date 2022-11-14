@@ -58,8 +58,9 @@ module Components
 
 									ul do
 										render Nav::Item.new("Getting Started", to: Pages::Testing::GettingStarted, active_page: @_parent)
-										render Nav::Item.new("RSpec", to: Pages::Testing::RSpec, active_page: @_parent)
-										render Nav::Item.new("Minitest", to: Pages::Testing::Minitest, active_page: @_parent)
+										render Nav::Item.new("Nokogiri", to: Pages::Testing::Nokogiri, active_page: @_parent)
+										render Nav::Item.new("Capybara", to: Pages::Testing::Capybara, active_page: @_parent)
+										render Nav::Item.new("Rails", to: Pages::Testing::Rails, active_page: @_parent)
 									end
 
 									h2(class: "text-lg font-semibold pt-5") { "Rails" }
