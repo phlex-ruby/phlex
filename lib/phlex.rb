@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "cgi"
+require "hescape"
 require "zeitwerk"
 require "syntax_tree"
 

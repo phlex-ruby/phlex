@@ -33,6 +33,7 @@ Gem::Specification.new do |spec|
 	# Uncomment to register a new dependency of your gem
 	# spec.add_dependency "example-gem", "~> 1.0"
 
+	spec.add_dependency "hescape"
 	spec.add_dependency "syntax_tree", "~> 3.6"
 	spec.add_dependency "zeitwerk", "~> 2.6"
 
