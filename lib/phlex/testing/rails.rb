@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "phlex/testing/view_helper"
+require_relative "view_helper"
 
 module Phlex::Testing
 	module Rails

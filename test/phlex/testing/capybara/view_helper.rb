@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "phlex/testing/capybara/view_helper"
+require "phlex/testing/capybara"
 
 class Example < Phlex::HTML
 	def template

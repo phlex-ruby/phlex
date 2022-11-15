@@ -25,9 +25,7 @@ p {
   @apply my-5
 }
 
-ol,
-ul,
-menu {
+.prose ol, .prose ul {
   list-style: revert;
   margin: 0 0 0 1rem;
   padding: 0 0 0 1rem;

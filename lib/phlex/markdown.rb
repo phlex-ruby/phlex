@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "markly"
+require "commonmarker"
 
 module Phlex
 	class Markdown < Phlex::HTML
@@ -15,7 +15,7 @@ module Phlex
 		private
 
 		def doc
-			Markly.parse(@content)
+			CommonMarker.render_doc(@content)
 		end
 
 		def visit(node)
