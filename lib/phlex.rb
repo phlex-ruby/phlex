@@ -24,6 +24,12 @@ module Phlex
 	ArgumentError = Class.new(ArgumentError) { include Error }
 	NameError = Class.new(NameError) { include Error }
 
+	def self.const_missing(name)
+		if name == :View
+			raise NameError, "👋 Phlex::View has been renamed (again 🙄) to Phlex::HTML."
+		end
+	end
+
 	extend self
 
 	ATTRIBUTE_CACHE = {}
