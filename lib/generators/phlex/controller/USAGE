@@ -2,9 +2,9 @@ Description:
   Generates a Rails controller with Phlex views for the supplied actions
 
 Example:
-  rails generate phlex:controller Home index show
+  rails generate phlex:controller Articles index show
 
 This will create:
-  app/controllers/home.rb
-  app/views/home/index.rb
-  app/views/home/show.rb
+  app/controllers/articles_controller.rb
+  app/views/articles/index.rb
+  app/views/articles/show.rb
