@@ -16,9 +16,13 @@ module Pages
 
 						## Setup
 
-						If you haven't installed Phlex already, you'll need to add it to your Gemfile. The easiest way to do this is to run `bundle add phlex`.
+						If you haven't installed Phlex already, you'll need to add it to your Gemfile. This is a good place to require `phlex/rails`.
 
-						Once that's finished, you'll want to run the setup script: `bin/rails phlex:install`.
+						```ruby
+						gem "phlex", require: "phlex/rails"
+						```
+
+						Now run `bundle install`. Once that's finished, you'll want to run the setup script: `bin/rails phlex:install`.
 
 						This script will:
 
