@@ -36,7 +36,13 @@ module Phlex
 					in 6 then h6 { visit_children(node) }
 				end
 			in :paragraph
-				p { visit_children(node) }
+				grandparent = node.parent&.parent
+
+				if grandparent&.type == :list && grandparent&.list_tight
+					visit_children(node)
+				else
+					p { visit_children(node) }
+				end
 			in :link
 				a(href: node.url) { visit_children(node) }
 			in :emph
