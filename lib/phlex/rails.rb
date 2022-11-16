@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "phlex"
+require "phlex/rails/engine"
 
 module Phlex::Rails
 	Loader = Zeitwerk::Loader.new.tap do |loader|
