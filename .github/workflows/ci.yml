@@ -14,26 +14,42 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup
+      - name: phlex/setup
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: ./phlex
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+
+      - name: phlex/tests
+        run: bundle exec sus
+        working-directory: ./phlex
+
+      - name: phlex/type-check
+        run: bundle exec solargraph typecheck --level typed
+        working-directory: ./phlex
+
+      - name: phlex/rubocop
+        run: bundle exec rubocop
+        working-directory: ./phlex
+
+
+      - name: phlex-rails/setup
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+          working-directory: ./phlex-rails
 
-      - name: Isolated tests
-        run: bundle exec sus test/phlex
-
-      - name: Rails integration tests
-        run: bundle exec sus test/rails
-
-      - name: Type check
-        run: bundle exec solargraph typecheck --level typed
-
-      - name: Rubocop
-        run: bundle exec rubocop
+      - name: phlex-rails/tests
+        run: bundle exec sus
+        working-directory: ./phlex-rails
 
   docs:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./docs
 
     steps:
       - uses: actions/checkout@v3
@@ -41,7 +57,8 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.1"
+          working-directory: ./docs
+          ruby-version: "3.2"
           bundler-cache: true
 
       - name: Set up Node
@@ -50,8 +67,5 @@ jobs:
           node-version: 18
           cache: "npm"
 
-      - name: Install JavaScript dependencies
-        run: npm install
-
       - name: Build docs
-        run: bundle exec docs/build.rb
+        run: bundle exec ./build.rb

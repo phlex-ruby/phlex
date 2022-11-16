@@ -3,17 +3,13 @@
 
 $stdout.sync = true
 
-require "phlex"
-require "phlex/markdown"
 require "bundler"
-require "fileutils"
-require "i18n"
-
-Bundler.require :docs
+Bundler.require :default
 
 loader = Zeitwerk::Loader.new
 loader.push_dir(__dir__)
 loader.ignore(__FILE__)
+loader.ignore("#{__dir__}/vendor")
 loader.inflector.inflect("rspec" => "RSpec")
 loader.enable_reloading
 loader.setup

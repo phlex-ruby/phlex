@@ -8,8 +8,9 @@
 /tmp/
 /spec/examples.txt
 /spec/internal/**/log/*
-/node_modules/
+node_modules
 /docs/dist
 Gemfile.lock
 .rubocop-*
 .covered.db
+.DS_Store
