@@ -12,9 +12,6 @@ module Phlex
 		loader.ignore("#{__dir__}/phlex/testing")
 		loader.ignore("#{__dir__}/phlex/markdown.rb")
 
-		loader.ignore("#{__dir__}/phlex/rails.rb")
-		loader.ignore("#{__dir__}/phlex/rails")
-
 		loader.inflector.inflect("html" => "HTML")
 		loader.inflector.inflect("vcall" => "VCall")
 		loader.inflector.inflect("fcall" => "FCall")
@@ -24,12 +21,6 @@ module Phlex
 	Error = Module.new
 	ArgumentError = Class.new(ArgumentError) { include Error }
 	NameError = Class.new(NameError) { include Error }
-
-	def self.const_missing(name)
-		if name == :View
-			raise NameError, "👋 Phlex::View has been renamed (again 🙄) to Phlex::HTML."
-		end
-	end
 
 	extend self
 

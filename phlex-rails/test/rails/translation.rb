@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "view_helper"
 require "rails_helper"
 
 describe Phlex::Translation do
