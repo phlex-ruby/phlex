@@ -14,7 +14,7 @@ module Phlex
 			private
 
 			def layout
-				Rails.root.join("app/views/layout.rb").exist?
+				::Rails.root.join("app/views/layout.rb").exist?
 			end
 		end
 	end
