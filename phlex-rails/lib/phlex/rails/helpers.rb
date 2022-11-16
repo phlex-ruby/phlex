@@ -108,6 +108,14 @@ module Phlex
 				end
 			end
 
+			module JavaScriptImportmapTags
+				def javascript_importmap_tags
+					if (output = @_view_context.javascript_importmap_tags)
+						@_target << output
+					end
+				end
+			end
+
 			module ContentFor
 				def content_for(slot, &block)
 					@_view_context.content_for(slot, capture(&block))
