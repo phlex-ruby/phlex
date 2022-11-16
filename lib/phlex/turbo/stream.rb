@@ -5,13 +5,13 @@ module Phlex
 		class Stream < Phlex::HTML
 			register_element :turbo_stream
 
-			def initialize(action:, target:)
+			def initialize(action:, **attributes)
 				@action = action
-				@target = target
+				@attributes = attributes
 			end
 
 			def template(&content)
-				turbo_stream(action: @action, target: @target, &content)
+				turbo_stream(action: @action, **@attributes, &content)
 			end
 		end
 	end
