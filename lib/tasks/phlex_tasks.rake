@@ -2,6 +2,7 @@
 
 namespace :phlex do
 	desc "Install Phlex in the Rails application"
+
 	task :install do
 		install_file_path = File.expand_path("../install/phlex.rb", __dir__)
 
