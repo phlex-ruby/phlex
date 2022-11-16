@@ -10,7 +10,7 @@ module Phlex
 		loader.ignore("#{__dir__}/install")
 
 		loader.ignore("#{__dir__}/phlex/testing")
-		loader.ignore("#{__dir__}/phlex/markdown")
+		loader.ignore("#{__dir__}/phlex/markdown.rb")
 
 		loader.ignore("#{__dir__}/phlex/rails.rb")
 		loader.ignore("#{__dir__}/phlex/rails")

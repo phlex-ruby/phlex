@@ -4,6 +4,7 @@
 $stdout.sync = true
 
 require "phlex"
+require "phlex/markdown"
 require "bundler"
 require "fileutils"
 require "i18n"
