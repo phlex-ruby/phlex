@@ -9,6 +9,7 @@ module Phlex
 			include Helpers::PreloadLinkTag
 			include Helpers::StylesheetLinkTag
 			include Helpers::ActionCableMetaTag
+			include Helpers::JavascriptImportmapTags
 			include Helpers::JavaScriptIncludeTag
 		end
 	end
