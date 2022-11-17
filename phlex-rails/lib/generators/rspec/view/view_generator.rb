@@ -1,23 +1,14 @@
 # frozen_string_literal: true
 
-module Phlex
+module Rspec
 	module Generators
 		class ViewGenerator < ::Rails::Generators::NamedBase
 			source_root File.expand_path("templates", __dir__)
 
 			def create_view
-				@layout = layout
 				@path = File.join("app/views", class_path, "#{file_name}.rb")
-				template "view.rb.erb", @path
+				template "view_spec.rb.erb", File.join("spec/views", class_path, "#{file_name}_spec.rb")
 			end
-
-			private
-
-			def layout
-				::Rails.root.join("app/views/layout.rb").exist?
-			end
-
-			hook_for :test_framework
 		end
 	end
 end
