@@ -1,0 +1,10 @@
+require "rails_helper"
+
+RSpec.describe Views::<%= class_name %>, type: :view do
+  pending "renders without problem" do
+    result = render(described_class.new)
+
+    expect(result.css("h1").text).to eq "<%= class_name %>"
+    expect(result.css("p").text).to eq "Find me in <%= @path %>"
+  end
+end
