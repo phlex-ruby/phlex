@@ -1,8 +1,0 @@
-Description:
-  Generates a Phlex page view with the given name
-
-Example:
-  rails generate phlex:page Articles::Index
-
-This will create:
-  app/views/articles/index.rb

@@ -20,17 +20,3 @@ group :test do
 	gem "memory_profiler"
 	gem "covered"
 end
-
-group :rails do
-	gem "combustion"
-end
-
-group :docs do
-	gem "filewatcher"
-	gem "htmlbeautifier"
-	gem "redcarpet"
-	gem "markly"
-	gem "webrick"
-	gem "rouge"
-	gem "kramdown"
-end

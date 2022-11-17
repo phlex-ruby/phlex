@@ -1,3 +1,0 @@
-server: ruby -run -e httpd dist
-docs: bundle exec build.rb --watch
-tailwind: npx tailwindcss -i ./assets/application.css -o ./dist/application.css --watch
