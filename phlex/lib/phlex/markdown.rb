@@ -65,7 +65,7 @@ module Phlex
 			in :hrule
 				hr
 			in :blockquote
-				blockquote { visit_children(node)}
+				blockquote { visit_children(node) }
 			end
 		end
 
