@@ -62,6 +62,10 @@ module Phlex
 				code_block(node.string_content, language: node.fence_info) do |**attributes|
 					pre(**attributes) { text(node.string_content) }
 				end
+			in :hrule
+				hr
+			in :blockquote
+				blockquote { visit_children(node)}
 			end
 		end
 
