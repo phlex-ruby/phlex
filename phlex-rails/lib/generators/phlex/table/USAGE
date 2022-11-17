@@ -1,8 +1,0 @@
-Description:
-	Generates a Phlex table collection view with the given name
-
-Example:
-	rails generate phlex:collection Articles::Table --properties title author created_at
-
-This will create:
-	app/views/articles/table.rb
