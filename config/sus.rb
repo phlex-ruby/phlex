@@ -5,7 +5,6 @@ include Covered::Sus
 
 require "phlex"
 require "bundler"
-require "view_component"
 
 Bundler.require :test
 

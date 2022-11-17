@@ -8,7 +8,6 @@ gemspec
 gem "benchmark-ips"
 gem "benchmark-memory"
 gem "capybara"
-gem "rails"
 gem "rubocop"
 gem "solargraph"
 gem "sus"
