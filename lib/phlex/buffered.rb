@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "delegate"
+
 module Phlex
 	class Buffered < SimpleDelegator
 		def initialize(object, buffer:)

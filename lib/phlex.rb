@@ -2,7 +2,6 @@
 
 require "hescape"
 require "zeitwerk"
-require "syntax_tree"
 
 module Phlex
 	Loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false).tap do |loader|
