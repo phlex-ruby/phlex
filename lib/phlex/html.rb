@@ -160,11 +160,15 @@ module Phlex
 			@_parent = parent
 			@output_buffer = self
 
-			template(&block)
+			around_template { template(&block) }
 
 			self.class.rendered_at_least_once ||= true
 
 			buffer
+		end
+
+		def around_template
+			yield
 		end
 
 		def rendered?
