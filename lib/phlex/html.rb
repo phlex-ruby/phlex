@@ -133,20 +133,6 @@ module Phlex
 
 		class << self
 			attr_accessor :rendered_at_least_once
-
-			# 			def compile
-			# 				return if @compiled
-			# 				return unless name
-			# 				return if name.start_with? "#"
-			#
-			# 				Compiler.new(self).call
-			#
-			# 				@compiled = true
-			# 			end
-			#
-			# 			def compiled?
-			# 				!!@compiled
-			# 			end
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)

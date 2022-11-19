@@ -9,6 +9,5 @@ require "bundler"
 Bundler.require :test
 
 require_relative "../fixtures/view_helper"
-require_relative "../fixtures/compiler_test_helpers"
 
 Zeitwerk::Loader.eager_load_all
