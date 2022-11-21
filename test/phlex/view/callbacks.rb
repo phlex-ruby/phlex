@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "callbacks" do
 		view do
-			prepend Phlex::HTML::Callbacks
+			include Phlex::HTML::Callbacks
 
 			def before_rendering_template
 				h1 { "Hello" }
