@@ -129,7 +129,6 @@ module Phlex
 		extend Elements
 		include Helpers
 		include Callable
-		include Renderable
 
 		class << self
 			attr_accessor :rendered_at_least_once
@@ -151,6 +150,26 @@ module Phlex
 			self.class.rendered_at_least_once ||= true
 
 			buffer
+		end
+
+		def render(renderable, *args, **kwargs, &block)
+			if renderable.is_a?(Phlex::HTML)
+				if block_given? && !block.binding.receiver.is_a?(Phlex::Block)
+					block = Phlex::Block.new(self, &block)
+				end
+
+				renderable.call(@_target, view_context: @_view_context, parent: self, &block)
+			elsif renderable.is_a?(Class) && renderable < Phlex::HTML
+				raise ArgumentError, "You tried to render the Phlex view class: #{renderable.name} but you probably meant to render an instance of that class instead."
+			else
+				raise ArgumentError, "You can't render a #{renderable}."
+			end
+
+			nil
+		end
+
+		def format
+			:html
 		end
 
 		def around_template
@@ -230,34 +249,6 @@ module Phlex
 			nil
 		end
 
-		def html_safe?
-			true
-		end
-
-		def safe_append=(value)
-			return unless value
-
-			@_target << case value
-			when String then value
-			when Symbol then value.name
-			else value.to_s
-			end
-		end
-
-		def append=(value)
-			return unless value
-
-			if value.html_safe?
-				self.safe_append = value
-			else
-				@_target << case value
-				when String then Hescape.escape_html(value)
-				when Symbol then Hescape.escape_html(value.name)
-				else Hescape.escape_html(value.to_s)
-				end
-			end
-		end
-
 		def capture(&block)
 			return unless block_given?
 
@@ -269,11 +260,7 @@ module Phlex
 
 			@_target = original_buffer
 
-			new_buffer.html_safe
-		end
-
-		def helpers
-			@_view_context
+			new_buffer
 		end
 
 		def _attributes(**attributes)
