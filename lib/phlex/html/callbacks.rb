@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
 module Phlex::HTML::Callbacks
-	def template(&block)
-		before_rendering_template if respond_to?(:before_rendering_template)
+	def self.prepended(mod)
+		raise "Phlex::HTML::Callbacks should be included rather than prepended."
+	end
 
+	def around_template(&block)
+		before_rendering_template
 		super
+		after_rendering_template
+	end
 
-		after_rendering_template if respond_to?(:after_rendering_template)
+	def before_rendering_template
+		nil
+	end
+
+	def after_rendering_template
+		nil
 	end
 end
