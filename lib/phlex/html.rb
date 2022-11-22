@@ -206,7 +206,7 @@ module Phlex
 		end
 
 		def text(content)
-			@_target << Hescape.escape_html(
+			@_target << CGI.escape_html(
 				case content
 					when String then content
 					when Symbol then content.name
@@ -229,7 +229,7 @@ module Phlex
 		end
 
 		def comment(content = "")
-			@_target << "<!-- " << Hescape.escape_html(content.to_s) << " -->"
+			@_target << "<!-- " << CGI.escape_html(content.to_s) << " -->"
 			nil
 		end
 
@@ -293,13 +293,13 @@ module Phlex
 				when true
 					buffer << " " << name
 				when String
-					buffer << " " << name << '="' << Hescape.escape_html(v) << '"'
+					buffer << " " << name << '="' << CGI.escape_html(v) << '"'
 				when Symbol
-					buffer << " " << name << '="' << Hescape.escape_html(v.name) << '"'
+					buffer << " " << name << '="' << CGI.escape_html(v.name) << '"'
 				when Hash
 					_build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer: buffer)
 				else
-					buffer << " " << name << '="' << Hescape.escape_html(v.to_s) << '"'
+					buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
 				end
 			end
 
