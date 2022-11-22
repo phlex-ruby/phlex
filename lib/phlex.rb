@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "hescape"
+require "cgi"
 require "zeitwerk"
 
 module Phlex
