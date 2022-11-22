@@ -20,14 +20,11 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: false
 
-      - name: Bundle Install
+      - name: Install dependencies
         run: bundle install
 
       - name: Tests
         run: bundle exec sus
-
-      - name: Type-check
-        run: bundle exec solargraph typecheck --level typed
 
       - name: Rubocop
         run: bundle exec rubocop
