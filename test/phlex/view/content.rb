@@ -6,14 +6,14 @@ describe Phlex::HTML do
 	with "content" do
 		view do
 			def template(&block)
-				div do
-					yield_content(&block)
-				end
+				h1 { "Before" }
+				yield
+				h2 { "After" }
 			end
 		end
 
 		it "renders text content" do
-			expect(example.call { "Hi" }).to be == "<div>Hi</div>"
+			expect(example.call { "Hi" }).to be == "<h1>Before</h1>Hi<h2>After</h2>"
 		end
 	end
 end

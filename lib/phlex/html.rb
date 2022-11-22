@@ -145,7 +145,7 @@ module Phlex
 			@_parent = parent
 			@output_buffer = self
 
-			around_template { template(&block) }
+			around_template { template { yield_content(&block) } }
 
 			self.class.rendered_at_least_once ||= true
 
