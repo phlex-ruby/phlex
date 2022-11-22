@@ -210,17 +210,15 @@ module Phlex
 		end
 
 		def text(content)
-			@_target << _output(content)
+			@_target << Hescape.escape_html(
+				case content
+					when String then content
+					when Symbol then content.name
+					else content.to_s
+				end
+			)
 
 			nil
-		end
-
-		def _output(content)
-			case content
-			when String then Hescape.escape_html(content)
-			when Symbol then Hescape.escape_html(content.name)
-			else Hescape.escape_html(content.to_s)
-			end
 		end
 
 		def whitespace
