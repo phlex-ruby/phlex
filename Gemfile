@@ -17,5 +17,4 @@ gem "zeitwerk"
 group :test do
 	gem "i18n"
 	gem "memory_profiler"
-	gem "covered"
 end
