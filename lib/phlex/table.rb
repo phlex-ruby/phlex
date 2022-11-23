@@ -2,6 +2,7 @@
 
 module Phlex
 	module Table
+		include Experimental
 		include Collection
 
 		module ClassMethods

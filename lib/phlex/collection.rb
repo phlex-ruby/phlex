@@ -2,6 +2,8 @@
 
 module Phlex
 	module Collection
+		include Experimental
+
 		def initialize(collection: nil, item: nil)
 			unless collection || item
 				raise ArgumentError, "You must pass a collection or an item as a keyword argument."
