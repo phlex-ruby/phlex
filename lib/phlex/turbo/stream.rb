@@ -3,6 +3,8 @@
 module Phlex
 	module Turbo
 		class Stream < Phlex::HTML
+			include Experimental
+
 			register_element :turbo_stream
 
 			def initialize(action:, **attributes)

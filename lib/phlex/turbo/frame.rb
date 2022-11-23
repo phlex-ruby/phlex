@@ -3,6 +3,8 @@
 module Phlex
 	module Turbo
 		class Frame < Phlex::HTML
+			include Experimental
+
 			register_element :turbo_frame
 
 			def initialize(src:, loading:, disabled:, target:, autoscroll:)
