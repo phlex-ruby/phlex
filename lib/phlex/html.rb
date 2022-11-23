@@ -143,7 +143,6 @@ module Phlex
 			@_target = buffer
 			@_view_context = view_context
 			@_parent = parent
-			@output_buffer = self
 
 			around_template { template { yield_content(&block) } }
 
