@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Phlex::HTML::Callbacks
+module Phlex::Callbacks
 	def self.prepended(mod)
 		raise "Phlex::HTML::Callbacks should be included rather than prepended."
 	end
