@@ -10,11 +10,7 @@ module Phlex
 			class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
         # frozen_string_literal: true
 
-        def #{element}(content = nil, **attributes, &block)
-					if content
-						raise ArgumentError, %(👋 You can no longer pass content to #{element} as a positional argument.\n Instead, you can pass it as a block, e.g. #{element} { "Hello" })
-					end
-
+        def #{element}(**attributes, &block)
           if attributes.length > 0
             if block_given?
               @_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || _attributes(**attributes)) << ">"
