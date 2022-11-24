@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-describe Phlex::Callbacks do
+describe Phlex::HTML do
 	extend ViewHelper
 
-	with "callbacks" do
+	with "hooks" do
 		view do
-			include Phlex::Callbacks
-
-			def before_rendering_template
+			def before_template
 				h1 { "Hello" }
 			end
 
@@ -15,7 +13,7 @@ describe Phlex::Callbacks do
 				h2 { "World" }
 			end
 
-			def after_rendering_template
+			def after_template
 				h3 { "Bye" }
 			end
 		end

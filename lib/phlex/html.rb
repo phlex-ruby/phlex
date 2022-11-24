@@ -168,7 +168,17 @@ module Phlex
 		end
 
 		def around_template
+			before_template
 			yield
+			after_template
+		end
+
+		def before_template
+			nil
+		end
+
+		def after_template
+			nil
 		end
 
 		def rendered?
