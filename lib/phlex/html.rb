@@ -190,28 +190,29 @@ module Phlex
 		def yield_content(&block)
 			return unless block_given?
 
-			original_length = @_target.length
-			output = yield(self)
-			unchanged = (original_length == @_target.length)
+			content = yield(self)
 
-			if unchanged
-				case output
-				when String, Symbol, Integer, Float
-					text(output)
-				end
+			case content
+			when String
+				@_target << CGI.escape_html(content)
+			when Symbol
+				@_target << CGI.escape_html(content.name)
+			when Integer, Float
+				@_target << CGI.escape_html(content.to_s)
 			end
 
 			nil
 		end
 
 		def text(content)
-			@_target << CGI.escape_html(
-				case content
-					when String then content
-					when Symbol then content.name
-					else content.to_s
-				end
-			)
+			case content
+			when String
+				@_target << CGI.escape_html(content)
+			when Symbol
+				@_target << CGI.escape_html(content.name)
+			when Integer, Float
+				@_target << CGI.escape_html(content.to_s)
+			end
 
 			nil
 		end
