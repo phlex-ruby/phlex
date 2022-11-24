@@ -128,7 +128,6 @@ module Phlex
 
 		extend Elements
 		include Helpers
-		include Callable
 
 		class << self
 			attr_accessor :rendered_at_least_once
