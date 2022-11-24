@@ -227,8 +227,11 @@ module Phlex
 			nil
 		end
 
-		def comment(content = "")
-			@_target << "<!-- " << CGI.escape_html(content.to_s) << " -->"
+		def comment(&block)
+			@_target << "<!-- "
+			yield_content(&block)
+			@_target << " -->"
+
 			nil
 		end
 
