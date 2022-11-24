@@ -6,7 +6,7 @@ describe Phlex::HTML do
 	with "simple comment" do
 		view do
 			def template
-				comment "This is an HTML comment"
+				comment { "This is an HTML comment" }
 			end
 		end
 
@@ -30,7 +30,7 @@ describe Phlex::HTML do
 	with "number comment" do
 		view do
 			def template
-				comment 1
+				comment { 1 }
 			end
 		end
 
@@ -42,7 +42,7 @@ describe Phlex::HTML do
 	with "escaped comment" do
 		view do
 			def template
-				comment "<b>Important</b>"
+				comment { "<b>Important</b>" }
 			end
 		end
 
