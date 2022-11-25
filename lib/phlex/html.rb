@@ -166,20 +166,6 @@ module Phlex
 			:html
 		end
 
-		def around_template
-			before_template
-			yield
-			after_template
-		end
-
-		def before_template
-			nil
-		end
-
-		def after_template
-			nil
-		end
-
 		def rendered?
 			@_rendered ||= false
 		end
@@ -194,27 +180,6 @@ module Phlex
 
 		VOID_ELEMENTS.each do |method_name, tag|
 			register_void_element(method_name, tag: tag)
-		end
-
-		def yield_content(&block)
-			return unless block_given?
-
-			original_length = @_target.length
-			content = yield(self)
-			unchanged = (original_length == @_target.length)
-
-			if unchanged
-				case content
-				when String
-					@_target << CGI.escape_html(content)
-				when Symbol
-					@_target << CGI.escape_html(content.name)
-				when Integer, Float
-					@_target << CGI.escape_html(content.to_s)
-				end
-			end
-
-			nil
 		end
 
 		def text(content)
@@ -271,6 +236,43 @@ module Phlex
 			@_target = original_buffer
 
 			new_buffer
+		end
+
+		private
+
+		def around_template
+			before_template
+			yield
+			after_template
+		end
+
+		def before_template
+			nil
+		end
+
+		def after_template
+			nil
+		end
+
+		def yield_content(&block)
+			return unless block_given?
+
+			original_length = @_target.length
+			content = yield(self)
+			unchanged = (original_length == @_target.length)
+
+			if unchanged
+				case content
+				when String
+					@_target << CGI.escape_html(content)
+				when Symbol
+					@_target << CGI.escape_html(content.name)
+				when Integer, Float
+					@_target << CGI.escape_html(content.to_s)
+				end
+			end
+
+			nil
 		end
 
 		def _attributes(**attributes)
