@@ -5,12 +5,48 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex::Helpers
-	def tokens(...)
-		Phlex::Helpers::TokenGenerator.new(self, ...).call
+	def tokens(*tokens, **conditional_tokens)
+		conditional_tokens.each do |condition, token|
+			truthy = case condition
+				when Symbol then send(condition)
+				when Proc then condition.call
+				else raise ArgumentError, "The class condition must be a Symbol or a Proc."
+			end
+
+			if truthy
+				case token
+					when Hash then _append_token(tokens, token[:then])
+					else _append_token(tokens, token)
+				end
+			else
+				case token
+					when Hash then _append_token(tokens, token[:else])
+				end
+			end
+		end
+
+		tokens.join(" ")
+	end
+
+	def _append_token(tokens, token)
+		case token
+			when nil then nil
+			when String then tokens << token
+			when Symbol then tokens << token.name
+			when Array then tokens.concat(token)
+			else raise ArgumentError,
+				"Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
+		end
 	end
 
 	def classes(*tokens, **conditional_tokens)
-		Phlex::Helpers::TokenGenerator.new(self, *tokens, namespace: :class, **conditional_tokens).call
+		tokens = self.tokens(*tokens, **conditional_tokens)
+
+		if tokens.empty?
+			{}
+		else
+			{ class: tokens }
+		end
 	end
 
 	def mix(*args)
