@@ -183,14 +183,13 @@ module Phlex
 		end
 
 		def text(content)
-			case content
-			when String
-				@_target << ERB::Util.html_escape(content)
-			when Symbol
-				@_target << ERB::Util.html_escape(content.name)
-			when Integer, Float
-				@_target << ERB::Util.html_escape(content.to_s)
-			end
+			@_target << ERB::Util.html_escape(
+				case content
+					when String then content
+					when Symbol then content.name
+					else content.to_s
+				end
+			)
 
 			nil
 		end
