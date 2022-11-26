@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "cgi"
+require "erb"
 require "zeitwerk"
 
 module Phlex

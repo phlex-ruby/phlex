@@ -10,6 +10,7 @@ gem "sus"
 gem "syntax_suggest"
 gem "zeitwerk"
 gem "benchmark-ips"
+gem "erb"
 
 group :test do
 	gem "i18n"
