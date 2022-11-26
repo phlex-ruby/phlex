@@ -185,11 +185,11 @@ module Phlex
 		def text(content)
 			case content
 			when String
-				@_target << CGI.escape_html(content)
+				@_target << ERB::Util.html_escape(content)
 			when Symbol
-				@_target << CGI.escape_html(content.name)
+				@_target << ERB::Util.html_escape(content.name)
 			when Integer, Float
-				@_target << CGI.escape_html(content.to_s)
+				@_target << ERB::Util.html_escape(content.to_s)
 			end
 
 			nil
@@ -264,11 +264,11 @@ module Phlex
 			if unchanged
 				case content
 				when String
-					@_target << CGI.escape_html(content)
+					@_target << ERB::Util.html_escape(content)
 				when Symbol
-					@_target << CGI.escape_html(content.name)
+					@_target << ERB::Util.html_escape(content.name)
 				when Integer, Float
-					@_target << CGI.escape_html(content.to_s)
+					@_target << ERB::Util.html_escape(content.to_s)
 				end
 			end
 
@@ -309,13 +309,13 @@ module Phlex
 				when true
 					buffer << " " << name
 				when String
-					buffer << " " << name << '="' << CGI.escape_html(v) << '"'
+					buffer << " " << name << '="' << ERB::Util.html_escape(v) << '"'
 				when Symbol
-					buffer << " " << name << '="' << CGI.escape_html(v.name) << '"'
+					buffer << " " << name << '="' << ERB::Util.html_escape(v.name) << '"'
 				when Hash
 					_build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer: buffer)
 				else
-					buffer << " " << name << '="' << CGI.escape_html(v.to_s) << '"'
+					buffer << " " << name << '="' << ERB::Util.html_escape(v.to_s) << '"'
 				end
 			end
 
