@@ -5,6 +5,8 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex::Helpers
+	private
+
 	def tokens(*tokens, **conditional_tokens)
 		conditional_tokens.each do |condition, token|
 			truthy = case condition
