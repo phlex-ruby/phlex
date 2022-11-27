@@ -14,6 +14,8 @@ Layout/CaseIndentation:
 Style/StringConcatenation:
   Enabled: false
 
+Style/ClassVars:
+  Enabled: false
 
 
 Security/Eval:

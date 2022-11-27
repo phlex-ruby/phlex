@@ -131,6 +131,18 @@ module Phlex
 
 		class << self
 			attr_accessor :rendered_at_least_once
+
+			def define_formatter(*types, &block)
+				types.each do |type|
+					(@@formatters ||= {})[type] = define_method("format_#{type.name.tr(':', '_')}", &block)
+				end
+			end
+		end
+
+		def format_object(value)
+			if (formatter = (@@formatters ||= {})[value.class]) && respond_to?(formatter)
+				send(formatter, value)
+			end
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
@@ -187,7 +199,7 @@ module Phlex
 				case content
 					when String then content
 					when Symbol then content.name
-					else content.to_s
+					else format_object(content) || content.to_s
 				end
 			)
 
@@ -268,6 +280,10 @@ module Phlex
 					@_target << ERB::Util.html_escape(content.name)
 				when Integer, Float
 					@_target << ERB::Util.html_escape(content.to_s)
+				else
+					if (formatted_content = format_object(content))
+						@_target << ERB::Util.html_escape(formatted_content)
+					end
 				end
 			end
 
