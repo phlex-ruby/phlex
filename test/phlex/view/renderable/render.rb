@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-Example = Class.new(Phlex::HTML)
+class Example < Phlex::HTML
+	def template
+		h1 { "Hello" }
+	end
+end
 
 describe Phlex::HTML do
 	extend ViewHelper
@@ -13,9 +17,8 @@ describe Phlex::HTML do
 				end
 			end
 
-			it "raises an ArgumentError" do
-				expect { output }.to raise_exception ArgumentError,
-					message: be == "You tried to render the Phlex view class: #{Example.name} but you probably meant to render an instance of that class instead."
+			it "renders a new instance of that view" do
+				expect(output).to be == "<h1>Hello</h1>"
 			end
 		end
 
