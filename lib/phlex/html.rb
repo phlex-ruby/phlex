@@ -179,7 +179,8 @@ module Phlex
 				case content
 					when String then content
 					when Symbol then content.name
-					else content.to_s
+					when Integer, Float then content.to_s
+					else format_object(content) || content.to_s
 				end
 			)
 
@@ -234,6 +235,10 @@ module Phlex
 			true
 		end
 
+		private def format_object(oject)
+			nil
+		end
+
 		private def around_template
 			before_template
 			yield
@@ -263,6 +268,10 @@ module Phlex
 					@_target << ERB::Util.html_escape(content.name)
 				when Integer, Float
 					@_target << ERB::Util.html_escape(content.to_s)
+				else
+					if (formatted_object = format_object(content))
+						@_target << ERB::Util.html_escape(formatted_object)
+					end
 				end
 			end
 
