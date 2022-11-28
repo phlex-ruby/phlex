@@ -136,9 +136,6 @@ module Phlex
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
 			return buffer unless render?
 
-			raise "The same view instance shouldn't be rendered twice" if rendered?
-
-			@_rendered = true
 			@_target = buffer
 			@_view_context = view_context
 			@_parent = parent
@@ -167,10 +164,6 @@ module Phlex
 
 		def format
 			:html
-		end
-
-		def rendered?
-			@_rendered ||= false
 		end
 
 		STANDARD_ELEMENTS.each do |method_name, tag|
