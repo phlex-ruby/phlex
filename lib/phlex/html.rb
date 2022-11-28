@@ -166,10 +166,6 @@ module Phlex
 			:html
 		end
 
-		def render?
-			true
-		end
-
 		STANDARD_ELEMENTS.each do |method_name, tag|
 			register_element(method_name, tag: tag)
 		end
@@ -231,6 +227,11 @@ module Phlex
 			@_target = original_buffer
 
 			new_buffer
+		end
+
+		# Default render predicate can be overridden to prevent rendering
+		private def render?
+			true
 		end
 
 		private def around_template
