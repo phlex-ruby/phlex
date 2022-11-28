@@ -151,10 +151,13 @@ module Phlex
 		end
 
 		def render(renderable, *args, **kwargs, &block)
-			if renderable.is_a?(Phlex::HTML)
+			case renderable
+			when Phlex::HTML
 				renderable.call(@_target, view_context: @_view_context, parent: self, &block)
-			elsif renderable.is_a?(Class) && renderable < Phlex::HTML
-				raise ArgumentError, "You tried to render the Phlex view class: #{renderable.name} but you probably meant to render an instance of that class instead."
+			when Class
+				if renderable < Phlex::HTML
+					renderable.new.call(@_target, view_context: @_view_context, parent: self, &block)
+				end
 			else
 				raise ArgumentError, "You can't render a #{renderable}."
 			end
