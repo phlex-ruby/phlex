@@ -13,15 +13,6 @@ describe Phlex::HTML do
 		it "renders the view" do
 			expect(example.call).to be == "Hi"
 		end
-
-		with "a spent view" do
-			let(:example) { view.new.tap(&:call) }
-
-			it "raises an ArgumentError" do
-				expect { example.call }.to raise_exception RuntimeError,
-					message: be == "The same view instance shouldn't be rendered twice"
-			end
-		end
 	end
 
 	with "`render?` method returning false" do
