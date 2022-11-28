@@ -5,9 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex::Helpers
-	private
-
-	def tokens(*tokens, **conditional_tokens)
+	private def tokens(*tokens, **conditional_tokens)
 		conditional_tokens.each do |condition, token|
 			truthy = case condition
 				when Symbol then send(condition)
@@ -30,7 +28,7 @@ module Phlex::Helpers
 		tokens.join(" ")
 	end
 
-	def _append_token(tokens, token)
+	private def _append_token(tokens, token)
 		case token
 			when nil then nil
 			when String then tokens << token
@@ -41,7 +39,7 @@ module Phlex::Helpers
 		end
 	end
 
-	def classes(*tokens, **conditional_tokens)
+	private def classes(*tokens, **conditional_tokens)
 		tokens = self.tokens(*tokens, **conditional_tokens)
 
 		if tokens.empty?
@@ -51,7 +49,7 @@ module Phlex::Helpers
 		end
 	end
 
-	def mix(*args)
+	private def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
 				case new

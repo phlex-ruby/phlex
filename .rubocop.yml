@@ -24,3 +24,7 @@ Style/MethodCallWithoutArgsParentheses:
 
 Style/MixinUsage:
   Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: true
+  EnforcedStyle: inline

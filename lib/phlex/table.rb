@@ -50,13 +50,11 @@ module Phlex
 			child.alias_method :foot_cell, :cell
 		end
 
-		private
-
-		def properties
+		private def properties
 			self.class.properties
 		end
 
-		def collection_template(&block)
+		private def collection_template(&block)
 			table do
 				head_template
 				body_template(&block)
@@ -64,11 +62,11 @@ module Phlex
 			end
 		end
 
-		def item_template
+		private def item_template
 			row_template
 		end
 
-		def head_template
+		private def head_template
 			if self.class.properties.any? { |p| p[:header] }
 				head do
 					head_row do
@@ -85,14 +83,14 @@ module Phlex
 			end
 		end
 
-		def body_template
+		private def body_template
 			body { yield_items }
 		end
 
-		def foot_template
+		private def foot_template
 		end
 
-		def row_template
+		private def row_template
 			body_row do
 				self.class.properties.each do |property|
 					body_cell(**property[:attributes]) do

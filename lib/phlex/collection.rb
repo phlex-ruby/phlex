@@ -17,9 +17,7 @@ module Phlex
 			@item ? item_template : collection_template { yield_items }
 		end
 
-		private
-
-		def yield_items
+		private def yield_items
 			if @item
 				raise ArgumentError, "You can only yield_items when rendering a collection. You are currently rendering an item."
 			end

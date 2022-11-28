@@ -240,23 +240,21 @@ module Phlex
 			new_buffer
 		end
 
-		private
-
-		def around_template
+		private def around_template
 			before_template
 			yield
 			after_template
 		end
 
-		def before_template
+		private def before_template
 			nil
 		end
 
-		def after_template
+		private def after_template
 			nil
 		end
 
-		def yield_content(&block)
+		private def yield_content(&block)
 			return unless block_given?
 
 			original_length = @_target.length
@@ -277,7 +275,7 @@ module Phlex
 			nil
 		end
 
-		def _attributes(**attributes)
+		private def _attributes(**attributes)
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
 			end
@@ -292,7 +290,7 @@ module Phlex
 			buffer
 		end
 
-		def _build_attributes(attributes, buffer:)
+		private def _build_attributes(attributes, buffer:)
 			attributes.each do |k, v|
 				next unless v
 
