@@ -4,7 +4,7 @@ require "date"
 
 class Example < Phlex::HTML
 	def template
-		h1 { Date.today }
+		h1 { Date.new(2022, 11, 28) }
 	end
 
 	private def format_object(object)
