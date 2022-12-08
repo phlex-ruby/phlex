@@ -140,7 +140,19 @@ module Phlex
 			@_view_context = view_context
 			@_parent = parent
 
-			around_template { template { yield_content(&block) } }
+			around_template do
+				if block_given?
+					template do |*args|
+						if args.length > 0
+							yield_content_with_args(*args, &block)
+						else
+							yield_content(&block)
+						end
+					end
+				else
+					template
+				end
+			end
 
 			self.class.rendered_at_least_once ||= true
 
@@ -258,6 +270,31 @@ module Phlex
 
 			original_length = @_target.length
 			content = yield(self)
+			unchanged = (original_length == @_target.length)
+
+			if unchanged
+				case content
+				when String
+					@_target << ERB::Util.html_escape(content)
+				when Symbol
+					@_target << ERB::Util.html_escape(content.name)
+				when Integer, Float
+					@_target << ERB::Util.html_escape(content.to_s)
+				else
+					if (formatted_object = format_object(content))
+						@_target << ERB::Util.html_escape(formatted_object)
+					end
+				end
+			end
+
+			nil
+		end
+
+		private def yield_content_with_args(*args, &block)
+			return unless block_given?
+
+			original_length = @_target.length
+			content = yield(*args)
 			unchanged = (original_length == @_target.length)
 
 			if unchanged
