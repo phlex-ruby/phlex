@@ -2,6 +2,12 @@
 
 module Phlex
 	class Configuration
-		# Config coming soon.
+		attr_writer :experimental_warnings
+
+		def experimental_warnings
+			return @experimental_warnings if defined? @experimental_warnings
+
+			true
+		end
 	end
 end
