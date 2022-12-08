@@ -3,7 +3,10 @@
 module Phlex
 	module Experimental
 		def before_template
-			puts "Warning: #{self.class.name} is experimental and subject to change."
+			if Phlex.configuration.experimental_warnings
+				puts "Warning: #{self.class.name} is experimental and subject to change."
+			end
+
 			super
 		end
 	end
