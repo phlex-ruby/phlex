@@ -25,3 +25,10 @@ If you’ve found a potential security issue, please email [security@phlex.fun](
 ### Thanks 🙏
 
 Thanks [Logology](https://www.logology.co) for sponsoring our logo.
+
+### Prior Art
+
+- [markaby](https://github.com/markaby/markaby)
+- [erector](https://github.com/erector/erector)
+- [papercraft](https://github.com/digital-fabric/papercraft)
+- [matestack](https://github.com/matestack/matestack-ui-core)
