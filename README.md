@@ -26,7 +26,7 @@ If you’ve found a potential security issue, please email [security@phlex.fun](
 
 Thanks [Logology](https://www.logology.co) for sponsoring our logo.
 
-### Prior Art
+### Prior Art 🎨
 
 - [markaby](https://github.com/markaby/markaby)
 - [erector](https://github.com/erector/erector)
