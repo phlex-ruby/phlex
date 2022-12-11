@@ -154,7 +154,7 @@ module Phlex
 				end
 			end
 
-			self.class.rendered_at_least_once ||= true
+			self.class.rendered_at_least_once = true
 
 			buffer
 		end
