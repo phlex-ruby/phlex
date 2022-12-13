@@ -32,3 +32,7 @@ Thanks [Logology](https://www.logology.co) for sponsoring our logo.
 - [erector](https://github.com/erector/erector)
 - [papercraft](https://github.com/digital-fabric/papercraft)
 - [matestack](https://github.com/matestack/matestack-ui-core)
+- [arbre](https://github.com/activeadmin/arbre)
+- [tubby](https://github.com/judofyr/tubby)
+- [hoshi](https://github.com/pete/hoshi)
+- [hyperstack](https://github.com/hyperstack-org/hyperstack)
