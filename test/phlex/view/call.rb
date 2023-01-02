@@ -15,20 +15,20 @@ describe Phlex::HTML do
 		end
 	end
 
-	with "`render?` method returning false" do
+	with "`render?` method returning false when the view context is true" do
 		view do
 			def template
 				text "Hi"
 			end
 
 			def render?
-				false
+				!@_view_context
 			end
 		end
 
 		it "returns buffer content" do
 			buffer = "xyz"
-			expect(example.call(buffer)).to be == "xyz"
+			expect(example.call(buffer, view_context: true)).to be == "xyz"
 		end
 	end
 

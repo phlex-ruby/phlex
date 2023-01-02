@@ -134,11 +134,11 @@ module Phlex
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
-			return buffer unless render?
-
 			@_target = buffer
 			@_view_context = view_context
 			@_parent = parent
+
+			return buffer unless render?
 
 			around_template do
 				if block_given?
