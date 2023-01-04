@@ -14,6 +14,10 @@ If you run into any trouble, please [start a discussion](https://github.com/joel
 
 Everyone interacting in Phlex codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/joeldrapper/phlex/blob/main/CODE_OF_CONDUCT.md).
 
+### Who uses Phlex?
+
+If you can share that your company uses Phlex in production, please open a PR to list it here.
+
 ### Sponsorship 💖
 
 Maintaining a library is a lot of work. If your company benefits from this work or is likely to benefit from it in the future, please consider [sponsorship](https://github.com/sponsors/joeldrapper). Phlex is actively developed and maintained by **[Joel Drapper](https://github.com/sponsors/joeldrapper)**.
