@@ -16,7 +16,9 @@ Everyone interacting in Phlex codebases, issue trackers, chat rooms and mailing 
 
 ### Who uses Phlex?
 
-If you can share that your company uses Phlex in production, please open a PR to list it here.
+- [Clearscope](https://www.clearscope.io)
+
+*If you can share that your company uses Phlex in production, please open a PR to list it here.*
 
 ### Sponsorship 💖
 
