@@ -224,8 +224,9 @@ module Phlex
 		end
 
 		def unsafe_raw(content = nil, &block)
-			@_target << (content || instance_exec(&block))
-			nil
+			return nil unless content
+
+			@_target << content
 		end
 
 		def capture(&block)

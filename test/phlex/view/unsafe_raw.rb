@@ -10,8 +10,20 @@ describe Phlex::HTML do
 			end
 		end
 
-		it "renders produces the correct output" do
+		it "renders the correct output" do
 			expect(output).to be == %(<h1 class="test">Hello</h1>)
+		end
+	end
+
+	with "nil content" do
+		view do
+			def template
+				unsafe_raw nil
+			end
+		end
+
+		it "renders empty output" do
+			expect(output).to be == ""
 		end
 	end
 end
