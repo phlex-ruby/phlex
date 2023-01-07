@@ -15,6 +15,18 @@ describe Phlex::HTML do
 		end
 	end
 
+	with "string keyed hash attributes" do
+		view do
+			def template
+				div data: { "name_first_name" => "Joel" }
+			end
+		end
+
+		it "flattens the attributes without dasherizing them" do
+			expect(output).to be == %(<div data-name_first_name="Joel"></div>)
+		end
+	end
+
 	if RUBY_ENGINE == "ruby"
 		with "unique tag attributes" do
 			view do

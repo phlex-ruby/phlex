@@ -354,7 +354,14 @@ module Phlex
 				when Symbol
 					buffer << " " << name << '="' << ERB::Util.html_escape(v.name) << '"'
 				when Hash
-					_build_attributes(v.transform_keys { "#{k}-#{_1.name.tr('_', '-')}" }, buffer: buffer)
+					_build_attributes(
+						v.transform_keys { |subkey|
+							case subkey
+								when Symbol then"#{k}-#{subkey.name.tr('_', '-')}"
+								else "#{k}-#{subkey}"
+							end
+						}, buffer: buffer
+					)
 				else
 					buffer << " " << name << '="' << ERB::Util.html_escape(v.to_s) << '"'
 				end
