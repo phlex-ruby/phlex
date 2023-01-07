@@ -22,8 +22,8 @@ describe Phlex::HTML do
 			end
 		end
 
-		it "dasherizes the attributes" do
-			expect(output).to be == %(<div data-name-first-name="Joel"></div>)
+		it "flattens the attributes without dasherizing them" do
+			expect(output).to be == %(<div data-name_first_name="Joel"></div>)
 		end
 	end
 
