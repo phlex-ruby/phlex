@@ -7,7 +7,6 @@ gemspec
 
 gem "rubocop"
 gem "sus"
-gem "syntax_suggest"
 gem "zeitwerk"
 gem "benchmark-ips"
 gem "erb"
