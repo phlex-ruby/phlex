@@ -319,13 +319,13 @@ module Phlex
 			nil
 		end
 
-		private def _attributes(**attributes)
+		private def __attributes__(**attributes)
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
 			end
 
 			buffer = +""
-			_build_attributes(attributes, buffer: buffer)
+			__build_attributes__(attributes, buffer: buffer)
 
 			unless self.class.rendered_at_least_once
 				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
@@ -334,7 +334,7 @@ module Phlex
 			buffer
 		end
 
-		private def _build_attributes(attributes, buffer:)
+		private def __build_attributes__(attributes, buffer:)
 			attributes.each do |k, v|
 				next unless v
 
@@ -357,7 +357,7 @@ module Phlex
 				when Symbol
 					buffer << " " << name << '="' << ERB::Util.html_escape(v.name) << '"'
 				when Hash
-					_build_attributes(
+					__build_attributes__(
 						v.transform_keys { |subkey|
 							case subkey
 								when Symbol then"#{k}-#{subkey.name.tr('_', '-')}"

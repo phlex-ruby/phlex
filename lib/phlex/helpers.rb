@@ -15,12 +15,12 @@ module Phlex::Helpers
 
 			if truthy
 				case token
-					when Hash then _append_token(tokens, token[:then])
-					else _append_token(tokens, token)
+					when Hash then __append_token__(tokens, token[:then])
+					else __append_token__(tokens, token)
 				end
 			else
 				case token
-					when Hash then _append_token(tokens, token[:else])
+					when Hash then __append_token__(tokens, token[:else])
 				end
 			end
 		end
@@ -28,7 +28,7 @@ module Phlex::Helpers
 		tokens.join(" ")
 	end
 
-	private def _append_token(tokens, token)
+	private def __append_token__(tokens, token)
 		case token
 			when nil then nil
 			when String then tokens << token
