@@ -31,6 +31,8 @@ module Phlex
 
           nil
         end
+
+				alias_method :_#{element}, :#{element}
 			RUBY
 		end
 
@@ -47,6 +49,8 @@ module Phlex
 
           nil
         end
+
+				alias_method :_#{element}, :#{element}
 			RUBY
 		end
 	end
