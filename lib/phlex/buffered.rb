@@ -10,8 +10,8 @@ module Phlex
 		end
 
 		# Alias output methods to this
-		def __output_method__(*args, **kwargs, &block)
-			output = __getobj__.public_send(__callee__, *args, **kwargs, &block)
+		def __output_method__(...)
+			output = __getobj__.public_send(__callee__, ...)
 			@buffer << output if output.is_a? String
 			nil
 		end
