@@ -143,12 +143,10 @@ module Phlex
 			around_template do
 				if block_given?
 					template do |*args|
-						around_content do
-							if args.length > 0
-								yield_content_with_args(*args, &block)
-							else
-								yield_content(&block)
-							end
+						if args.length > 0
+							yield_content_with_args(*args, &block)
+						else
+							yield_content(&block)
 						end
 					end
 				else
@@ -261,10 +259,6 @@ module Phlex
 			before_template
 			yield
 			after_template
-		end
-
-		private def around_content
-			yield
 		end
 
 		private def before_template
