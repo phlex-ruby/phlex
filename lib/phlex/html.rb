@@ -159,7 +159,7 @@ module Phlex
 			buffer
 		end
 
-		def render(renderable, *args, **kwargs, &block)
+		def render(renderable, &block)
 			case renderable
 			when Phlex::HTML
 				renderable.call(@_target, view_context: @_view_context, parent: self, &block)
