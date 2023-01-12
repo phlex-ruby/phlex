@@ -131,6 +131,11 @@ module Phlex
 
 		class << self
 			attr_accessor :rendered_at_least_once
+
+			def call(...)
+				new(...).call
+			end
+			alias_method :render, :call
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
