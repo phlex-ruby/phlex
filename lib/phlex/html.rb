@@ -233,13 +233,13 @@ module Phlex
 			nil
 		end
 
-		def unsafe_raw(content = nil, &block)
+		def unsafe_raw(content = nil)
 			return nil unless content
 
 			@_target << content
 		end
 
-		def capture(&block)
+		def capture
 			return unless block_given?
 
 			original_buffer = @_target
@@ -292,7 +292,7 @@ module Phlex
 			nil
 		end
 
-		private def yield_content(&block)
+		private def yield_content
 			return unless block_given?
 
 			original_length = @_target.length
@@ -317,7 +317,7 @@ module Phlex
 			nil
 		end
 
-		private def yield_content_with_args(*args, &block)
+		private def yield_content_with_args(*args)
 			return unless block_given?
 
 			original_length = @_target.length
