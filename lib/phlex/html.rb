@@ -136,6 +136,14 @@ module Phlex
 				new(...).call
 			end
 			alias_method :render, :call
+
+			def new
+				if block_given?
+					raise ArgumentError, "You passed a block to #{name}.new. You probably meant to pass it to #{name}#call."
+				else
+					super
+				end
+			end
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
