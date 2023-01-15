@@ -147,11 +147,16 @@ module Phlex
 
 			around_template do
 				if block_given?
-					template do |*args|
-						if args.length > 0
-							yield_content_with_args(*args, &block)
-						else
-							yield_content(&block)
+					if DeferredRender === self
+						__vanish__(&block)
+						template
+					else
+						template do |*args|
+							if args.length > 0
+								yield_content_with_args(*args, &block)
+							else
+								yield_content(&block)
+							end
 						end
 					end
 				else
@@ -246,6 +251,19 @@ module Phlex
 			@_target = original_buffer
 
 			new_buffer
+		end
+
+		# Like `capture` but the output is vanished into a BlackHole buffer.
+		# Becuase the BlackHole does nothing with the output, this should be faster.
+		def __vanish__
+			return unless block_given?
+
+			original_buffer = @_target
+			@_target = BlackHole
+
+			yield
+
+			@_target = original_buffer
 		end
 
 		# Default render predicate can be overridden to prevent rendering
