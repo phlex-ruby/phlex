@@ -42,3 +42,4 @@ Thanks [Logology](https://www.logology.co) for sponsoring our logo.
 - [tubby](https://github.com/judofyr/tubby)
 - [hoshi](https://github.com/pete/hoshi)
 - [hyperstack](https://github.com/hyperstack-org/hyperstack)
+- [clearwater](https://github.com/clearwater-rb/clearwater)
