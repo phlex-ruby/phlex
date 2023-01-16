@@ -136,6 +136,16 @@ module Phlex
 				new(...).call
 			end
 			alias_method :render, :call
+
+			def new(*args, &block)
+				if block
+					object = super(*args, &nil)
+					object.instance_variable_set(:@_content_block, block)
+					object
+				else
+					super
+				end
+			end
 		end
 
 		def call(buffer = +"", view_context: nil, parent: nil, &block)
@@ -143,10 +153,12 @@ module Phlex
 			@_view_context = view_context
 			@_parent = parent
 
+			block ||= @_content_block
+
 			return buffer unless render?
 
 			around_template do
-				if block_given?
+				if block
 					if DeferredRender === self
 						__vanish__(&block)
 						template
