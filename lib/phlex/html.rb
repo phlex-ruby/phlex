@@ -259,10 +259,10 @@ module Phlex
 			@_target = new_buffer
 
 			yield
-		ensure
-			@_target = original_buffer
 
 			new_buffer
+		ensure
+			@_target = original_buffer
 		end
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
@@ -274,9 +274,9 @@ module Phlex
 			@_target = BlackHole
 
 			yield(*args)
+			nil
 		ensure
 			@_target = original_buffer
-			nil
 		end
 
 		# Default render predicate can be overridden to prevent rendering
