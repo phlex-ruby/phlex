@@ -259,7 +259,7 @@ module Phlex
 			@_target = new_buffer
 
 			yield
-
+		ensure
 			@_target = original_buffer
 
 			new_buffer
@@ -274,8 +274,9 @@ module Phlex
 			@_target = BlackHole
 
 			yield(*args)
-
+		ensure
 			@_target = original_buffer
+			nil
 		end
 
 		# Default render predicate can be overridden to prevent rendering
