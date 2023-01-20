@@ -137,9 +137,9 @@ module Phlex
 			end
 			alias_method :render, :call
 
-			def new(*args, &block)
+			def new(*args, **kwargs, &block)
 				if block
-					object = super(*args, &nil)
+					object = super(*args, **kwargs, &nil)
 					object.instance_variable_set(:@_content_block, block)
 					object
 				else
