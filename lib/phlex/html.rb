@@ -408,5 +408,14 @@ module Phlex
 
 			buffer
 		end
+
+		# This should be the last method defined
+		def self.method_added(method_name)
+			if method_name[0] == "_" && Phlex::HTML.instance_methods.include?(method_name) && instance_method(method_name).owner != Phlex::HTML
+				raise NameError, "👋 Redefining the method `#{name}##{method_name}` is not a good idea."
+			end
+
+			super
+		end
 	end
 end
