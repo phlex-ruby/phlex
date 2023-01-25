@@ -37,7 +37,21 @@ describe Phlex::HTML do
 		end
 
 		it "strips the javascript protocol" do
-			expect(output).to be == %{<a href="alert(1)">naughty link</a>}
+			expect(output).to be == %{<a>naughty link</a>}
+		end
+	end
+
+	with "naughty javascript link protocol in href" do
+		view do
+			def template
+				a "href" => "javascript:javascript:alert(1)" do
+					"naughty link"
+				end
+			end
+		end
+
+		it "strips the javascript protocol" do
+			expect(output).to be == %{<a>naughty link</a>}
 		end
 	end
 
