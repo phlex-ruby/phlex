@@ -267,7 +267,7 @@ module Phlex
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
 		# Becuase the BlackHole does nothing with the output, this should be faster.
-		def __vanish__(*args)
+		private def __vanish__(*args)
 			return unless block_given?
 
 			original_buffer = @_target
