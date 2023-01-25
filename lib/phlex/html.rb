@@ -357,7 +357,11 @@ module Phlex
 
 		private def __attributes__(**attributes)
 			if attributes[:href]&.start_with?(/\s*javascript/)
-				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
+				attributes.delete(:href)
+			end
+
+			if attributes["href"]&.start_with?(/\s*javascript/)
+				attributes.delete("href")
 			end
 
 			buffer = +""
