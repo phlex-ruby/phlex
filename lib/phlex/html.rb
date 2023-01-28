@@ -369,11 +369,11 @@ module Phlex
 		end
 
 		private def __final_attributes__(**attributes)
-			if attributes[:href]&.start_with?(/\s*javascript/)
+			if attributes[:href]&.start_with?(/\s*javascript:/)
 				attributes.delete(:href)
 			end
 
-			if attributes["href"]&.start_with?(/\s*javascript/)
+			if attributes["href"]&.start_with?(/\s*javascript:/)
 				attributes.delete("href")
 			end
 
