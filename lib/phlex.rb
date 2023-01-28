@@ -15,15 +15,5 @@ module Phlex
 	ArgumentError = Class.new(ArgumentError) { include Error }
 	NameError = Class.new(NameError) { include Error }
 
-	extend self
-
 	ATTRIBUTE_CACHE = Concurrent::Map.new
-
-	def configuration
-		@configuration ||= Configuration.new
-	end
-
-	def configure
-		yield configuration
-	end
 end
