@@ -130,8 +130,6 @@ module Phlex
 		include Helpers
 
 		class << self
-			attr_accessor :rendered_at_least_once
-
 			def call(...)
 				new(...).call
 			end
@@ -146,9 +144,20 @@ module Phlex
 					super
 				end
 			end
+
+			def rendered_at_least_once!
+				alias_method :__attributes__, :__final_attributes__
+				alias_method :call, :__final_call__
+			end
 		end
 
-		def call(buffer = +"", view_context: nil, parent: nil, &block)
+		def call(...)
+			__final_call__(...).tap do
+				self.class.rendered_at_least_once!
+			end
+		end
+
+		def __final_call__(buffer = +"", view_context: nil, parent: nil, &block)
 			@_target = buffer
 			@_view_context = view_context
 			@_parent = parent
@@ -175,8 +184,6 @@ module Phlex
 					template
 				end
 			end
-
-			self.class.rendered_at_least_once = true
 
 			buffer
 		end
@@ -356,6 +363,12 @@ module Phlex
 		end
 
 		private def __attributes__(**attributes)
+			__final_attributes__(**attributes).tap do |buffer|
+				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
+			end
+		end
+
+		private def __final_attributes__(**attributes)
 			if attributes[:href]&.start_with?(/\s*javascript/)
 				attributes.delete(:href)
 			end
@@ -366,10 +379,6 @@ module Phlex
 
 			buffer = +""
 			__build_attributes__(attributes, buffer: buffer)
-
-			unless self.class.rendered_at_least_once
-				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
-			end
 
 			buffer
 		end
