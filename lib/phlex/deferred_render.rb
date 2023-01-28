@@ -2,6 +2,6 @@
 
 module Phlex
 	module DeferredRender
-		include Experimental
+		# This module doesn't do anything. Phlex::HTML#call checks for its inclusion in the ancestry instead.
 	end
 end
