@@ -2,10 +2,10 @@
 
 module Phlex
 	class Unbuffered < BasicObject
-		CACHE = {}
+		CACHE = ::Concurrent::Map.new
 
 		def self.call(object)
-			decorator = CACHE[object.class.name] ||= ::Class.new(self)
+			decorator = CACHE.compute_if_absent(object.class.name) { ::Class.new(self) }
 			decorator.new(object)
 		end
 
