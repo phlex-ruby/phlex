@@ -1,6 +1,6 @@
 <a href="https://www.phlex.fun"><img alt="Phlex logo" src="phlex_logo.png" width="180" /></a>
 
-Phlex is a framework that lets you compose web views in pure Ruby.
+Phlex lets you compose web views in pure Ruby. It’s super-fast, thread-safe and supports TruffleRuby v22.2+, JRuby v9.2+ and MRI v2.7+.
 
 ### Documentation 📗
 
@@ -12,13 +12,13 @@ If you run into any trouble, please [start a discussion](https://github.com/joel
 
 ### Community 🙌
 
-Everyone interacting in Phlex codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/joeldrapper/phlex/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in Phlex codebases, issue trackers or chat rooms is expected to follow the [code of conduct](https://github.com/joeldrapper/phlex/blob/main/CODE_OF_CONDUCT.md).
 
 ### Who uses Phlex?
 
 - [Clearscope](https://www.clearscope.io)
 
-*If you can share that your company uses Phlex in production, please open a PR to list it here.*
+*If you’re using Phlex in production, please open a PR to list it here.*
 
 ### Sponsorship 💖
 
