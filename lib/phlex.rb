@@ -2,6 +2,7 @@
 
 require "erb"
 require "zeitwerk"
+require "concurrent"
 
 module Phlex
 	Loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false).tap do |loader|
@@ -16,7 +17,7 @@ module Phlex
 
 	extend self
 
-	ATTRIBUTE_CACHE = {}
+	ATTRIBUTE_CACHE = Concurrent::Map.new
 
 	def configuration
 		@configuration ||= Configuration.new
