@@ -2,13 +2,6 @@
 
 module Phlex
 	class Unbuffered < BasicObject
-		CACHE = ::Concurrent::Map.new
-
-		def self.call(object)
-			decorator = CACHE.compute_if_absent(object.class.name) { ::Class.new(self) }
-			decorator.new(object)
-		end
-
 		def initialize(object)
 			@object = object
 		end
@@ -23,9 +16,6 @@ module Phlex
 
 		define_method :__public_send__,
 			::Object.instance_method(:public_send)
-
-		define_method :__callee__,
-			::Object.instance_method(:__callee__)
 
 		def respond_to_missing?(...)
 			@object.respond_to?(...)

@@ -16,18 +16,14 @@ end
 
 describe Phlex::Unbuffered do
 	it "caches a decorator class for each class of view" do
-		a = Phlex::Unbuffered.call(Example.new).__class__
-		b = Phlex::Unbuffered.call(Example.new).__class__
-
-		expect(a).to be == b
+		expect(Example.__unbuffered_class__).to be == Example.__unbuffered_class__
 	end
 
 	it "captures the underlying view output methods" do
 		captured_output = nil
 
-		output = Example.call do |v|
-			unbuffered_view = Phlex::Unbuffered.call(v)
-			captured_output = unbuffered_view.foo
+		output = Example.call do |view|
+			captured_output = view.unbuffered.foo
 			nil
 		end
 
@@ -37,9 +33,8 @@ describe Phlex::Unbuffered do
 
 	it "delegates #send" do
 		view = Example.new
-		unbuffered_view = Phlex::Unbuffered.call(view)
 		expect(view).to receive(:send).with(:bar)
 
-		unbuffered_view.send(:bar)
+		view.unbuffered.send(:bar)
 	end
 end
