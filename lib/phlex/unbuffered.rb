@@ -39,7 +39,7 @@ module Phlex
 				end
 
 				# Now we've defined this missing method, we can call it.
-				__public_send__(name, *args, &block)
+				__public_send__(name, *args, **kwargs, &block)
 			else
 				super
 			end
