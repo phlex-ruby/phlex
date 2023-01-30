@@ -126,6 +126,8 @@ module Phlex
 
 		EVENT_ATTRIBUTES = %w[onabort onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick oncontextmenu oncopy oncuechange oncut ondblclick ondrag ondragend ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onerror onfocus onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpaste onpause onplay onplaying onpopstate onprogress onratechange onreset onresize onscroll onsearch onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate ontoggle onunload onvolumechange onwaiting onwheel].to_h { [_1, true] }.freeze
 
+		UNBUFFERED_MUTEX = Mutex.new
+
 		extend Elements
 		include Helpers
 
@@ -148,6 +150,16 @@ module Phlex
 			def rendered_at_least_once!
 				alias_method :__attributes__, :__final_attributes__
 				alias_method :call, :__final_call__
+			end
+
+			def __unbuffered_class__
+				UNBUFFERED_MUTEX.synchronize do
+					if defined? @unbuffered_class
+						@unbuffered_class
+					else
+						@unbuffered_class = Class.new(Unbuffered)
+					end
+				end
 			end
 		end
 
@@ -270,6 +282,10 @@ module Phlex
 			new_buffer
 		ensure
 			@_target = original_buffer
+		end
+
+		def unbuffered
+			self.class.__unbuffered_class__.new(self)
 		end
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
