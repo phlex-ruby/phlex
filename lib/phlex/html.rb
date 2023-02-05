@@ -49,6 +49,7 @@ module Phlex
 			h6: "h6",
 			head: "head",
 			header: "header",
+			hgroup: "hgroup",
 			html: "html",
 			i: "i",
 			iframe: "iframe",
