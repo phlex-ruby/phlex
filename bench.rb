@@ -41,7 +41,6 @@ def html_from_hamlit
 	end
 end
 
-
 def html_from_phlex
 	@phlex_page.call
 end
@@ -54,11 +53,10 @@ end
 check_html_is_same(html_from_phlex, html_from_phlex)
 
 # HAML & Phlex produce the same HTML but HAML is using ' and Phlex is using ", also HAML is using \n, and Phlex producing a really long line :)
-# The only other difference is order of attributes, but that's not important 
+# The only other difference is order of attributes, but that's not important
 # HAML: <meta content='width=device-width,initial-scale=1' name='viewport'>
 # Phlex: <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">
 # check_html_is_same(html_from_phlex, html_from_haml(@haml_layout, @haml_page).gsub("\n", "").gsub("'","\""))
-
 
 Benchmark.ips do |x|
 	puts RUBY_DESCRIPTION
@@ -69,5 +67,3 @@ Benchmark.ips do |x|
 	x.report("Slim Page") { html_from_slim }
 	x.compare!
 end
-
-

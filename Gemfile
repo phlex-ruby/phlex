@@ -15,10 +15,9 @@ group :test do
 	gem "memory_profiler"
 end
 
-
 group :development do
 	gem "benchmark-ips"
-	gem "haml", "~> 6"	
+	gem "haml", "~> 6"
 	gem "slim", "~> 5"
 	gem "hamlit", "~> 3"
 end
