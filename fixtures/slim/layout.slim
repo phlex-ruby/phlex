@@ -1,0 +1,20 @@
+html
+  head
+    title
+      | Example
+    meta[content="width=device-width,initial-scale=1" name="viewport"]
+    link[href="/assets/tailwind.css" rel="stylesheet"]
+  body.bg-zinc-100
+    nav#main_nav.p-5
+      ul
+        li.p-5
+          a[href="/"]
+            | Home
+        li.p-5
+          a[href="/about"]
+            | About
+        li.p-5
+          a[href="/contact"]
+            | Contact
+    .container.mx-auto.p-5
+      == yield
