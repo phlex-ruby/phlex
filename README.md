@@ -6,6 +6,14 @@ Phlex lets you compose web views in pure Ruby. It’s super-fast, thread-safe an
 
 Documentation can be found at [www.phlex.fun](https://www.phlex.fun).
 
+### Testing
+
+We use [`sus`](https://github.com/ioquatix/sus) execute tests. To run gem's testsuite use the following command
+
+```
+bundle exec sus
+```
+
 ### Support ✋
 
 If you run into any trouble, please [start a discussion](https://github.com/joeldrapper/phlex/discussions/new), or [open an issue](https://github.com/joeldrapper/phlex/issues/new) if you think you’ve found a bug.
