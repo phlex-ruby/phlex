@@ -7,8 +7,8 @@ require "hamlit"
 require "slim"
 require "benchmark/ips"
 
-require_relative "fixtures/page"
-require_relative "fixtures/layout"
+require_relative "../fixtures/page"
+require_relative "../fixtures/layout"
 
 # Sample Data
 Product = Struct.new(:name, :price, :color)
@@ -21,15 +21,15 @@ Product = Struct.new(:name, :price, :color)
 ]
 
 # Templates
+@fixtures_path = File.expand_path("../fixtures", __dir__)
+@haml_layout = Haml::Template.new(File.join(@fixtures_path, "haml", "layout.haml"), escape_html: false)
+@haml_page = Haml::Template.new(File.join(@fixtures_path, "haml", "page.haml"), escape_html: false)
 
-@haml_layout = Haml::Template.new("fixtures/haml/layout.haml", escape_html: false)
-@haml_page = Haml::Template.new("fixtures/haml/page.haml", escape_html: false)
+@hamlit_layout = Hamlit::Template.new(File.join(@fixtures_path, "haml", "layout.haml"), escape_html: false)
+@hamlit_page = Hamlit::Template.new(File.join(@fixtures_path, "haml", "page.haml"), escape_html: false)
 
-@hamlit_layout = Hamlit::Template.new("fixtures/haml/layout.haml", escape_html: false)
-@hamlit_page = Hamlit::Template.new("fixtures/haml/page.haml", escape_html: false)
-
-@slim_layout = Slim::Template.new("fixtures/slim/layout.slim")
-@slim_page = Slim::Template.new("fixtures/slim/page.slim")
+@slim_layout = Slim::Template.new(File.join(@fixtures_path, "slim", "layout.slim"))
+@slim_page = Slim::Template.new(File.join(@fixtures_path, "slim", "page.slim"))
 
 @phlex_page = Example::Page.new(products: @products)
 
