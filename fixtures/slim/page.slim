@@ -1,19 +1,11 @@
-h1
-  | Hi
+h1 Hi
 table#test.a.b.c.d.e.f.g
-  tr
-    td#test.a.b.c.d.e.f.g
-      span
-        | Hi
-    td#test.a.b.c.d.e.f.g
-      span
-        | Hi
-    td#test.a.b.c.d.e.f.g
-      span
-        | Hi
-    td#test.a.b.c.d.e.f.g
-      span
-        | Hi
-    td#test.a.b.c.d.e.f.g
-      span
-        | Hi
+  - products.each_with_index do |product, index|
+    tr id=index
+      td.a.b.c.d.e.f.g id="#{[index, 'name'].join('-')}" 
+        = product.name
+      td.a.b.c.d.e.f.g id="#{[index, 'price'].join('-')}"  
+        = product.price
+      td.a.b.c.d.e.f.g id="#{[index, 'color'].join('-')}" style="background-color: #{product.color};" 
+        = product.color
+  

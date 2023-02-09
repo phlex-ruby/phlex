@@ -10,7 +10,18 @@ require "benchmark/ips"
 require_relative "fixtures/page"
 require_relative "fixtures/layout"
 
-# Let's preload HAML templates from disk
+
+# Sample Data
+Product = Struct.new(:name, :price, :color)
+@products = [
+	Product.new("Product 1", 10, "red"),
+	Product.new("Product 2", 20, "green"),
+	Product.new("Product 3", 30, "blue"),
+	Product.new("Product 4", 40, "yellow"),
+	Product.new("Product 5", 50, "orange"),
+]
+
+# Templates
 
 @haml_layout = Haml::Template.new("fixtures/haml/layout.haml", escape_html: false)
 @haml_page = Haml::Template.new("fixtures/haml/page.haml", escape_html: false)
@@ -21,23 +32,25 @@ require_relative "fixtures/layout"
 @slim_layout = Slim::Template.new("fixtures/slim/layout.slim")
 @slim_page = Slim::Template.new("fixtures/slim/page.slim")
 
-@phlex_page = Example::Page.new
 
+@phlex_page = Example::Page.new(products: @products)
+
+# Helper methods
 def html_from_slim
 	@slim_layout.render do
-		@slim_page.render
+		@slim_page.render(Object.new, products: @products)
 	end
 end
 
 def html_from_haml
 	@haml_layout.render do
-		@haml_page.render
+		@haml_page.render(Object.new, products: @products)
 	end
 end
 
 def html_from_hamlit
 	@hamlit_layout.render do
-		@hamlit_page.render
+		@haml_page.render(Object.new, products: @products)
 	end
 end
 
