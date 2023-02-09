@@ -34,6 +34,8 @@ module Phlex
 
 				alias_method :_#{element}, :#{element}
 			RUBY
+
+			Phlex::HTML::STANDARD_ELEMENTS[element] = tag
 		end
 
 		def register_void_element(element, tag: element.name.tr("_", "-"))
@@ -52,6 +54,8 @@ module Phlex
 
 				alias_method :_#{element}, :#{element}
 			RUBY
+
+			Phlex::HTML::VOID_ELEMENTS[element] = tag
 		end
 	end
 end
