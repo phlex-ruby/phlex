@@ -10,7 +10,6 @@ require "benchmark/ips"
 require_relative "fixtures/page"
 require_relative "fixtures/layout"
 
-
 # Sample Data
 Product = Struct.new(:name, :price, :color)
 @products = [
@@ -18,7 +17,7 @@ Product = Struct.new(:name, :price, :color)
 	Product.new("Product 2", 20, "green"),
 	Product.new("Product 3", 30, "blue"),
 	Product.new("Product 4", 40, "yellow"),
-	Product.new("Product 5", 50, "orange"),
+	Product.new("Product 5", 50, "orange")
 ]
 
 # Templates
@@ -31,7 +30,6 @@ Product = Struct.new(:name, :price, :color)
 
 @slim_layout = Slim::Template.new("fixtures/slim/layout.slim")
 @slim_page = Slim::Template.new("fixtures/slim/page.slim")
-
 
 @phlex_page = Example::Page.new(products: @products)
 
