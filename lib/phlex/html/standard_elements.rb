@@ -197,37 +197,37 @@ module Phlex::HTML::StandardElements
 	register_element :g, tag: "g"
 
 	# @!method h1(**attributes, &content)
-	# 	Outputs a <code>h1</code> tag
+	# 	Outputs an <code>h1</code> tag
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/h1
 	register_element :h1, tag: "h1"
 
 	# @!method h2(**attributes, &content)
-	# 	Outputs a <code>h2</code> tag
+	# 	Outputs an <code>h2</code> tag
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/h2
 	register_element :h2, tag: "h2"
 
 	# @!method h3(**attributes, &content)
-	# 	Outputs a <code>h3</code> tag
+	# 	Outputs an <code>h3</code> tag
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/h3
 	register_element :h3, tag: "h3"
 
 	# @!method h4(**attributes, &content)
-	# 	Outputs a <code>h4</code> tag
+	# 	Outputs an <code>h4</code> tag
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/h4
 	register_element :h4, tag: "h4"
 
 	# @!method h5(**attributes, &content)
-	# 	Outputs a <code>h5</code> tag
+	# 	Outputs an <code>h5</code> tag
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/h5
 	register_element :h5, tag: "h5"
 
 	# @!method h6(**attributes, &content)
-	# 	Outputs a <code>h6</code> tag
+	# 	Outputs an <code>h6</code> tag
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/h6
 	register_element :h6, tag: "h6"
