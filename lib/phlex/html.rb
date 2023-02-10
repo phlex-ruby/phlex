@@ -152,14 +152,14 @@ module Phlex
 			@_target << content
 		end
 
-		def capture
+		def capture(&block)
 			return unless block_given?
 
 			original_buffer = @_target
 			new_buffer = +""
 			@_target = new_buffer
 
-			yield
+			yield_content(&block)
 
 			new_buffer
 		ensure
