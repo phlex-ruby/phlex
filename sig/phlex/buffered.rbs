@@ -1,0 +1,8 @@
+module Phlex
+  class Buffered
+    @buffer: _Buffer
+
+    def initialize: (untyped, buffer: _Buffer) -> void
+    def __output_method__: -> void
+  end
+end

@@ -1,0 +1,49 @@
+module Phlex
+  class HTML
+    DOCTYPE: String
+    EVENT_ATTRIBUTES: Hash[String, true]
+    STANDARD_ELEMENTS: _Map[Symbol, String]
+    VOID_ELEMENTS: _Map[Symbol, String]
+    UNBUFFERED_MUTEX: Thread::Mutex
+
+    self.@unbuffered_class: Class
+
+    def self.__unbuffered_class__: -> Class
+    def self.call: -> _Buffer
+    def self.rendered_at_least_once!: -> void
+    def self.method_added: -> void
+
+    @_target: _Buffer
+    @_view_context: untyped
+    @_parent: Phlex::HTML?
+    @_content_block: Proc
+
+    def __final_call__: -> _Buffer
+
+    def call: -> _Buffer
+    def capture: -> String
+    def comment: -> void
+    def doctype: -> void
+    def render: -> void
+    def text: -> void
+    def unbuffered: -> Phlex::Unbuffered[Phlex::HTML]
+    def unsafe_raw: (String?) -> void
+    def whitespace: -> void
+    def format: -> Symbol
+
+    private
+
+    def __attributes__: (**Hash[String|Symbol, untyped]) -> String
+    def __final_attributes__: (**Hash[String|Symbol, untyped]) -> String
+    def __build_attributes__: (Hash[String|Symbol, untyped], buffer: String) -> String
+    def __vanish__: -> void
+
+    def after_template: -> void
+    def around_template: -> void
+    def before_template: -> void
+    def format_object: -> String?
+    def render?: -> bool
+    def yield_content: -> void
+    def yield_content_with_args: -> void
+  end
+end

@@ -12,8 +12,14 @@ module Phlex
 	end
 
 	Error = Module.new
-	ArgumentError = Class.new(ArgumentError) { include Error }
-	NameError = Class.new(NameError) { include Error }
+
+	class ArgumentError < ::ArgumentError
+		include Error
+	end
+
+	class NameError < ::NameError
+		include Error
+	end
 
 	ATTRIBUTE_CACHE = Concurrent::Map.new
 end

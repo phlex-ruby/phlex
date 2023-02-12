@@ -1,0 +1,5 @@
+module Zeitwerk
+  class Loader
+
+  end
+end

@@ -1,0 +1,15 @@
+module Phlex
+  class Unbuffered[T]
+    @object: T
+
+    def __class__: -> Class
+    def __public_send__: -> untyped
+
+    def call: -> untyped
+    def send: -> untyped
+    def public_send: -> untyped
+
+    def respond_to_missing?: -> bool
+    def method_missing: -> String
+  end
+end

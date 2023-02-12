@@ -1,0 +1,16 @@
+module Phlex
+  module Helpers
+    type tokens = Symbol|String|Array[Symbol|String]
+    type conditional_tokens = Hash[Symbol|Proc, tokens|Hash[:then|:else, tokens]]
+
+    private
+
+    def classes: (*Array[tokens], **conditional_tokens) -> Hash[:class, String]
+
+    def mix: (*Array[String|Array[untyped]|Hash[untyped, untyped]]) -> Hash[untyped, untyped]
+
+    def tokens: (*Array[tokens], **conditional_tokens) -> String
+    def __append_token__: (Array[tokens], tokens) -> void
+
+  end
+end

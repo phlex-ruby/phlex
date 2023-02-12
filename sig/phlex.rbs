@@ -1,4 +1,27 @@
 module Phlex
+  type attributes = Hash[Symbol|String, Symbol|String|attributes]
+
+  interface _Buffer
+    def <<: (String) -> self
+    def length: -> Integer
+  end
+
+  interface _Map[K, V]
+    def []: (K) -> V?
+    def []=: (K, V) -> V
+  end
+
+  module Overrides
+    module Symbol
+      module Name
+      end
+    end
+  end
+
+  ATTRIBUTE_CACHE: _Map[Integer, String]
+  ArgumentError: RuntimeError
+  Error: Module
+  Loader: Zeitwerk::Loader
+  NameError: RuntimeError
   VERSION: String
-  # See the writing guide of rbs: https://github.com/ruby/rbs#guides
 end

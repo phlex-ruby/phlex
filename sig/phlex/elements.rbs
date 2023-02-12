@@ -1,0 +1,6 @@
+module Phlex
+  module Elements
+    def register_element: (Symbol, tag: String) -> Symbol
+    def register_void_element: (Symbol, tag: String) -> Symbol
+  end
+end

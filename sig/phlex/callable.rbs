@@ -1,0 +1,5 @@
+module Phlex
+  module Callable
+    def to_proc: -> Proc
+  end
+end

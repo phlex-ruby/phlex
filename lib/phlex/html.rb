@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-	using Overrides::Symbol::Name
+	using Phlex::Overrides::Symbol::Name
 end
 
 module Phlex
@@ -150,6 +150,7 @@ module Phlex
 			return nil unless content
 
 			@_target << content
+			nil
 		end
 
 		def capture(&block)
@@ -157,13 +158,15 @@ module Phlex
 
 			original_buffer = @_target
 			new_buffer = +""
-			@_target = new_buffer
 
-			yield_content(&block)
+			begin
+				@_target = new_buffer
+				yield_content(&block)
+			ensure
+				@_target = original_buffer
+			end
 
 			new_buffer
-		ensure
-			@_target = original_buffer
 		end
 
 		def unbuffered
@@ -171,17 +174,20 @@ module Phlex
 		end
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
-		# Becuase the BlackHole does nothing with the output, this should be faster.
+		# Because the BlackHole does nothing with the output, this should be faster.
 		private def __vanish__(*args)
 			return unless block_given?
 
 			original_buffer = @_target
-			@_target = BlackHole
 
-			yield(*args)
+			begin
+				@_target = BlackHole
+				yield(*args)
+			ensure
+				@_target = original_buffer
+			end
+
 			nil
-		ensure
-			@_target = original_buffer
 		end
 
 		# Default render predicate can be overridden to prevent rendering

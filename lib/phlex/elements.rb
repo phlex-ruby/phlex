@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-	using Overrides::Symbol::Name
+	using Phlex::Overrides::Symbol::Name
 end
 
 module Phlex
@@ -36,6 +36,8 @@ module Phlex
 			RUBY
 
 			Phlex::HTML::STANDARD_ELEMENTS[element] = tag
+
+			element
 		end
 
 		def register_void_element(element, tag: element.name.tr("_", "-"))
@@ -56,6 +58,8 @@ module Phlex
 			RUBY
 
 			Phlex::HTML::VOID_ELEMENTS[element] = tag
+
+			element
 		end
 	end
 end
