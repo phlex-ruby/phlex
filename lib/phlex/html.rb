@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-	using Overrides::Symbol::Name
+	using Phlex::Overrides::Symbol::Name
 end
 
 module Phlex
