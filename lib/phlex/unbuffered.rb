@@ -1,51 +1,49 @@
 # frozen_string_literal: true
 
-module Phlex
-	class Unbuffered < BasicObject
-		def initialize(object)
-			@object = object
-		end
+class Phlex::Unbuffered < BasicObject
+	def initialize(object)
+		@object = object
+	end
 
-		def inspect
-			"Unbuffered(#{@object.class.name})[object: #{@object.inspect}]"
-		end
+	def inspect
+		"Unbuffered(#{@object.class.name})[object: #{@object.inspect}]"
+	end
 
-		# Borrow some important methods from Object
-		define_method :__class__,
-			::Object.instance_method(:class)
+	# Borrow some important methods from Object
+	define_method :__class__,
+		::Object.instance_method(:class)
 
-		define_method :__public_send__,
-			::Object.instance_method(:public_send)
+	define_method :__public_send__,
+		::Object.instance_method(:public_send)
 
-		def respond_to_missing?(...)
-			@object.respond_to?(...)
-		end
+	def respond_to_missing?(...)
+		@object.respond_to?(...)
+	end
 
-		def method_missing(name, *args, **kwargs, &block)
-			if @object.respond_to?(name)
+	def method_missing(name, *args, **kwargs, &block)
+		if @object.respond_to?(name)
 
-				__class__.define_method(name) do |*a, **k, &b|
-					@object.capture { @object.public_send(name, *a, **k, &b) }
-				end
-
-				# Now we've defined this missing method, we can call it.
-				__public_send__(name, *args, **kwargs, &block)
-			else
-				super
+			__class__.define_method(name) do |*a, **k, &b|
+				@object.capture { @object.public_send(name, *a, **k, &b) }
 			end
-		end
 
-		# Forward some methods to the original underlying method
-		def call(...)
-			@object.call(...)
+			# Now we've defined this missing method, we can call it.
+			__public_send__(name, *args, **kwargs, &block)
+		else
+			super
 		end
+	end
 
-		def send(...)
-			@object.send(...)
-		end
+	# Forward some methods to the original underlying method
+	def call(...)
+		@object.call(...)
+	end
 
-		def public_send(...)
-			@object.public_send(...)
-		end
+	def send(...)
+		@object.send(...)
+	end
+
+	def public_send(...)
+		@object.public_send(...)
 	end
 end

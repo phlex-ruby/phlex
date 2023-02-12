@@ -10,6 +10,7 @@ gem "sus"
 gem "zeitwerk"
 gem "benchmark-ips"
 gem "erb"
+gem "ruby-lsp"
 
 group :test do
 	gem "i18n"
