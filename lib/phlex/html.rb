@@ -32,11 +32,13 @@ module Phlex
 				end
 			end
 
+			# @api private
 			def rendered_at_least_once!
 				alias_method :__attributes__, :__final_attributes__
 				alias_method :call, :__final_call__
 			end
 
+			# @api private
 			def __unbuffered_class__
 				UNBUFFERED_MUTEX.synchronize do
 					if defined? @unbuffered_class
@@ -54,6 +56,7 @@ module Phlex
 			end
 		end
 
+		# @api private
 		def __final_call__(buffer = +"", view_context: nil, parent: nil, &block)
 			@_target = buffer
 			@_view_context = view_context
@@ -164,6 +167,7 @@ module Phlex
 			new_buffer
 		end
 
+		# @api private
 		def unbuffered
 			self.class.__unbuffered_class__.new(self)
 		end
@@ -261,12 +265,14 @@ module Phlex
 			nil
 		end
 
+		# @api private
 		private def __attributes__(**attributes)
 			__final_attributes__(**attributes).tap do |buffer|
 				Phlex::ATTRIBUTE_CACHE[attributes.hash] = buffer.freeze
 			end
 		end
 
+		# @api private
 		private def __final_attributes__(**attributes)
 			if attributes[:href]&.start_with?(/\s*javascript:/)
 				attributes.delete(:href)
@@ -282,6 +288,7 @@ module Phlex
 			buffer
 		end
 
+		# @api private
 		private def __build_attributes__(attributes, buffer:)
 			attributes.each do |k, v|
 				next unless v
