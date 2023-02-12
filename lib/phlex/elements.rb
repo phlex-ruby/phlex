@@ -36,6 +36,8 @@ module Phlex
 			RUBY
 
 			Phlex::HTML::STANDARD_ELEMENTS[element] = tag
+
+			element
 		end
 
 		def register_void_element(element, tag: element.name.tr("_", "-"))
@@ -56,6 +58,8 @@ module Phlex
 			RUBY
 
 			Phlex::HTML::VOID_ELEMENTS[element] = tag
+
+			element
 		end
 	end
 end
