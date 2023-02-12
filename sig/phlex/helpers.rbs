@@ -5,9 +5,9 @@ module Phlex
 
     private
 
-    def classes: (*Array[tokens], **conditional_tokens) -> Hash[:class, String]
+    def classes: (*tokens, **conditional_tokens) -> Hash[:class, String]
 
-    def mix: (*Array[String|Array[untyped]|Hash[untyped, untyped]]) -> Hash[untyped, untyped]
+    def mix: (*String|Array[untyped]|Hash[untyped, untyped]) -> Hash[untyped, untyped]
 
     def tokens: (*Array[tokens], **conditional_tokens) -> String
     def __append_token__: (Array[tokens], tokens) -> void

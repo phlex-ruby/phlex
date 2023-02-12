@@ -1,18 +1,3 @@
-module Phlex
-  module HTML
-    module VoidElements
-      def area: (**attributes) -> void
-      def br: (**attributes) -> void
-      def embed: (**attributes) -> void
-      def hr: (**attributes) -> void
-      def img: (**attributes) -> void
-      def input: (**attributes) -> void
-      def link: (**attributes) -> void
-      def meta: (**attributes) -> void
-      def param: (**attributes) -> void
-      def source: (**attributes) -> void
-      def track: (**attributes) -> void
-      def col: (**attributes) -> void
-    end
-  end
+module Phlex::HTML::VoidElements
+	extend Phlex::Elements
 end

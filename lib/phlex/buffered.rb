@@ -3,15 +3,23 @@
 require "delegate"
 
 module Phlex
-	class Buffered < SimpleDelegator
+	class Buffered < BasicObject
 		def initialize(object, buffer:)
-			super(object)
+			@object = object
 			@buffer = buffer
+		end
+
+		def respond_to_missing?(...)
+			@object.respond_to?(...)
+		end
+
+		def method_missing(...)
+			@object.public_send(...)
 		end
 
 		# Alias output methods to this
 		def __output_method__(...)
-			output = __getobj__.public_send(__callee__, ...)
+			output = @object.public_send(__callee__, ...)
 			@buffer << output if output.is_a? String
 			nil
 		end

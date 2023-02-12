@@ -1,9 +1,10 @@
 module Phlex
-  type attributes = Hash[Symbol|String, Symbol|String|attributes]
+  type attributes = Hash[Symbol|String, Symbol|String|bool|attributes]
 
   interface _Buffer
     def <<: (String) -> self
     def length: -> Integer
+		def tap: () { [self: self] -> untyped } -> self
   end
 
   interface _Map[K, V]

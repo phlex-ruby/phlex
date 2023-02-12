@@ -1,0 +1,4 @@
+class Object
+	def using: (Module) -> void
+	def super: (*untyped, **untyped) -> untyped
+end

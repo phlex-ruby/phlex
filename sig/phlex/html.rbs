@@ -1,7 +1,13 @@
 module Phlex
   class HTML
+		extend Elements
+
+		include Helpers
+		include VoidElements
+		include StandardElements
+
     DOCTYPE: String
-    EVENT_ATTRIBUTES: Hash[String, true]
+    EVENT_ATTRIBUTES: Hash[String, bool]
     STANDARD_ELEMENTS: _Map[Symbol, String]
     VOID_ELEMENTS: _Map[Symbol, String]
     UNBUFFERED_MUTEX: Thread::Mutex
@@ -9,9 +15,10 @@ module Phlex
     self.@unbuffered_class: Class
 
     def self.__unbuffered_class__: -> Class
-    def self.call: -> _Buffer
+    def self.call: (*untyped, **untyped) -> _Buffer
+		def self.new: (*untyped, **untyped) -> Phlex::HTML
     def self.rendered_at_least_once!: -> void
-    def self.method_added: -> void
+    def self.method_added: (Symbol) -> void
 
     @_target: _Buffer
     @_view_context: untyped
@@ -21,7 +28,7 @@ module Phlex
     def __final_call__: -> _Buffer
 
     def template: -> void
-    def call: { [self: self] -> untyped } -> _Buffer
+    def call: (_Buffer, view_context: untyped, parent: Phlex::HTML?) { [self: self] -> untyped } -> _Buffer
     def capture: { [self: self] -> untyped } -> String
     def comment: { [self: self] -> untyped } -> void
     def doctype: -> void
@@ -35,7 +42,7 @@ module Phlex
     private
 
     def __attributes__: (**Hash[String|Symbol, untyped]) -> String
-    def __final_attributes__: (**Hash[String|Symbol, untyped]) -> String
+    def __final_attributes__: (**[String|Symbol, untyped]) -> String
     def __build_attributes__: (Hash[String|Symbol, untyped], buffer: String) -> String
     def __vanish__: -> void
 
@@ -45,6 +52,6 @@ module Phlex
     def format_object: -> String?
     def render?: -> bool
     def yield_content: { [self: self] -> untyped } -> void
-    def yield_content_with_args: { [self: self] -> untyped } -> void
+    def yield_content_with_args: (*untyped) { [self: self] -> untyped } -> void
   end
 end

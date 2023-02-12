@@ -1,6 +1,7 @@
 module Phlex
   module BlackHole
-    def <<: -> self
+    def <<: (String) -> self
     def length: -> Integer
+		def tap: () { [self: self] -> untyped } -> self
   end
 end

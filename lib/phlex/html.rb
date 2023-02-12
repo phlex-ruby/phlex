@@ -22,9 +22,10 @@ module Phlex
 		include StandardElements
 
 		class << self
-			def call(...)
-				new(...).call
+			def call(*args, **kwargs, &block)
+				new(*args, **kwargs, &block).call
 			end
+
 			alias_method :render, :call
 
 			def new(*args, **kwargs, &block)
@@ -53,8 +54,8 @@ module Phlex
 			end
 		end
 
-		def call(...)
-			__final_call__(...).tap do
+		def call(buffer = +"", view_context: nil, parent: nil, &block)
+			__final_call__(buffer, view_context: view_context, parent: parent, &block).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
@@ -154,7 +155,7 @@ module Phlex
 		end
 
 		def capture(&block)
-			return unless block_given?
+			return "" unless block_given?
 
 			original_buffer = @_target
 			new_buffer = +""

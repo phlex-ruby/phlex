@@ -1,0 +1,3 @@
+class String
+	def tap: () { [self: self] -> untyped } -> self
+end
