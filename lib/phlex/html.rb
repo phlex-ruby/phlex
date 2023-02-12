@@ -156,13 +156,15 @@ module Phlex
 
 			original_buffer = @_target
 			new_buffer = +""
-			@_target = new_buffer
 
-			yield_content(&block)
+			begin
+				@_target = new_buffer
+				yield_content(&block)
+			ensure
+				@_target = original_buffer
+			end
 
 			new_buffer
-		ensure
-			@_target = original_buffer
 		end
 
 		def unbuffered
@@ -175,12 +177,15 @@ module Phlex
 			return unless block_given?
 
 			original_buffer = @_target
-			@_target = BlackHole
 
-			yield(*args)
+			begin
+				@_target = BlackHole
+				yield(*args)
+			ensure
+				@_target = original_buffer
+			end
+
 			nil
-		ensure
-			@_target = original_buffer
 		end
 
 		# Default render predicate can be overridden to prevent rendering
