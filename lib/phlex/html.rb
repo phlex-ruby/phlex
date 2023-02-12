@@ -14,10 +14,7 @@ module Phlex
 		UNBUFFERED_MUTEX = Mutex.new
 
 		extend Elements
-
-		include Helpers
-		include VoidElements
-		include StandardElements
+		include Helpers, VoidElements, StandardElements
 
 		class << self
 			def call(...)
