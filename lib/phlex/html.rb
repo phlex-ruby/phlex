@@ -148,6 +148,7 @@ module Phlex
 			return nil unless content
 
 			@_target << content
+			nil
 		end
 
 		def capture(&block)
