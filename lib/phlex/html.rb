@@ -6,8 +6,6 @@ end
 
 module Phlex
 	class HTML
-		DOCTYPE = "<!DOCTYPE html>"
-
 		STANDARD_ELEMENTS = Concurrent::Map.new
 		VOID_ELEMENTS = Concurrent::Map.new
 
@@ -142,7 +140,7 @@ module Phlex
 		end
 
 		def doctype
-			@_target << DOCTYPE
+			@_target << "<!DOCTYPE html>"
 			nil
 		end
 
