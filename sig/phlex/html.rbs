@@ -20,15 +20,16 @@ module Phlex
 
     def __final_call__: -> _Buffer
 
-    def call: -> _Buffer
-    def capture: -> String
-    def comment: -> void
+    def template: -> void
+    def call: { [self: self] -> untyped } -> _Buffer
+    def capture: { [self: self] -> untyped } -> String
+    def comment: { [self: self] -> untyped } -> void
     def doctype: -> void
-    def render: -> void
-    def text: -> void
+    def render: { [self: Phlex::HTML] -> untyped } -> void
+    def text: (untyped) -> void
     def unbuffered: -> Phlex::Unbuffered[Phlex::HTML]
     def unsafe_raw: (String?) -> void
-    def whitespace: -> void
+    def whitespace: { [self: self] -> untyped } -> void
     def format: -> Symbol
 
     private
@@ -43,7 +44,7 @@ module Phlex
     def before_template: -> void
     def format_object: -> String?
     def render?: -> bool
-    def yield_content: -> void
-    def yield_content_with_args: -> void
+    def yield_content: { [self: self] -> untyped } -> void
+    def yield_content_with_args: { [self: self] -> untyped } -> void
   end
 end

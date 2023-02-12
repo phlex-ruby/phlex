@@ -1,5 +1,5 @@
 module Phlex
-  class Unbuffered[T]
+  class Unbuffered[T < Phlex::HTML]
     @object: T
 
     def __class__: -> Class
