@@ -113,10 +113,6 @@ module Phlex
 			nil
 		end
 
-		def format
-			:html
-		end
-
 		# Output text content. The text will be HTML-escaped.
 		def text(content)
 			@_target << ERB::Util.html_escape(
