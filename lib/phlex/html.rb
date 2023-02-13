@@ -6,9 +6,13 @@ end
 
 module Phlex
 	class HTML
+		# A list of standard elements that have been registered.
 		STANDARD_ELEMENTS = Concurrent::Map.new
+
+		# A list of void elements that have been registered.
 		VOID_ELEMENTS = Concurrent::Map.new
 
+		# A list of HTML attributes that have the potential to execute unsafe JavaScript.
 		EVENT_ATTRIBUTES = %w[onabort onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick oncontextmenu oncopy oncuechange oncut ondblclick ondrag ondragend ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onfocus onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpaste onpause onplay onplaying onpopstate onprogress onratechange onreset onresize onscroll onsearch onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate ontoggle onunload onvolumechange onwaiting onwheel].to_h { [_1, true] }.freeze
 
 		UNBUFFERED_MUTEX = Mutex.new
@@ -17,9 +21,11 @@ module Phlex
 		include Helpers, VoidElements, StandardElements
 
 		class << self
+			# Render the view to a String. Arguments are delegated to <code>new</code>.
 			def call(...)
 				new(...).call
 			end
+
 			alias_method :render, :call
 
 			def new(*args, **kwargs, &block)
@@ -50,8 +56,9 @@ module Phlex
 			end
 		end
 
-		def call(...)
-			__final_call__(...).tap do
+		# Renders the view and returns the buffer. The default buffer is a mutable String.
+		def call(buffer = +"", view_context: nil, parent: nil, &block)
+			__final_call__(buffer, view_context: view_context, parent: parent, &block).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
@@ -88,6 +95,9 @@ module Phlex
 			buffer
 		end
 
+		# Render another view
+		# @param renderable [Phlex::HTML] the other view to render
+		# @return [void]
 		def render(renderable, &block)
 			case renderable
 			when Phlex::HTML
@@ -107,6 +117,7 @@ module Phlex
 			:html
 		end
 
+		# Output text content. The text will be HTML-escaped.
 		def text(content)
 			@_target << ERB::Util.html_escape(
 				case content
@@ -120,6 +131,7 @@ module Phlex
 			nil
 		end
 
+		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
 		def whitespace
 			@_target << " "
 
@@ -131,6 +143,7 @@ module Phlex
 			nil
 		end
 
+		# Output an HTML comment.
 		def comment(&block)
 			@_target << "<!-- "
 			yield_content(&block)
@@ -139,11 +152,15 @@ module Phlex
 			nil
 		end
 
+		# Output an HTML doctype.
 		def doctype
 			@_target << "<!DOCTYPE html>"
 			nil
 		end
 
+		# This method is very dangerous and should usually be avoided. It will output the given String without any HTML safety. You should never use this method to output unsafe user input.
+		# @param content [String|nil]
+		# @return [nil]
 		def unsafe_raw(content = nil)
 			return nil unless content
 
@@ -151,6 +168,8 @@ module Phlex
 			nil
 		end
 
+		# Capture a block of output as a String.
+		# @return [String]
 		def capture(&block)
 			return unless block_given?
 
@@ -201,20 +220,24 @@ module Phlex
 			end
 		end
 
+		# Override this method to hook in around a template render. You can do things before and after calling <code>super</code> to render the template. You should always call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		private def around_template
 			before_template
 			yield
 			after_template
 		end
 
+		# Override this method to hook in right before a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		private def before_template
 			nil
 		end
 
+		# Override this method to hook in right after a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		private def after_template
 			nil
 		end
 
+		# Yields the block and checks if it buffered anything. If nothing was buffered, the return value is treated as text.
 		private def yield_content
 			return unless block_given?
 
@@ -240,6 +263,7 @@ module Phlex
 			nil
 		end
 
+		# Same as <code>yield_content</code> but accepts a splat of arguments to yield. This is slightly slower than <code>yield_content</code>, which is why it's defined as a different method because we don't always need arguments so we can usually use <code>yield_content</code> instead.
 		private def yield_content_with_args(*args)
 			return unless block_given?
 
