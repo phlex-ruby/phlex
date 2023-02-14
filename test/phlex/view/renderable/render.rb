@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Example < Phlex::HTML
+class Example
+	include Phlex::HTML
+
 	def template
 		h1 { "Hello" }
 	end
@@ -23,7 +25,9 @@ describe Phlex::HTML do
 		end
 
 		with "another view" do
-			other_view = Class.new Phlex::HTML do
+			other_view = Class.new do
+				include Phlex::HTML
+
 				def template(&block)
 					div(&block)
 				end

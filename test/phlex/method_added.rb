@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class Example < Phlex::HTML
+class Example
+	include Phlex::HTML
 end
 
 describe Phlex::HTML do

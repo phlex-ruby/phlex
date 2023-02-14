@@ -5,7 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex
-	class HTML
+	module HTML
 		# A list of standard elements that have been registered.
 		STANDARD_ELEMENTS = Concurrent::Map.new
 
@@ -17,10 +17,14 @@ module Phlex
 
 		UNBUFFERED_MUTEX = Mutex.new
 
-		extend Elements
 		include Helpers, VoidElements, StandardElements
 
-		class << self
+		def self.included(base)
+			base.extend(Elements)
+			base.extend(ClassMethods)
+		end
+
+		module ClassMethods
 			# Render the view to a String. Arguments are delegated to <code>new</code>.
 			def call(...)
 				new(...).call
@@ -53,6 +57,14 @@ module Phlex
 						@unbuffered_class = Class.new(Unbuffered)
 					end
 				end
+			end
+
+			def method_added(method_name)
+				if method_name[0] == "_" && Phlex::HTML.instance_methods.include?(method_name) && instance_method(method_name).owner != Phlex::HTML
+					raise NameError, "👋 Redefining the method `#{name}##{method_name}` is not a good idea."
+				end
+
+				super
 			end
 		end
 
@@ -346,15 +358,6 @@ module Phlex
 			end
 
 			buffer
-		end
-
-		# This should be the last method defined
-		def self.method_added(method_name)
-			if method_name[0] == "_" && Phlex::HTML.instance_methods.include?(method_name) && instance_method(method_name).owner != Phlex::HTML
-				raise NameError, "👋 Redefining the method `#{name}##{method_name}` is not a good idea."
-			end
-
-			super
 		end
 	end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Example < Phlex::HTML
+class Example
+	include Phlex::HTML
+
 	def template
 		yield
 	end

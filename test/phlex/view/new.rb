@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
-class Example < Phlex::HTML
+class Example
+	include Phlex::HTML
+
 	def template(&block)
 		h1(&block)
 	end
 end
 
-class ExampleWithArgs < Phlex::HTML
+class ExampleWithArgs
+	include Phlex::HTML
+
 	def initialize(name, should_render: false)
 		@name = name
 		@should_render = should_render

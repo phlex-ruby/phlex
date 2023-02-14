@@ -2,7 +2,9 @@
 
 require "date"
 
-class Example < Phlex::HTML
+class Example
+	include Phlex::HTML
+
 	def template
 		h1 { Date.new(2022, 11, 28) }
 	end

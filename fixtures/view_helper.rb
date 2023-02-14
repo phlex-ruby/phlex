@@ -10,7 +10,7 @@ module ViewHelper
 
 	def view(&block)
 		let :view do
-			Class.new(Phlex::HTML, &block)
+			Class.new { include Phlex::HTML }.tap { |c| c.class_eval(&block) }
 		end
 	end
 end

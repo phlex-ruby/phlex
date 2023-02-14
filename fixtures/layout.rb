@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module Example
-	class LayoutComponent < Phlex::HTML
+	class LayoutComponent
+		include Phlex::HTML
+
 		def initialize(title: "Example")
 			@title = title
 		end
