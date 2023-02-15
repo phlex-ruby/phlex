@@ -3,7 +3,7 @@
 describe Phlex::HTML do
 	extend ViewHelper
 
-	Phlex::HTML::STANDARD_ELEMENTS.each do |method_name, tag|
+	Phlex::HTML::StandardElements::REGISTERED_ELEMENTS.each do |method_name, tag|
 		with "<#{tag}> called with an underscore prefix while overridden" do
 			view do
 				define_method :template do
@@ -45,7 +45,7 @@ describe Phlex::HTML do
 		end
 	end
 
-	Phlex::HTML::VOID_ELEMENTS.each do |method_name, tag|
+	Phlex::HTML::VoidElements::REGISTERED_ELEMENTS.each do |method_name, tag|
 		with "<#{tag}> called with an underscore prefix while overridden" do
 			view do
 				define_method :template do
