@@ -34,7 +34,7 @@ module Phlex::Elements
 			alias_method :_#{element}, :#{element}
 		RUBY
 
-		Phlex::HTML::STANDARD_ELEMENTS[element] = tag
+		self::REGISTERED_ELEMENTS[element] = tag
 
 		element
 	end
@@ -56,7 +56,29 @@ module Phlex::Elements
 			alias_method :_#{element}, :#{element}
 		RUBY
 
-		Phlex::HTML::VOID_ELEMENTS[element] = tag
+		self::REGISTERED_ELEMENTS[element] = tag
+
+		element
+	end
+
+	def register_void_svg_element(element, tag: element.name.tr("_", "-"))
+		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+			# frozen_string_literal: true
+
+			def #{element}(**attributes)
+				if attributes.length > 0
+					@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || __attributes__(**attributes)) << " />"
+				else
+					@_target << "<#{tag}>"
+				end
+
+				nil
+			end
+
+			alias_method :_#{element}, :#{element}
+		RUBY
+
+		self::REGISTERED_ELEMENTS[element] = tag
 
 		element
 	end
