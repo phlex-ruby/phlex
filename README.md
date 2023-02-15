@@ -43,3 +43,4 @@ Thanks [Logology](https://www.logology.co) for sponsoring our logo.
 - [hoshi](https://github.com/pete/hoshi)
 - [hyperstack](https://github.com/hyperstack-org/hyperstack)
 - [clearwater](https://github.com/clearwater-rb/clearwater)
+- [paggio](https://github.com/opal/paggio)
