@@ -25,7 +25,7 @@ module Phlex::Helpers
 			end
 		end
 
-		tokens.join(" ")
+		tokens.select(&:itself).map(&:to_s).reject(&:empty?).join(" ")
 	end
 
 	private def __append_token__(tokens, token)
