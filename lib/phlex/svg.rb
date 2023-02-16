@@ -6,7 +6,7 @@ end
 
 module Phlex
 	class SVG < XML
-		include VoidElements, StandardElements
+		include StandardElements
 
 		def template
 			yield

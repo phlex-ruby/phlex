@@ -18,10 +18,10 @@ end
 
 describe Phlex::SVG do
 	it "works" do
-		expect(Example.call).to be == %(<svg><path d="123" /></svg>)
+		expect(Example.call).to be == %(<svg><path d="123"></path></svg>)
 	end
 
 	it "works from html" do
-		expect(ExampleFromHTML.call).to be == %(<svg><path d="321" /></svg>)
+		expect(ExampleFromHTML.call).to be == %(<svg><path d="321"></path></svg>)
 	end
 end
