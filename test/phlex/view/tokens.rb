@@ -89,5 +89,17 @@ describe Phlex::HTML do
 					%(<a href="/">Home</a>)
 			end
 		end
+
+		with "nils and empty strings" do
+			view do
+				def template
+					div(class: tokens("", nil, false, "foo", "", nil, false, "bar", "", nil, false))
+				end
+			end
+
+			it "reoves the redundant whitespace" do
+				expect(output).to be == %(<div class="foo bar"></div>)
+			end
+		end
 	end
 end

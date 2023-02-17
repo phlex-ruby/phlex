@@ -25,7 +25,10 @@ module Phlex::Helpers
 			end
 		end
 
-		tokens.join(" ")
+		tokens = tokens.select(&:itself).join(" ")
+		tokens.strip!
+		tokens.gsub!(/\s+/, " ")
+		tokens
 	end
 
 	private def __append_token__(tokens, token)
