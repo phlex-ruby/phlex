@@ -6,7 +6,11 @@ require "concurrent"
 
 module Phlex
 	Loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false).tap do |loader|
-		loader.inflector.inflect("html" => "HTML")
+		loader.inflector.inflect(
+			"html" => "HTML",
+			"svg" => "SVG",
+			"sgml" => "SGML"
+		)
 		loader.ignore("#{__dir__}/phlex/testing")
 		loader.setup
 	end

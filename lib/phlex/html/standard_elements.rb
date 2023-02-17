@@ -3,6 +3,8 @@
 module Phlex::HTML::StandardElements
 	extend Phlex::Elements
 
+	REGISTERED_ELEMENTS = Concurrent::Map.new
+
 	# @!method a(**attributes, &content)
 	# 	Outputs an <code>a</code> tag
 	# 	@return [nil]
@@ -189,13 +191,6 @@ module Phlex::HTML::StandardElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/form
 	register_element :form, tag: "form"
 
-	# @!method g(**attributes, &content)
-	# 	Outputs a <code>g</code> tag
-	# 	@return [nil]
-	# 	@see https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
-	# 	@todo move this to SVG
-	register_element :g, tag: "g"
-
 	# @!method h1(**attributes, &content)
 	# 	Outputs an <code>h1</code> tag
 	# 	@return [nil]
@@ -376,13 +371,6 @@ module Phlex::HTML::StandardElements
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/p
 	register_element :p, tag: "p"
-
-	# @!method path(**attributes, &content)
-	# 	Outputs a <code>path</code> tag
-	# 	@return [nil]
-	# 	@see https://developer.mozilla.org/en-US/docs/Web/SVG/Element/path
-	# 	@todo move this to SVG
-	register_element :path, tag: "path"
 
 	# @!method picture(**attributes, &content)
 	# 	Outputs a <code>picture</code> tag

@@ -34,7 +34,7 @@ module Phlex::Elements
 			alias_method :_#{element}, :#{element}
 		RUBY
 
-		Phlex::HTML::STANDARD_ELEMENTS[element] = tag
+		self::REGISTERED_ELEMENTS[element] = tag
 
 		element
 	end
@@ -56,7 +56,7 @@ module Phlex::Elements
 			alias_method :_#{element}, :#{element}
 		RUBY
 
-		Phlex::HTML::VOID_ELEMENTS[element] = tag
+		self::REGISTERED_ELEMENTS[element] = tag
 
 		element
 	end
