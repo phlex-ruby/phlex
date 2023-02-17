@@ -13,4 +13,10 @@ module ViewHelper
 			Class.new(Phlex::HTML, &block)
 		end
 	end
+
+	def svg_view(&block)
+		let :view do
+			Class.new(Phlex::SVG, &block)
+		end
+	end
 end
