@@ -5,7 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex
-	class XML
+	class SGML
 		class << self
 			# Render the view to a String. Arguments are delegated to <code>new</code>.
 			def call(...)
@@ -75,10 +75,10 @@ module Phlex
 		# @return [void]
 		def render(renderable, &block)
 			case renderable
-			when Phlex::XML
+			when Phlex::SGML
 				renderable.call(@_target, view_context: @_view_context, parent: self, &block)
 			when Class
-				if renderable < Phlex::XML
+				if renderable < Phlex::SGML
 					renderable.new.call(@_target, view_context: @_view_context, parent: self, &block)
 				end
 			else

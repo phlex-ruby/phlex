@@ -9,7 +9,7 @@ module Phlex
 		loader.inflector.inflect(
 			"html" => "HTML",
 			"svg" => "SVG",
-			"xml" => "XML"
+			"sgml" => "SGML"
 		)
 		loader.ignore("#{__dir__}/phlex/testing")
 		loader.setup

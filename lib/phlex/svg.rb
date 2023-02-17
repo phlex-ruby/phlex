@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Phlex
-	class SVG < XML
+	class SVG < SGML
 		include StandardElements
 
 		def template
