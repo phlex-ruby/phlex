@@ -6,7 +6,7 @@ describe Phlex::HTML do
 	with "naughty text" do
 		view do
 			def template
-				text %("><script type="text/javascript" src="bad_script.js"></script>)
+				plain %("><script type="text/javascript" src="bad_script.js"></script>)
 			end
 		end
 

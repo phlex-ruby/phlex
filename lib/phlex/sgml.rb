@@ -89,15 +89,21 @@ module Phlex
 		end
 
 		# Output text content. The text will be HTML-escaped.
-		def text(content)
-			@_target << ERB::Util.html_escape(
-				case content
-					when String then content
-					when Symbol then content.name
-					when Integer then content.to_s
-					else format_object(content) || content.to_s
+		def plain(content)
+			case content
+			when String
+				@_target << ERB::Util.html_escape(content)
+			when Symbol
+				@_target << ERB::Util.html_escape(content.name)
+			when Integer
+				@_target << ERB::Util.html_escape(content.to_s)
+			when nil
+				nil
+			else
+				if (formatted_object = format_object(content))
+					@_target << ERB::Util.html_escape(formatted_object)
 				end
-			)
+			end
 
 			nil
 		end
@@ -203,22 +209,8 @@ module Phlex
 
 			original_length = @_target.length
 			content = yield(self)
-			unchanged = (original_length == @_target.length)
 
-			if unchanged
-				case content
-				when String
-					@_target << ERB::Util.html_escape(content)
-				when Symbol
-					@_target << ERB::Util.html_escape(content.name)
-				when Integer
-					@_target << ERB::Util.html_escape(content.to_s)
-				else
-					if (formatted_object = format_object(content))
-						@_target << ERB::Util.html_escape(formatted_object)
-					end
-				end
-			end
+			plain(content) if original_length == @_target.length
 
 			nil
 		end
@@ -229,22 +221,7 @@ module Phlex
 
 			original_length = @_target.length
 			content = yield(*args)
-			unchanged = (original_length == @_target.length)
-
-			if unchanged
-				case content
-				when String
-					@_target << ERB::Util.html_escape(content)
-				when Symbol
-					@_target << ERB::Util.html_escape(content.name)
-				when Integer, Float
-					@_target << ERB::Util.html_escape(content.to_s)
-				else
-					if (formatted_object = format_object(content))
-						@_target << ERB::Util.html_escape(formatted_object)
-					end
-				end
-			end
+			plain(content) if original_length == @_target.length
 
 			nil
 		end

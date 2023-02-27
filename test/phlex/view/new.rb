@@ -19,7 +19,7 @@ class ExampleWithArgs < Phlex::HTML
 	def template
 		h1 {
 			yield
-			text(", #{@name}")
+			plain(", #{@name}")
 		}
 	end
 end
