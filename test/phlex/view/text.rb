@@ -6,7 +6,7 @@ describe Phlex::HTML do
 	with "text" do
 		view do
 			def template
-				text "Hi"
+				plain "Hi"
 			end
 		end
 
@@ -18,7 +18,7 @@ describe Phlex::HTML do
 	with "int as text" do
 		view do
 			def template
-				text 1
+				plain 1
 			end
 		end
 
@@ -30,7 +30,7 @@ describe Phlex::HTML do
 	with "float as text" do
 		view do
 			def template
-				text 2.0
+				plain 2.0
 			end
 		end
 

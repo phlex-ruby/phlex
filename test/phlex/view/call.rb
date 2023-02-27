@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	view do
 		def template
-			text "Hi"
+			plain "Hi"
 		end
 	end
 
@@ -18,7 +18,7 @@ describe Phlex::HTML do
 	with "`render?` method returning false when the view context is true" do
 		view do
 			def template
-				text "Hi"
+				plain "Hi"
 			end
 
 			def render?
