@@ -92,16 +92,16 @@ module Phlex
 		def plain(content)
 			case content
 			when String
-				@_target << ERB::Util.html_escape(content)
+				@_target << ERB::Escape.html_escape(content)
 			when Symbol
-				@_target << ERB::Util.html_escape(content.name)
+				@_target << ERB::Escape.html_escape(content.name)
 			when Integer
-				@_target << ERB::Util.html_escape(content.to_s)
+				@_target << ERB::Escape.html_escape(content.to_s)
 			when nil
 				nil
 			else
 				if (formatted_object = format_object(content))
-					@_target << ERB::Util.html_escape(formatted_object)
+					@_target << ERB::Escape.html_escape(formatted_object)
 				end
 			end
 
@@ -269,9 +269,9 @@ module Phlex
 				when true
 					buffer << " " << name
 				when String
-					buffer << " " << name << '="' << ERB::Util.html_escape(v) << '"'
+					buffer << " " << name << '="' << ERB::Escape.html_escape(v) << '"'
 				when Symbol
-					buffer << " " << name << '="' << ERB::Util.html_escape(v.name) << '"'
+					buffer << " " << name << '="' << ERB::Escape.html_escape(v.name) << '"'
 				when Hash
 					__build_attributes__(
 						v.transform_keys { |subkey|
@@ -282,7 +282,7 @@ module Phlex
 						}, buffer: buffer
 					)
 				else
-					buffer << " " << name << '="' << ERB::Util.html_escape(v.to_s) << '"'
+					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_s) << '"'
 				end
 			end
 
