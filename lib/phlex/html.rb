@@ -29,6 +29,12 @@ module Phlex
 			nil
 		end
 
+		# @deprecated use {#plain} instead.
+		def text(...)
+			warn "DEPRECATED: The `text` method has been deprecated in favour of `plain`. Please use `plain` instead. The `text` method will be removed in a future version of Phlex. Called from: #{caller.first}"
+			plain(...)
+		end
+
 		def svg(...)
 			super do
 				render Phlex::SVG.new do |svg|
