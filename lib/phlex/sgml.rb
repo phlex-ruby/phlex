@@ -14,6 +14,8 @@ module Phlex
 
 			alias_method :render, :call
 
+			# Create a new instance of the component.
+			# @note The block will not be delegated to the initializer. Instead, it will be provided to `template` when rendering.
 			def new(*args, **kwargs, &block)
 				if block
 					object = super(*args, **kwargs, &nil)
@@ -71,8 +73,8 @@ module Phlex
 		end
 
 		# Render another view
-		# @param renderable [Phlex::HTML] the other view to render
-		# @return [void]
+		# @param renderable [Phlex::SGML]
+		# @return [nil]
 		def render(renderable, &block)
 			case renderable
 			when Phlex::SGML
@@ -89,6 +91,7 @@ module Phlex
 		end
 
 		# Output text content. The text will be HTML-escaped.
+		# @return [nil]
 		def plain(content)
 			case content
 			when String
@@ -109,6 +112,7 @@ module Phlex
 		end
 
 		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
+		# @return [nil]
 		def whitespace
 			@_target << " "
 
@@ -121,6 +125,7 @@ module Phlex
 		end
 
 		# Output an HTML comment.
+		# @return [nil]
 		def comment(&block)
 			@_target << "<!-- "
 			yield_content(&block)
@@ -142,7 +147,7 @@ module Phlex
 		# Capture a block of output as a String.
 		# @return [String]
 		def capture(&block)
-			return unless block_given?
+			return "" unless block_given?
 
 			original_buffer = @_target
 			new_buffer = +""
@@ -159,6 +164,7 @@ module Phlex
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
 		# Because the BlackHole does nothing with the output, this should be faster.
+		# @return [nil]
 		private def __vanish__(*args)
 			return unless block_given?
 
@@ -175,10 +181,13 @@ module Phlex
 		end
 
 		# Default render predicate can be overridden to prevent rendering
+		# @return [bool]
 		private def render?
 			true
 		end
 
+		# Format the object for output
+		# @return [String]
 		private def format_object(object)
 			case object
 			when Float
@@ -187,23 +196,29 @@ module Phlex
 		end
 
 		# Override this method to hook in around a template render. You can do things before and after calling <code>super</code> to render the template. You should always call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @return [nil]
 		private def around_template
 			before_template
 			yield
 			after_template
+
+			nil
 		end
 
 		# Override this method to hook in right before a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @return [nil]
 		private def before_template
 			nil
 		end
 
 		# Override this method to hook in right after a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @return [nil]
 		private def after_template
 			nil
 		end
 
 		# Yields the block and checks if it buffered anything. If nothing was buffered, the return value is treated as text.
+		# @return [nil]
 		private def yield_content
 			return unless block_given?
 
@@ -216,6 +231,7 @@ module Phlex
 		end
 
 		# Same as <code>yield_content</code> but accepts a splat of arguments to yield. This is slightly slower than <code>yield_content</code>, which is why it's defined as a different method because we don't always need arguments so we can usually use <code>yield_content</code> instead.
+		# @return [nil]
 		private def yield_content_with_args(*args)
 			return unless block_given?
 

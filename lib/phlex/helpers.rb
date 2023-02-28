@@ -5,6 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex::Helpers
+	# @return [String]
 	private def tokens(*tokens, **conditional_tokens)
 		conditional_tokens.each do |condition, token|
 			truthy = case condition
@@ -31,6 +32,7 @@ module Phlex::Helpers
 		tokens
 	end
 
+	# @api private
 	private def __append_token__(tokens, token)
 		case token
 			when nil then nil
@@ -42,6 +44,7 @@ module Phlex::Helpers
 		end
 	end
 
+	# @return [Hash]
 	private def classes(*tokens, **conditional_tokens)
 		tokens = self.tokens(*tokens, **conditional_tokens)
 
@@ -52,6 +55,7 @@ module Phlex::Helpers
 		end
 	end
 
+	# @return [Hash]
 	private def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
