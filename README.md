@@ -10,14 +10,15 @@ Documentation can be found at [www.phlex.fun](https://www.phlex.fun).
 
 If you run into any trouble, please [start a discussion](https://github.com/joeldrapper/phlex/discussions/new), or [open an issue](https://github.com/joeldrapper/phlex/issues/new) if you think you’ve found a bug.
 
-### Also see
-- [joeldrapper/phlex-rails](https://github.com/joeldrapper/phlex-rails) - Ruby on Rails integration
-- [joeldrapper/phlex.fun](https://github.com/joeldrapper/phlex.fun) - Docs Website
-- [joeldrapper/phlex-markdown](https://github.com/joeldrapper/phlex-markdown) - Markdown to HTML using Phlex
-- [joeldrapper/phlex-compiler](https://github.com/joeldrapper/phlex-compiler) - A compiler for Phlex
-- [joeldrapper/phlex-translation](https://github.com/joeldrapper/phlex-translation) - I18n Support for Phlex 
-- [joeldrapper/phlex-testing-nokogiri](https://github.com/joeldrapper/phlex-testing-nokogiri) - Nokogiri support
-- [joeldrapper/phlex-testing-capybara](https://github.com/joeldrapper/phlex-testing-capybara) - Capybara support
+### Ecosystem 🌱
+- [joeldrapper/phlex-rails](https://github.com/joeldrapper/phlex-rails) — Ruby on Rails integration
+- [joeldrapper/phlex.fun](https://github.com/joeldrapper/phlex.fun) — Docs Website
+- [joeldrapper/phlex-markdown](https://github.com/joeldrapper/phlex-markdown) — Markdown to HTML using Phlex
+- [joeldrapper/phlex-compiler](https://github.com/joeldrapper/phlex-compiler) — A compiler for Phlex
+- [joeldrapper/phlex-translation](https://github.com/joeldrapper/phlex-translation) — I18n Support for Phlex 
+- [joeldrapper/phlex-testing-nokogiri](https://github.com/joeldrapper/phlex-testing-nokogiri) — Nokogiri support
+- [joeldrapper/phlex-testing-capybara](https://github.com/joeldrapper/phlex-testing-capybara) — Capybara support
+- [marcoroth/phlexing](https://github.com/marcoroth/phlexing) — ERB → Phlex converter
 
 ### Community 🙌
 
