@@ -19,6 +19,7 @@ If you run into any trouble, please [start a discussion](https://github.com/joel
 - [joeldrapper/phlex-testing-nokogiri](https://github.com/joeldrapper/phlex-testing-nokogiri) — Nokogiri support
 - [joeldrapper/phlex-testing-capybara](https://github.com/joeldrapper/phlex-testing-capybara) — Capybara support
 - [marcoroth/phlexing](https://github.com/marcoroth/phlexing) — ERB → Phlex converter
+- [ViewComponent/lookbook](https://github.com/ViewComponent/lookbook) — Document and preview Phlex components in Rails
 
 ### Community 🙌
 
