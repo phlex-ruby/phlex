@@ -3,8 +3,6 @@
 module Phlex::HTML::StandardElements
 	extend Phlex::Elements
 
-	REGISTERED_ELEMENTS = Concurrent::Map.new
-
 	# @!method a(**attributes, &content)
 	# 	Outputs an <code>a</code> tag
 	# 	@return [nil]

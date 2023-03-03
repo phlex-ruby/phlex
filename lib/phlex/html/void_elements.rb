@@ -3,8 +3,6 @@
 module Phlex::HTML::VoidElements
 	extend Phlex::Elements
 
-	REGISTERED_ELEMENTS = Concurrent::Map.new
-
 	# @!method area(**attributes, &content)
 	# 	Outputs an <code>area</code> tag
 	# 	@return [nil]
