@@ -9,7 +9,7 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{element}(**attributes, &block)
+			def __phlex_#{element}__(**attributes, &block)
 				if attributes.length > 0
 					if block_given?
 						@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || __attributes__(**attributes)) << ">"
@@ -31,7 +31,9 @@ module Phlex::Elements
 				nil
 			end
 
-			alias_method :_#{element}, :#{element}
+			alias_method :_#{element}, :__phlex_#{element}__
+			alias_method :#{element}, :__phlex_#{element}__
+			private :__phlex_#{element}__
 		RUBY
 
 		self::REGISTERED_ELEMENTS[element] = tag
@@ -54,6 +56,8 @@ module Phlex::Elements
 			end
 
 			alias_method :_#{element}, :#{element}
+			alias_method :__phlex_#{element}__, :#{element}
+			private :__phlex_#{element}__
 		RUBY
 
 		self::REGISTERED_ELEMENTS[element] = tag

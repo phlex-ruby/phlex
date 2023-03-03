@@ -7,5 +7,8 @@ module Phlex
 		def template
 			yield
 		end
+
+		# This should be extended after all method definitions
+		extend ElementClobberingGuard
 	end
 end
