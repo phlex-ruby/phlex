@@ -3,8 +3,8 @@
 describe Phlex::SVG do
 	extend ViewHelper
 
-	Phlex::SVG::StandardElements::REGISTERED_ELEMENTS.each do |method_name, tag|
-		with "<#{tag}> called with an underscore prefix while overridden" do
+	Phlex::SVG::StandardElements.send(:slow_registered_elements).each do |method_name|
+		with "<#{method_name}> called with an underscore prefix while overridden" do
 			svg_view do
 				define_method :template do
 					send("_#{method_name}")
@@ -16,11 +16,11 @@ describe Phlex::SVG do
 			end
 
 			it "is not overridden" do
-				expect(output).to be == %(<#{tag}></#{tag}>)
+				expect(output).to be == %(<#{method_name}></#{method_name}>)
 			end
 		end
 
-		with "<#{tag}> with block content and attributes" do
+		with "<#{method_name}> with block content and attributes" do
 			svg_view do
 				define_method :template do
 					send(method_name, class: "class", id: "id", disabled: true, selected: false) { text { "Hello" } }
@@ -28,11 +28,11 @@ describe Phlex::SVG do
 			end
 
 			it "produces the correct output" do
-				expect(output).to be == %(<#{tag} class="class" id="id" disabled><text>Hello</text></#{tag}>)
+				expect(output).to be == %(<#{method_name} class="class" id="id" disabled><text>Hello</text></#{method_name}>)
 			end
 		end
 
-		with "<#{tag}> with block text content and attributes" do
+		with "<#{method_name}> with block text content and attributes" do
 			svg_view do
 				define_method :template do
 					send(method_name, class: "class", id: "id", disabled: true, selected: false) { "content" }
@@ -40,7 +40,7 @@ describe Phlex::SVG do
 			end
 
 			it "produces the correct output" do
-				expect(output).to be == %(<#{tag} class="class" id="id" disabled>content</#{tag}>)
+				expect(output).to be == %(<#{method_name} class="class" id="id" disabled>content</#{method_name}>)
 			end
 		end
 	end

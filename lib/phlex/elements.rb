@@ -5,6 +5,14 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex::Elements
+	private def slow_registered_elements
+		private_instance_methods
+			.lazy
+			.map(&:to_s)
+			.select { |m| m.start_with?("__phlex_") }
+			.map { |m| m[8...-2].to_sym }
+	end
+
 	def register_element(element, tag: element.name.tr("_", "-"))
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
@@ -34,8 +42,6 @@ module Phlex::Elements
 			alias_method :_#{element}, :#{element}
 		RUBY
 
-		self::REGISTERED_ELEMENTS[element] = tag
-
 		element
 	end
 
@@ -55,8 +61,6 @@ module Phlex::Elements
 
 			alias_method :_#{element}, :#{element}
 		RUBY
-
-		self::REGISTERED_ELEMENTS[element] = tag
 
 		element
 	end
