@@ -51,7 +51,7 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{element}(**attributes)
+			def __phlex_#{element}__(**attributes)
 				if attributes.length > 0
 					@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] || __attributes__(**attributes)) << ">"
 				else
@@ -61,8 +61,8 @@ module Phlex::Elements
 				nil
 			end
 
-			alias_method :_#{element}, :#{element}
-			alias_method :__phlex_#{element}__, :#{element}
+			alias_method :_#{element}, :__phlex_#{element}__
+			alias_method :#{element}, :__phlex_#{element}__
 			private :__phlex_#{element}__
 		RUBY
 
