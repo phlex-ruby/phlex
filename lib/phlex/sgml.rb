@@ -149,17 +149,18 @@ module Phlex
 		def capture(&block)
 			return "" unless block_given?
 
-			original_buffer = @_target
-			new_buffer = +""
+			original_buffer_content = @_target.dup
+			@_target.clear
 
 			begin
-				@_target = new_buffer
 				yield_content(&block)
+				new_buffer_content = @_target.dup
 			ensure
-				@_target = original_buffer
+				@_target.clear
+				@_target << original_buffer_content
 			end
 
-			new_buffer
+			new_buffer_content
 		end
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.

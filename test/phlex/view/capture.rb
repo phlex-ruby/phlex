@@ -8,12 +8,14 @@ describe Phlex::HTML do
 			attr_accessor :captured
 
 			def template
+				h1 { "Before" }
 				@captured = capture { "Hello" }
+				h1 { "After" }
 			end
 		end
 
 		it "captures the return value" do
-			example.call
+			expect(example.call).to be == "<h1>Before</h1><h1>After</h1>"
 			expect(example.captured).to be == "Hello"
 		end
 	end
@@ -23,14 +25,16 @@ describe Phlex::HTML do
 			attr_accessor :captured
 
 			def template
+				h1 { "Before" }
 				@captured = capture do
 					h1 { "Hello" }
 				end
+				h1 { "After" }
 			end
 		end
 
 		it "captures the return value" do
-			example.call
+			expect(example.call).to be == "<h1>Before</h1><h1>After</h1>"
 			expect(example.captured).to be == "<h1>Hello</h1>"
 		end
 	end
