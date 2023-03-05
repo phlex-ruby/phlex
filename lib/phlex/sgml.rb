@@ -34,21 +34,21 @@ module Phlex
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(buffer = +"", view_context: nil, parent: nil, &block)
-			__final_call__(buffer, view_context: view_context, parent: parent, &block).tap do
+		def call(buffer = nil, target: +"", view_context: nil, parent: nil, &block)
+			__final_call__(buffer, target: target, view_context: view_context, parent: parent, &block).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
 
 		# @api private
-		def __final_call__(buffer = +"", view_context: nil, parent: nil, &block)
-			@_target = buffer
+		def __final_call__(buffer = nil, target: +"", view_context: nil, parent: nil, &block)
+			@_target = target
 			@_view_context = view_context
 			@_parent = parent
 
 			block ||= @_content_block
 
-			return buffer unless render?
+			return buffer || target unless render?
 
 			around_template do
 				if block
@@ -69,7 +69,7 @@ module Phlex
 				end
 			end
 
-			buffer
+			buffer ? (buffer << target) : target
 		end
 
 		# Render another view
@@ -78,10 +78,10 @@ module Phlex
 		def render(renderable, &block)
 			case renderable
 			when Phlex::SGML
-				renderable.call(@_target, view_context: @_view_context, parent: self, &block)
+				renderable.call(target: @_target, view_context: @_view_context, parent: self, &block)
 			when Class
 				if renderable < Phlex::SGML
-					renderable.new.call(@_target, view_context: @_view_context, parent: self, &block)
+					renderable.new.call(target: @_target, view_context: @_view_context, parent: self, &block)
 				end
 			else
 				raise ArgumentError, "You can't render a #{renderable}."
