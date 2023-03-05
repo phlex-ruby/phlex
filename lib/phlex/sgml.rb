@@ -72,10 +72,6 @@ module Phlex
 			buffer ? (buffer << target) : target
 		end
 
-		def process_attributes?
-			false
-		end
-
 		# Render another view
 		# @param renderable [Phlex::SGML]
 		# @return [nil]
@@ -250,13 +246,13 @@ module Phlex
 		# @api private
 		private def __attributes__(**attributes)
 			__final_attributes__(**attributes).tap do |buffer|
-				Phlex::ATTRIBUTE_CACHE[process_attributes? ? (attributes.hash + self.class.hash) : attributes.hash] = buffer.freeze
+				Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] = buffer.freeze
 			end
 		end
 
 		# @api private
 		private def __final_attributes__(**attributes)
-			if process_attributes?
+			if respond_to?(:process_attributes)
 				attributes = process_attributes(**attributes)
 			end
 
