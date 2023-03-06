@@ -160,7 +160,7 @@ module Phlex
 				@_target << original_buffer_content
 			end
 
-			new_buffer_content
+			new_buffer_content.is_a?(String) ? new_buffer_content : ""
 		end
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
