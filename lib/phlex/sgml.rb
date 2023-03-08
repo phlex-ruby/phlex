@@ -156,10 +156,10 @@ module Phlex
 		# Like `capture` but the output is vanished into a BlackHole buffer.
 		# Because the BlackHole does nothing with the output, this should be faster.
 		# @return [nil]
-		private def __vanish__(*args, &block)
+		private def __vanish__(*args)
 			return unless block_given?
 
-			@_context.with_target(BlackHole, &block)
+			@_context.with_target(BlackHole) { yield(*args) }
 
 			nil
 		end
