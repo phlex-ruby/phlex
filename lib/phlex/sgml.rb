@@ -34,21 +34,21 @@ module Phlex
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(buffer = nil, target: +"", view_context: nil, parent: nil, &block)
-			__final_call__(buffer, target: target, view_context: view_context, parent: parent, &block).tap do
+		def call(buffer = nil, context: Phlex::Context.new, view_context: nil, parent: nil, &block)
+			__final_call__(buffer, context: context, view_context: view_context, parent: parent, &block).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
 
 		# @api private
-		def __final_call__(buffer = nil, target: +"", view_context: nil, parent: nil, &block)
-			@_target = target
+		def __final_call__(buffer = nil, context: Phlex::Context.new, view_context: nil, parent: nil, &block)
+			@_context = context
 			@_view_context = view_context
 			@_parent = parent
 
 			block ||= @_content_block
 
-			return buffer || target unless render?
+			return buffer || context unless render?
 
 			around_template do
 				if block
@@ -69,7 +69,7 @@ module Phlex
 				end
 			end
 
-			buffer ? (buffer << target) : target
+			buffer ? (buffer << context.target) : context.target
 		end
 
 		# Render another view
@@ -78,10 +78,10 @@ module Phlex
 		def render(renderable, &block)
 			case renderable
 			when Phlex::SGML
-				renderable.call(target: @_target, view_context: @_view_context, parent: self, &block)
+				renderable.call(context: @_context, view_context: @_view_context, parent: self, &block)
 			when Class
 				if renderable < Phlex::SGML
-					renderable.new.call(target: @_target, view_context: @_view_context, parent: self, &block)
+					renderable.new.call(context: @_context, view_context: @_view_context, parent: self, &block)
 				end
 			else
 				raise ArgumentError, "You can't render a #{renderable}."
@@ -95,16 +95,16 @@ module Phlex
 		def plain(content)
 			case content
 			when String
-				@_target << ERB::Escape.html_escape(content)
+				@_context.target << ERB::Escape.html_escape(content)
 			when Symbol
-				@_target << ERB::Escape.html_escape(content.name)
+				@_context.target << ERB::Escape.html_escape(content.name)
 			when Integer
-				@_target << ERB::Escape.html_escape(content.to_s)
+				@_context.target << ERB::Escape.html_escape(content.to_s)
 			when nil
 				nil
 			else
 				if (formatted_object = format_object(content))
-					@_target << ERB::Escape.html_escape(formatted_object)
+					@_context.target << ERB::Escape.html_escape(formatted_object)
 				end
 			end
 
@@ -114,11 +114,11 @@ module Phlex
 		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
 		# @return [nil]
 		def whitespace
-			@_target << " "
+			@_context.target << " "
 
 			if block_given?
 				yield
-				@_target << " "
+				@_context.target << " "
 			end
 
 			nil
@@ -127,9 +127,9 @@ module Phlex
 		# Output an HTML comment.
 		# @return [nil]
 		def comment(&block)
-			@_target << "<!-- "
+			@_context.target << "<!-- "
 			yield_content(&block)
-			@_target << " -->"
+			@_context.target << " -->"
 
 			nil
 		end
@@ -140,43 +140,26 @@ module Phlex
 		def unsafe_raw(content = nil)
 			return nil unless content
 
-			@_target << content
+			@_context.target << content
 			nil
 		end
 
 		# Capture a block of output as a String.
+		# @note This only works if the block's receiver is the current component or the block returns a String.
 		# @return [String]
 		def capture(&block)
-			return "" unless block_given?
+			return "" unless block
 
-			original_buffer_content = @_target.dup
-			@_target.clear
-
-			begin
-				yield_content(&block)
-				new_buffer_content = @_target.dup
-			ensure
-				@_target.clear
-				@_target << original_buffer_content
-			end
-
-			new_buffer_content.is_a?(String) ? new_buffer_content : ""
+			@_context.with_target(+"") { yield_content(&block) }
 		end
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
 		# Because the BlackHole does nothing with the output, this should be faster.
 		# @return [nil]
-		private def __vanish__(*args)
+		private def __vanish__(*args, &block)
 			return unless block_given?
 
-			original_buffer = @_target
-
-			begin
-				@_target = BlackHole
-				yield(*args)
-			ensure
-				@_target = original_buffer
-			end
+			@_context.with_target(BlackHole, &block)
 
 			nil
 		end
@@ -223,10 +206,10 @@ module Phlex
 		private def yield_content
 			return unless block_given?
 
-			original_length = @_target.length
+			original_length = @_context.target.length
 			content = yield(self)
 
-			plain(content) if original_length == @_target.length
+			plain(content) if original_length == @_context.target.length
 
 			nil
 		end
@@ -236,9 +219,9 @@ module Phlex
 		private def yield_content_with_args(*args)
 			return unless block_given?
 
-			original_length = @_target.length
+			original_length = @_context.target.length
 			content = yield(*args)
-			plain(content) if original_length == @_target.length
+			plain(content) if original_length == @_context.target.length
 
 			nil
 		end

@@ -20,19 +20,19 @@ module Phlex::Elements
 			def __phlex_#{element}__(**attributes, &block)
 				if attributes.length > 0 # with attributes
 					if block_given? # with content block
-						@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+						@_context.target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 						yield_content(&block)
-						@_target << "</#{tag}>"
+						@_context.target << "</#{tag}>"
 					else # without content block
-						@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
+						@_context.target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
 					end
 				else # without attributes
 					if block_given? # with content block
-						@_target << "<#{tag}>"
+						@_context.target << "<#{tag}>"
 						yield_content(&block)
-						@_target << "</#{tag}>"
+						@_context.target << "</#{tag}>"
 					else # without content block
-						@_target << "<#{tag}></#{tag}>"
+						@_context.target << "<#{tag}></#{tag}>"
 					end
 				end
 
@@ -53,9 +53,9 @@ module Phlex::Elements
 
 			def __phlex_#{element}__(**attributes)
 				if attributes.length > 0 # with attributes
-					@_target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+					@_context.target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 				else # without attributes
-					@_target << "<#{tag}>"
+					@_context.target << "<#{tag}>"
 				end
 
 				nil
