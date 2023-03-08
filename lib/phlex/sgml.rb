@@ -85,6 +85,8 @@ module Phlex
 				end
 			when Enumerable
 				renderable.each { |r| render(r, &block) }
+			when Proc
+				yield_content(&renderable)
 			else
 				raise ArgumentError, "You can't render a #{renderable}."
 			end
