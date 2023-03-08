@@ -48,7 +48,7 @@ module Phlex
 
 			block ||= @_content_block
 
-			return buffer || context unless render?
+			return buffer || context.target unless render?
 
 			around_template do
 				if block
