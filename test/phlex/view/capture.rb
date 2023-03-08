@@ -20,6 +20,20 @@ describe Phlex::HTML do
 		end
 	end
 
+	if RUBY_ENGINE == "ruby"
+		with "a c-level proc" do
+			view do
+				def template
+					capture(&:div)
+				end
+			end
+
+			it "raises an argument error" do
+				expect { example.call }.to raise_exception Phlex::ArgumentError
+			end
+		end
+	end
+
 	with "a block" do
 		view do
 			attr_accessor :captured

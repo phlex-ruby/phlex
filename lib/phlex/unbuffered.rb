@@ -24,7 +24,7 @@ class Phlex::Unbuffered < BasicObject
 		if @object.respond_to?(name)
 
 			__class__.define_method(name) do |*a, **k, &b|
-				@object.capture { @object.public_send(name, *a, **k, &b) }
+				@object.local_capture { @object.public_send(name, *a, **k, &b) }
 			end
 
 			# Now we've defined this missing method, we can call it.

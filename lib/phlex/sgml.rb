@@ -147,20 +147,37 @@ module Phlex
 		# Capture a block of output as a String.
 		# @return [String]
 		def capture(&block)
-			return "" unless block_given?
-
-			original_buffer_content = @_target.dup
-			@_target.clear
+			return "" unless block
 
 			begin
-				yield_content(&block)
-				new_buffer_content = @_target.dup
-			ensure
-				@_target.clear
-				@_target << original_buffer_content
+				receiver = block.binding&.receiver
+			rescue ::ArgumentError
+				raise Phlex::ArgumentError, "👋 Unfortunately you can't use Symbol-based Procs for capture blocks because they raise when you inspect their binding. See https://bugs.ruby-lang.org/issues/19484"
 			end
 
-			new_buffer_content.is_a?(String) ? new_buffer_content : ""
+			case receiver
+				when Phlex::SGML then receiver.local_capture(&block)
+				else local_capture(&block)
+			end
+		end
+
+		# Capture a block of output as a String.
+		# @note This only works if the block's receiver is the current component or the block returns a String.
+		# @return [String]
+		def local_capture(&block)
+			return "" unless block
+
+			original_target = @_target
+			new_target = +""
+
+			begin
+				@_target = new_target
+				yield_content(&block)
+			ensure
+				@_target = original_target
+			end
+
+			new_target
 		end
 
 		# Like `capture` but the output is vanished into a BlackHole buffer.
