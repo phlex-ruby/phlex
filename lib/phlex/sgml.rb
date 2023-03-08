@@ -83,6 +83,8 @@ module Phlex
 				if renderable < Phlex::SGML
 					renderable.new.call(context: @_context, view_context: @_view_context, parent: self, &block)
 				end
+			when Enumerable
+				renderable.each { |r| render(r, &block) }
 			else
 				raise ArgumentError, "You can't render a #{renderable}."
 			end
