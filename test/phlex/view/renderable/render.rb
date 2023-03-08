@@ -54,6 +54,18 @@ describe Phlex::HTML do
 					expect(output).to be == "<div>Hello world!</div>"
 				end
 			end
+
+			with "proc" do
+				view do
+					define_method :template do
+						render proc { h1 { "Hi" } }
+					end
+				end
+
+				it "renders the other view" do
+					expect(output).to be == "<h1>Hi</h1>"
+				end
+			end
 		end
 	end
 end
