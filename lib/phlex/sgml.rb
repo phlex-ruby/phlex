@@ -50,7 +50,7 @@ module Phlex
 
 			around_template do
 				if block
-					if DeferredRender === self
+					if is_a?(DeferredRender)
 						__vanish__(self, &block)
 						template
 					else
