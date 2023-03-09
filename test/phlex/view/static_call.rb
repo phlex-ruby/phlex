@@ -12,10 +12,4 @@ describe Phlex::HTML do
 			expect(Example.call).to be == "<h1>Hi</h1>"
 		end
 	end
-
-	with "static #render" do
-		it "renders the view" do
-			expect(Example.render).to be == "<h1>Hi</h1>"
-		end
-	end
 end

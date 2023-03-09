@@ -12,8 +12,6 @@ module Phlex
 				new(...).call
 			end
 
-			alias_method :render, :call
-
 			# Create a new instance of the component.
 			# @note The block will not be delegated to the initializer. Instead, it will be provided to `template` when rendering.
 			def new(*args, **kwargs, &block)
