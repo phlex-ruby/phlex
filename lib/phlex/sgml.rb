@@ -29,6 +29,17 @@ module Phlex
 				alias_method :__attributes__, :__final_attributes__
 				alias_method :call, :__final_call__
 			end
+
+			# @api private
+			def element_method?(method_name)
+				return false unless instance_methods.include?(method_name)
+
+				owner = instance_method(method_name).owner
+
+				return true if owner.is_a?(Phlex::Elements) && owner.registered_elements[method_name]
+
+				false
+			end
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
