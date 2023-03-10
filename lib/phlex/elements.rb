@@ -5,19 +5,15 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex::Elements
-	private def slow_registered_elements
-		private_instance_methods
-			.lazy
-			.map(&:to_s)
-			.select { |m| m.start_with?("__phlex_") }
-			.map { |m| m[8...-2].to_sym }
+	def registered_elements
+		@registered_elements ||= Concurrent::Map.new
 	end
 
 	def register_element(element, tag: element.name.tr("_", "-"))
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def __phlex_#{element}__(**attributes, &block)
+			def #{element}(**attributes, &block)
 				if attributes.length > 0 # with attributes
 					if block_given? # with content block
 						@_context.target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
@@ -39,10 +35,10 @@ module Phlex::Elements
 				nil
 			end
 
-			alias_method :_#{element}, :__phlex_#{element}__
-			alias_method :#{element}, :__phlex_#{element}__
-			private :__phlex_#{element}__
+			alias_method :_#{element}, :#{element}
 		RUBY
+
+		registered_elements[element] = tag
 
 		element
 	end
@@ -51,7 +47,7 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def __phlex_#{element}__(**attributes)
+			def #{element}(**attributes)
 				if attributes.length > 0 # with attributes
 					@_context.target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 				else # without attributes
@@ -61,10 +57,10 @@ module Phlex::Elements
 				nil
 			end
 
-			alias_method :_#{element}, :__phlex_#{element}__
-			alias_method :#{element}, :__phlex_#{element}__
-			private :__phlex_#{element}__
+			alias_method :_#{element}, :#{element}
 		RUBY
+
+		registered_elements[element] = tag
 
 		element
 	end
