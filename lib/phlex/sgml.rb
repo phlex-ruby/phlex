@@ -126,11 +126,13 @@ module Phlex
 		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
 		# @return [nil]
 		def whitespace
-			@_context.target << " "
+			target = @_context.target
+
+			target << " "
 
 			if block_given?
 				yield
-				@_context.target << " "
+				target << " "
 			end
 
 			nil
@@ -139,9 +141,11 @@ module Phlex
 		# Output an HTML comment.
 		# @return [nil]
 		def comment(&block)
-			@_context.target << "<!-- "
+			target = @_context.target
+
+			target << "<!-- "
 			yield_content(&block)
-			@_context.target << " -->"
+			target << " -->"
 
 			nil
 		end
@@ -218,10 +222,11 @@ module Phlex
 		private def yield_content
 			return unless block_given?
 
-			original_length = @_context.target.length
-			content = yield(self)
+			target = @_context.target
 
-			plain(content) if original_length == @_context.target.length
+			original_length = target.length
+			content = yield(self)
+			plain(content) if original_length == target.length
 
 			nil
 		end
@@ -231,9 +236,11 @@ module Phlex
 		private def yield_content_with_args(*args)
 			return unless block_given?
 
-			original_length = @_context.target.length
+			target = @_context.target
+
+			original_length = target.length
 			content = yield(*args)
-			plain(content) if original_length == @_context.target.length
+			plain(content) if original_length == target.length
 
 			nil
 		end
