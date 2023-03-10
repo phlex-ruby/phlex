@@ -30,6 +30,7 @@ module Phlex
 				alias_method :call, :__final_call__
 			end
 
+			# @api private
 			def element_method?(method_name)
 				return false unless instance_methods.include?(method_name)
 
