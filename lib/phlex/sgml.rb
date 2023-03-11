@@ -43,14 +43,14 @@ module Phlex
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(buffer = nil, context: Phlex::Context.new, view_context: nil, parent: nil, &block)
+		def call(buffer = +"", context: Phlex::Context.new(buffer), view_context: nil, parent: nil, &block)
 			__final_call__(buffer, context: context, view_context: view_context, parent: parent, &block).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
 
 		# @api private
-		def __final_call__(buffer = nil, context: Phlex::Context.new, view_context: nil, parent: nil, &block)
+		def __final_call__(buffer = +"", context: Phlex::Context.new(buffer), view_context: nil, parent: nil, &block)
 			@_context = context
 			@_view_context = view_context
 			@_parent = parent
@@ -78,7 +78,7 @@ module Phlex
 				end
 			end
 
-			buffer ? (buffer << context.target) : context.target
+			buffer << context.target
 		end
 
 		# Render another view
