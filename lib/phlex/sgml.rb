@@ -42,22 +42,45 @@ module Phlex
 			end
 		end
 
+		# @api private
+		private def flush
+			target = @_context.target
+			@_buffer << target.dup
+			target.clear
+		end
+
+		# @api experimental
+		def await(task)
+			if task.is_a?(Concurrent::IVar)
+				flush if task.pending?
+
+				task.wait.value
+			elsif defined?(Async::Task) && task.is_a?(Async::Task)
+				flush if task.running?
+
+				task.wait
+			else
+				raise ArgumentError, "Expected an asynchronous task / promise."
+			end
+		end
+
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(buffer = +"", context: Phlex::Context.new(buffer), view_context: nil, parent: nil, &block)
+		def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, &block)
 			__final_call__(buffer, context: context, view_context: view_context, parent: parent, &block).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
 
 		# @api private
-		def __final_call__(buffer = +"", context: Phlex::Context.new(buffer), view_context: nil, parent: nil, &block)
+		def __final_call__(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, &block)
+			@_buffer = buffer
 			@_context = context
 			@_view_context = view_context
 			@_parent = parent
 
 			block ||= @_content_block
 
-			return buffer || context.target unless render?
+			return unless render?
 
 			around_template do
 				if block
@@ -78,7 +101,7 @@ module Phlex
 				end
 			end
 
-			buffer << context.target
+			buffer << context.target unless parent
 		end
 
 		# Render another view
@@ -87,10 +110,10 @@ module Phlex
 		def render(renderable, &block)
 			case renderable
 			when Phlex::SGML
-				renderable.call(context: @_context, view_context: @_view_context, parent: self, &block)
+				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
 			when Class
 				if renderable < Phlex::SGML
-					renderable.new.call(context: @_context, view_context: @_view_context, parent: self, &block)
+					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
 				end
 			when Enumerable
 				renderable.each { |r| render(r, &block) }

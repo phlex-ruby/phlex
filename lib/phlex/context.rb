@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class Phlex::Context
-	def initialize(buffer = +"")
-		@buffer = buffer
+	def initialize
 		@target = +""
 	end
 
-	attr_accessor :target, :buffer
+	attr_accessor :target
 
 	def with_target(new_target)
 		original_target = @target

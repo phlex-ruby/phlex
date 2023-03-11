@@ -34,7 +34,7 @@ module Phlex::Elements
 					end
 				end
 
-				#{'@_context.buffer << target; target.clear;' if tag == 'head'}
+				#{'flush' if tag == 'head'}
 
 				nil
 			end
