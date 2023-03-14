@@ -28,6 +28,7 @@ Everyone interacting in Phlex codebases, issue trackers or chat rooms is expecte
 ### Who uses Phlex?
 
 - [Clearscope](https://www.clearscope.io)
+- [Benchmark Wine Group](https://www.benchmarkwine.com)
 
 *If you’re using Phlex in production, please open a PR to list it here.*
 
