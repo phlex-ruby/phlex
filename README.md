@@ -1,6 +1,6 @@
 <a href="https://www.phlex.fun"><img alt="Phlex logo" src="phlex_logo.png" width="180" /></a>
 
-Phlex lets you compose web views in pure Ruby — kind of like JSX, but not really anything like JSX. It’s super-fast, thread-safe and supports TruffleRuby v22.2+, JRuby v9.2+ and MRI v2.7+.
+Phlex lets you compose web views in pure Ruby — kind of like JSX, but not really anything like JSX. It’s super-fast, thread-safe and supports TruffleRuby v22.2+, JRuby v9.2+ and MRI v2.7+. Phlex currently supports HTML and SVG views and we’re exploring JSON and XML.
 
 ### Documentation 📗
 
