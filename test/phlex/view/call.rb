@@ -25,11 +25,6 @@ describe Phlex::HTML do
 				!@_view_context
 			end
 		end
-
-		it "returns buffer content" do
-			buffer = "xyz"
-			expect(example.call(buffer, view_context: true)).to be == "xyz"
-		end
 	end
 
 	with "a view that yields an object" do

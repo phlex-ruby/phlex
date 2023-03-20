@@ -13,7 +13,6 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-
 			def #{element}(**attributes, &block)
 				target = @_context.target
 
@@ -34,6 +33,8 @@ module Phlex::Elements
 						target << "<#{tag}></#{tag}>"
 					end
 				end
+
+				#{'flush' if tag == 'head'}
 
 				nil
 			end
