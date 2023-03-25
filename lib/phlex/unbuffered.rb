@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# @api private
 class Phlex::Unbuffered < BasicObject
 	def initialize(object)
 		@object = object

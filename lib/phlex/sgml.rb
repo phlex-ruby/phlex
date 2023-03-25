@@ -7,13 +7,13 @@ end
 module Phlex
 	class SGML
 		class << self
-			# Render the view to a String. Arguments are delegated to <code>new</code>.
+			# Render the view to a String. Arguments are delegated to {.new}.
 			def call(...)
 				new(...).call
 			end
 
 			# Create a new instance of the component.
-			# @note The block will not be delegated to the initializer. Instead, it will be provided to `template` when rendering.
+			# @note The block will not be delegated {#initialize}. Instead, it will be sent to {#template} when rendering.
 			def new(*args, **kwargs, &block)
 				if block
 					object = super(*args, **kwargs, &nil)
@@ -42,6 +42,34 @@ module Phlex
 			end
 		end
 
+		# @!method initialize
+		# @abstract Override to define an initializer for your component.
+		# @note Your initializer will not receive a block passed to {.new}. Instead, this block will be sent to {#template} when rendering.
+		# @example
+		# 	def initialize(articles:)
+		# 		@articles = articles
+		# 	end
+
+		# @abstract Override to define a template for your component.
+		# @example
+		# 	def template
+		# 		h1 { "👋 Hello World!" }
+		# 	end
+		# @example Your template may yield a content block.
+		# 	def template
+		# 		main {
+		# 			h1 { "Hello World" }
+		# 			yield
+		# 		}
+		# 	end
+		# @example Alternatively, you can delegate the content block to an element.
+		# 	def template(&block)
+		# 		article(class: "card", &block)
+		# 	end
+		def template
+			yield
+		end
+
 		# @api private
 		private def flush
 			target = @_context.target
@@ -49,7 +77,7 @@ module Phlex
 			target.clear
 		end
 
-		# @api experimental
+		# @api private
 		def await(task)
 			if task.is_a?(Concurrent::IVar)
 				flush if task.pending?
@@ -104,10 +132,23 @@ module Phlex
 			buffer << context.target unless parent
 		end
 
-		# Render another view
-		# @param renderable [Phlex::SGML]
+		# Render another component, block or enumerable
 		# @return [nil]
-		def render(renderable, &block)
+		# @overload render(component, &block)
+		# 	Renders the component.
+		# 	@param component [Phlex::SGML]
+		# @overload render(component_class, &block)
+		# 	Renders a new instance of the component class. This is useful for component classes that take no arguments.
+		# 	@param component_class [Class<Phlex::SGML>]
+		# @overload render(proc)
+		# 	Renders the proc with {#yield_content}.
+		# 	@param proc [Proc]
+		# @overload render(enumerable)
+		# 	Renders each item of the enumerable.
+		# 	@param enumerable [Enumerable]
+		# 	@example
+		# 		render @items
+		private def render(renderable, &block)
 			case renderable
 			when Phlex::SGML
 				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
@@ -149,6 +190,7 @@ module Phlex
 
 		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
 		# @return [nil]
+		# @yield If a block is given, it yields the block with no arguments.
 		def whitespace
 			target = @_context.target
 
@@ -193,9 +235,10 @@ module Phlex
 			@_context.with_target(+"") { yield_content(&block) }
 		end
 
-		# Like `capture` but the output is vanished into a BlackHole buffer.
+		# Like {#capture} but the output is vanished into a BlackHole buffer.
 		# Because the BlackHole does nothing with the output, this should be faster.
 		# @return [nil]
+		# @api private
 		private def __vanish__(*args)
 			return unless block_given?
 
@@ -204,8 +247,9 @@ module Phlex
 			nil
 		end
 
-		# Default render predicate can be overridden to prevent rendering
-		# @return [bool]
+		# Determines if the component should render. By default, it returns <code>true</code>.
+		# @abstract Override to define your own predicate to prevent rendering.
+		# @return [Boolean]
 		private def render?
 			true
 		end
@@ -219,7 +263,7 @@ module Phlex
 			end
 		end
 
-		# Override this method to hook in around a template render. You can do things before and after calling <code>super</code> to render the template. You should always call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @abstract Override this method to hook in around a template render. You can do things before and after calling <code>super</code> to render the template. You should always call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
 		private def around_template
 			before_template
@@ -229,19 +273,20 @@ module Phlex
 			nil
 		end
 
-		# Override this method to hook in right before a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @abstract Override this method to hook in right before a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
 		private def before_template
 			nil
 		end
 
-		# Override this method to hook in right after a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @abstract Override this method to hook in right after a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
 		private def after_template
 			nil
 		end
 
-		# Yields the block and checks if it buffered anything. If nothing was buffered, the return value is treated as text.
+		# Yields the block and checks if it buffered anything. If nothing was buffered, the return value is treated as text. The text is always HTML-escaped.
+		# @yieldparam component [self]
 		# @return [nil]
 		private def yield_content
 			return unless block_given?
@@ -255,7 +300,22 @@ module Phlex
 			nil
 		end
 
-		# Same as <code>yield_content</code> but accepts a splat of arguments to yield. This is slightly slower than <code>yield_content</code>, which is why it's defined as a different method because we don't always need arguments so we can usually use <code>yield_content</code> instead.
+		# Same as {#yield_content} but yields no arguments.
+		# @yield Yields the block with no arguments.
+		private def yield_content_with_no_args
+			return unless block_given?
+
+			target = @_context.target
+
+			original_length = target.length
+			content = yield
+			plain(content) if original_length == target.length
+
+			nil
+		end
+
+		# Same as {#yield_content} but accepts a splat of arguments to yield. This is slightly slower than {#yield_content}.
+		# @yield [*args] Yields the given arguments.
 		# @return [nil]
 		private def yield_content_with_args(*args)
 			return unless block_given?

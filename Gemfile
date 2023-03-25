@@ -8,6 +8,7 @@ gemspec
 gem "rubocop"
 gem "sus"
 gem "benchmark-ips"
+gem "yard"
 
 group :test do
 	gem "i18n"

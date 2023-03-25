@@ -1,4 +1,4 @@
-<a href="https://www.phlex.fun"><img alt="Phlex logo" src="phlex_logo.png" width="180" /></a>
+<a href="https://www.phlex.fun"><img alt="Phlex logo" src="https://www.phlex.fun/assets/logo.png" width="180" /></a>
 
 Phlex lets you compose web views in pure Ruby — kind of like JSX, but not really anything like JSX. It’s super-fast, thread-safe and supports TruffleRuby v22.2+, JRuby v9.2+ and MRI v2.7+. Phlex currently supports HTML and SVG views and we’re exploring JSON and XML.
 
@@ -15,7 +15,7 @@ If you run into any trouble, please [start a discussion](https://github.com/joel
 - [joeldrapper/phlex.fun](https://github.com/joeldrapper/phlex.fun) — Docs Website
 - [joeldrapper/phlex-markdown](https://github.com/joeldrapper/phlex-markdown) — Markdown to HTML using Phlex
 - [joeldrapper/phlex-compiler](https://github.com/joeldrapper/phlex-compiler) — A compiler for Phlex
-- [joeldrapper/phlex-translation](https://github.com/joeldrapper/phlex-translation) — I18n Support for Phlex 
+- [joeldrapper/phlex-translation](https://github.com/joeldrapper/phlex-translation) — I18n Support for Phlex
 - [joeldrapper/phlex-testing-nokogiri](https://github.com/joeldrapper/phlex-testing-nokogiri) — Nokogiri support
 - [joeldrapper/phlex-testing-capybara](https://github.com/joeldrapper/phlex-testing-capybara) — Capybara support
 - [marcoroth/phlexing](https://github.com/marcoroth/phlexing) — ERB → Phlex converter
@@ -34,7 +34,7 @@ Everyone interacting in Phlex codebases, issue trackers or chat rooms is expecte
 
 ### Sponsorship 💖
 
-Maintaining a library is a lot of work. If your company benefits from this work or is likely to benefit from it in the future, please consider [sponsorship](https://github.com/sponsors/joeldrapper). Phlex is actively developed and maintained by **[Joel Drapper](https://github.com/sponsors/joeldrapper)**.
+Maintaining a library is a lot of work. If your company benefits from this work or is likely to benefit from it in the future, please consider [sponsorship](https://github.com/sponsors/joeldrapper). Phlex is actively developed and maintained by [Joel Drapper](https://github.com/sponsors/joeldrapper).
 
 ### Security 🚨
 

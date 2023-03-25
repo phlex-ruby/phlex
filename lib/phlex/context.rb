@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# @api private
 class Phlex::Context
 	def initialize
 		@target = +""
