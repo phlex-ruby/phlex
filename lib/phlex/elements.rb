@@ -4,16 +4,40 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 	using Phlex::Overrides::Symbol::Name
 end
 
+# Extending this module provides the {register_element} macro for registering your own custom elements. It's already extended by {HTML} and {SVG}.
+# @example
+# 	module MyCustomElements
+# 		extend Phlex::Elements
+#
+# 		register_element :trix_editor
+# 	end
+#
+# 	class MyComponent < Phlex::HTML
+# 		include MyCustomElements
+#
+# 		def template
+# 			trix_editor
+# 		end
+# 	end
 module Phlex::Elements
+	# @api private
 	def registered_elements
 		@registered_elements ||= Concurrent::Map.new
 	end
 
-	def register_element(element, tag: element.name.tr("_", "-"))
+	# Register a custom element. This macro defines an element method for the current class and descendents only. There is no global element registry.
+	# @param method_name [Symbol]
+	# @param tag [String] the name of the tag, otherwise this will be the method name with underscores replaced with dashes.
+	# @note The methods defined by this macro depend on other methods from {SGML} so they should always be mixed into an {HTML} or {SVG} component.
+	# @example Register the custom element <code><trix-editor></code>
+	# 	register_element :trix_editor
+	def register_element(method_name, tag: nil)
+		tag ||= method_name.name.tr("_", "-")
+
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{element}(**attributes, &block)
+			def #{method_name}(**attributes, &block)
 				target = @_context.target
 
 				if attributes.length > 0 # with attributes
@@ -39,19 +63,20 @@ module Phlex::Elements
 				nil
 			end
 
-			alias_method :_#{element}, :#{element}
+			alias_method :_#{method_name}, :#{method_name}
 		RUBY
 
-		registered_elements[element] = tag
+		registered_elements[method_name] = tag
 
-		element
+		method_name
 	end
 
-	def register_void_element(element, tag: element.name.tr("_", "-"))
+	# @api private
+	def register_void_element(method_name, tag: method_name.name.tr("_", "-"))
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{element}(**attributes)
+			def #{method_name}(**attributes)
 				target = @_context.target
 
 				if attributes.length > 0 # with attributes
@@ -63,11 +88,11 @@ module Phlex::Elements
 				nil
 			end
 
-			alias_method :_#{element}, :#{element}
+			alias_method :_#{method_name}, :#{method_name}
 		RUBY
 
-		registered_elements[element] = tag
+		registered_elements[method_name] = tag
 
-		element
+		method_name
 	end
 end
