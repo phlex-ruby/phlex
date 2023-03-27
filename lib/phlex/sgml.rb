@@ -303,7 +303,7 @@ module Phlex
 
 			original_length = target.length
 			content = yield(self)
-			plain(content) if original_length == target.length
+			__text__(content) if original_length == target.length
 
 			nil
 		end
@@ -317,7 +317,7 @@ module Phlex
 
 			original_length = target.length
 			content = yield
-			plain(content) if original_length == target.length
+			__text__(content) if original_length == target.length
 
 			nil
 		end
@@ -332,7 +332,28 @@ module Phlex
 
 			original_length = target.length
 			content = yield(*args)
-			plain(content) if original_length == target.length
+			__text__(content) if original_length == target.length
+
+			nil
+		end
+
+		# Performs the same task as the public method #plain, but does not raise an error if an unformattable object is passed
+		# @api private
+		def __text__(content)
+			case content
+			when String
+				@_context.target << ERB::Escape.html_escape(content)
+			when Symbol
+				@_context.target << ERB::Escape.html_escape(content.name)
+			when Integer
+				@_context.target << ERB::Escape.html_escape(content.to_s)
+			when nil
+				nil
+			else
+				if (formatted_object = format_object(content))
+					@_context.target << ERB::Escape.html_escape(formatted_object)
+				end
+			end
 
 			nil
 		end
