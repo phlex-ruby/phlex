@@ -127,21 +127,12 @@ module Phlex
 		end
 
 		# Output text content. The text will be HTML-escaped.
+		# @param content [String, Symbol, Integer, void] the content to be output on the buffer. Strings, Symbols, and Integers are handled by `plain` directly, but any object can be handled by overriding `format_object`
 		# @return [nil]
+		# @see #format_object
 		def plain(content)
-			case content
-			when String
-				@_context.target << ERB::Escape.html_escape(content)
-			when Symbol
-				@_context.target << ERB::Escape.html_escape(content.name)
-			when Integer
-				@_context.target << ERB::Escape.html_escape(content.to_s)
-			when nil
-				nil
-			else
-				if (formatted_object = format_object(content))
-					@_context.target << ERB::Escape.html_escape(formatted_object)
-				end
+			unless __text__(content)
+				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
 			end
 
 			nil
@@ -250,7 +241,7 @@ module Phlex
 			nil
 		end
 
-		# Determines if the component should render. By default, it returns <code>true</code>.
+		# Determines if the component should render. By default, it returns `true`.
 		# @abstract Override to define your own predicate to prevent rendering.
 		# @return [Boolean]
 		def render?
@@ -258,6 +249,7 @@ module Phlex
 		end
 
 		# Format the object for output
+		# @abstract Override to define your own format handling for different object types. Please remember to call `super` in the case that the passed object doesn't match, so that object formatting can be added at different layers of the inheritance tree.
 		# @return [String]
 		def format_object(object)
 			case object
@@ -266,7 +258,7 @@ module Phlex
 			end
 		end
 
-		# @abstract Override this method to hook in around a template render. You can do things before and after calling <code>super</code> to render the template. You should always call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @abstract Override this method to hook in around a template render. You can do things before and after calling `super` to render the template. You should always call `super` so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
 		def around_template
 			before_template
@@ -276,13 +268,13 @@ module Phlex
 			nil
 		end
 
-		# @abstract Override this method to hook in right before a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @abstract Override this method to hook in right before a template is rendered. Please remember to call `super` so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
 		def before_template
 			nil
 		end
 
-		# @abstract Override this method to hook in right after a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
+		# @abstract Override this method to hook in right after a template is rendered. Please remember to call `super` so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
 		def after_template
 			nil
@@ -298,7 +290,7 @@ module Phlex
 
 			original_length = target.length
 			content = yield(self)
-			plain(content) if original_length == target.length
+			__text__(content) if original_length == target.length
 
 			nil
 		end
@@ -312,7 +304,7 @@ module Phlex
 
 			original_length = target.length
 			content = yield
-			plain(content) if original_length == target.length
+			__text__(content) if original_length == target.length
 
 			nil
 		end
@@ -327,9 +319,32 @@ module Phlex
 
 			original_length = target.length
 			content = yield(*args)
-			plain(content) if original_length == target.length
+			__text__(content) if original_length == target.length
 
 			nil
+		end
+
+		# Performs the same task as the public method #plain, but does not raise an error if an unformattable object is passed
+		# @api private
+		def __text__(content)
+			case content
+			when String
+				@_context.target << ERB::Escape.html_escape(content)
+			when Symbol
+				@_context.target << ERB::Escape.html_escape(content.name)
+			when Integer
+				@_context.target << ERB::Escape.html_escape(content.to_s)
+			when nil
+				nil
+			else
+				if (formatted_object = format_object(content))
+					@_context.target << ERB::Escape.html_escape(formatted_object)
+				else
+					return false
+				end
+			end
+
+			true
 		end
 
 		# @api private
