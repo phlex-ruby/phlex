@@ -5,7 +5,7 @@ require "zeitwerk"
 require "concurrent"
 
 module Phlex
-	# A module that's included in Phlex all exceptions allowing you to match any Phlex error.
+	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
 	#  rescue Phlex::Error
 	module Error; end

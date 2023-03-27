@@ -29,7 +29,7 @@ module Phlex::Elements
 	# @param method_name [Symbol]
 	# @param tag [String] the name of the tag, otherwise this will be the method name with underscores replaced with dashes.
 	# @note The methods defined by this macro depend on other methods from {SGML} so they should always be mixed into an {HTML} or {SVG} component.
-	# @example Register the custom element <code><trix-editor></code>
+	# @example Register the custom element `<trix-editor>`
 	# 	register_element :trix_editor
 	def register_element(method_name, tag: nil)
 		tag ||= method_name.name.tr("_", "-")

@@ -5,6 +5,7 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex
+	# **Standard Generalized Markup Language** for behaviour common to {HTML} and {SVG}.
 	class SGML
 		class << self
 			# Render the view to a String. Arguments are delegated to {.new}.

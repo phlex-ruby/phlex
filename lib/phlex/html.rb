@@ -36,7 +36,7 @@ module Phlex
 			plain(...)
 		end
 
-		# Outputs an <code><svg></code> tag
+		# Outputs an `<svg>` tag
 		# @return [nil]
 		# @see https://developer.mozilla.org/docs/Web/SVG/Element/svg
 		def svg(...)

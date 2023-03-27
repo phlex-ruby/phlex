@@ -5,73 +5,73 @@ module Phlex::HTML::VoidElements
 	extend Phlex::Elements
 
 	# @!method area(**attributes, &content)
-	# 	Outputs an <code><area></code> tag.
+	# 	Outputs an `<area>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/area
 	register_void_element :area, tag: "area"
 
 	# @!method br(**attributes, &content)
-	# 	Outputs a <code><br></code> tag.
+	# 	Outputs a `<br>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/br
 	register_void_element :br, tag: "br"
 
 	# @!method embed(**attributes, &content)
-	# 	Outputs an <code><embed></code> tag.
+	# 	Outputs an `<embed>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/embed
 	register_void_element :embed, tag: "embed"
 
 	# @!method hr(**attributes, &content)
-	# 	Outputs an <code><hr></code> tag.
+	# 	Outputs an `<hr>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/hr
 	register_void_element :hr, tag: "hr"
 
 	# @!method img(**attributes, &content)
-	# 	Outputs an <code><img></code> tag.
+	# 	Outputs an `<img>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/img
 	register_void_element :img, tag: "img"
 
 	# @!method input(**attributes, &content)
-	# 	Outputs an <code><input></code> tag.
+	# 	Outputs an `<input>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/input
 	register_void_element :input, tag: "input"
 
 	# @!method link(**attributes, &content)
-	# 	Outputs a <code><link></code> tag.
+	# 	Outputs a `<link>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/link
 	register_void_element :link, tag: "link"
 
 	# @!method meta(**attributes, &content)
-	# 	Outputs a <code><meta></code> tag.
+	# 	Outputs a `<meta>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/meta
 	register_void_element :meta, tag: "meta"
 
 	# @!method param(**attributes, &content)
-	# 	Outputs a <code><param></code> tag.
+	# 	Outputs a `<param>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/param
 	register_void_element :param, tag: "param"
 
 	# @!method source(**attributes, &content)
-	# 	Outputs a <code><source></code> tag.
+	# 	Outputs a `<source>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/source
 	register_void_element :source, tag: "source"
 
 	# @!method track(**attributes, &content)
-	# 	Outputs a <code><track></code> tag.
+	# 	Outputs a `<track>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/track
 	register_void_element :track, tag: "track"
 
 	# @!method col(**attributes, &content)
-	# 	Outputs a <code><col></code> tag.
+	# 	Outputs a `<col>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/col
 	register_void_element :col, tag: "col"
