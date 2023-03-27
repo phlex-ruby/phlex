@@ -28,6 +28,7 @@ module Phlex::Elements
 	# Register a custom element. This macro defines an element method for the current class and descendents only. There is no global element registry.
 	# @param method_name [Symbol]
 	# @param tag [String] the name of the tag, otherwise this will be the method name with underscores replaced with dashes.
+	# @return [Symbol] the name of the method created
 	# @note The methods defined by this macro depend on other methods from {SGML} so they should always be mixed into an {HTML} or {SVG} component.
 	# @example Register the custom element `<trix-editor>`
 	# 	register_element :trix_editor

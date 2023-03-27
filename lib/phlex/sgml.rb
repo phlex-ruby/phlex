@@ -127,7 +127,9 @@ module Phlex
 		end
 
 		# Output text content. The text will be HTML-escaped.
+		# @param content [String, Symbol, Integer, void] the content to be output on the buffer. Strings, Symbols, and Integers are handled by <code>plain</code> directly, but any object can be handled by overriding <code>format_object</code>
 		# @return [nil]
+		# @see #format_object
 		def plain(content)
 			case content
 			when String
@@ -141,6 +143,8 @@ module Phlex
 			else
 				if (formatted_object = format_object(content))
 					@_context.target << ERB::Escape.html_escape(formatted_object)
+				else
+					raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
 				end
 			end
 
@@ -258,6 +262,7 @@ module Phlex
 		end
 
 		# Format the object for output
+		# @abstract Override to define your own format handling for different object types. Please remember to call <code>super</code> in the case that the passed object doesn't match, so that object formatting can be added at different layers of the inheritance tree.
 		# @return [String]
 		def format_object(object)
 			case object
