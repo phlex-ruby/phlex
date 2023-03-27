@@ -2,48 +2,6 @@
 
 Phlex lets you compose web views in pure Ruby — kind of like JSX, but not really anything like JSX. It’s super-fast, thread-safe and supports TruffleRuby v22.2+, JRuby v9.2+ and MRI v2.7+. Phlex currently supports [HTML](https://rubydoc.info/gems/phlex/Phlex/HTML) and [SVG](https://rubydoc.info/gems/phlex/Phlex/SVG) views, and we’re exploring JSON and XML.
 
-### Documentation 📗
-
-Documentation can be found at [www.phlex.fun](https://www.phlex.fun).
-
-### Support ✋
-
-If you run into any trouble, please [start a discussion](https://github.com/joeldrapper/phlex/discussions/new), or [open an issue](https://github.com/joeldrapper/phlex/issues/new) if you think you’ve found a bug.
-
-### Ecosystem 🌱
-- [joeldrapper/phlex-rails](https://github.com/joeldrapper/phlex-rails) — Ruby on Rails integration
-- [joeldrapper/phlex.fun](https://github.com/joeldrapper/phlex.fun) — Docs Website
-- [joeldrapper/phlex-markdown](https://github.com/joeldrapper/phlex-markdown) — Markdown to HTML using Phlex
-- [joeldrapper/phlex-compiler](https://github.com/joeldrapper/phlex-compiler) — A compiler for Phlex
-- [joeldrapper/phlex-translation](https://github.com/joeldrapper/phlex-translation) — I18n Support for Phlex
-- [joeldrapper/phlex-testing-nokogiri](https://github.com/joeldrapper/phlex-testing-nokogiri) — Nokogiri support
-- [joeldrapper/phlex-testing-capybara](https://github.com/joeldrapper/phlex-testing-capybara) — Capybara support
-- [marcoroth/phlexing](https://github.com/marcoroth/phlexing) — ERB → Phlex converter
-- [ViewComponent/lookbook](https://github.com/ViewComponent/lookbook) — Document and preview Phlex components in Rails (v2 beta only)
-
-### Community 🙌
-
-Everyone interacting in Phlex codebases, issue trackers or chat rooms is expected to follow the [code of conduct](https://github.com/joeldrapper/phlex/blob/main/CODE_OF_CONDUCT.md).
-
-### Who uses Phlex?
-
-- [Clearscope](https://www.clearscope.io)
-- [Benchmark Wine Group](https://www.benchmarkwine.com)
-
-*If you’re using Phlex in production, please open a PR to list it here.*
-
-### Sponsorship 💖
-
-Maintaining a library is a lot of work. If your company benefits from this work or is likely to benefit from it in the future, please consider [sponsorship](https://github.com/sponsors/joeldrapper). Phlex is actively developed and maintained by [Joel Drapper](https://github.com/sponsors/joeldrapper).
-
-### Security 🚨
-
-If you’ve found a potential security issue, please email [security@phlex.fun](mailto:security@phlex.fun).
-
-### Thanks 🙏
-
-Thanks [Logology](https://www.logology.co) for sponsoring our logo.
-
 ### Prior Art 🎨
 
 - [markaby](https://github.com/markaby/markaby)
