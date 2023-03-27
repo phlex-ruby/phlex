@@ -131,21 +131,8 @@ module Phlex
 		# @return [nil]
 		# @see #format_object
 		def plain(content)
-			case content
-			when String
-				@_context.target << ERB::Escape.html_escape(content)
-			when Symbol
-				@_context.target << ERB::Escape.html_escape(content.name)
-			when Integer
-				@_context.target << ERB::Escape.html_escape(content.to_s)
-			when nil
-				nil
-			else
-				if (formatted_object = format_object(content))
-					@_context.target << ERB::Escape.html_escape(formatted_object)
-				else
-					raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
-				end
+			unless __text__(content)
+				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
 			end
 
 			nil
@@ -352,10 +339,12 @@ module Phlex
 			else
 				if (formatted_object = format_object(content))
 					@_context.target << ERB::Escape.html_escape(formatted_object)
+				else
+					return false
 				end
 			end
 
-			nil
+			true
 		end
 
 		# @api private
