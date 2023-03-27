@@ -72,13 +72,6 @@ module Phlex
 		end
 
 		# @api private
-		private def flush
-			target = @_context.target
-			@_buffer << target.dup
-			target.clear
-		end
-
-		# @api private
 		def await(task)
 			if task.is_a?(Concurrent::IVar)
 				flush if task.pending?
@@ -131,41 +124,6 @@ module Phlex
 			end
 
 			buffer << context.target unless parent
-		end
-
-		# Render another component, block or enumerable
-		# @return [nil]
-		# @overload render(component, &block)
-		# 	Renders the component.
-		# 	@param component [Phlex::SGML]
-		# @overload render(component_class, &block)
-		# 	Renders a new instance of the component class. This is useful for component classes that take no arguments.
-		# 	@param component_class [Class<Phlex::SGML>]
-		# @overload render(proc)
-		# 	Renders the proc with {#yield_content}.
-		# 	@param proc [Proc]
-		# @overload render(enumerable)
-		# 	Renders each item of the enumerable.
-		# 	@param enumerable [Enumerable]
-		# 	@example
-		# 		render @items
-		private def render(renderable, &block)
-			case renderable
-			when Phlex::SGML
-				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
-			when Class
-				if renderable < Phlex::SGML
-					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
-				end
-			when Enumerable
-				renderable.each { |r| render(r, &block) }
-			when Proc
-				yield_content(&renderable)
-			else
-				raise ArgumentError, "You can't render a #{renderable}."
-			end
-
-			nil
 		end
 
 		# Output text content. The text will be HTML-escaped.
@@ -236,11 +194,55 @@ module Phlex
 			@_context.with_target(+"") { yield_content(&block) }
 		end
 
+		private
+
+		# @api private
+		def flush
+			target = @_context.target
+			@_buffer << target.dup
+			target.clear
+		end
+
+		# Render another component, block or enumerable
+		# @return [nil]
+		# @overload render(component, &block)
+		# 	Renders the component.
+		# 	@param component [Phlex::SGML]
+		# @overload render(component_class, &block)
+		# 	Renders a new instance of the component class. This is useful for component classes that take no arguments.
+		# 	@param component_class [Class<Phlex::SGML>]
+		# @overload render(proc)
+		# 	Renders the proc with {#yield_content}.
+		# 	@param proc [Proc]
+		# @overload render(enumerable)
+		# 	Renders each item of the enumerable.
+		# 	@param enumerable [Enumerable]
+		# 	@example
+		# 		render @items
+		def render(renderable, &block)
+			case renderable
+			when Phlex::SGML
+				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+			when Class
+				if renderable < Phlex::SGML
+					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+				end
+			when Enumerable
+				renderable.each { |r| render(r, &block) }
+			when Proc
+				yield_content(&renderable)
+			else
+				raise ArgumentError, "You can't render a #{renderable}."
+			end
+
+			nil
+		end
+
 		# Like {#capture} but the output is vanished into a BlackHole buffer.
 		# Because the BlackHole does nothing with the output, this should be faster.
 		# @return [nil]
 		# @api private
-		private def __vanish__(*args)
+		def __vanish__(*args)
 			return unless block_given?
 
 			@_context.with_target(BlackHole) { yield(*args) }
@@ -251,13 +253,13 @@ module Phlex
 		# Determines if the component should render. By default, it returns <code>true</code>.
 		# @abstract Override to define your own predicate to prevent rendering.
 		# @return [Boolean]
-		private def render?
+		def render?
 			true
 		end
 
 		# Format the object for output
 		# @return [String]
-		private def format_object(object)
+		def format_object(object)
 			case object
 			when Float
 				object.to_s
@@ -266,7 +268,7 @@ module Phlex
 
 		# @abstract Override this method to hook in around a template render. You can do things before and after calling <code>super</code> to render the template. You should always call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
-		private def around_template
+		def around_template
 			before_template
 			yield
 			after_template
@@ -276,20 +278,20 @@ module Phlex
 
 		# @abstract Override this method to hook in right before a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
-		private def before_template
+		def before_template
 			nil
 		end
 
 		# @abstract Override this method to hook in right after a template is rendered. Please remember to call <code>super</code> so that callbacks can be added at different layers of the inheritance tree.
 		# @return [nil]
-		private def after_template
+		def after_template
 			nil
 		end
 
 		# Yields the block and checks if it buffered anything. If nothing was buffered, the return value is treated as text. The text is always HTML-escaped.
 		# @yieldparam component [self]
 		# @return [nil]
-		private def yield_content
+		def yield_content
 			return unless block_given?
 
 			target = @_context.target
@@ -303,7 +305,7 @@ module Phlex
 
 		# Same as {#yield_content} but yields no arguments.
 		# @yield Yields the block with no arguments.
-		private def yield_content_with_no_args
+		def yield_content_with_no_args
 			return unless block_given?
 
 			target = @_context.target
@@ -318,7 +320,7 @@ module Phlex
 		# Same as {#yield_content} but accepts a splat of arguments to yield. This is slightly slower than {#yield_content}.
 		# @yield [*args] Yields the given arguments.
 		# @return [nil]
-		private def yield_content_with_args(*args)
+		def yield_content_with_args(*args)
 			return unless block_given?
 
 			target = @_context.target
@@ -331,14 +333,14 @@ module Phlex
 		end
 
 		# @api private
-		private def __attributes__(**attributes)
+		def __attributes__(**attributes)
 			__final_attributes__(**attributes).tap do |buffer|
 				Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] = buffer.freeze
 			end
 		end
 
 		# @api private
-		private def __final_attributes__(**attributes)
+		def __final_attributes__(**attributes)
 			if respond_to?(:process_attributes)
 				attributes = process_attributes(**attributes)
 			end
@@ -358,7 +360,7 @@ module Phlex
 		end
 
 		# @api private
-		private def __build_attributes__(attributes, buffer:)
+		def __build_attributes__(attributes, buffer:)
 			attributes.each do |k, v|
 				next unless v
 

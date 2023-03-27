@@ -5,8 +5,24 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 end
 
 module Phlex::Helpers
+	private
+
+	# Tokens
 	# @return [String]
-	private def tokens(*tokens, **conditional_tokens)
+	# @example With Proc conditions
+	# 	tokens(
+	# 		-> { true } => "a",
+	# 		-> { false } => "b"
+	# 	)
+	# @example With method conditions
+	# 	tokens(
+	# 		active?: "active"
+	# 	)
+	# @example With else condition
+	# 	tokens(
+	# 		active?: { then: "active", else: "inactive" }
+	# 	)
+	def tokens(*tokens, **conditional_tokens)
 		conditional_tokens.each do |condition, token|
 			truthy = case condition
 				when Symbol then send(condition)
@@ -33,7 +49,7 @@ module Phlex::Helpers
 	end
 
 	# @api private
-	private def __append_token__(tokens, token)
+	def __append_token__(tokens, token)
 		case token
 			when nil then nil
 			when String then tokens << token
@@ -44,8 +60,9 @@ module Phlex::Helpers
 		end
 	end
 
+	# Like {#tokens} but returns a {Hash} where the tokens are the value for `:class`.
 	# @return [Hash]
-	private def classes(*tokens, **conditional_tokens)
+	def classes(*tokens, **conditional_tokens)
 		tokens = self.tokens(*tokens, **conditional_tokens)
 
 		if tokens.empty?
@@ -56,7 +73,7 @@ module Phlex::Helpers
 	end
 
 	# @return [Hash]
-	private def mix(*args)
+	def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
 				case new
