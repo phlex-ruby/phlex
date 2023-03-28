@@ -391,15 +391,19 @@ module Phlex
 				end
 
 				case v
-				in true
+				when true
 					buffer << " " << name
-				in String
+				when String
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v) << '"'
-				in Symbol
+				when Symbol
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v.name) << '"'
-				in Array => array if array.all? { |el| el.is_a?(String) || el.is_a?(Symbol) }
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.join(" ")) << '"'
-				in Hash
+				when Array
+					if v.all? { |el| el.is_a?(String) || el.is_a?(Symbol) }
+						buffer << " " << name << '="' << ERB::Escape.html_escape(v.join(" ")) << '"'
+					else
+						raise ArgumentError, "Element attributes must be either a Boolean, a String, a Symbol, an Array of Strings or Symbols, or a Hash with values of one of these types"
+					end
+				when Hash
 					__build_attributes__(
 						v.transform_keys { |subkey|
 							case subkey
