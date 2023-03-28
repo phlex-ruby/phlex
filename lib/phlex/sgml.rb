@@ -397,12 +397,6 @@ module Phlex
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v) << '"'
 				when Symbol
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v.name) << '"'
-				when Array
-					if v.all? { |el| el.is_a?(String) || el.is_a?(Symbol) }
-						buffer << " " << name << '="' << ERB::Escape.html_escape(v.join(" ")) << '"'
-					else
-						raise ArgumentError, "Element attributes must be either a Boolean, a String, a Symbol, an Array of Strings or Symbols, or a Hash with values of one of these types"
-					end
 				when Hash
 					__build_attributes__(
 						v.transform_keys { |subkey|
@@ -412,6 +406,12 @@ module Phlex
 							end
 						}, buffer: buffer
 					)
+				when Array
+					if v.all? { |el| el.is_a?(String) || el.is_a?(Symbol) }
+						buffer << " " << name << '="' << ERB::Escape.html_escape(v.join(" ")) << '"'
+					else
+						raise ArgumentError, "Element attributes must be either a Boolean, a String, a Symbol, an Array of Strings or Symbols, or a Hash with values of one of these types"
+					end
 				else
 					raise ArgumentError, "Element attributes must be either a Boolean, a String, a Symbol, an Array of Strings or Symbols, or a Hash with values of one of these types"
 				end
