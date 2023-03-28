@@ -63,6 +63,18 @@ describe Phlex::HTML do
 		end
 	end
 
+	with "a set of string attributes" do
+		view do
+			def template
+				div(class: Set["bg-red-500", "rounded"])
+			end
+		end
+
+		it "joins the array with a space" do
+			expect(output).to be == %(<div class="bg-red-500 rounded"></div>)
+		end
+	end
+
 	with "an object that is not a boolean, String, Symbol, Array, or Hash" do
 		view do
 			def template
