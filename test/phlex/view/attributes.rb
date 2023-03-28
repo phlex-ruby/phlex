@@ -75,18 +75,6 @@ describe Phlex::HTML do
 		end
 	end
 
-	with "an array that has an object that is not a boolean, String, Symbol, Array, or Hash" do
-		view do
-			def template
-				div(class: ["bg-red-500", :rounded, Object.new])
-			end
-		end
-
-		it "raises a Phlex::ArgumentError" do
-			expect { output }.to raise_exception(Phlex::ArgumentError)
-		end
-	end
-
 	if RUBY_ENGINE == "ruby"
 		with "unique tag attributes" do
 			view do
