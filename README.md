@@ -14,3 +14,4 @@ Phlex lets you compose web views in pure Ruby — kind of like JSX, but not real
 - [hyperstack](https://github.com/hyperstack-org/hyperstack)
 - [clearwater](https://github.com/clearwater-rb/clearwater)
 - [paggio](https://github.com/opal/paggio)
+- [Inesita](https://github.com/inesita-rb/inesita)
