@@ -361,14 +361,6 @@ module Phlex::HTML::StandardElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/mark
 	register_element :mark, tag: "mark"
 
-	# @!method menuitem(**attributes, &content)
-	# 	Outputs a `<menuitem>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/menuitem
-	# 	@deprecated
-	register_element :menuitem, tag: "menuitem"
-
 	# @!method meter(**attributes, &content)
 	# 	Outputs a `<meter>` tag.
 	# 	@return [nil]
