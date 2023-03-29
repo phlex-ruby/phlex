@@ -382,7 +382,7 @@ module Phlex
 				name = case k
 					when String then k
 					when Symbol then k.name.tr("_", "-")
-					else k.to_s
+					else raise ArgumentError, "Attribute keys should be Strings or Symbols."
 				end
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
