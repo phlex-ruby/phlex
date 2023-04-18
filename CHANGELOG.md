@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file. The format 
 ### Removed
 
 - Removed the `menuitem` element as it's a deprecated HTML element.
+- Removed the `SGML#text` method. This has been replaced with `SGML#plain`.
 
 ***
 
