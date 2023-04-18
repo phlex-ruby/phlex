@@ -55,14 +55,38 @@ describe Phlex::HTML do
 				end
 			end
 
-			with "proc" do
+			with "0-argument lambda" do
 				view do
 					define_method :template do
-						render proc { h1 { "Hi" } }
+						render -> { h1 { "Hi" } }
 					end
 				end
 
-				it "renders the other view" do
+				it "renders the lambda" do
+					expect(output).to be == "<h1>Hi</h1>"
+				end
+			end
+
+			with "1-argument lambda" do
+				view do
+					define_method :template do
+						render -> (_view) { h1 { "Hi" } }
+					end
+				end
+
+				it "renders the lambda" do
+					expect(output).to be == "<h1>Hi</h1>"
+				end
+			end
+
+			with "multi-argument proc" do
+				view do
+					define_method :template do
+						render proc { |_a, _b, _c| h1 { "Hi" } }
+					end
+				end
+
+				it "renders the lambda" do
 					expect(output).to be == "<h1>Hi</h1>"
 				end
 			end

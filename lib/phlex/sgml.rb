@@ -221,7 +221,11 @@ module Phlex
 			when Enumerable
 				renderable.each { |r| render(r, &block) }
 			when Proc
-				yield_content(&renderable)
+				if renderable.arity == 0
+					yield_content_with_no_args(&renderable)
+				else
+					yield_content(&renderable)
+				end
 			else
 				raise ArgumentError, "You can't render a #{renderable}."
 			end
