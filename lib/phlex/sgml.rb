@@ -337,7 +337,7 @@ module Phlex
 			when Symbol
 				@_context.target << ERB::Escape.html_escape(content.name)
 			when Integer
-				@_context.target << ERB::Escape.html_escape(content.to_s)
+				@_context.target << content.to_s
 			when nil
 				nil
 			else
