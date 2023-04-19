@@ -417,7 +417,7 @@ module Phlex
 				when Set
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
 				else
-					raise ArgumentError, "Element attributes must be either a Boolean, a String, a Symbol, an Array of Strings or Symbols, or a Hash with values of one of these types"
+					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_str) << '"'
 				end
 			end
 
