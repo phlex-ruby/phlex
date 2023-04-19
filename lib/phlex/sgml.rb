@@ -401,6 +401,8 @@ module Phlex
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v) << '"'
 				when Symbol
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v.name) << '"'
+				when Integer, Float
+					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
 					__build_attributes__(
 						v.transform_keys { |subkey|
