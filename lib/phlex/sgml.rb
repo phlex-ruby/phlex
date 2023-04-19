@@ -337,7 +337,7 @@ module Phlex
 			when Symbol
 				@_context.target << ERB::Escape.html_escape(content.name)
 			when Integer
-				@_context.target << ERB::Escape.html_escape(content.to_s)
+				@_context.target << content.to_s
 			when nil
 				nil
 			else
@@ -401,6 +401,8 @@ module Phlex
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v) << '"'
 				when Symbol
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v.name) << '"'
+				when Integer, Float
+					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
 					__build_attributes__(
 						v.transform_keys { |subkey|
@@ -415,7 +417,7 @@ module Phlex
 				when Set
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
 				else
-					raise ArgumentError, "Element attributes must be either a Boolean, a String, a Symbol, an Array of Strings or Symbols, or a Hash with values of one of these types"
+					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_str) << '"'
 				end
 			end
 

@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+class ToStrable
+	def to_str
+		"foo"
+	end
+end
+
 describe Phlex::HTML do
 	extend ViewHelper
 
@@ -78,12 +84,24 @@ describe Phlex::HTML do
 	with "an object that is not a boolean, String, Symbol, Array, or Hash" do
 		view do
 			def template
-				div(class: Object.new)
+				div(class: ToStrable.new)
 			end
 		end
 
-		it "raises a Phlex::ArgumentError" do
-			expect { output }.to raise_exception(Phlex::ArgumentError)
+		it "coerces the object to a string" do
+			expect(output).to be == %(<div class="foo"></div>)
+		end
+	end
+
+	with "an integer and a float" do
+		view do
+			def template
+				input type: "range", min: 0, max: 10, step: 0.5
+			end
+		end
+
+		it "converts the attribute values to strings" do
+			expect(output).to be == %(<input type="range" min="0" max="10" step="0.5">)
 		end
 	end
 
