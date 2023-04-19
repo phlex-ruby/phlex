@@ -102,7 +102,7 @@ module Phlex
 
 			block ||= @_content_block
 
-			return unless render?
+			return "" unless render?
 
 			around_template do
 				if block
