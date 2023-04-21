@@ -182,7 +182,20 @@ module Phlex
 		def capture(&block)
 			return "" unless block
 
-			@_context.with_target(+"") { yield_content(&block) }
+			new_buffer = +""
+
+			begin
+				original_buffer = @_buffer
+				@_buffer = new_buffer
+				@_context.with_target(+"") do
+					yield_content(&block)
+					flush
+				end
+			ensure
+				@_buffer = original_buffer
+			end
+
+			new_buffer
 		end
 
 		private
