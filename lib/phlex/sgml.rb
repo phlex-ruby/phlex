@@ -182,13 +182,15 @@ module Phlex
 		def capture(&block)
 			return "" unless block
 
-			@_context.with_target(+"") { yield_content(&block) }
+			@_context.capturing_into(+"") { yield_content(&block) }
 		end
 
 		private
 
 		# @api private
 		def flush
+			return if @_context.capturing
+
 			target = @_context.target
 			@_buffer << target.dup
 			target.clear
@@ -240,7 +242,7 @@ module Phlex
 		def __vanish__(*args)
 			return unless block_given?
 
-			@_context.with_target(BlackHole) { yield(*args) }
+			@_context.capturing_into(BlackHole) { yield(*args) }
 
 			nil
 		end
