@@ -96,7 +96,7 @@ module Phlex::HTML::StandardElements
 	register_element :cite, tag: "cite"
 
 	# @!method code(**attributes, &content)
-	# 	Outputs a ``` tag.
+	# 	Outputs a `<code>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/code
@@ -278,14 +278,14 @@ module Phlex::HTML::StandardElements
 	register_element :header, tag: "header"
 
 	# @!method hgroup(**attributes, &content)
-	# 	Outputs a `<hgroup>` tag.
+	# 	Outputs an `<hgroup>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/hgroup
 	register_element :hgroup, tag: "hgroup"
 
 	# @!method html(**attributes, &content)
-	# 	Outputs a `<html>` tag.
+	# 	Outputs an `<html>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/html
@@ -453,14 +453,14 @@ module Phlex::HTML::StandardElements
 	register_element :q, tag: "q"
 
 	# @!method rp(**attributes, &content)
-	# 	Outputs a `<rp>` tag.
+	# 	Outputs an `<rp>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/rp
 	register_element :rp, tag: "rp"
 
 	# @!method rt(**attributes, &content)
-	# 	Outputs a `<rt>` tag.
+	# 	Outputs an `<rt>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/rt
@@ -474,7 +474,7 @@ module Phlex::HTML::StandardElements
 	register_element :ruby, tag: "ruby"
 
 	# @!method s(**attributes, &content)
-	# 	Outputs a `<s>` tag.
+	# 	Outputs an `<s>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/s

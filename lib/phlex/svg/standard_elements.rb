@@ -74,175 +74,175 @@ module Phlex::SVG::StandardElements
 	register_element :ellipse, tag: "ellipse"
 
 	# @!method feBlend(**attributes, &content)
-	# 	Outputs a `<feBlend>` tag.
+	# 	Outputs an `<feBlend>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feBlend
 	register_element :feBlend, tag: "feBlend"
 
 	# @!method feColorMatrix(**attributes, &content)
-	# 	Outputs a `<feColorMatrix>` tag.
+	# 	Outputs an `<feColorMatrix>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feColorMatrix
 	register_element :feColorMatrix, tag: "feColorMatrix"
 
 	# @!method feComponentTransfer(**attributes, &content)
-	# 	Outputs a `<feComponentTransfer>` tag.
+	# 	Outputs an `<feComponentTransfer>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feComponentTransfer
 	register_element :feComponentTransfer, tag: "feComponentTransfer"
 
 	# @!method feComposite(**attributes, &content)
-	# 	Outputs a `<feComposite>` tag.
+	# 	Outputs an `<feComposite>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feComposite
 	register_element :feComposite, tag: "feComposite"
 
 	# @!method feConvolveMatrix(**attributes, &content)
-	# 	Outputs a `<feConvolveMatrix>` tag.
+	# 	Outputs an `<feConvolveMatrix>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feConvolveMatrix
 	register_element :feConvolveMatrix, tag: "feConvolveMatrix"
 
 	# @!method feDiffuseLighting(**attributes, &content)
-	# 	Outputs a `<feDiffuseLighting>` tag.
+	# 	Outputs an `<feDiffuseLighting>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDiffuseLighting
 	register_element :feDiffuseLighting, tag: "feDiffuseLighting"
 
 	# @!method feDisplacementMap(**attributes, &content)
-	# 	Outputs a `<feDisplacementMap>` tag.
+	# 	Outputs an `<feDisplacementMap>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDisplacementMap
 	register_element :feDisplacementMap, tag: "feDisplacementMap"
 
 	# @!method feDistantLight(**attributes, &content)
-	# 	Outputs a `<feDistantLight>` tag.
+	# 	Outputs an `<feDistantLight>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDistantLight
 	register_element :feDistantLight, tag: "feDistantLight"
 
 	# @!method feDropShadow(**attributes, &content)
-	# 	Outputs a `<feDropShadow>` tag.
+	# 	Outputs an `<feDropShadow>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDropShadow
 	register_element :feDropShadow, tag: "feDropShadow"
 
 	# @!method feFlood(**attributes, &content)
-	# 	Outputs a `<feFlood>` tag.
+	# 	Outputs an `<feFlood>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFlood
 	register_element :feFlood, tag: "feFlood"
 
 	# @!method feFuncA(**attributes, &content)
-	# 	Outputs a `<feFuncA>` tag.
+	# 	Outputs an `<feFuncA>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncA
 	register_element :feFuncA, tag: "feFuncA"
 
 	# @!method feFuncB(**attributes, &content)
-	# 	Outputs a `<feFuncB>` tag.
+	# 	Outputs an `<feFuncB>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncB
 	register_element :feFuncB, tag: "feFuncB"
 
 	# @!method feFuncG(**attributes, &content)
-	# 	Outputs a `<feFuncG>` tag.
+	# 	Outputs an `<feFuncG>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncG
 	register_element :feFuncG, tag: "feFuncG"
 
 	# @!method feFuncR(**attributes, &content)
-	# 	Outputs a `<feFuncR>` tag.
+	# 	Outputs an `<feFuncR>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncR
 	register_element :feFuncR, tag: "feFuncR"
 
 	# @!method feGaussianBlur(**attributes, &content)
-	# 	Outputs a `<feGaussianBlur>` tag.
+	# 	Outputs an `<feGaussianBlur>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feGaussianBlur
 	register_element :feGaussianBlur, tag: "feGaussianBlur"
 
 	# @!method feImage(**attributes, &content)
-	# 	Outputs a `<feImage>` tag.
+	# 	Outputs an `<feImage>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feImage
 	register_element :feImage, tag: "feImage"
 
 	# @!method feMerge(**attributes, &content)
-	# 	Outputs a `<feMerge>` tag.
+	# 	Outputs an `<feMerge>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feMerge
 	register_element :feMerge, tag: "feMerge"
 
 	# @!method feMergeNode(**attributes, &content)
-	# 	Outputs a `<feMergeNode>` tag.
+	# 	Outputs an `<feMergeNode>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feMergeNode
 	register_element :feMergeNode, tag: "feMergeNode"
 
 	# @!method feMorphology(**attributes, &content)
-	# 	Outputs a `<feMorphology>` tag.
+	# 	Outputs an `<feMorphology>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feMorphology
 	register_element :feMorphology, tag: "feMorphology"
 
 	# @!method feOffset(**attributes, &content)
-	# 	Outputs a `<feOffset>` tag.
+	# 	Outputs an `<feOffset>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feOffset
 	register_element :feOffset, tag: "feOffset"
 
 	# @!method fePointLight(**attributes, &content)
-	# 	Outputs a `<fePointLight>` tag.
+	# 	Outputs an `<fePointLight>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/fePointLight
 	register_element :fePointLight, tag: "fePointLight"
 
 	# @!method feSpecularLighting(**attributes, &content)
-	# 	Outputs a `<feSpecularLighting>` tag.
+	# 	Outputs an `<feSpecularLighting>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feSpecularLighting
 	register_element :feSpecularLighting, tag: "feSpecularLighting"
 
 	# @!method feSpotLight(**attributes, &content)
-	# 	Outputs a `<feSpotLight>` tag.
+	# 	Outputs an `<feSpotLight>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feSpotLight
 	register_element :feSpotLight, tag: "feSpotLight"
 
 	# @!method feTile(**attributes, &content)
-	# 	Outputs a `<feTile>` tag.
+	# 	Outputs an `<feTile>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feTile
 	register_element :feTile, tag: "feTile"
 
 	# @!method feTurbulence(**attributes, &content)
-	# 	Outputs a `<feTurbulence>` tag.
+	# 	Outputs an `<feTurbulence>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feTurbulence
