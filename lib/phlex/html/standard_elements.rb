@@ -81,6 +81,13 @@ module Phlex::HTML::StandardElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/button
 	register_element :button, tag: "button"
 
+	# @!method canvas(**attributes, &content)
+	# 	Outputs a `<canvas>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/canvas
+	register_element :canvas, tag: "canvas"
+
 	# @!method caption(**attributes, &content)
 	# 	Outputs a `<caption>` tag.
 	# 	@return [nil]
