@@ -39,6 +39,9 @@ jobs:
       - name: Tests
         run: bundle exec sus
 
+      - name: GreenDots tests
+        run: bundle exec gd gd
+
   rubocop:
     runs-on: 'ubuntu-latest'
     steps:

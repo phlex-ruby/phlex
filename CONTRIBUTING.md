@@ -14,9 +14,19 @@ Phlex is incredibly complex and requires a lot of meta-programming but when you 
 
 ## Tests
 
-We use the **[Sus](https://github.com/ioquatix/sus)** testing framework. It feels a bit like RSpec with a few small differences. There’s no documentation for Sus at the moment, but you should be able to pick up the basics from reading other tests or looking at the implementation in the Sus repo.
+New tests should be written using [GreenDots](https://github.com/joeldrapper/green_dots) and placed in the `gd` folder. You can run these tests with:
 
-You can run all the tests with `bundle exec sus`.
+```
+bundle exec gd gd
+```
+
+Joel maintains GreenDots itself, so if you run into any issues, please reach out to him by creating an issue in the GreenDots repo so he can improve the framework.
+
+Previously, we used **[Sus](https://github.com/ioquatix/sus)**. Sus tests are in the `test` folder and can be run with:
+
+```
+bundle exec sus
+```
 
 ## Documentation
 
