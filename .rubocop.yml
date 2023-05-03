@@ -7,3 +7,6 @@ AllCops:
 
 Style/ExplicitBlockArgument:
   Enabled: false
+
+Style/MixinUsage:
+  Enabled: false
