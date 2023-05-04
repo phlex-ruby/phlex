@@ -38,11 +38,26 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{method_name}(**attributes, &block)
+			def #{method_name}(object = nil, **attributes, &block)
 				target = @_context.target
 
+				if object
+  				if object.respond_to?(:html_attributes) and html_attributes = object.send(:html_attributes, :#{tag})
+  					attributes.merge! html_attributes
+  				end
+
+  		    if block.nil? and object.respond_to?(:html_content) and content = object.send(:html_content, :#{tag})
+  		      block = case content
+  		      when Phlex::HTML
+  		        Proc.new { render content }
+  		      else
+  		        Proc.new { content }
+  		      end
+  		    end
+ 				end
+
 				if attributes.length > 0 # with attributes
-					if block_given? # with content block
+					if block # with content block
 						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 						yield_content(&block)
 						target << "</#{tag}>"
@@ -50,7 +65,7 @@ module Phlex::Elements
 						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
 					end
 				else # without attributes
-					if block_given? # with content block
+					if block # with content block
 						target << "<#{tag}>"
 						yield_content(&block)
 						target << "</#{tag}>"
@@ -73,12 +88,18 @@ module Phlex::Elements
 	end
 
 	# @api private
-	def register_void_element(method_name, tag: method_name.name.tr("_", "-"))
+	def register_void_element(method_name, tag: nil)
+		tag ||= method_name.name.tr("_", "-")
+
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{method_name}(**attributes)
+			def #{method_name}(object = nil, **attributes)
 				target = @_context.target
+
+				if object.respond_to?(:html_attributes) and html_attributes = object.send(:html_attributes, :#{tag})
+					attributes.merge! html_attributes
+				end
 
 				if attributes.length > 0 # with attributes
 					target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
