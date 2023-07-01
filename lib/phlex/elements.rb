@@ -42,7 +42,7 @@ module Phlex::Elements
 				target = @_context.target
 
 				if attributes.length > 0 # with attributes
-					if block_given? # with content block
+					if block # with content block
 						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 						yield_content(&block)
 						target << "</#{tag}>"
@@ -50,7 +50,7 @@ module Phlex::Elements
 						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
 					end
 				else # without attributes
-					if block_given? # with content block
+					if block # with content block
 						target << "<#{tag}>"
 						yield_content(&block)
 						target << "</#{tag}>"
