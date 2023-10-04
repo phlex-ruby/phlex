@@ -86,6 +86,11 @@ module Phlex
 			end
 		end
 
+		# Yields each fragment of the view to the given block, which is useful for streaming.
+		def each(&block)
+			Enumerator.new { |e| call(e) }.each(&block)
+		end
+
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
 		def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, &block)
 			__final_call__(buffer, context: context, view_context: view_context, parent: parent, &block).tap do
