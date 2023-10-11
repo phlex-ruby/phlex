@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-latest', 'macos-latest', 'macos-latest-xlarge']
+        os: ['ubuntu-latest', 'macos-latest']
         ruby-version:
           - '2.7'
           - '3.0'
