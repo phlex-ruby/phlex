@@ -259,7 +259,7 @@ module Phlex
 		# @return [String]
 		def format_object(object)
 			case object
-			when Float
+			when Float, Integer
 				object.to_s
 			end
 		end
@@ -338,8 +338,6 @@ module Phlex
 				@_context.target << ERB::Escape.html_escape(content)
 			when Symbol
 				@_context.target << ERB::Escape.html_escape(content.name)
-			when Integer
-				@_context.target << content.to_s
 			when nil
 				nil
 			else
