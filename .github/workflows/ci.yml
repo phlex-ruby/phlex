@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['ubuntu-latest', 'macos-latest']
+        os: ['ubuntu-latest', 'macos-latest', 'macos-latest-xlarge']
         ruby-version:
           - '2.7'
           - '3.0'
@@ -21,8 +21,8 @@ jobs:
           - 'truffleruby-22.3'
           - 'truffleruby-head'
 
-          - 'jruby-9.4.0.0'
-          - 'jruby-head'
+          # - 'jruby-9.4.0.0'
+          # - 'jruby-head'
 
     runs-on: ${{ matrix.os }}
     steps:

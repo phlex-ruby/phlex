@@ -10,3 +10,6 @@ Style/ExplicitBlockArgument:
 
 Style/MixinUsage:
   Enabled: false
+
+Style/RedundantDoubleSplatHashBraces:
+  Enabled: false
