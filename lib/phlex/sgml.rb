@@ -222,7 +222,7 @@ module Phlex
 				end
 			when Enumerable
 				renderable.each { |r| render(r, &block) }
-			when Proc
+			when Proc, Method
 				if renderable.arity == 0
 					yield_content_with_no_args(&renderable)
 				else
