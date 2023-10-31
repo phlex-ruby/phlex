@@ -228,8 +228,10 @@ module Phlex
 				else
 					yield_content(&renderable)
 				end
+			when String
+				plain(renderable)
 			else
-				raise ArgumentError, "You can't render a #{renderable}."
+				raise ArgumentError, "You can't render a #{renderable.inspect}."
 			end
 
 			nil
