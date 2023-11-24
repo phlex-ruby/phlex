@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] 2024-11-24
+
+- Improved documentation
+- Fixed an issue with flushing to the buffer while capturing
+- Added `<canvas>` element
+- Very minor performance improvements by using `block` instead of `block_given?` where a block has already been captured
+- `Integer` objects are now handled by the `format_object` method, which you can override to customise how various objects are rendered
+- You can now use `render` with `String` and `Method` objects
+
 ## [1.8.1] 2023-04-19
 
 ### Fixed
