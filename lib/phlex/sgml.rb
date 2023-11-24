@@ -222,14 +222,16 @@ module Phlex
 				end
 			when Enumerable
 				renderable.each { |r| render(r, &block) }
-			when Proc
+			when Proc, Method
 				if renderable.arity == 0
 					yield_content_with_no_args(&renderable)
 				else
 					yield_content(&renderable)
 				end
+			when String
+				plain(renderable)
 			else
-				raise ArgumentError, "You can't render a #{renderable}."
+				raise ArgumentError, "You can't render a #{renderable.inspect}."
 			end
 
 			nil
