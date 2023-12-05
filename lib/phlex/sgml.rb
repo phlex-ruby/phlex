@@ -409,8 +409,8 @@ module Phlex
 					__build_attributes__(
 						v.transform_keys { |subkey|
 							case subkey
-								when Symbol then"#{k}-#{subkey.name.tr('_', '-')}"
-								else "#{k}-#{subkey}"
+								when Symbol then"#{name}-#{subkey.name.tr('_', '-')}"
+								else "#{name}-#{subkey}"
 							end
 						}, buffer: buffer
 					)

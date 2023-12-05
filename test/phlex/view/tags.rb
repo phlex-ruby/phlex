@@ -43,6 +43,30 @@ describe Phlex::HTML do
 				expect(output).to be == %(<#{tag} class="class" id="id" disabled>content</#{tag}>)
 			end
 		end
+
+		with "<#{tag}> with string attribute keys" do
+			view do
+				define_method :template do
+					send(method_name, "attribute_with_underscore" => true) { "content" }
+				end
+			end
+
+			it "produces the correct output" do
+				expect(output).to be == %(<#{tag} attribute_with_underscore>content</#{tag}>)
+			end
+		end
+
+		with "<#{tag}> with hash attribute values" do
+			view do
+				define_method :template do
+					send(method_name, aria: { hidden: true }, data_turbo: { frame: "_top" }) { "content" }
+				end
+			end
+
+			it "produces the correct output" do
+				expect(output).to be == %(<#{tag} aria-hidden data-turbo-frame="_top">content</#{tag}>)
+			end
+		end
 	end
 
 	Phlex::HTML::VoidElements.registered_elements.each do |method_name, tag|
@@ -71,6 +95,30 @@ describe Phlex::HTML do
 
 			it "produces the correct output" do
 				expect(output).to be == %(<#{tag} class="class" id="id" disabled>)
+			end
+		end
+
+		with "<#{tag}> with string attribute keys" do
+			view do
+				define_method :template do
+					send(method_name, "attribute_with_underscore" => true)
+				end
+			end
+
+			it "produces the correct output" do
+				expect(output).to be == %(<#{tag} attribute_with_underscore>)
+			end
+		end
+
+		with "<#{tag}> with hash attribute values" do
+			view do
+				define_method :template do
+					send(method_name, aria: { hidden: true }, data_turbo: { frame: "_top" })
+				end
+			end
+
+			it "produces the correct output" do
+				expect(output).to be == %(<#{tag} aria-hidden data-turbo-frame="_top">)
 			end
 		end
 	end
