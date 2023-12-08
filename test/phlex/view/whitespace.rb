@@ -30,4 +30,18 @@ describe Phlex::HTML do
 			expect(output).to be == " <a>Home</a> "
 		end
 	end
+
+	with "whitespace around a string" do
+		view do
+			def template
+				span { "9" }
+				whitespace { "out of" }
+				span { "10" }
+			end
+		end
+
+		it "produces the correct output" do
+			expect(output).to be == "<span>9</span> out of <span>10</span>"
+		end
+	end
 end

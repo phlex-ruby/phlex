@@ -141,13 +141,13 @@ module Phlex
 		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
 		# @return [nil]
 		# @yield If a block is given, it yields the block with no arguments.
-		def whitespace
+		def whitespace(&block)
 			target = @_context.target
 
 			target << " "
 
 			if block_given?
-				yield
+				yield_content(&block)
 				target << " "
 			end
 
