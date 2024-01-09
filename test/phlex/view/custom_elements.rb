@@ -18,7 +18,7 @@ describe Phlex::HTML do
 
 		it "produces the correct markup" do
 			expect(output).to be ==
-				"<div><trix-toolbar></trix-toolbar><trix-editor>Hello</trix-editor></div>"
+						"<div><trix-toolbar></trix-toolbar><trix-editor>Hello</trix-editor></div>"
 		end
 	end
 end

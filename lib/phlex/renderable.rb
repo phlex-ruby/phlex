@@ -212,10 +212,10 @@ module Phlex
 		# 		render @items
 		def render(renderable, &block)
 			case renderable
-													when Phlex::SGML
+													when Phlex::Renderable
 														renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
 													when Class
-														if renderable < Phlex::SGML
+														if renderable < Phlex::Renderable
 															renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
 														end
 													when Enumerable
@@ -390,7 +390,7 @@ module Phlex
 				end
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-				if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
+				if HtmlRenderable::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 

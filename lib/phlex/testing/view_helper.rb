@@ -3,7 +3,7 @@
 module Phlex::Testing
 	module ViewHelper
 		def render(view, &block)
-			if view.is_a?(Class) && view < Phlex::SGML
+			if view.is_a?(Class) && view < Phlex::Renderable
 				view = view.new
 			end
 
