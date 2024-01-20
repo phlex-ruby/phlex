@@ -6,8 +6,14 @@ module Phlex
 		include Phlex::SVG::StandardElements
 
 		def self.included(including_class)
+			including_class.extend(ClassMethods)
+
 			# This should be extended after all method definitions
 			including_class.extend(ElementClobberingGuard)
+		end
+
+		module ClassMethods
+			include Phlex::Renderable::ClassMethods
 		end
 	end
 end

@@ -17,6 +17,8 @@ module Phlex
 		UNBUFFERED_MUTEX = Mutex.new
 
 		module ClassMethods
+			include Phlex::Renderable::ClassMethods
+
 			# @api private
 			def __unbuffered_class__
 				UNBUFFERED_MUTEX.synchronize do
