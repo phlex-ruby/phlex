@@ -7,6 +7,8 @@ end
 module Phlex
 	# **Standard Generalized Markup Language** for behaviour common to {HTML} and {SVG}.
 	class SGML
+		include Helpers
+
 		class << self
 			# Render the view to a String. Arguments are delegated to {.new}.
 			def call(...)
