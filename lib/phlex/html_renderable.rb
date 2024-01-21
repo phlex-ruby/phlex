@@ -4,6 +4,8 @@ module Phlex
 		include Renderable
 
 		def self.included(including_class)
+			super
+
 			including_class.extend(ClassMethods)
 			including_class.extend(Phlex::Elements)
 
