@@ -22,7 +22,7 @@ module Phlex
 		end
 
 		extend Elements
-		include Helpers, VoidElements, StandardElements
+		include VoidElements, StandardElements
 
 		# Output an HTML doctype.
 		def doctype
