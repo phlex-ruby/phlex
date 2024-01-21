@@ -14,6 +14,16 @@ module ViewHelper
 		end
 	end
 
+	def html_renderable_view(...)
+		let :view do
+			Class.new(Phlex::HTML) do
+				include Phlex::HtmlRenderable
+
+				class_eval(...)
+			end
+		end
+	end
+
 	def svg_view(&block)
 		let :view do
 			Class.new(Phlex::SVG, &block)

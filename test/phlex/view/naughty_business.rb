@@ -55,7 +55,7 @@ describe Phlex::HTML do
 		end
 	end
 
-	Phlex::HTML::EVENT_ATTRIBUTES.each_key do |event_attribute|
+	Phlex::HtmlRenderable::EVENT_ATTRIBUTES.each_key do |event_attribute|
 		with "with naughty #{event_attribute} attribute" do
 			naughty_attributes = { event_attribute => "alert(1);" }
 
