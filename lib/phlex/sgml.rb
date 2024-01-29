@@ -421,7 +421,15 @@ module Phlex
 				when Set
 					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
 				else
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_str) << '"'
+					value = if v.respond_to?(:to_phlex_attribute_value)
+						v.to_phlex_attribute_value
+					elsif v.respond_to?(:to_str)
+						v.to_str
+					else
+						v.to_s
+					end
+
+					buffer << " " << name << '="' << ERB::Escape.html_escape(value) << '"'
 				end
 			end
 

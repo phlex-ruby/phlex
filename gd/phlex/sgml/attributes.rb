@@ -2,9 +2,21 @@
 
 include TestHelper
 
+class ToPhlexAttributeValueable
+	def to_phlex_attribute_value
+		"to_phlex_attribute_value"
+	end
+end
+
+class ToSable
+	def to_s
+		"to_s"
+	end
+end
+
 class ToStrable
 	def to_str
-		"foo"
+		"to_str"
 	end
 end
 
@@ -40,12 +52,28 @@ test "with a set of symbols and strings" do
 	expect(component.new).to_render %(<div class="bg-red-500 rounded"></div>)
 end
 
+test "with a to_phlex_attribute_value-able object" do
+	component = build_component_with_template do
+		div class: ToPhlexAttributeValueable.new
+	end
+
+	expect(component.new).to_render %(<div class="to_phlex_attribute_value"></div>)
+end
+
+test "with a to_s-able object" do
+	component = build_component_with_template do
+		div class: ToSable.new
+	end
+
+	expect(component.new).to_render %(<div class="to_s"></div>)
+end
+
 test "with a to_str-able object" do
 	component = build_component_with_template do
 		div class: ToStrable.new
 	end
 
-	expect(component.new).to_render %(<div class="foo"></div>)
+	expect(component.new).to_render %(<div class="to_str"></div>)
 end
 
 test "with numeric integer/float" do
