@@ -76,9 +76,23 @@ module Phlex::Helpers
 				when Hash
 					old.is_a?(Hash) ? mix(old, new) : new
 				when Array
-					old.is_a?(Array) ? (old + new) : new
+					case old
+					when Array then old + new
+					when Set then old.to_a + new
+					when Hash then new
+					else
+						[old] + new
+					end
+				when Set
+					case old
+					when Set then old + new
+					when Array then old + new.to_a
+					when Hash then new
+					else
+						new + [old]
+					end
 				when String
-					old.is_a?(String) ? "#{old} #{new}" : new
+					old.is_a?(String) ? "#{old} #{new}" : old + old.class[new]
 				else
 					new
 				end

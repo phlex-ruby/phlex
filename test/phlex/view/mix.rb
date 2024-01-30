@@ -40,4 +40,34 @@ describe Phlex::Helpers do
 
 		expect(output).to be == { data: { controller: "bar" } }
 	end
+
+	it "supports mixing between arrays and strings" do
+		output = mix({ class: ["foo"] }, { class: "bar" })
+
+		expect(output).to be == { class: ["foo", "bar"] }
+
+		output = mix({ class: "foo" }, { class: ["bar"] })
+
+		expect(output).to be == { class: ["foo", "bar"] }
+	end
+
+	it "supports mixing between sets and strings" do
+		output = mix({ class: Set["foo"] }, { class: "bar" })
+
+		expect(output).to be == { class: Set["foo", "bar"] }
+
+		output = mix({ class: "foo" }, { class: Set["bar"] })
+
+		expect(output).to be == { class: Set["foo", "bar"] }
+	end
+
+	it "supports mixing between arrays and sets, keeping the less restrictive type" do
+		output = mix({ class: ["foo"] }, { class: Set["bar"] })
+
+		expect(output).to be == { class: ["foo", "bar"] }
+
+		output = mix({ class: Set["foo"] }, { class: ["bar"] })
+
+		expect(output).to be == { class: ["foo", "bar"] }
+	end
 end
