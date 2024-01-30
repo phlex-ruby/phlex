@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "erb"
-require "concurrent"
-
 module Phlex
 	autoload :Context, "phlex/context"
 	autoload :DeferredRender, "phlex/deferred_render"
@@ -19,6 +16,14 @@ module Phlex
 	#  rescue Phlex::Error
 	module Error; end
 
+	if defined?(ERB::Escape)
+		Escape = ERB::Escape
+	elsif defined?(ERB::Util)
+		Escape = ERB::Util
+	else
+		Escape = BasicEscape
+	end
+
 	# A specialised ArgumentError for Phlex.
 	class ArgumentError < ::ArgumentError
 		include Error
@@ -30,7 +35,8 @@ module Phlex
 	end
 
 	# @api private
-	ATTRIBUTE_CACHE = Concurrent::Map.new
+	ATTRIBUTE_CACHE = Phlex::ConcurrentMap.new
+
 end
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
