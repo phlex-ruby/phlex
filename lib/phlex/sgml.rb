@@ -75,7 +75,7 @@ module Phlex
 
 		# @api private
 		def await(task)
-			if task.is_a?(Concurrent::IVar)
+			if defined?(Concurrent::IVar) && task.is_a?(Concurrent::IVar)
 				flush if task.pending?
 
 				task.wait.value
