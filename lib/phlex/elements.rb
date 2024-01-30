@@ -32,7 +32,7 @@ module Phlex::Elements
 	# @note The methods defined by this macro depend on other methods from {SGML} so they should always be mixed into an {HTML} or {SVG} component.
 	# @example Register the custom element `<trix-editor>`
 	# 	register_element :trix_editor
-	def register_element(method_name, tag: nil)
+	def register_element(method_name, tag: nil, deprecated: false)
 		tag ||= method_name.name.tr("_", "-")
 
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
@@ -73,7 +73,7 @@ module Phlex::Elements
 	end
 
 	# @api private
-	def register_void_element(method_name, tag: method_name.name.tr("_", "-"))
+	def register_void_element(method_name, tag: method_name.name.tr("_", "-"), deprecated: false)
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
