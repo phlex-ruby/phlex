@@ -4,14 +4,14 @@ describe Phlex::SGML do
 	it "warns when you define a template" do
 		expect(Kernel).to receive(:warn)
 
-		class Example < Phlex::HTML
+		example = Class.new(Phlex::HTML) do
 			def template
 				h1 { "Hello, world!" }
 			end
 		end
 
 		expect(
-			Example.new.call
+			example.new.call
 		).to be == "<h1>Hello, world!</h1>"
 	end
 end
