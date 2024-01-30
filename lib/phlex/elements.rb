@@ -22,7 +22,7 @@ end
 module Phlex::Elements
 	# @api private
 	def registered_elements
-		@registered_elements ||= Concurrent::Map.new
+		@registered_elements ||= Phlex::ConcurrentMap.new
 	end
 
 	# Register a custom element. This macro defines an element method for the current class and descendents only. There is no global element registry.

@@ -2,7 +2,6 @@
 
 require "erb"
 require "zeitwerk"
-require "concurrent"
 
 module Phlex
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
@@ -32,5 +31,5 @@ module Phlex
 	end
 
 	# @api private
-	ATTRIBUTE_CACHE = Concurrent::Map.new
+	ATTRIBUTE_CACHE = Phlex::ConcurrentMap.new
 end
