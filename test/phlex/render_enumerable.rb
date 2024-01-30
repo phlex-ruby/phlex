@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Card < Phlex::HTML
-	def template(&block)
+	def view_template(&block)
 		article(&block)
 	end
 end
@@ -14,13 +14,13 @@ class WithoutBlock < Phlex::HTML
 		]
 	end
 
-	def template
+	def view_template
 		render @cards
 	end
 end
 
 class WithBlock < WithoutBlock
-	def template
+	def view_template
 		render @cards do
 			h1 { "Hi" }
 		end

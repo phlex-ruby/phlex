@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "numbers" do
 		view do
-			def template
+			def view_template
 				span { 1 }
 
 				span { 2.0 }

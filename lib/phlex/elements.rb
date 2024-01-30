@@ -15,7 +15,7 @@ end
 # 	class MyComponent < Phlex::HTML
 # 		include MyCustomElements
 #
-# 		def template
+# 		def view_template
 # 			trix_editor
 # 		end
 # 	end

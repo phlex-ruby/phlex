@@ -3,13 +3,13 @@
 require "phlex/testing/view_helper"
 
 class ExampleHTML < Phlex::HTML
-	def template
+	def view_template
 		h1 { "👋" }
 	end
 end
 
 class ExampleSVG < Phlex::SVG
-	def template
+	def view_template
 		svg do
 			path(d: "123")
 		end

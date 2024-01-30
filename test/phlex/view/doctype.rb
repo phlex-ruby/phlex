@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "a doctype" do
 		view do
-			def template
+			def view_template
 				html do
 					head { doctype }
 				end

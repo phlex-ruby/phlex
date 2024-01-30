@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "text" do
 		view do
-			def template
+			def view_template
 				plain "Hi"
 			end
 		end
@@ -17,7 +17,7 @@ describe Phlex::HTML do
 
 	with "int as text" do
 		view do
-			def template
+			def view_template
 				plain 1
 			end
 		end
@@ -29,7 +29,7 @@ describe Phlex::HTML do
 
 	with "float as text" do
 		view do
-			def template
+			def view_template
 				plain 2.0
 			end
 		end
@@ -41,7 +41,7 @@ describe Phlex::HTML do
 
 	with "an object that has no special format_object handling" do
 		view do
-			def template
+			def view_template
 				plain Object.new
 			end
 		end

@@ -8,7 +8,7 @@ describe Phlex::HTML do
 			register_element :trix_editor
 			register_element :trix_toolbar
 
-			def template
+			def view_template
 				div do
 					trix_toolbar
 					trix_editor { "Hello" }

@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "raw content" do
 		view do
-			def template
+			def view_template
 				unsafe_raw %(<h1 class="test">Hello</h1>)
 			end
 		end
@@ -17,7 +17,7 @@ describe Phlex::HTML do
 
 	with "nil content" do
 		view do
-			def template
+			def view_template
 				unsafe_raw nil
 			end
 		end

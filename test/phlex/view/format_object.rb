@@ -3,7 +3,7 @@
 require "date"
 
 class Example < Phlex::HTML
-	def template
+	def view_template
 		h1 { Date.new(2022, 11, 28) }
 	end
 
