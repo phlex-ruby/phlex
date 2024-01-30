@@ -13,6 +13,7 @@ module Phlex
 	autoload :SVG, "phlex/svg"
 	autoload :Unbuffered, "phlex/unbuffered"
 	autoload :ConcurrentMap, "phlex/concurrent_map"
+	autoload :BlackHole, "phlex/black_hole"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
