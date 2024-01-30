@@ -79,8 +79,8 @@ module Phlex
 			end
 		end
 
-		def view_template(&)
-			template(&)
+		def view_template(&block)
+			template(&block)
 		end
 
 		# @api private
