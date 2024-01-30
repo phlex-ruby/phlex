@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 
 require "erb"
-require "zeitwerk"
 require "concurrent"
 
 module Phlex
+	autoload :Context, "phlex/context"
+	autoload :DeferredRender, "phlex/deferred_render"
+	autoload :ElementClobberingGuard, "phlex/element_clobbering_guard"
+	autoload :Elements, "phlex/elements"
+	autoload :HTML, "phlex/html"
+	autoload :Helpers, "phlex/helpers"
+	autoload :SGML, "phlex/sgml"
+	autoload :SVG, "phlex/svg"
+	autoload :Unbuffered, "phlex/unbuffered"
+
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
 	#  rescue Phlex::Error
@@ -18,17 +27,6 @@ module Phlex
 	# A specialised NameError for Phlex.
 	class NameError < ::NameError
 		include Error
-	end
-
-	# @api private
-	Loader = Zeitwerk::Loader.for_gem(warn_on_extra_files: false).tap do |loader|
-		loader.inflector.inflect(
-			"html" => "HTML",
-				"svg" => "SVG",
-				"sgml" => "SGML"
-		)
-		loader.ignore("#{__dir__}/phlex/testing")
-		loader.setup
 	end
 
 	# @api private
