@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-	using Phlex::Overrides::Symbol::Name
-end
-
 # Extending this module provides the {register_element} macro for registering your own custom elements. It's already extended by {HTML} and {SVG}.
 # @example
 # 	module MyCustomElements
