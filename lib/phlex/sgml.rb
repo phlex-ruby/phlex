@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-	using Phlex::Overrides::Symbol::Name
-end
-
 module Phlex
 	# **Standard Generalized Markup Language** for behaviour common to {HTML} and {SVG}.
 	class SGML
@@ -55,27 +51,37 @@ module Phlex
 
 		# @abstract Override to define a template for your component.
 		# @example
-		# 	def template
+		# 	def view_template
 		# 		h1 { "👋 Hello World!" }
 		# 	end
 		# @example Your template may yield a content block.
-		# 	def template
+		# 	def view_template
 		# 		main {
 		# 			h1 { "Hello World" }
 		# 			yield
 		# 		}
 		# 	end
 		# @example Alternatively, you can delegate the content block to an element.
-		# 	def template(&block)
+		# 	def view_template(&block)
 		# 		article(class: "card", &block)
 		# 	end
 		def template
 			yield
 		end
 
+		def self.method_added(method_name)
+			if method_name == :template
+				Kernel.warn "Defining the `template` method on a Phlex component is deprecated and will be unsupported in Phlex 2.0. Please define `view_template` instead."
+			end
+		end
+
+		def view_template(&block)
+			template(&block)
+		end
+
 		# @api private
 		def await(task)
-			if task.is_a?(Concurrent::IVar)
+			if defined?(Concurrent::IVar) && task.is_a?(Concurrent::IVar)
 				flush if task.pending?
 
 				task.wait.value
@@ -110,9 +116,9 @@ module Phlex
 				if block
 					if is_a?(DeferredRender)
 						__vanish__(self, &block)
-						template
+						view_template
 					else
-						template do |*args|
+						view_template do |*args|
 							if args.length > 0
 								yield_content_with_args(*args, &block)
 							else
@@ -121,7 +127,7 @@ module Phlex
 						end
 					end
 				else
-					template
+					view_template
 				end
 			end
 
@@ -339,14 +345,14 @@ module Phlex
 		def __text__(content)
 			case content
 			when String
-				@_context.target << ERB::Escape.html_escape(content)
+				@_context.target << Phlex::Escape.html_escape(content)
 			when Symbol
-				@_context.target << ERB::Escape.html_escape(content.name)
+				@_context.target << Phlex::Escape.html_escape(content.name)
 			when nil
 				nil
 			else
 				if (formatted_object = format_object(content))
-					@_context.target << ERB::Escape.html_escape(formatted_object)
+					@_context.target << Phlex::Escape.html_escape(formatted_object)
 				else
 					return false
 				end
@@ -402,9 +408,9 @@ module Phlex
 				when true
 					buffer << " " << name
 				when String
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v) << '"'
 				when Symbol
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.name) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.name) << '"'
 				when Integer, Float
 					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
@@ -417,9 +423,9 @@ module Phlex
 						}, buffer: buffer
 					)
 				when Array
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.compact.join(" ")) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.compact.join(" ")) << '"'
 				when Set
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
 				else
 					value = if v.respond_to?(:to_phlex_attribute_value)
 						v.to_phlex_attribute_value
@@ -429,7 +435,7 @@ module Phlex
 						v.to_s
 					end
 
-					buffer << " " << name << '="' << ERB::Escape.html_escape(value) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(value) << '"'
 				end
 			end
 

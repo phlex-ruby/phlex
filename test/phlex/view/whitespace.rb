@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "whitespace" do
 		view do
-			def template
+			def view_template
 				a { "Home" }
 				whitespace
 				a { "About" }
@@ -19,7 +19,7 @@ describe Phlex::HTML do
 
 	with "whitespace around" do
 		view do
-			def template
+			def view_template
 				whitespace do
 					a { "Home" }
 				end
@@ -33,7 +33,7 @@ describe Phlex::HTML do
 
 	with "whitespace around a string" do
 		view do
-			def template
+			def view_template
 				span { "9" }
 				whitespace { "out of" }
 				span { "10" }

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Example < Phlex::SVG
-	def template
+	def view_template
 		svg do
 			path(d: "123")
 		end
@@ -9,7 +9,7 @@ class Example < Phlex::SVG
 end
 
 class ExampleFromHTML < Phlex::HTML
-	def template
+	def view_template
 		svg do |s|
 			s.path(d: "321")
 		end

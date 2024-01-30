@@ -39,12 +39,26 @@ module Phlex::HTML::StandardElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/aside
 	register_element :aside, tag: "aside"
 
+	# @!method audio(**attributes, &content)
+	# 	Outputs an `<audio>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio
+	register_element :audio, tag: "audio"
+
 	# @!method b(**attributes, &content)
 	# 	Outputs a `<b>` tag.
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/b
 	register_element :b, tag: "b"
+
+	# @!method base(**attributes, &content)
+	# 	Outputs a `<base>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+	register_element :base, tag: "base"
 
 	# @!method bdi(**attributes, &content)
 	# 	Outputs a `<bdi>` tag.
@@ -368,6 +382,13 @@ module Phlex::HTML::StandardElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/mark
 	register_element :mark, tag: "mark"
 
+	# @!method menu(**attributes, &content)
+	# 	Outputs a `<menu>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/menu
+	register_element :menu, tag: "menu"
+
 	# @!method meter(**attributes, &content)
 	# 	Outputs a `<meter>` tag.
 	# 	@return [nil]
@@ -438,6 +459,13 @@ module Phlex::HTML::StandardElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/picture
 	register_element :picture, tag: "picture"
 
+	# @!method portal(**attributes, &content)
+	# 	Outputs a `<portal>` tag. (Experimental)
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/portal
+	register_element :portal, tag: "portal"
+
 	# @!method pre(**attributes, &content)
 	# 	Outputs a `<pre>` tag.
 	# 	@return [nil]
@@ -474,7 +502,7 @@ module Phlex::HTML::StandardElements
 	register_element :rt, tag: "rt"
 
 	# @!method ruby(**attributes, &content)
-	# 	Outputs a `<ruby>` tag.
+	# 	Outputs a `<ruby>` tag. (The best tag ever!)
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/ruby
@@ -500,6 +528,13 @@ module Phlex::HTML::StandardElements
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/script
 	register_element :script, tag: "script"
+
+	# @!method search(**attributes, &content)
+	# 	Outputs a `<search>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search
+	register_element :search, tag: "search"
 
 	# @!method section(**attributes, &content)
 	# 	Outputs a `<section>` tag.
@@ -668,6 +703,13 @@ module Phlex::HTML::StandardElements
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/ul
 	register_element :ul, tag: "ul"
+
+	# @!method var(**attributes, &content)
+	# 	Outputs a `<var>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/var
+	register_element :var, tag: "var"
 
 	# @!method video(**attributes, &content)
 	# 	Outputs a `<video>` tag.

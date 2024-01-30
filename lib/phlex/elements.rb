@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-	using Phlex::Overrides::Symbol::Name
-end
-
 # Extending this module provides the {register_element} macro for registering your own custom elements. It's already extended by {HTML} and {SVG}.
 # @example
 # 	module MyCustomElements
@@ -15,14 +11,14 @@ end
 # 	class MyComponent < Phlex::HTML
 # 		include MyCustomElements
 #
-# 		def template
+# 		def view_template
 # 			trix_editor
 # 		end
 # 	end
 module Phlex::Elements
 	# @api private
 	def registered_elements
-		@registered_elements ||= Concurrent::Map.new
+		@registered_elements ||= Phlex::ConcurrentMap.new
 	end
 
 	# Register a custom element. This macro defines an element method for the current class and descendents only. There is no global element registry.
@@ -32,7 +28,7 @@ module Phlex::Elements
 	# @note The methods defined by this macro depend on other methods from {SGML} so they should always be mixed into an {HTML} or {SVG} component.
 	# @example Register the custom element `<trix-editor>`
 	# 	register_element :trix_editor
-	def register_element(method_name, tag: nil)
+	def register_element(method_name, tag: nil, deprecated: false)
 		tag ||= method_name.name.tr("_", "-")
 
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
@@ -73,7 +69,7 @@ module Phlex::Elements
 	end
 
 	# @api private
-	def register_void_element(method_name, tag: method_name.name.tr("_", "-"))
+	def register_void_element(method_name, tag: method_name.name.tr("_", "-"), deprecated: false)
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 

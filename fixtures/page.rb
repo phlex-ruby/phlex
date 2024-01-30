@@ -2,7 +2,7 @@
 
 module Example
 	class Page < Phlex::HTML
-		def template
+		def view_template
 			render LayoutComponent.new do
 				h1 { "Hi" }
 

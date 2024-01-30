@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "content" do
 		view do
-			def template
+			def view_template
 				h1 { "Before" }
 				yield
 				h2 { "After" }

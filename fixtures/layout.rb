@@ -6,7 +6,7 @@ module Example
 			@title = title
 		end
 
-		def template(&block)
+		def view_template(&block)
 			html do
 				head do
 					title { @title }

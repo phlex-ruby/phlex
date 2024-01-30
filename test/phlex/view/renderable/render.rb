@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Example < Phlex::HTML
-	def template
+	def view_template
 		h1 { "Hello" }
 	end
 end
@@ -12,7 +12,7 @@ describe Phlex::HTML do
 	describe "#render" do
 		with "a view class" do
 			view do
-				def template
+				def view_template
 					render Example
 				end
 			end
@@ -24,14 +24,14 @@ describe Phlex::HTML do
 
 		with "another view" do
 			other_view = Class.new Phlex::HTML do
-				def template(&block)
+				def view_template(&block)
 					div(&block)
 				end
 			end
 
 			with "markup" do
 				view do
-					define_method :template do
+					define_method :view_template do
 						render(other_view.new) do
 							h1 { "Hi!" }
 						end
@@ -45,7 +45,7 @@ describe Phlex::HTML do
 
 			with "text" do
 				view do
-					define_method :template do
+					define_method :view_template do
 						render(other_view.new) { "Hello world!" }
 					end
 				end
@@ -57,7 +57,7 @@ describe Phlex::HTML do
 
 			with "0-argument lambda" do
 				view do
-					define_method :template do
+					define_method :view_template do
 						render -> { h1 { "Hi" } }
 					end
 				end
@@ -69,7 +69,7 @@ describe Phlex::HTML do
 
 			with "1-argument lambda" do
 				view do
-					define_method :template do
+					define_method :view_template do
 						render -> (_view) { h1 { "Hi" } }
 					end
 				end
@@ -81,7 +81,7 @@ describe Phlex::HTML do
 
 			with "multi-argument proc" do
 				view do
-					define_method :template do
+					define_method :view_template do
 						render proc { |_a, _b, _c| h1 { "Hi" } }
 					end
 				end

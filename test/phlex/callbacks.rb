@@ -9,7 +9,7 @@ describe Phlex::HTML do
 				h1 { "Hello" }
 			end
 
-			def template
+			def view_template
 				h2 { "World" }
 			end
 

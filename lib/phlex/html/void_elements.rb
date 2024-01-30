@@ -16,6 +16,12 @@ module Phlex::HTML::VoidElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/br
 	register_void_element :br, tag: "br"
 
+	# @!method col(**attributes, &content)
+	# 	Outputs a `<col>` tag.
+	# 	@return [nil]
+	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/col
+	register_void_element :col, tag: "col"
+
 	# @!method embed(**attributes, &content)
 	# 	Outputs an `<embed>` tag.
 	# 	@return [nil]
@@ -56,7 +62,7 @@ module Phlex::HTML::VoidElements
 	# 	Outputs a `<param>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/param
-	register_void_element :param, tag: "param"
+	register_void_element :param, tag: "param", deprecated: true
 
 	# @!method source(**attributes, &content)
 	# 	Outputs a `<source>` tag.
@@ -69,10 +75,4 @@ module Phlex::HTML::VoidElements
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/track
 	register_void_element :track, tag: "track"
-
-	# @!method col(**attributes, &content)
-	# 	Outputs a `<col>` tag.
-	# 	@return [nil]
-	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/col
-	register_void_element :col, tag: "col"
 end

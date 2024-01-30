@@ -7,7 +7,7 @@ describe Phlex::HTML do
 		view do
 			attr_accessor :captured
 
-			def template
+			def view_template
 				h1 { "Before" }
 				@captured = capture { "Hello" }
 				h1 { "After" }
@@ -24,7 +24,7 @@ describe Phlex::HTML do
 		view do
 			attr_accessor :captured
 
-			def template
+			def view_template
 				h1 { "Before" }
 				@captured = capture do
 					h1 { "Hello" }
@@ -43,7 +43,7 @@ describe Phlex::HTML do
 		view do
 			attr_accessor :captured
 
-			def template
+			def view_template
 				h1 { "Before" }
 				@captured = capture do
 					h1 { "Hello" }
@@ -63,7 +63,7 @@ describe Phlex::HTML do
 	with "a call to flush inside a component rendered in the block" do
 		let(:component) do
 			Class.new(Phlex::HTML) do
-				def template
+				def view_template
 					h1 { "Hello" }
 					flush
 					h1 { "World" }
@@ -73,7 +73,7 @@ describe Phlex::HTML do
 
 		let(:previewer) do
 			Class.new(Phlex::HTML) do
-				def template
+				def view_template
 					srcdoc = capture { yield } if block_given?
 
 					iframe srcdoc: srcdoc
@@ -82,7 +82,7 @@ describe Phlex::HTML do
 		end
 
 		view do
-			def template
+			def view_template
 				h1 { "Before" }
 				render @_view_context.previewer do
 					render @_view_context.component

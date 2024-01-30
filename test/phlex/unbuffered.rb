@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Example < Phlex::HTML
-	def template
+	def view_template
 		yield
 	end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Example < Phlex::HTML
-	def template(&block)
+	def view_template(&block)
 		h1(&block)
 	end
 end
@@ -16,7 +16,7 @@ class ExampleWithArgs < Phlex::HTML
 		@should_render
 	end
 
-	def template
+	def view_template
 		h1 {
 			yield
 			plain(", #{@name}")
@@ -29,7 +29,7 @@ describe Phlex::HTML do
 
 	with "a block passed to new" do
 		view do
-			def template
+			def view_template
 				render Example.new { "Hello" }
 			end
 		end
@@ -41,7 +41,7 @@ describe Phlex::HTML do
 
 	with "a block and arguments passed to new" do
 		view do
-			def template
+			def view_template
 				render ExampleWithArgs.new("World", should_render: true) { "Hello" }
 			end
 		end
