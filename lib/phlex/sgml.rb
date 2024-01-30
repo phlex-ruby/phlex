@@ -51,22 +51,32 @@ module Phlex
 
 		# @abstract Override to define a template for your component.
 		# @example
-		# 	def template
+		# 	def view_template
 		# 		h1 { "👋 Hello World!" }
 		# 	end
 		# @example Your template may yield a content block.
-		# 	def template
+		# 	def view_template
 		# 		main {
 		# 			h1 { "Hello World" }
 		# 			yield
 		# 		}
 		# 	end
 		# @example Alternatively, you can delegate the content block to an element.
-		# 	def template(&block)
+		# 	def view_template(&block)
 		# 		article(class: "card", &block)
 		# 	end
 		def template
 			yield
+		end
+
+		def self.method_added(method_name)
+			if method_name == :template
+				Kernel.warn "Defining the `template` method on a Phlex component is deprecated and will be unsupported in Phlex 2.0. Please define `view_template` instead."
+			end
+		end
+
+		def view_template(&block)
+			template(&block)
 		end
 
 		# @api private
@@ -106,9 +116,9 @@ module Phlex
 				if block
 					if is_a?(DeferredRender)
 						__vanish__(self, &block)
-						template
+						view_template
 					else
-						template do |*args|
+						view_template do |*args|
 							if args.length > 0
 								yield_content_with_args(*args, &block)
 							else
@@ -117,7 +127,7 @@ module Phlex
 						end
 					end
 				else
-					template
+					view_template
 				end
 			end
 

@@ -11,7 +11,7 @@ describe Phlex::HTML do
 				h3 { "After" }
 			end
 
-			def template
+			def view_template
 				h2 { "Hello" }
 			end
 		end

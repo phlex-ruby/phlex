@@ -11,7 +11,7 @@
 # 			@tabs = []
 # 		end
 #
-# 		def template
+# 		def view_template
 # 			@tabs.each { |t| a { t.name } }
 # 			@tabs.each { |t| article(&t.content) }
 # 		end

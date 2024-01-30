@@ -5,7 +5,7 @@ describe Phlex::HTML do
 
 	with "naughty text" do
 		view do
-			def template
+			def view_template
 				plain %("><script type="text/javascript" src="bad_script.js"></script>)
 			end
 		end
@@ -17,7 +17,7 @@ describe Phlex::HTML do
 
 	with "naughty tag attribute values" do
 		view do
-			def template
+			def view_template
 				article id: %("><script type="text/javascript" src="bad_script.js"></script>)
 			end
 		end
@@ -29,7 +29,7 @@ describe Phlex::HTML do
 
 	with "naughty javascript link protocol in href" do
 		view do
-			def template
+			def view_template
 				a href: "javascript:javascript:alert(1)" do
 					"naughty link"
 				end
@@ -43,7 +43,7 @@ describe Phlex::HTML do
 
 	with "naughty javascript link protocol in href" do
 		view do
-			def template
+			def view_template
 				a "href" => "javascript:javascript:alert(1)" do
 					"naughty link"
 				end
@@ -60,7 +60,7 @@ describe Phlex::HTML do
 			naughty_attributes = { event_attribute => "alert(1);" }
 
 			view do
-				define_method :template do
+				define_method :view_template do
 					send(:div, **naughty_attributes)
 				end
 			end
@@ -78,7 +78,7 @@ describe Phlex::HTML do
 			naughty_attributes = { naughty_attribute => "alert(1);" }
 
 			view do
-				define_method :template do
+				define_method :view_template do
 					send(:div, **naughty_attributes)
 				end
 			end

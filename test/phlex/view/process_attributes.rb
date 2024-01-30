@@ -4,7 +4,7 @@ describe Phlex::HTML do
 	extend ViewHelper
 
 	view do
-		def template
+		def view_template
 			div(class: "foo")
 		end
 

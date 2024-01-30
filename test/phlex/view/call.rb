@@ -4,7 +4,7 @@ describe Phlex::HTML do
 	extend ViewHelper
 
 	view do
-		def template
+		def view_template
 			plain "Hi"
 		end
 	end
@@ -17,7 +17,7 @@ describe Phlex::HTML do
 
 	with "`render?` method returning false when the view context is true" do
 		view do
-			def template
+			def view_template
 				plain "Hi"
 			end
 
@@ -29,7 +29,7 @@ describe Phlex::HTML do
 
 	with "a view that yields an object" do
 		view do
-			def template
+			def view_template
 				yield(1, 2)
 			end
 		end
@@ -47,7 +47,7 @@ describe Phlex::HTML do
 
 	with "a view that yields nothing" do
 		view do
-			def template
+			def view_template
 				yield
 			end
 

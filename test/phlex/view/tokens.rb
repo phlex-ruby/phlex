@@ -6,7 +6,7 @@ describe Phlex::HTML do
 	with "conditional classes" do
 		with "symbol conditionals" do
 			view do
-				def template
+				def view_template
 					a href: "/", **classes("a", "b", "c", active?: "active", primary?: ["primary", "d"]) do
 						"Home"
 					end
@@ -29,7 +29,7 @@ describe Phlex::HTML do
 
 		with "proc conditionals" do
 			view do
-				def template
+				def view_template
 					a href: "/", **classes("a", "b", "c",
 						-> { true } => "true",
 						-> { false } => "false") do
@@ -46,7 +46,7 @@ describe Phlex::HTML do
 
 		with "negative conditionals" do
 			view do
-				def template
+				def view_template
 					a href: "/", **classes("a", "b", "c",
 						active?: {
 							then: "active",
@@ -69,7 +69,7 @@ describe Phlex::HTML do
 
 		with "no truthy conditionals" do
 			view do
-				def template
+				def view_template
 					a href: "/", **classes(
 						active?: {
 							then: "active"
@@ -92,7 +92,7 @@ describe Phlex::HTML do
 
 		with "nils and empty strings" do
 			view do
-				def template
+				def view_template
 					div(class: tokens("", nil, false, "foo", "", nil, false, "bar", "", nil, false))
 				end
 			end
