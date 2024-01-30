@@ -339,14 +339,14 @@ module Phlex
 		def __text__(content)
 			case content
 			when String
-				@_context.target << ERB::Escape.html_escape(content)
+				@_context.target << Phlex::Escape.html_escape(content)
 			when Symbol
-				@_context.target << ERB::Escape.html_escape(content.name)
+				@_context.target << Phlex::Escape.html_escape(content.name)
 			when nil
 				nil
 			else
 				if (formatted_object = format_object(content))
-					@_context.target << ERB::Escape.html_escape(formatted_object)
+					@_context.target << Phlex::Escape.html_escape(formatted_object)
 				else
 					return false
 				end
@@ -402,9 +402,9 @@ module Phlex
 				when true
 					buffer << " " << name
 				when String
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v) << '"'
 				when Symbol
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.name) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.name) << '"'
 				when Integer, Float
 					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
@@ -417,11 +417,11 @@ module Phlex
 						}, buffer: buffer
 					)
 				when Array
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.compact.join(" ")) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.compact.join(" ")) << '"'
 				when Set
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
 				else
-					buffer << " " << name << '="' << ERB::Escape.html_escape(v.to_str) << '"'
+					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.to_str) << '"'
 				end
 			end
 

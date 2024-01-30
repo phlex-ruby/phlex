@@ -9,6 +9,14 @@ module Phlex
 	#  rescue Phlex::Error
 	module Error; end
 
+	if defined?(ERB::Escape)
+		Escape = ERB::Escape
+	elsif defined?(ERB::Util)
+		Escape = ERB::Util
+	else
+		Escape = BasicEscape
+	end
+
 	# A specialised ArgumentError for Phlex.
 	class ArgumentError < ::ArgumentError
 		include Error
