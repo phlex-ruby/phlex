@@ -13,7 +13,6 @@ module Phlex
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Unbuffered, "phlex/unbuffered"
-	autoload :Overrides, "phlex/overrides"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
@@ -32,4 +31,12 @@ module Phlex
 
 	# @api private
 	ATTRIBUTE_CACHE = Concurrent::Map.new
+end
+
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
+	class Symbol
+		def name
+			to_s
+		end
+	end
 end
