@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "erb"
+
 module Phlex
 	autoload :Context, "phlex/context"
 	autoload :DeferredRender, "phlex/deferred_render"
@@ -10,6 +12,7 @@ module Phlex
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Unbuffered, "phlex/unbuffered"
+	autoload :ConcurrentMap, "phlex/concurrent_map"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
@@ -18,10 +21,8 @@ module Phlex
 
 	if defined?(ERB::Escape)
 		Escape = ERB::Escape
-	elsif defined?(ERB::Util)
-		Escape = ERB::Util
 	else
-		Escape = BasicEscape
+		Escape = ERB::Util
 	end
 
 	# A specialised ArgumentError for Phlex.
@@ -36,7 +37,6 @@ module Phlex
 
 	# @api private
 	ATTRIBUTE_CACHE = Phlex::ConcurrentMap.new
-
 end
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
