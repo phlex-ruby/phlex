@@ -84,20 +84,15 @@ describe Phlex::HTML do
 		view do
 			def view_template
 				h1 { "Before" }
-				render @_context.view_context.previewer do
-					render @_context.view_context.component
+				render context[:test_scope].previewer do
+					render context[:test_scope].component
 				end
 				h1 { "After" }
 			end
 		end
 
 		let(:context) do
-			Phlex::Context.new.tap do |context|
-				class << context
-					attr_accessor :view_context
-				end
-				context.view_context = self
-			end
+			{ test_scope: self }
 		end
 
 		it "should contain the full capture" do

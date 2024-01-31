@@ -102,10 +102,10 @@ module Phlex
 		end
 
 		# @api private
-		def __final_call__(buffer = +"", context: Phlex::Context.new, parent: nil, &block)
+		def __final_call__(buffer = +"", context: {}, _context: Phlex::Context.new(context), _parent: nil, &block)
 			@_buffer = buffer
-			@_context = context
-			@_parent = parent
+			@_context = _context
+			@_parent = _parent
 
 			block ||= @_content_block
 
@@ -130,7 +130,13 @@ module Phlex
 				end
 			end
 
-			buffer << context.target unless parent
+			buffer << _context.target unless _parent
+		end
+
+		# Access the current render context data
+		# @return the supplied context object, by default a Hash
+		def context
+			@_context.user_context
 		end
 
 		# Output text content. The text will be HTML-escaped.
@@ -222,10 +228,10 @@ module Phlex
 		def render(renderable, &block)
 			case renderable
 			when Phlex::SGML
-				renderable.call(@_buffer, context: @_context, parent: self, &block)
+				renderable.call(@_buffer, _context: @_context, _parent: self, &block)
 			when Class
 				if renderable < Phlex::SGML
-					renderable.new.call(@_buffer, context: @_context, parent: self, &block)
+					renderable.new.call(@_buffer, _context: @_context, _parent: self, &block)
 				end
 			when Enumerable
 				renderable.each { |r| render(r, &block) }
