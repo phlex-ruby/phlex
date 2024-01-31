@@ -95,8 +95,8 @@ module Phlex
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragment: nil, &block)
-			__final_call__(buffer, context: context, view_context: view_context, parent: parent, fragment: fragment, &block).tap do
+		def call(...)
+			__final_call__(...).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
@@ -133,6 +133,12 @@ module Phlex
 			end
 
 			buffer << context.buffer unless parent
+		end
+
+		# Access the current render context data
+		# @return the supplied context object, by default a Hash
+		def context
+			@_context.user_context
 		end
 
 		# Output text content. The text will be HTML-escaped.

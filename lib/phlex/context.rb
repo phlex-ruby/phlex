@@ -2,15 +2,17 @@
 
 # @api private
 class Phlex::Context
-	def initialize
+	def initialize(user_context = {})
 		@buffer = +""
 		@capturing = false
+		@user_context = user_context
 		@fragment = nil
 		@in_target_fragment = false
 		@found_target_fragment = false
 	end
 
-	attr_accessor :buffer, :capturing, :fragment, :in_target_fragment, :found_target_fragment
+	attr_accessor :buffer, :capturing, :user_context, :fragment,
+		:in_target_fragment, :found_target_fragment
 
 	# Added for backwards compatibility with phlex-rails. We can remove this with 2.0
 	def target
