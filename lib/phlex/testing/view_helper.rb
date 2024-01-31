@@ -7,11 +7,7 @@ module Phlex::Testing
 				view = view.new
 			end
 
-			view.call(view_context: view_context, &block)
-		end
-
-		def view_context
-			nil
+			view.call(&block)
 		end
 	end
 end

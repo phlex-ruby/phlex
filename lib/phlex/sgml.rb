@@ -95,17 +95,16 @@ module Phlex
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, &block)
-			__final_call__(buffer, context: context, view_context: view_context, parent: parent, &block).tap do
+		def call(...)
+			__final_call__(...).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
 
 		# @api private
-		def __final_call__(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, &block)
+		def __final_call__(buffer = +"", context: Phlex::Context.new, parent: nil, &block)
 			@_buffer = buffer
 			@_context = context
-			@_view_context = view_context
 			@_parent = parent
 
 			block ||= @_content_block
@@ -223,10 +222,10 @@ module Phlex
 		def render(renderable, &block)
 			case renderable
 			when Phlex::SGML
-				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+				renderable.call(@_buffer, context: @_context, parent: self, &block)
 			when Class
 				if renderable < Phlex::SGML
-					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+					renderable.new.call(@_buffer, context: @_context, parent: self, &block)
 				end
 			when Enumerable
 				renderable.each { |r| render(r, &block) }
