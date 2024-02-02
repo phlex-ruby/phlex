@@ -15,6 +15,7 @@ module Phlex
 	autoload :ConcurrentMap, "phlex/concurrent_map"
 	autoload :BlackHole, "phlex/black_hole"
 	autoload :LRU, "phlex/lru"
+	autoload :FIFO, "phlex/fifo"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
@@ -38,7 +39,7 @@ module Phlex
 	end
 
 	# @api private
-	ATTRIBUTE_CACHE = Phlex::ConcurrentMap.new
+	CACHE = Phlex::FIFO.new(20_000_000)
 end
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")

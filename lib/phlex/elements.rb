@@ -39,11 +39,11 @@ module Phlex::Elements
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
-						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+						target << "<#{tag}" << (Phlex::CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 						yield_content(&block)
 						target << "</#{tag}>"
 					else # without content block
-						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
+						target << "<#{tag}" << (Phlex::CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
 					end
 				else # without attributes
 					if block # with content block
@@ -77,7 +77,7 @@ module Phlex::Elements
 				target = @_context.target
 
 				if attributes.length > 0 # with attributes
-					target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+					target << "<#{tag}" << (Phlex::CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 				else # without attributes
 					target << "<#{tag}>"
 				end

@@ -9,7 +9,6 @@ gem "rubocop"
 gem "sus"
 gem "benchmark-ips"
 gem "yard"
-gem "green_dots", github: "joeldrapper/green_dots"
 
 group :test do
 	gem "i18n"
