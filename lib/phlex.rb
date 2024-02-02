@@ -14,6 +14,7 @@ module Phlex
 	autoload :Unbuffered, "phlex/unbuffered"
 	autoload :ConcurrentMap, "phlex/concurrent_map"
 	autoload :BlackHole, "phlex/black_hole"
+	autoload :LRU, "phlex/lru"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
