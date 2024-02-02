@@ -35,6 +35,10 @@ module Phlex::Elements
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes, &block)
+				if #{deprecated}
+					Kernel.warn("`#{method_name}` and `_#{method_name}` are deprecated and will be unsupported in Phlex 2.0. This HTML element is no longer recommended. Check out MDN web docs: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/#{tag}.")
+				end
+
 				target = @_context.target
 
 				if attributes.length > 0 # with attributes
@@ -74,6 +78,10 @@ module Phlex::Elements
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes)
+				if #{deprecated}
+					Kernel.warn("`#{method_name}` and `_#{method_name}` are deprecated and will be unsupported in Phlex 2.0. This HTML element is no longer recommended. Check out MDN web docs: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/#{tag}.")
+				end
+
 				target = @_context.target
 
 				if attributes.length > 0 # with attributes

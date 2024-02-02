@@ -122,4 +122,40 @@ describe Phlex::HTML do
 			end
 		end
 	end
+
+	describe "Elements deprecation" do
+		deprecated_methods = %i[param]
+
+		deprecated_methods.each do |method_name|
+			describe "##{method_name}" do
+				view do
+					define_method :view_template do
+						send(method_name.to_sym)
+					end
+				end
+
+				it "warns about `#{method_name}` deprecation" do
+					message = capture_stderr { view.call }
+					deprecation_message = "`#{method_name}` and `_#{method_name}` are deprecated and will be unsupported in Phlex 2.0. This HTML element is no longer recommended. Check out MDN web docs: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/#{method_name}."
+
+					expect(message).to be == deprecation_message
+				end
+			end
+
+			describe "#_#{method_name}" do
+				view do
+					define_method :view_template do
+						send(:"_#{method_name}")
+					end
+				end
+
+				it "warns about `_#{method_name}` deprecation" do
+					message = capture_stderr { view.call }
+					deprecation_message = "`#{method_name}` and `_#{method_name}` are deprecated and will be unsupported in Phlex 2.0. This HTML element is no longer recommended. Check out MDN web docs: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/#{method_name}."
+
+					expect(message).to be == deprecation_message
+				end
+			end
+		end
+	end
 end
