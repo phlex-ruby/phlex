@@ -8,7 +8,7 @@ class Report < Phlex::CSV
 	end
 end
 
-User = Data.define(:id, :name, :email)
+User = Struct.new(:id, :name, :email)
 
 it "works" do
 	users = [
