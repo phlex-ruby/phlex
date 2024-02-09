@@ -13,3 +13,9 @@ Style/MixinUsage:
 
 Style/RedundantDoubleSplatHashBraces:
   Enabled: false
+
+Naming/AsciiIdentifiers:
+  Enabled: false
+
+Naming/MethodName:
+  Enabled: false
