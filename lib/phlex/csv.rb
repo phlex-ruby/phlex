@@ -17,7 +17,7 @@ class Phlex::CSV
 	def call(buffer = +"", view_context: nil)
 		@_view_context = view_context
 
-		@_collection.each do |record|
+		each_item do |record|
 			collection_yielder(record) do |*args, **kwargs|
 				template(*args, **kwargs)
 
@@ -53,8 +53,16 @@ class Phlex::CSV
 		@_current_column_index += 1
 	end
 
+	def each_item(&block)
+		@_collection.each(&block)
+	end
+
 	def collection_yielder(record)
 		yield(record)
+	end
+
+	def collection
+		@_collection
 	end
 
 	def template(...)
