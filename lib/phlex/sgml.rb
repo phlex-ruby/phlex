@@ -348,23 +348,21 @@ module Phlex
 		end
 
 		# @api private
-		def __attributes__(**attributes)
-			if respond_to?(:process_attributes)
-				attributes = process_attributes(**attributes)
-			end
+		def __attributes__(attributes)
+			Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= (
+				if attributes[:href]&.start_with?(/\s*javascript:/)
+					attributes.delete(:href)
+				end
 
-			if attributes[:href]&.start_with?(/\s*javascript:/)
-				attributes.delete(:href)
-			end
+				if attributes["href"]&.start_with?(/\s*javascript:/)
+					attributes.delete("href")
+				end
 
-			if attributes["href"]&.start_with?(/\s*javascript:/)
-				attributes.delete("href")
-			end
+				buffer = +""
+				__build_attributes__(attributes, buffer: buffer)
 
-			buffer = +""
-			__build_attributes__(attributes, buffer: buffer)
-
-			buffer
+				buffer
+			)
 		end
 
 		# @api private
