@@ -43,8 +43,8 @@ class Phlex::CSV
 	def column(header = nil, value)
 		if @_first
 			@_headers << header
-		else
-			raise unless header == @_headers[@_current_column_index]
+		elsif header != @_headers[@_current_column_index]
+			raise "Inconsistent header."
 		end
 
 		@_current_row << value
