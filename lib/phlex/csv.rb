@@ -4,13 +4,15 @@ class Phlex::CSV
 	include Phlex::Callable
 
 	def initialize(collection)
-		@_collection = collection
+		@collection = collection
 		@_headers = []
 		@_current_row = []
 		@_current_column_index = 0
 		@_view_context = nil
 		@_first = true
 	end
+
+	attr_reader :collection
 
 	def call(buffer = +"", view_context: nil)
 		@_view_context = view_context
@@ -56,15 +58,11 @@ class Phlex::CSV
 	end
 
 	def each_item(&block)
-		@_collection.each(&block)
+		collection.each(&block)
 	end
 
 	def collection_yielder(record)
 		yield(record)
-	end
-
-	def collection
-		@_collection
 	end
 
 	def template(...)
