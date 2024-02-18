@@ -34,8 +34,12 @@ class Phlex::CSV
 		buffer
 	end
 
-	def filename
+	def file_name
 		nil
+	end
+
+	def content_type
+		"text/csv"
 	end
 
 	private

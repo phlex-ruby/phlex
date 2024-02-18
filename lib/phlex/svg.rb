@@ -8,5 +8,13 @@ module Phlex
 
 		# This should be extended after all method definitions
 		extend ElementClobberingGuard
+
+		def content_type
+			"image/svg+xml"
+		end
+
+		def file_name
+			nil
+		end
 	end
 end
