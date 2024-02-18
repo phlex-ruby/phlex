@@ -16,3 +16,9 @@ Style/RedundantDoubleSplatHashBraces:
 
 Style/OptionalArguments:
   Enabled: false
+
+Naming/AsciiIdentifiers:
+  Enabled: false
+
+Naming/MethodName:
+  Enabled: false
