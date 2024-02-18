@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "csv"
-
 class Phlex::CSV
 	include Phlex::Callable
 
@@ -22,10 +20,10 @@ class Phlex::CSV
 				template(*args, **kwargs)
 
 				if @_first && render_headers?
-					buffer << ::CSV.generate_line(@_headers)
+					buffer << @_headers.map! { |value| escape(value) }.join(",") << "\n"
 				end
 
-				buffer << ::CSV.generate_line(@_current_row)
+				buffer << @_current_row.map! { |value| escape(value) }.join(",") << "\n"
 				@_current_column_index = 0
 				@_current_row.clear
 			end
@@ -79,5 +77,16 @@ class Phlex::CSV
 
 	def render(renderable)
 		renderable.call(view_context: @_view_context)
+	end
+
+	def escape(value)
+		value = value.to_s
+
+		case value
+		when /,|\n|"/
+			%("#{value.gsub('"', '""')}")
+		else
+			value
+		end
 	end
 end
