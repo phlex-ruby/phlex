@@ -14,6 +14,8 @@ module Phlex
 	autoload :Unbuffered, "phlex/unbuffered"
 	autoload :ConcurrentMap, "phlex/concurrent_map"
 	autoload :BlackHole, "phlex/black_hole"
+	autoload :CSV, "phlex/csv"
+	autoload :Callable, "phlex/callable"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
