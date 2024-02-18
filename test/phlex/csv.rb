@@ -2,10 +2,16 @@
 
 Product = Struct.new(:name, :price)
 
-class ProductsCSV < Phlex::CSV
+class Example < Phlex::CSV
 	def view_template(product)
 		column("name", product.name)
 		column("price", product.price)
+	end
+end
+
+class ExampleWithoutHeaders < Example
+	def render_headers?
+		false
 	end
 end
 
@@ -16,7 +22,7 @@ describe Phlex::CSV do
 			Product.new("Banana", 2.00)
 		]
 
-		csv = ProductsCSV.new(products).call
+		csv = Example.new(products).call
 
 		expect(csv).to be == <<~CSV
 			name,price
@@ -27,7 +33,7 @@ describe Phlex::CSV do
 
 	it "escapes commas" do
 		product = Product.new("Apple, Inc.", 1.00)
-		csv = ProductsCSV.new([product]).call
+		csv = Example.new([product]).call
 
 		expect(csv).to be == <<~CSV
 			name,price
@@ -37,7 +43,7 @@ describe Phlex::CSV do
 
 	it "escapes newlines" do
 		product = Product.new("Apple\nInc.", 1.00)
-		csv = ProductsCSV.new([product]).call
+		csv = Example.new([product]).call
 
 		expect(csv).to be == <<~CSV
 			name,price
@@ -47,18 +53,12 @@ describe Phlex::CSV do
 
 	it "escapes quotes" do
 		product = Product.new("Apple\"Inc.", 1.00)
-		csv = ProductsCSV.new([product]).call
+		csv = Example.new([product]).call
 
 		expect(csv).to be == <<~CSV
 			name,price
 			"Apple""Inc.",1.0
 		CSV
-	end
-
-	class WithoutHeaders < ProductsCSV
-		def render_headers?
-			false
-		end
 	end
 
 	it "renders without headers" do
@@ -67,7 +67,7 @@ describe Phlex::CSV do
 			Product.new("Banana", 2.00)
 		]
 
-		csv = WithoutHeaders.new(products).call
+		csv = ExampleWithoutHeaders.new(products).call
 
 		expect(csv).to be == <<~CSV
 			Apple,1.0
