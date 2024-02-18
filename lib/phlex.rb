@@ -3,18 +3,20 @@
 require "erb"
 
 module Phlex
+	autoload :BlackHole, "phlex/black_hole"
+	autoload :Callable, "phlex/callable"
+	autoload :ConcurrentMap, "phlex/concurrent_map"
 	autoload :Context, "phlex/context"
+	autoload :CSV, "phlex/csv"
 	autoload :DeferredRender, "phlex/deferred_render"
 	autoload :ElementClobberingGuard, "phlex/element_clobbering_guard"
 	autoload :Elements, "phlex/elements"
-	autoload :HTML, "phlex/html"
+	autoload :FIFO, "phlex/fifo"
 	autoload :Helpers, "phlex/helpers"
+	autoload :HTML, "phlex/html"
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Unbuffered, "phlex/unbuffered"
-	autoload :ConcurrentMap, "phlex/concurrent_map"
-	autoload :BlackHole, "phlex/black_hole"
-	autoload :FIFO, "phlex/fifo"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:
@@ -47,4 +49,8 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 			to_s
 		end
 	end
+end
+
+def 💪
+	Phlex
 end

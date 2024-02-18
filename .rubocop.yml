@@ -13,3 +13,12 @@ Style/MixinUsage:
 
 Style/RedundantDoubleSplatHashBraces:
   Enabled: false
+
+Style/OptionalArguments:
+  Enabled: false
+
+Naming/AsciiIdentifiers:
+  Enabled: false
+
+Naming/MethodName:
+  Enabled: false

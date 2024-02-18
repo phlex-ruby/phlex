@@ -49,6 +49,14 @@ module Phlex
 			self.class.__unbuffered_class__.new(self)
 		end
 
+		def file_name
+			nil
+		end
+
+		def content_type
+			"text/html"
+		end
+
 		# This should be extended after all method definitions
 		extend ElementClobberingGuard
 	end
