@@ -1,30 +1,77 @@
 # frozen_string_literal: true
 
-class Report < Phlex::CSV
-	def view_template(user)
-		column("id", user.id)
-		column("name", user.name)
-		column("email", user.email)
+Product = Struct.new(:name, :price)
+
+class ProductsCSV < Phlex::CSV
+	def view_template(product)
+		column("name", product.name)
+		column("price", product.price)
 	end
 end
 
-User = Struct.new(:id, :name, :email)
+describe Phlex::CSV do
+	it "renders a CSV" do
+		products = [
+			Product.new("Apple", 1.00),
+			Product.new("Banana", 2.00)
+		]
 
-it "works" do
-	users = [
-		User.new(
-			id: 1,
-			name: "John Doe",
-			email: "john@gmail.com"
-		),
-		User.new(
-			id: 2,
-			name: "Jane Doe",
-			email: "jane@example.com"
-		)
-	]
+		csv = ProductsCSV.new(products).call
 
-	puts Report.new(
-		users
-	).call
+		expect(csv).to be == <<~CSV
+			name,price
+			Apple,1.0
+			Banana,2.0
+		CSV
+	end
+
+	it "escapes commas" do
+		product = Product.new("Apple, Inc.", 1.00)
+		csv = ProductsCSV.new([product]).call
+
+		expect(csv).to be == <<~CSV
+			name,price
+			"Apple, Inc.",1.0
+		CSV
+	end
+
+	it "escapes newlines" do
+		product = Product.new("Apple\nInc.", 1.00)
+		csv = ProductsCSV.new([product]).call
+
+		expect(csv).to be == <<~CSV
+			name,price
+			"Apple\nInc.",1.0
+		CSV
+	end
+
+	it "escapes quotes" do
+		product = Product.new("Apple\"Inc.", 1.00)
+		csv = ProductsCSV.new([product]).call
+
+		expect(csv).to be == <<~CSV
+			name,price
+			"Apple""Inc.",1.0
+		CSV
+	end
+
+	class WithoutHeaders < ProductsCSV
+		def render_headers?
+			false
+		end
+	end
+
+	it "renders without headers" do
+		products = [
+			Product.new("Apple", 1.00),
+			Product.new("Banana", 2.00)
+		]
+
+		csv = WithoutHeaders.new(products).call
+
+		expect(csv).to be == <<~CSV
+			Apple,1.0
+			Banana,2.0
+		CSV
+	end
 end
