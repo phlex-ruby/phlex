@@ -82,8 +82,7 @@ class Phlex::CSV
 	def escape(value)
 		value = value.to_s
 
-		case value
-		when /,|\n|"/
+		if value.include?('"') || value.include?(",") || value.include?("\n")
 			%("#{value.gsub('"', '""')}")
 		else
 			value
