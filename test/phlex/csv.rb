@@ -1,10 +1,8 @@
 class Report < Phlex::CSV
 	def template(user)
-		user => { id:, name:, email: }
-
-		column("id", id)
-		column("name", name)
-		column("email", email)
+		column("id", user.id)
+		column("name", user.name)
+		column("email", user.email)
 	end
 end
 
