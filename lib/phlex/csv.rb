@@ -17,7 +17,7 @@ class Phlex::CSV
 
 		each_item do |record|
 			collection_yielder(record) do |*args, **kwargs|
-				template(*args, **kwargs)
+				view_template(*args, **kwargs)
 
 				if @_first && render_headers?
 					buffer << @_headers.map! { |value| escape(value) }.join(",") << "\n"

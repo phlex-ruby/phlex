@@ -1,5 +1,5 @@
 class Report < Phlex::CSV
-	def template(user)
+	def view_template(user)
 		column("id", user.id)
 		column("name", user.name)
 		column("email", user.email)
