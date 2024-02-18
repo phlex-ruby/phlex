@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Report < Phlex::CSV
 	def view_template(user)
 		column("id", user.id)
