@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+- [Breaking] Removed support for `process_attributes`. Instead, override `__attributes__`, calling `super` with your processed attributes. `__attributes__` receives a single positional argument which is the original attributes hash.
+
 ## [1.9.0] 2024-11-24
 
 - Improved documentation

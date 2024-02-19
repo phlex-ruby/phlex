@@ -7,8 +7,6 @@ require "benchmark/ips"
 require_relative "fixtures/page"
 require_relative "fixtures/layout"
 
-puts RUBY_DESCRIPTION
-
 a = Example::Page.new.call
 # Example::Page.compile
 # Example::LayoutComponent.compile
