@@ -84,20 +84,29 @@ describe Phlex::HTML do
 		view do
 			def view_template
 				h1 { "Before" }
-				render @_view_context.previewer do
-					render @_view_context.component
+				render @_context.view_context.previewer do
+					render @_context.view_context.component
 				end
 				h1 { "After" }
 			end
 		end
 
+		let(:context) do
+			Phlex::Context.new.tap do |context|
+				class << context
+					attr_accessor :view_context
+				end
+				context.view_context = self
+			end
+		end
+
 		it "should contain the full capture" do
-			expect(example.call(view_context: self)).to be == %(<h1>Before</h1><iframe srcdoc="&lt;h1&gt;Hello&lt;/h1&gt;&lt;h1&gt;World&lt;/h1&gt;"></iframe><h1>After</h1>)
+			expect(example.call(context: context)).to be == %(<h1>Before</h1><iframe srcdoc="&lt;h1&gt;Hello&lt;/h1&gt;&lt;h1&gt;World&lt;/h1&gt;"></iframe><h1>After</h1>)
 		end
 
 		it "should contain the full capture if the buffer is provided" do
 			my_buffer = +""
-			example.call(my_buffer, view_context: self)
+			example.call(my_buffer, context: context)
 			expect(my_buffer).to be == %(<h1>Before</h1><iframe srcdoc="&lt;h1&gt;Hello&lt;/h1&gt;&lt;h1&gt;World&lt;/h1&gt;"></iframe><h1>After</h1>)
 		end
 	end

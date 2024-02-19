@@ -15,18 +15,6 @@ describe Phlex::HTML do
 		end
 	end
 
-	with "`render?` method returning false when the view context is true" do
-		view do
-			def view_template
-				plain "Hi"
-			end
-
-			def render?
-				!@_view_context
-			end
-		end
-	end
-
 	with "a view that yields an object" do
 		view do
 			def view_template
