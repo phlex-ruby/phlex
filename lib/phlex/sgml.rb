@@ -4,6 +4,7 @@ module Phlex
 	# **Standard Generalized Markup Language** for behaviour common to {HTML} and {SVG}.
 	class SGML
 		include Helpers
+		include Phlex::Renderable
 
 		class << self
 			# Render the view to a String. Arguments are delegated to {.new}.
@@ -208,10 +209,10 @@ module Phlex
 		# @return [nil]
 		# @overload render(component, &block)
 		# 	Renders the component.
-		# 	@param component [Phlex::SGML]
+		# 	@param component [Phlex::Renderable]
 		# @overload render(component_class, &block)
 		# 	Renders a new instance of the component class. This is useful for component classes that take no arguments.
-		# 	@param component_class [Class<Phlex::SGML>]
+		# 	@param component_class [Class<Phlex::Renderable>]
 		# @overload render(proc)
 		# 	Renders the proc with {#yield_content}.
 		# 	@param proc [Proc]
@@ -222,10 +223,10 @@ module Phlex
 		# 		render @items
 		def render(renderable, &block)
 			case renderable
-			when Phlex::SGML
+			when Phlex::Renderable
 				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
 			when Class
-				if renderable < Phlex::SGML
+				if renderable < Phlex::Renderable
 					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
 				end
 			when Enumerable
@@ -239,7 +240,7 @@ module Phlex
 			when String
 				plain(renderable)
 			else
-				raise ArgumentError, "You can't render a #{renderable.inspect}."
+				raise Phlex::ArgumentError, "Phlex doesn’t know how to render #{renderable.inspect}."
 			end
 
 			nil

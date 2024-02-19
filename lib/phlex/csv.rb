@@ -2,6 +2,7 @@
 
 class Phlex::CSV
 	include Phlex::Callable
+	include Phlex::Renderable
 
 	def initialize(collection)
 		@collection = collection
