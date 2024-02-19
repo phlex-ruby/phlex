@@ -44,6 +44,14 @@ module Phlex
 			end
 		end
 
+		# Outputs an `htmz` iframe for dynamic HTML replacements
+		# @return [nil]
+		# @see https://leanrada.com/htmz/
+		def htmz
+			@_context.target << %(<iframe hidden name=htmz onload="setTimeout(()=>document.querySelector(this.contentWindow.location.hash||':not(*)')?.replaceWith(...this.contentDocument.body.childNodes))"></iframe>)
+			nil
+		end
+
 		# @api private
 		def unbuffered
 			self.class.__unbuffered_class__.new(self)
