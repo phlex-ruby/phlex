@@ -82,9 +82,13 @@ class Phlex::CSV
 	end
 
 	def escape(value)
-		value = value.to_s
+		value = value.to_s.dup
+		value.strip!
 
-		if value.include?('"') || value.include?(",") || value.include?("\n")
+		if value.start_with?("=") || value.start_with?("+") || value.start_with?("-") || value.start_with?("@")
+			# Prefix a tab to prevent Excel and Google Docs from interpreting the value as a formula
+			%("\t#{value.gsub('"', '""')}")
+		elsif value.include?('"') || value.include?(",") || value.include?("\n")
 			%("#{value.gsub('"', '""')}")
 		else
 			value
