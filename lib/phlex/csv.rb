@@ -72,6 +72,7 @@ class Phlex::CSV
 		nil
 	end
 
+	# Override and set to `false` to disable rendering headers.
 	def render_headers?
 		true
 	end
@@ -81,6 +82,7 @@ class Phlex::CSV
 		false
 	end
 
+	# Override and set to `false` to disable CSV injection escapes.
 	def prevent_csv_injection?
 		true
 	end
