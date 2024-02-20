@@ -3,6 +3,8 @@
 class Phlex::CSV
 	include Phlex::Callable
 
+	FORMULA_PREFIXES = ["=", "+", "-", "@", "\t", "\n"].to_h { |prefix| [prefix, true] }.freeze
+
 	def initialize(collection)
 		@collection = collection
 		@_headers = []
@@ -77,7 +79,7 @@ class Phlex::CSV
 		true
 	end
 
-	def escape_formulas?
+	def escape_formulae?
 		true
 	end
 
@@ -90,32 +92,16 @@ class Phlex::CSV
 	end
 
 	def escape(value)
-		if trim_space?
-			value = value.to_s.strip
+		value = trim_space? ? value.to_s.strip : value.to_s
+		first_char = value[0]
 
-			first_char = value[0]
-
-			if first_char == "=" || first_char == "+" || first_char == "-" || first_char == "@"
-				# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula
-				# See https://owasp.org/www-community/attacks/CSV_Injection
-				%("'#{value.gsub('"', '""')}")
-			elsif value.include?('"') || value.include?(",") || value.include?("\n")
-				%("#{value.gsub('"', '""')}")
-			else
-				value
-			end
-		else # In the case of non-trimmed values, we need to escape some extra characters
-			first_char = value[0]
-
-			if first_char == "=" || first_char == "+" || first_char == "-" || first_char == "@" || first_char == "\t" || first_char == "\n"
-				# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula
-				# See https://owasp.org/www-community/attacks/CSV_Injection
-				%("'#{value.gsub('"', '""')}")
-			elsif first_char == " " || value.include?('"') || value.include?(",") || value.include?("\n")
-				%("#{value.gsub('"', '""')}")
-			else
-				value
-			end
+		if escape_formulae? && FORMULA_PREFIXES[first_char]
+			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
+			%("'#{value.gsub('"', '""')}")
+		elsif value.include?('"') || value.include?(",") || value.include?("\n")
+			%("#{value.gsub('"', '""')}")
+		else
+			value
 		end
 	end
 end
