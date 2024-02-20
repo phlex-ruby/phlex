@@ -18,8 +18,28 @@ class Phlex::CSV
 	attr_reader :collection
 
 	def call(buffer = +"", view_context: nil)
-		unless prevent_csv_injection? == true || prevent_csv_injection? == false
-			raise "You must define `prevent_csv_injection?` on #{self.class.inspect}, returning `true` or `false`. See https://owasp.org/www-community/attacks/CSV_Injection"
+		unless escape_csv_injection? == true || escape_csv_injection? == false
+			raise <<~MESSAGE
+				You need to define escape_csv_injection? in #{self.class.name}, returning either `true` or `false`.
+
+				CSV injection is a security vulnerability where malicious spreadsheet formulae are used to execute code or exfiltrate data when a CSV is opened in a spreadsheet program such as Microsoft Excel or Google Sheets.
+
+				For more information, see https://owasp.org/www-community/attacks/CSV_Injection
+
+				If you're sure this CSV will never be opened in a spreadsheet program, you can disable CSV injection escapes:
+
+				  def escape_csv_injection? = false
+
+				This is useful when using CSVs for byte-for-byte data exchange between secure systems.
+
+				Alternatively, you can enable CSV injection escapes at the cost of data integrity:
+
+				  def escape_csv_injection? = true
+
+				Note: Enabling the CSV injection escapes will prefix any values that start with `=`, `+`, `-`, `@`, `\\t`, or `\\r` with a single quote `'` to prevent them from being interpreted as formulae by spreadsheet programs.
+
+				Unfortunately, there is no one-size-fits-all solution to CSV injection. You need to decide based on your specific use case.
+			MESSAGE
 		end
 
 		@_view_context = view_context
@@ -87,7 +107,7 @@ class Phlex::CSV
 	end
 
 	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
-	def prevent_csv_injection?
+	def escape_csv_injection?
 		nil
 	end
 
@@ -100,7 +120,7 @@ class Phlex::CSV
 		first_char = value[0]
 		last_char = value[-1]
 
-		if prevent_csv_injection? && FORMULA_PREFIXES[first_char]
+		if escape_csv_injection? && FORMULA_PREFIXES[first_char]
 			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
 			# See https://owasp.org/www-community/attacks/CSV_Injection
 			%("'#{value.gsub('"', '""')}")
