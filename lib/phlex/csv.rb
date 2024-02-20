@@ -76,6 +76,7 @@ class Phlex::CSV
 		true
 	end
 
+	# Override and set to `true` to strip leading and trailing whitespace from values.
 	def strip_values?
 		false
 	end
@@ -97,7 +98,7 @@ class Phlex::CSV
 			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
 			# See https://owasp.org/www-community/attacks/CSV_Injection
 			%("'#{value.gsub('"', '""')}")
-		elsif SPACE_CHARACTERS[first_char] || SPACE_CHARACTERS[last_char] || value.include?('"') || value.include?(",") || value.include?("\n")
+		elsif (!strip_values? && (SPACE_CHARACTERS[first_char] || SPACE_CHARACTERS[last_char])) || value.include?('"') || value.include?(",") || value.include?("\n")
 			%("#{value.gsub('"', '""')}")
 		else
 			value
