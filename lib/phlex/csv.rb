@@ -18,6 +18,10 @@ class Phlex::CSV
 	attr_reader :collection
 
 	def call(buffer = +"", view_context: nil)
+		unless prevent_csv_injection? == true || prevent_csv_injection? == false
+			raise "You must define `prevent_csv_injection?` on #{self.class.inspect}, returning `true` or `false`. See https://owasp.org/www-community/attacks/CSV_Injection"
+		end
+
 		@_view_context = view_context
 
 		each_item do |record|
@@ -82,9 +86,9 @@ class Phlex::CSV
 		false
 	end
 
-	# Override and set to `false` to disable CSV injection escapes.
+	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
 	def prevent_csv_injection?
-		true
+		nil
 	end
 
 	def helpers
