@@ -6,6 +6,22 @@ class Phlex::CSV
 	FORMULA_PREFIXES = ["=", "+", "-", "@", "\t", "\r"].to_h { |prefix| [prefix, true] }.freeze
 	SPACE_CHARACTERS = [" ", "\t", "\r"].to_h { |char| [char, true] }.freeze
 
+	module InjectionPolicy
+		Raise = lambda do |value|
+			raise "CSV injection detected: #{value.inspect}"
+		end
+
+		Ignore = lambda do |value|
+			value
+		end
+
+		Escape = lambda do |value|
+			%("'#{value.gsub('"', '""')}")
+		end
+	end
+
+	include InjectionPolicy
+
 	def initialize(collection)
 		@collection = collection
 		@_headers = []
@@ -18,10 +34,6 @@ class Phlex::CSV
 	attr_reader :collection
 
 	def call(buffer = +"", view_context: nil)
-		unless prevent_csv_injection? == true || prevent_csv_injection? == false
-			raise "You must define `prevent_csv_injection?` on #{self.class.inspect}, returning `true` or `false`. See https://owasp.org/www-community/attacks/CSV_Injection"
-		end
-
 		@_view_context = view_context
 
 		each_item do |record|
@@ -87,8 +99,8 @@ class Phlex::CSV
 	end
 
 	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
-	def prevent_csv_injection?
-		nil
+	def in_case_of_injection
+		Raise
 	end
 
 	def helpers
@@ -100,10 +112,8 @@ class Phlex::CSV
 		first_char = value[0]
 		last_char = value[-1]
 
-		if prevent_csv_injection? && FORMULA_PREFIXES[first_char]
-			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
-			# See https://owasp.org/www-community/attacks/CSV_Injection
-			%("'#{value.gsub('"', '""')}")
+		if InjectionPolicy::Ignore != in_case_of_injection && FORMULA_PREFIXES[first_char]
+			in_case_of_injection.call(value)
 		elsif (!trim_whitespace? && (SPACE_CHARACTERS[first_char] || SPACE_CHARACTERS[last_char])) || value.include?('"') || value.include?(",") || value.include?("\n")
 			%("#{value.gsub('"', '""')}")
 		else
