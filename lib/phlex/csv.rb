@@ -22,10 +22,10 @@ class Phlex::CSV
 				view_template(*args, **kwargs)
 
 				if @_first && render_headers?
-					buffer << @_headers.map! { |value| escape(value) }.join(",") << "\n"
+					buffer << @_headers.join(",") << "\n"
 				end
 
-				buffer << @_current_row.map! { |value| escape(value) }.join(",") << "\n"
+				buffer << @_current_row.join(",") << "\n"
 				@_current_column_index = 0
 				@_current_row.clear
 			end
@@ -48,12 +48,12 @@ class Phlex::CSV
 
 	def column(header = nil, value)
 		if @_first
-			@_headers << header
+			@_headers << escape(header)
 		elsif header != @_headers[@_current_column_index]
 			raise "Inconsistent header."
 		end
 
-		@_current_row << value
+		@_current_row << escape(value)
 		@_current_column_index += 1
 	end
 
@@ -73,6 +73,14 @@ class Phlex::CSV
 		true
 	end
 
+	def trim_space?
+		true
+	end
+
+	def escape_formulas?
+		true
+	end
+
 	def helpers
 		@_view_context
 	end
@@ -82,16 +90,32 @@ class Phlex::CSV
 	end
 
 	def escape(value)
-		value = value.to_s.dup
-		value.strip!
+		if trim_space?
+			value = value.to_s.strip
 
-		if value.start_with?("=") || value.start_with?("+") || value.start_with?("-") || value.start_with?("@")
-			# Prefix a tab to prevent Excel and Google Docs from interpreting the value as a formula
-			%("\t#{value.gsub('"', '""')}")
-		elsif value.include?('"') || value.include?(",") || value.include?("\n")
-			%("#{value.gsub('"', '""')}")
-		else
-			value
+			first_char = value[0]
+
+			if first_char == "=" || first_char == "+" || first_char == "-" || first_char == "@"
+				# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula
+				# See https://owasp.org/www-community/attacks/CSV_Injection
+				%("'#{value.gsub('"', '""')}")
+			elsif value.include?('"') || value.include?(",") || value.include?("\n")
+				%("#{value.gsub('"', '""')}")
+			else
+				value
+			end
+		else # In the case of non-trimmed values, we need to escape some extra characters
+			first_char = value[0]
+
+			if first_char == "=" || first_char == "+" || first_char == "-" || first_char == "@" || first_char == "\t" || first_char == "\n"
+				# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula
+				# See https://owasp.org/www-community/attacks/CSV_Injection
+				%("'#{value.gsub('"', '""')}")
+			elsif first_char == " " || value.include?('"') || value.include?(",") || value.include?("\n")
+				%("#{value.gsub('"', '""')}")
+			else
+				value
+			end
 		end
 	end
 end
