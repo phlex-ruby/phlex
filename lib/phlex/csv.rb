@@ -4,6 +4,7 @@ class Phlex::CSV
 	include Phlex::Callable
 
 	FORMULA_PREFIXES = ["=", "+", "-", "@", "\t", "\r"].to_h { |prefix| [prefix, true] }.freeze
+	SPACE_CHARACTERS = [" ", "\t", "\r"].to_h { |char| [char, true] }.freeze
 
 	def initialize(collection)
 		@collection = collection
@@ -20,7 +21,7 @@ class Phlex::CSV
 		@_view_context = view_context
 
 		each_item do |record|
-			collection_yielder(record) do |*args, **kwargs|
+			yielder(record) do |*args, **kwargs|
 				view_template(*args, **kwargs)
 
 				if @_first && render_headers?
@@ -63,7 +64,7 @@ class Phlex::CSV
 		collection.each(&block)
 	end
 
-	def collection_yielder(record)
+	def yielder(record)
 		yield(record)
 	end
 
@@ -75,8 +76,8 @@ class Phlex::CSV
 		true
 	end
 
-	def trim_space?
-		true
+	def strip_values?
+		false
 	end
 
 	def prevent_csv_injection?
@@ -87,19 +88,16 @@ class Phlex::CSV
 		@_view_context
 	end
 
-	def render(renderable)
-		renderable.call(view_context: @_view_context)
-	end
-
 	def escape(value)
-		value = trim_space? ? value.to_s.strip : value.to_s
+		value = strip_values? ? value.to_s.strip : value.to_s
 		first_char = value[0]
+		last_char = value[-1]
 
 		if prevent_csv_injection? && FORMULA_PREFIXES[first_char]
 			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
 			# See https://owasp.org/www-community/attacks/CSV_Injection
 			%("'#{value.gsub('"', '""')}")
-		elsif value.include?('"') || value.include?(",") || value.include?("\n")
+		elsif SPACE_CHARACTERS[first_char] || SPACE_CHARACTERS[last_char] || value.include?('"') || value.include?(",") || value.include?("\n")
 			%("#{value.gsub('"', '""')}")
 		else
 			value
