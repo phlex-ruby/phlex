@@ -3,7 +3,7 @@
 class Phlex::CSV
 	include Phlex::Callable
 
-	FORMULA_PREFIXES = ["=", "+", "-", "@", "\t", "\n"].to_h { |prefix| [prefix, true] }.freeze
+	FORMULA_PREFIXES = ["=", "+", "-", "@", "\t", "\r"].to_h { |prefix| [prefix, true] }.freeze
 
 	def initialize(collection)
 		@collection = collection
@@ -79,7 +79,7 @@ class Phlex::CSV
 		true
 	end
 
-	def escape_formulae?
+	def prevent_csv_injection?
 		true
 	end
 
@@ -95,8 +95,9 @@ class Phlex::CSV
 		value = trim_space? ? value.to_s.strip : value.to_s
 		first_char = value[0]
 
-		if escape_formulae? && FORMULA_PREFIXES[first_char]
+		if prevent_csv_injection? && FORMULA_PREFIXES[first_char]
 			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
+			# See https://owasp.org/www-community/attacks/CSV_Injection
 			%("'#{value.gsub('"', '""')}")
 		elsif value.include?('"') || value.include?(",") || value.include?("\n")
 			%("#{value.gsub('"', '""')}")
