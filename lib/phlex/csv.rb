@@ -3,6 +3,8 @@
 class Phlex::CSV
 	include Phlex::Callable
 
+	autoload :InjectionError, "phlex/csv/injection_error"
+
 	FORMULA_PREFIXES = ["=", "+", "-", "@", "\t", "\r"].to_h { |prefix| [prefix, true] }.freeze
 	SPACE_CHARACTERS = [" ", "\t", "\r"].to_h { |char| [char, true] }.freeze
 
@@ -13,35 +15,12 @@ class Phlex::CSV
 		@_current_column_index = 0
 		@_view_context = nil
 		@_first = true
+		@_escape_csv_injection_arity = nil
 	end
 
 	attr_reader :collection
 
 	def call(buffer = +"", view_context: nil)
-		unless escape_csv_injection? == true || escape_csv_injection? == false
-			raise <<~MESSAGE
-				You need to define escape_csv_injection? in #{self.class.name}, returning either `true` or `false`.
-
-				CSV injection is a security vulnerability where malicious spreadsheet formulae are used to execute code or exfiltrate data when a CSV is opened in a spreadsheet program such as Microsoft Excel or Google Sheets.
-
-				For more information, see https://owasp.org/www-community/attacks/CSV_Injection
-
-				If you're sure this CSV will never be opened in a spreadsheet program, you can disable CSV injection escapes:
-
-				  def escape_csv_injection? = false
-
-				This is useful when using CSVs for byte-for-byte data exchange between secure systems.
-
-				Alternatively, you can enable CSV injection escapes at the cost of data integrity:
-
-				  def escape_csv_injection? = true
-
-				Note: Enabling the CSV injection escapes will prefix any values that start with `=`, `+`, `-`, `@`, `\\t`, or `\\r` with a single quote `'` to prevent them from being interpreted as formulae by spreadsheet programs.
-
-				Unfortunately, there is no one-size-fits-all solution to CSV injection. You need to decide based on your specific use case.
-			MESSAGE
-		end
-
 		@_view_context = view_context
 
 		each_item do |record|
@@ -107,8 +86,8 @@ class Phlex::CSV
 	end
 
 	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
-	def escape_csv_injection?
-		nil
+	def escape_csv_injection?(value = nil, column_header = nil)
+		raise InjectionError, value, column_header
 	end
 
 	def helpers
@@ -120,7 +99,7 @@ class Phlex::CSV
 		first_char = value[0]
 		last_char = value[-1]
 
-		if escape_csv_injection? && FORMULA_PREFIXES[first_char]
+		if FORMULA_PREFIXES[first_char] && _escape_csv_injection?(value)
 			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
 			# See https://owasp.org/www-community/attacks/CSV_Injection
 			%("'#{value.gsub('"', '""')}")
@@ -129,5 +108,18 @@ class Phlex::CSV
 		else
 			value
 		end
+	end
+
+	def _escape_csv_injection?(value)
+		case _escape_csv_injection_arity
+		when 0 then escape_csv_injection?
+		when 1 then escape_csv_injection?(value)
+		else
+			escape_csv_injection?(value, @_headers[@_current_column_index])
+		end
+	end
+
+	def _escape_csv_injection_arity
+		@_escape_csv_injection_arity ||= method(:escape_csv_injection?).arity.abs
 	end
 end
