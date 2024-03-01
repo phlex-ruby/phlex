@@ -3,6 +3,10 @@
 Product = Struct.new(:name, :price)
 
 class Example < Phlex::CSV
+	def escape_csv_injection?
+		true
+	end
+
 	def view_template(product)
 		column("name", product.name)
 		column("price", product.price)

@@ -22,3 +22,6 @@ Naming/AsciiIdentifiers:
 
 Naming/MethodName:
   Enabled: false
+
+Style/ReturnNilInPredicateMethodDefinition:
+  Enabled: false
