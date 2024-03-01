@@ -3,22 +3,22 @@
 # @api private
 class Phlex::Context
 	def initialize
-		@target = +""
+		@buffer = +""
 		@capturing = false
 	end
 
-	attr_accessor :target, :capturing
+	attr_accessor :buffer, :capturing
 
 	def capturing_into(new_target)
-		original_target = @target
+		original_buffer = @buffer
 		original_capturing = @capturing
 
 		begin
-			@target = new_target
+			@buffer = new_target
 			@capturing = true
 			yield
 		ensure
-			@target = original_target
+			@buffer = original_buffer
 			@capturing = original_capturing
 		end
 

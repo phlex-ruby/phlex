@@ -42,7 +42,7 @@ module Phlex::Elements
 
 			def #{method_name}(**attributes, &block)
 				#{deprecation}
-				target = @_context.target
+				target = @_context.buffer
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
@@ -90,7 +90,7 @@ module Phlex::Elements
 
 			def #{method_name}(**attributes)
 				#{deprecation}
-				target = @_context.target
+				target = @_context.buffer
 
 				if attributes.length > 0 # with attributes
 					target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
