@@ -3,7 +3,7 @@
 Product = Struct.new(:name, :price)
 
 class Example < Phlex::CSV
-	def prevent_csv_injection?
+	def escape_csv_injection?
 		true
 	end
 
