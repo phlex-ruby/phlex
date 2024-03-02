@@ -42,7 +42,26 @@ module Phlex::Elements
 
 			def #{method_name}(**attributes, &block)
 				#{deprecation}
-				buffer = @_context.buffer
+
+				context = @_context
+				buffer = context.buffer
+				fragment = context.fragment
+				end_find = false
+
+				if fragment
+					in_target_fragment = context.in_target_fragment
+
+					if !in_target_fragment
+					  if !context.found_target_fragment && attributes[:id] == fragment
+							context.in_target_fragment = true
+							context.found_target_fragment = true
+							end_find = true
+						else
+							yield if block
+							return nil
+						end
+					end
+				end
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
@@ -63,6 +82,9 @@ module Phlex::Elements
 				end
 
 				#{'flush' if tag == 'head'}
+
+				# I think we can actually throw from here.
+				context.in_target_fragment = false if end_find
 
 				nil
 			end
@@ -90,7 +112,21 @@ module Phlex::Elements
 
 			def #{method_name}(**attributes)
 				#{deprecation}
-				buffer = @_context.buffer
+				context = @_context
+				buffer = context.buffer
+				fragment = context.fragment
+
+				if fragment
+					in_target_fragment = context.in_target_fragment
+
+					if !in_target_fragment
+					  if !context.found_target_fragment && attributes[:id] == fragment
+							context.found_target_fragment = true
+						else
+							return nil
+						end
+					end
+				end
 
 				if attributes.length > 0 # with attributes
 					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"

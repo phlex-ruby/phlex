@@ -29,7 +29,10 @@ module Phlex
 
 		# Output an HTML doctype.
 		def doctype
-			@_context.buffer << "<!DOCTYPE html>"
+			context = @_context
+			return if context.fragment && !context.in_target_fragment
+
+			context.buffer << "<!DOCTYPE html>"
 			nil
 		end
 
