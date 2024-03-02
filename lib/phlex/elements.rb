@@ -41,6 +41,13 @@ module Phlex::Elements
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes, &block)
+				if (fragment = @_context.fragment)
+					unless attributes[:id] == fragment
+						yield
+						return nil
+					end
+				end
+
 				#{deprecation}
 				buffer = @_context.buffer
 
