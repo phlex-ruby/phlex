@@ -95,18 +95,19 @@ module Phlex
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, &block)
-			__final_call__(buffer, context: context, view_context: view_context, parent: parent, &block).tap do
+		def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragment: nil, &block)
+			__final_call__(buffer, context: context, view_context: view_context, parent: parent, fragment: fragment, &block).tap do
 				self.class.rendered_at_least_once!
 			end
 		end
 
 		# @api private
-		def __final_call__(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, &block)
+		def __final_call__(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragment: nil, &block)
 			@_buffer = buffer
 			@_context = context
 			@_view_context = view_context
 			@_parent = parent
+			@_context.fragment = fragment if fragment
 
 			block ||= @_content_block
 
@@ -139,6 +140,9 @@ module Phlex
 		# @return [nil]
 		# @see #format_object
 		def plain(content)
+			context = @_context
+			return if context.fragment && !context.in_target_fragment
+
 			unless __text__(content)
 				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
 			end
@@ -150,7 +154,10 @@ module Phlex
 		# @return [nil]
 		# @yield If a block is given, it yields the block with no arguments.
 		def whitespace(&block)
-			buffer = @_context.buffer
+			context = @_context
+			return if context.fragment && !context.in_target_fragment
+
+			buffer = context.buffer
 
 			buffer << " "
 
@@ -165,7 +172,10 @@ module Phlex
 		# Output an HTML comment.
 		# @return [nil]
 		def comment(&block)
-			buffer = @_context.buffer
+			context = @_context
+			return if context.fragment && !context.in_target_fragment
+
+			buffer = context.buffer
 
 			buffer << "<!-- "
 			yield_content(&block)
@@ -180,7 +190,10 @@ module Phlex
 		def unsafe_raw(content = nil)
 			return nil unless content
 
-			@_context.buffer << content
+			context = @_context
+			return if context.fragment && !context.in_target_fragment
+
+			context.buffer << content
 			nil
 		end
 
