@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 class StandardElementExample < Phlex::HTML
 	def view_template
 		div {
 			h1 { "Before" }
 			img(src: "before.jpg")
+			whitespace
+			comment { "This is a comment" }
 			h1(id: "target") {
 				plain "Hello"
 				strong { "World" }
@@ -19,6 +23,8 @@ class VoidElementExample < Phlex::HTML
 		div {
 			h1 { "Before" }
 			img(src: "before.jpg")
+			whitespace
+			comment { "This is a comment" }
 			h1 {
 				plain "Hello"
 				strong { "World" }
@@ -32,10 +38,14 @@ end
 
 describe Phlex::HTML do
 	it "renders the just the target fragment" do
-		expect(StandardElementExample.new.call(fragment: "target")).to be == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
+		expect(
+			StandardElementExample.new.call(fragment: "target")
+		).to be == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
 	end
 
 	it "works with void elements" do
-		expect(VoidElementExample.new.call(fragment: "target")).to be == %(<img id="target" src="image.jpg">)
+		expect(
+			VoidElementExample.new.call(fragment: "target")
+		).to be == %(<img id="target" src="image.jpg">)
 	end
 end

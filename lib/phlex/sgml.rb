@@ -154,6 +154,9 @@ module Phlex
 		# @return [nil]
 		# @yield If a block is given, it yields the block with no arguments.
 		def whitespace(&block)
+			context = @_context
+			return if context.fragment && !context.found_fragment
+
 			buffer = @_context.buffer
 
 			buffer << " "
@@ -169,7 +172,10 @@ module Phlex
 		# Output an HTML comment.
 		# @return [nil]
 		def comment(&block)
-			buffer = @_context.buffer
+			context = @_context
+			return if context.fragment && !context.found_fragment
+
+			buffer = context.buffer
 
 			buffer << "<!-- "
 			yield_content(&block)
@@ -184,7 +190,10 @@ module Phlex
 		def unsafe_raw(content = nil)
 			return nil unless content
 
-			@_context.buffer << content
+			context = @_context
+			return if context.fragment && !context.found_fragment
+
+			context.buffer << content
 			nil
 		end
 
