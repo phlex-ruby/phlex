@@ -15,7 +15,7 @@ class StandardElementExample < Phlex::HTML
 				img(src: "image.jpg")
 			}
 			img(src: "after.jpg")
-			h1 { "After" }
+			h1(id: "target") { "After" }
 		}
 	end
 end
@@ -35,7 +35,7 @@ class VoidElementExample < Phlex::HTML
 				img(id: "target", src: "image.jpg")
 			}
 			img(src: "after.jpg")
-			h1 { "After" }
+			h1(id: "target") { "After" }
 		}
 	end
 end
