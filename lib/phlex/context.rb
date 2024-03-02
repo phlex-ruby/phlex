@@ -9,12 +9,12 @@ class Phlex::Context
 
 	attr_accessor :buffer, :capturing
 
-	def capturing_into(new_target)
+	def capturing_into(new_buffer)
 		original_buffer = @buffer
 		original_capturing = @capturing
 
 		begin
-			@buffer = new_target
+			@buffer = new_buffer
 			@capturing = true
 			yield
 		ensure
@@ -22,6 +22,6 @@ class Phlex::Context
 			@capturing = original_capturing
 		end
 
-		new_target
+		new_buffer
 	end
 end

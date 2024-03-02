@@ -42,23 +42,23 @@ module Phlex::Elements
 
 			def #{method_name}(**attributes, &block)
 				#{deprecation}
-				target = @_context.buffer
+				buffer = @_context.buffer
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
-						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 						yield_content(&block)
-						target << "</#{tag}>"
+						buffer << "</#{tag}>"
 					else # without content block
-						target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
+						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
 					end
 				else # without attributes
 					if block # with content block
-						target << "<#{tag}>"
+						buffer << "<#{tag}>"
 						yield_content(&block)
-						target << "</#{tag}>"
+						buffer << "</#{tag}>"
 					else # without content block
-						target << "<#{tag}></#{tag}>"
+						buffer << "<#{tag}></#{tag}>"
 					end
 				end
 
@@ -90,12 +90,12 @@ module Phlex::Elements
 
 			def #{method_name}(**attributes)
 				#{deprecation}
-				target = @_context.buffer
+				buffer = @_context.buffer
 
 				if attributes.length > 0 # with attributes
-					target << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
 				else # without attributes
-					target << "<#{tag}>"
+					buffer << "<#{tag}>"
 				end
 
 				nil

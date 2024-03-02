@@ -150,13 +150,13 @@ module Phlex
 		# @return [nil]
 		# @yield If a block is given, it yields the block with no arguments.
 		def whitespace(&block)
-			target = @_context.buffer
+			buffer = @_context.buffer
 
-			target << " "
+			buffer << " "
 
 			if block_given?
 				yield_content(&block)
-				target << " "
+				buffer << " "
 			end
 
 			nil
@@ -165,11 +165,11 @@ module Phlex
 		# Output an HTML comment.
 		# @return [nil]
 		def comment(&block)
-			target = @_context.buffer
+			buffer = @_context.buffer
 
-			target << "<!-- "
+			buffer << "<!-- "
 			yield_content(&block)
-			target << " -->"
+			buffer << " -->"
 
 			nil
 		end
@@ -199,9 +199,9 @@ module Phlex
 		def flush
 			return if @_context.capturing
 
-			target = @_context.buffer
-			@_buffer << target.dup
-			target.clear
+			buffer = @_context.buffer
+			@_buffer << buffer.dup
+			buffer.clear
 		end
 
 		# Render another component, block or enumerable
@@ -302,11 +302,11 @@ module Phlex
 		def yield_content
 			return unless block_given?
 
-			target = @_context.buffer
+			buffer = @_context.buffer
 
-			original_length = target.length
+			original_length = buffer.length
 			content = yield(self)
-			__text__(content) if original_length == target.length
+			__text__(content) if original_length == buffer.length
 
 			nil
 		end
@@ -316,11 +316,11 @@ module Phlex
 		def yield_content_with_no_args
 			return unless block_given?
 
-			target = @_context.buffer
+			buffer = @_context.buffer
 
-			original_length = target.length
+			original_length = buffer.length
 			content = yield
-			__text__(content) if original_length == target.length
+			__text__(content) if original_length == buffer.length
 
 			nil
 		end
@@ -331,11 +331,11 @@ module Phlex
 		def yield_content_with_args(*args)
 			return unless block_given?
 
-			target = @_context.buffer
+			buffer = @_context.buffer
 
-			original_length = target.length
+			original_length = buffer.length
 			content = yield(*args)
-			__text__(content) if original_length == target.length
+			__text__(content) if original_length == buffer.length
 
 			nil
 		end
