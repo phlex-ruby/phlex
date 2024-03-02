@@ -9,6 +9,11 @@ class Phlex::Context
 
 	attr_accessor :buffer, :capturing
 
+	# Added for backwards compatibility with phlex-rails. We can remove this with 2.0
+	def target
+		@buffer
+	end
+
 	def capturing_into(new_buffer)
 		original_buffer = @buffer
 		original_capturing = @capturing
