@@ -2,7 +2,9 @@
 
 class StandardElementExample < Phlex::HTML
 	def view_template
+		doctype
 		div {
+			comment { h1(id: "target") }
 			h1 { "Before" }
 			img(src: "before.jpg")
 			whitespace
@@ -20,7 +22,9 @@ end
 
 class VoidElementExample < Phlex::HTML
 	def view_template
+		doctype
 		div {
+			comment { h1(id: "target") }
 			h1 { "Before" }
 			img(src: "before.jpg")
 			whitespace
