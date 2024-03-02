@@ -157,7 +157,7 @@ module Phlex
 			context = @_context
 			return if context.fragment && !context.found_fragment
 
-			buffer = @_context.buffer
+			buffer = context.buffer
 
 			buffer << " "
 
