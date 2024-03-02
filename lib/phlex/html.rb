@@ -29,7 +29,7 @@ module Phlex
 
 		# Output an HTML doctype.
 		def doctype
-			@_context.target << "<!DOCTYPE html>"
+			@_context.buffer << "<!DOCTYPE html>"
 			nil
 		end
 
