@@ -82,6 +82,7 @@ module Phlex::Elements
 
 				#{'flush' if tag == 'head'}
 
+				# I think we can actually throw from here.
 				context.found_fragment = false if end_find
 
 				nil
