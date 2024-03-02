@@ -49,11 +49,12 @@ module Phlex::Elements
 				end_find = false
 
 				if fragment
-					found_fragment = context.found_fragment
+					in_target_fragment = context.in_target_fragment
 
-					if !found_fragment
-					  if attributes[:id] == fragment
-							context.found_fragment = true
+					if !in_target_fragment
+					  if !context.found_target_fragment && attributes[:id] == fragment
+							context.in_target_fragment = true
+							context.found_target_fragment = true
 							end_find = true
 						else
 							yield if block
@@ -83,7 +84,7 @@ module Phlex::Elements
 				#{'flush' if tag == 'head'}
 
 				# I think we can actually throw from here.
-				context.found_fragment = false if end_find
+				context.in_target_fragment = false if end_find
 
 				nil
 			end
@@ -115,8 +116,16 @@ module Phlex::Elements
 				buffer = context.buffer
 				fragment = context.fragment
 
-				if fragment && !context.found_fragment && (attributes[:id] != fragment)
-					return nil
+				if fragment
+					in_target_fragment = context.in_target_fragment
+
+					if !in_target_fragment
+					  if !context.found_target_fragment && attributes[:id] == fragment
+							context.found_target_fragment = true
+						else
+							return nil
+						end
+					end
 				end
 
 				if attributes.length > 0 # with attributes

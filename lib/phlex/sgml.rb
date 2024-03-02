@@ -141,7 +141,7 @@ module Phlex
 		# @see #format_object
 		def plain(content)
 			context = @_context
-			return if context.fragment && !context.found_fragment
+			return if context.fragment && !context.in_target_fragment
 
 			unless __text__(content)
 				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
@@ -155,7 +155,7 @@ module Phlex
 		# @yield If a block is given, it yields the block with no arguments.
 		def whitespace(&block)
 			context = @_context
-			return if context.fragment && !context.found_fragment
+			return if context.fragment && !context.in_target_fragment
 
 			buffer = context.buffer
 
@@ -173,7 +173,7 @@ module Phlex
 		# @return [nil]
 		def comment(&block)
 			context = @_context
-			return if context.fragment && !context.found_fragment
+			return if context.fragment && !context.in_target_fragment
 
 			buffer = context.buffer
 
@@ -191,7 +191,7 @@ module Phlex
 			return nil unless content
 
 			context = @_context
-			return if context.fragment && !context.found_fragment
+			return if context.fragment && !context.in_target_fragment
 
 			context.buffer << content
 			nil
