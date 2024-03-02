@@ -140,6 +140,9 @@ module Phlex
 		# @return [nil]
 		# @see #format_object
 		def plain(content)
+			context = @_context
+			return if context.fragment && !context.found_fragment
+
 			unless __text__(content)
 				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
 			end

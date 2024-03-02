@@ -41,6 +41,8 @@ module Phlex::Elements
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes, &block)
+				#{deprecation}
+
 				context = @_context
 				buffer = context.buffer
 				fragment = context.fragment
@@ -59,8 +61,6 @@ module Phlex::Elements
 						end
 					end
 				end
-
-				#{deprecation}
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
@@ -111,7 +111,13 @@ module Phlex::Elements
 
 			def #{method_name}(**attributes)
 				#{deprecation}
-				buffer = @_context.buffer
+				context = @_context
+				buffer = context.buffer
+				fragment = context.fragment
+
+				if fragment && !context.found_fragment && (attributes[:id] != fragment)
+					return nil
+				end
 
 				if attributes.length > 0 # with attributes
 					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
