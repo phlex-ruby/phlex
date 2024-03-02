@@ -6,9 +6,10 @@ class Phlex::Context
 		@buffer = +""
 		@capturing = false
 		@fragment = nil
+		@found_fragment = false
 	end
 
-	attr_accessor :buffer, :capturing, :fragment
+	attr_accessor :buffer, :capturing, :fragment, :found_fragment
 
 	# Added for backwards compatibility with phlex-rails. We can remove this with 2.0
 	def target

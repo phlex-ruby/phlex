@@ -41,15 +41,26 @@ module Phlex::Elements
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes, &block)
-				if (fragment = @_context.fragment)
-					unless attributes[:id] == fragment
-						yield
-						return nil
+				context = @_context
+				buffer = context.buffer
+				fragment = context.fragment
+				end_find = false
+
+				if fragment
+					found_fragment = context.found_fragment
+
+					if !found_fragment
+					  if attributes[:id] == fragment
+							context.found_fragment = true
+							end_find = true
+						else
+							yield if block
+							return nil
+						end
 					end
 				end
 
 				#{deprecation}
-				buffer = @_context.buffer
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
@@ -70,6 +81,8 @@ module Phlex::Elements
 				end
 
 				#{'flush' if tag == 'head'}
+
+				context.found_fragment = false if end_find
 
 				nil
 			end
