@@ -57,7 +57,7 @@ module Phlex::Elements
 							context.found_target_fragment = true
 							end_find = true
 						else
-							yield if block
+							yield(self) if block
 							return nil
 						end
 					end
