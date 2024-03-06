@@ -20,7 +20,7 @@ class Phlex::Context
 	end
 
 	def target_fragments(fragments)
-		@fragments = fragments.to_h { |it| [it, +""] }
+		@fragments = fragments.to_h { |it| [it, true] }
 	end
 
 	def begin_target(id)
@@ -29,8 +29,8 @@ class Phlex::Context
 	end
 
 	def end_target
-		id = @in_target_fragment
-		@buffer << @fragments.delete(id) << "</template>"
+		@fragments.delete(@in_target_fragment)
+		@buffer << "</template>"
 		@in_target_fragment = false
 	end
 
