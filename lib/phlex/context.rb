@@ -25,12 +25,10 @@ class Phlex::Context
 
 	def begin_target(id)
 		@in_target_fragment = id
-		@buffer << %(<template data-id="#{id}">)
 	end
 
 	def end_target
 		@fragments.delete(@in_target_fragment)
-		@buffer << "</template>"
 		@in_target_fragment = false
 	end
 

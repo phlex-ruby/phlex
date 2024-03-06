@@ -45,18 +45,18 @@ describe Phlex::HTML do
 	it "renders the just the target fragment" do
 		expect(
 			StandardElementExample.new.call(fragments: ["target"])
-		).to be == %(<template data-id="target"><h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1></template>)
+		).to be == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
 	end
 
 	it "works with void elements" do
 		expect(
 			VoidElementExample.new.call(fragments: ["target"])
-		).to be == %(<template data-id="target"><img id="target" src="image.jpg"></template>)
+		).to be == %(<img id="target" src="image.jpg">)
 	end
 
 	it "supports multiple fragments" do
 		expect(
 			StandardElementExample.new.call(fragments: ["target", "image"])
-		).to be == %(<template data-id="target"><h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1></template><template data-id="image"><img id="image" src="after.jpg"></template>)
+		).to be == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1><img id="image" src="after.jpg">)
 	end
 end
