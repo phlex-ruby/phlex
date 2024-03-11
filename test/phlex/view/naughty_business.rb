@@ -3,6 +3,36 @@
 describe Phlex::HTML do
 	extend ViewHelper
 
+	with "naughty javascript links" do
+		view do
+			def template
+				a(href: "javascript:alert(1)") { "a" }
+				a(href: "JAVASCRIPT:alert(1)") { "b" }
+				a(href: :"JAVASCRIPT:alert(1)") { "c" }
+				a(HREF: "javascript:alert(1)") { "d" }
+			end
+		end
+
+		it "removes the href attributes" do
+			expect(output).to be == "<a>a</a><a>b</a><a>c</a><a>d</a>"
+		end
+	end
+
+	with "naughty uppercase event tag" do
+		view do
+			def template
+				button ONCLICK: "ALERT(1)" do
+					"naughty button"
+				end
+			end
+		end
+
+		it "raises" do
+			expect { output }.to raise_exception ArgumentError,
+				message: be == "Unsafe attribute name detected: ONCLICK."
+		end
+	end
+
 	with "naughty text" do
 		view do
 			def template
