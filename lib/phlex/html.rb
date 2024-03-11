@@ -316,10 +316,6 @@ module Phlex
 		end
 
 		private def _attributes(**attributes)
-			if attributes[:href]&.start_with?(/\s*javascript/)
-				attributes[:href] = attributes[:href].sub(/^\s*(javascript:)+/, "")
-			end
-
 			buffer = +""
 			_build_attributes(attributes, buffer: buffer)
 
@@ -340,8 +336,11 @@ module Phlex
 					else k.to_s
 				end
 
+				lower_name = name.downcase
+				next if lower_name == "href" && v.start_with?(/\s*javascript:/i)
+
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-				if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
+				if HTML::EVENT_ATTRIBUTES[lower_name] || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 
