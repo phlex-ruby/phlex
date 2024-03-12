@@ -6,7 +6,7 @@ module Phlex::Bucket
 
 		return if instance_methods.include?(name)
 
-		if constant < Phlex::SGML
+		if Class === constant && constant < Phlex::SGML
 			define_method(name) do |*args, **kwargs, &block|
 				render constant.new(*args, **kwargs, &block)
 			end
