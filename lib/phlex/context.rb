@@ -29,7 +29,11 @@ class Phlex::Context
 
 	def end_target
 		@fragments.delete(@in_target_fragment)
-		@in_target_fragment = false
+		if @fragments.any?
+			@in_target_fragment = false
+		else
+			throw(:phlex_fragment_halt)
+		end
 	end
 
 	def capturing_into(new_buffer)

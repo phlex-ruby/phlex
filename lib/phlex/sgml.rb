@@ -113,22 +113,45 @@ module Phlex
 
 			return "" unless render?
 
-			around_template do
-				if block
-					if is_a?(DeferredRender)
-						__vanish__(self, &block)
-						view_template
-					else
-						view_template do |*args|
-							if args.length > 0
-								yield_content_with_args(*args, &block)
+			if !parent && context.fragments
+				catch(:phlex_fragment_halt) do
+					around_template do
+						if block
+							if is_a?(DeferredRender)
+								__vanish__(self, &block)
+								view_template
 							else
-								yield_content(&block)
+								view_template do |*args|
+									if args.length > 0
+										yield_content_with_args(*args, &block)
+									else
+										yield_content(&block)
+									end
+								end
 							end
+						else
+							view_template
 						end
 					end
-				else
-					view_template
+				end
+			else
+				around_template do
+					if block
+						if is_a?(DeferredRender)
+							__vanish__(self, &block)
+							view_template
+						else
+							view_template do |*args|
+								if args.length > 0
+									yield_content_with_args(*args, &block)
+								else
+									yield_content(&block)
+								end
+							end
+						end
+					else
+						view_template
+					end
 				end
 			end
 
@@ -191,7 +214,7 @@ module Phlex
 		end
 
 		# This method is very dangerous and should usually be avoided. It will output the given String without any HTML safety. You should never use this method to output unsafe user input.
-		# @param content [String|nil]
+		# @param content [String, nil]
 		# @return [nil]
 		def unsafe_raw(content = nil)
 			return nil unless content
