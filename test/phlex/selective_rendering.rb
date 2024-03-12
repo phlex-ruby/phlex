@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class StandardElementExample < Phlex::HTML
+	def initialize(execution_checker = -> {})
+		@execution_checker = execution_checker
+	end
+
 	def view_template
 		doctype
 		div {
@@ -14,6 +18,7 @@ class StandardElementExample < Phlex::HTML
 				strong { "World" }
 				img(src: "image.jpg")
 			}
+			@execution_checker.call
 			strong { "Here" }
 			img(id: "image", src: "after.jpg")
 			h1(id: "target") { "After" }
@@ -58,5 +63,12 @@ describe Phlex::HTML do
 		expect(
 			StandardElementExample.new.call(fragments: ["target", "image"])
 		).to be == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1><img id="image" src="after.jpg">)
+	end
+
+	it "halts early after all fragments are found" do
+		called = false
+		checker = -> { called = true }
+		StandardElementExample.new(checker).call(fragments: ["target"])
+		expect(called).to be == false
 	end
 end

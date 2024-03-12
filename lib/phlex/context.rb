@@ -8,6 +8,7 @@ class Phlex::Context
 		@user_context = user_context
 		@fragments = nil
 		@in_target_fragment = false
+		@halt_signal = nil
 	end
 
 	attr_accessor :buffer, :capturing, :user_context, :in_target_fragment
@@ -23,6 +24,15 @@ class Phlex::Context
 		@fragments = fragments.to_h { |it| [it, true] }
 	end
 
+	def around_render
+		return yield if !@fragments || @halt_signal
+
+		catch do |signal|
+			@halt_signal = signal
+			yield
+		end
+	end
+
 	def begin_target(id)
 		@in_target_fragment = id
 	end
@@ -30,6 +40,7 @@ class Phlex::Context
 	def end_target
 		@fragments.delete(@in_target_fragment)
 		@in_target_fragment = false
+		throw @halt_signal if @fragments.length == 0
 	end
 
 	def capturing_into(new_buffer)

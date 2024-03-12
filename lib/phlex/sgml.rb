@@ -113,22 +113,24 @@ module Phlex
 
 			return "" unless render?
 
-			around_template do
-				if block
-					if is_a?(DeferredRender)
-						__vanish__(self, &block)
-						view_template
-					else
-						view_template do |*args|
-							if args.length > 0
-								yield_content_with_args(*args, &block)
-							else
-								yield_content(&block)
+			@_context.around_render do
+				around_template do
+					if block
+						if is_a?(DeferredRender)
+							__vanish__(self, &block)
+							view_template
+						else
+							view_template do |*args|
+								if args.length > 0
+									yield_content_with_args(*args, &block)
+								else
+									yield_content(&block)
+								end
 							end
 						end
+					else
+						view_template
 					end
-				else
-					view_template
 				end
 			end
 
