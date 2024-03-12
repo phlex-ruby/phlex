@@ -26,7 +26,7 @@ end
 if RUBY_VERSION >= "3.2"
 	describe Phlex::Bucket do
 		it "works" do
-			expect(Example.new.call).to be == "<h1Hi Joel</h1>"
+			expect(Example.new.call).to be == "<h1>Hi Joel</h1>"
 		end
 	end
 end

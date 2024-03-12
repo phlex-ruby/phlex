@@ -8,7 +8,7 @@ module Phlex::Bucket
 
 		if Class === constant && constant < Phlex::SGML
 			define_method(name) do |*args, **kwargs, &block|
-				render constant.new(*args, **kwargs, &block)
+				render(constant.new(*args, **kwargs), &block)
 			end
 		end
 	end
