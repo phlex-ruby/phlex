@@ -1,0 +1,11 @@
+include:
+  - "**/*.rb"
+exclude:
+  - test/**/*
+require: []
+domains: []
+reporters:
+  - rubocop
+  - require_not_found
+  - typecheck
+max_files: 0

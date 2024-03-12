@@ -14,3 +14,7 @@ group :test do
 	gem "i18n"
 	gem "memory_profiler"
 end
+
+group :development do
+	gem "solargraph"
+end
