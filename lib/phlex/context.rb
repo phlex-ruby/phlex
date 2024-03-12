@@ -6,17 +6,30 @@ class Phlex::Context
 		@buffer = +""
 		@capturing = false
 		@user_context = user_context
-		@fragment = nil
+		@fragments = nil
 		@in_target_fragment = false
-		@found_target_fragment = false
 	end
 
-	attr_accessor :buffer, :capturing, :user_context, :fragment,
-		:in_target_fragment, :found_target_fragment
+	attr_accessor :buffer, :capturing, :user_context, :in_target_fragment
+
+	attr_reader :fragments
 
 	# Added for backwards compatibility with phlex-rails. We can remove this with 2.0
 	def target
 		@buffer
+	end
+
+	def target_fragments(fragments)
+		@fragments = fragments.to_h { |it| [it, true] }
+	end
+
+	def begin_target(id)
+		@in_target_fragment = id
+	end
+
+	def end_target
+		@fragments.delete(@in_target_fragment)
+		@in_target_fragment = false
 	end
 
 	def capturing_into(new_buffer)

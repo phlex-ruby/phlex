@@ -45,17 +45,18 @@ module Phlex::Elements
 
 				context = @_context
 				buffer = context.buffer
-				fragment = context.fragment
-				end_find = false
+				fragment = context.fragments
+				target_found = false
 
 				if fragment
-					in_target_fragment = context.in_target_fragment
+					return if fragment.length == 0 # we found all our fragments already
 
-					if !in_target_fragment
-					  if !context.found_target_fragment && attributes[:id] == fragment
-							context.in_target_fragment = true
-							context.found_target_fragment = true
-							end_find = true
+					id = attributes[:id]
+
+					if !context.in_target_fragment
+					  if fragment[id]
+							context.begin_target(id)
+							target_found = true
 						else
 							yield(self) if block
 							return nil
@@ -83,8 +84,7 @@ module Phlex::Elements
 
 				#{'flush' if tag == 'head'}
 
-				# I think we can actually throw from here.
-				context.in_target_fragment = false if end_find
+				context.end_target if target_found
 
 				nil
 			end
@@ -114,14 +114,17 @@ module Phlex::Elements
 				#{deprecation}
 				context = @_context
 				buffer = context.buffer
-				fragment = context.fragment
+				fragment = context.fragments
 
 				if fragment
-					in_target_fragment = context.in_target_fragment
+					return if fragment.length == 0 # we found all our fragments already
 
-					if !in_target_fragment
-					  if !context.found_target_fragment && attributes[:id] == fragment
-							context.found_target_fragment = true
+					id = attributes[:id]
+
+					if !context.in_target_fragment
+					  if fragment[id]
+							context.begin_target(id)
+							target_found = true
 						else
 							return nil
 						end
@@ -133,6 +136,8 @@ module Phlex::Elements
 				else # without attributes
 					buffer << "<#{tag}>"
 				end
+
+				context.end_target if target_found
 
 				nil
 			end

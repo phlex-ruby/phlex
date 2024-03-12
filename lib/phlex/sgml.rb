@@ -102,12 +102,12 @@ module Phlex
 		end
 
 		# @api private
-		def __final_call__(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragment: nil, &block)
+		def __final_call__(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragments: nil, &block)
 			@_buffer = buffer
 			@_context = context
 			@_view_context = view_context
 			@_parent = parent
-			@_context.fragment = fragment if fragment
+			@_context.target_fragments(fragments) if fragments
 
 			block ||= @_content_block
 
@@ -147,7 +147,7 @@ module Phlex
 		# @see #format_object
 		def plain(content)
 			context = @_context
-			return if context.fragment && !context.in_target_fragment
+			return if context.fragments && !context.in_target_fragment
 
 			unless __text__(content)
 				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
@@ -161,7 +161,7 @@ module Phlex
 		# @yield If a block is given, it yields the block with no arguments.
 		def whitespace(&block)
 			context = @_context
-			return if context.fragment && !context.in_target_fragment
+			return if context.fragments && !context.in_target_fragment
 
 			buffer = context.buffer
 
@@ -179,7 +179,7 @@ module Phlex
 		# @return [nil]
 		def comment(&block)
 			context = @_context
-			return if context.fragment && !context.in_target_fragment
+			return if context.fragments && !context.in_target_fragment
 
 			buffer = context.buffer
 
@@ -197,7 +197,7 @@ module Phlex
 			return nil unless content
 
 			context = @_context
-			return if context.fragment && !context.in_target_fragment
+			return if context.fragments && !context.in_target_fragment
 
 			context.buffer << content
 			nil
