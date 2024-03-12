@@ -22,8 +22,11 @@ class Example < Phlex::HTML
 	end
 end
 
-describe Phlex::Bucket do
-	it "works" do
-		expect(Example.new.call).to be == "<h1>Hi Joel</h1>"
+# This feature is only supported in Ruby 3.2 or later.
+if RUBY_VERSION >= "3.2"
+	describe Phlex::Bucket do
+		it "works" do
+			expect(Example.new.call).to be == "<h1Hi Joel</h1>"
+		end
 	end
 end
