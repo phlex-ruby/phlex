@@ -19,6 +19,7 @@ class Example < Phlex::HTML
 
 	def template
 		SayHi("Joel")
+		Components::SayHi("Will")
 	end
 end
 
@@ -26,7 +27,7 @@ end
 if RUBY_VERSION >= "3.2"
 	describe Phlex::Bucket do
 		it "works" do
-			expect(Example.new.call).to be == "<h1>Hi Joel</h1>"
+			expect(Example.new.call).to be == "<h1>Hi Joel</h1><h1>Hi Will</h1>"
 		end
 	end
 end

@@ -113,6 +113,9 @@ module Phlex
 
 			return "" unless render?
 
+			original_fiber_storage = Fiber[:__phlex_component__]
+			Fiber[:__phlex_component__] = self
+
 			@_context.around_render do
 				around_template do
 					if block
@@ -134,7 +137,10 @@ module Phlex
 				end
 			end
 
-			buffer << context.buffer unless parent
+			unless parent
+				Fiber[:__phlex_component__] = original_fiber_storage
+				buffer << context.buffer
+			end
 		end
 
 		# Access the current render context data
