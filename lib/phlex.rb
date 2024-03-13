@@ -51,6 +51,11 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 	end
 end
 
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.2")
+	# Samuel Williams’ polyfill for Fiber[]
+	require "fiber/storage"
+end
+
 def 💪
 	Phlex
 end
