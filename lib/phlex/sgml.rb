@@ -113,8 +113,10 @@ module Phlex
 
 			return "" unless render?
 
-			original_fiber_storage = Fiber[:__phlex_component__]
-			Fiber[:__phlex_component__] = self
+			unless parent
+				original_fiber_storage = Fiber[:__phlex_component__]
+				Fiber[:__phlex_component__] = self
+			end
 
 			@_context.around_render do
 				around_template do
