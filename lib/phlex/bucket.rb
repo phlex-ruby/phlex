@@ -5,7 +5,7 @@ module Phlex::Bucket
 		constant = const_get(name)
 
 		if instance_methods.include?(name)
-			raise NameError, "method #{name} is already defined"
+			raise NameError, "The method `#{name}' is already defined on `#{inspect}`."
 		else
 			warn "Phlex::Bucket is experimental and may be removed from future versions of Phlex."
 		end
