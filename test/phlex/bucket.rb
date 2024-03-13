@@ -4,12 +4,16 @@ module Components
 	extend Phlex::Bucket
 
 	class SayHi < Phlex::HTML
-		def initialize(name)
+		def initialize(name, times: 1)
 			@name = name
+			@times = times
 		end
 
 		def template
-			h1 { "Hi #{@name}" }
+			article {
+				@times.times { h1 { "Hi #{@name}" } }
+				yield
+			}
 		end
 	end
 end
@@ -18,16 +22,16 @@ class Example < Phlex::HTML
 	include Components
 
 	def template
-		SayHi("Joel")
-		Components::SayHi("Will")
+		SayHi("Joel", times: 2) { "Inside" }
+		Components::SayHi("Will", times: 1) { "Inside" }
 	end
 end
 
 # This feature is only supported in Ruby 3.2 or later.
 if RUBY_VERSION >= "3.2"
 	describe Phlex::Bucket do
-		it "works" do
-			expect(Example.new.call).to be == "<h1>Hi Joel</h1><h1>Hi Will</h1>"
+		it "defines methods for its components" do
+			expect(Example.new.call).to be == %(<article><h1>Hi Joel</h1><h1>Hi Joel</h1>Inside</article><article><h1>Hi Will</h1>Inside</article>)
 		end
 	end
 end
