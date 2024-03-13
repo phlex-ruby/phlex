@@ -113,7 +113,7 @@ module Phlex
 
 			return "" unless render?
 
-			unless parent
+			if !parent && Phlex::SUPPORTS_FIBER_STORAGE
 				original_fiber_storage = Fiber[:__phlex_component__]
 				Fiber[:__phlex_component__] = self
 			end
@@ -140,7 +140,9 @@ module Phlex
 			end
 
 			unless parent
-				Fiber[:__phlex_component__] = original_fiber_storage
+				if Phlex::SUPPORTS_FIBER_STORAGE
+					Fiber[:__phlex_component__] = original_fiber_storage
+				end
 				buffer << context.buffer
 			end
 		end

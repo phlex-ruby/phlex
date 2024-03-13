@@ -41,6 +41,8 @@ module Phlex
 
 	# @api private
 	ATTRIBUTE_CACHE = Phlex::ConcurrentMap.new
+
+	SUPPORTS_FIBER_STORAGE = Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2")
 end
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
@@ -49,11 +51,6 @@ if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
 			to_s
 		end
 	end
-end
-
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.2")
-	# Samuel Williams’ polyfill for Fiber[]
-	require "fiber/storage"
 end
 
 def 💪
