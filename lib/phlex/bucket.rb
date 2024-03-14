@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 module Phlex::Bucket
-	def self.extended(_)
+	def self.extended(mod)
 		warn "🚨 [WARNING] Phlex::Bucket is experimental and may be removed from future versions of Phlex."
+
+		# Eager load all constants in the module for apps that use autoloading.
+		mod.constants.each { |c| mod.const_get(c) }
 	end
 
 	def const_added(name)
