@@ -3,14 +3,15 @@
 module Phlex::Bucket
 	module Proxy
 		def method_missing(name, *args, **kwargs, &block)
-			return super unless self.class.constants.include?(name)
-			constant = self.class.const_get(name)
-
-			if methods.include?(name)
+			if self.class.constants.include?(name) && self.class.const_get(name) && methods.include?(name)
 				public_send(name, *args, **kwargs, &block)
 			else
 				super
 			end
+		end
+
+		def respond_to_missing?(name, include_private = false)
+			self.class.constants.include?(name) && self.class.const_get(name) && methods.include?(name)
 		end
 	end
 
@@ -20,10 +21,7 @@ module Phlex::Bucket
 	end
 
 	def method_missing(name, *args, **kwargs, &block)
-		return super unless constants.include?(name)
-		constant = const_get(name)
-
-		if methods.include?(name)
+		if constants.include?(name) && const_get(name) && methods.include?(name)
 			public_send(name, *args, **kwargs, &block)
 		else
 			super
@@ -31,7 +29,7 @@ module Phlex::Bucket
 	end
 
 	def respond_to_missing?(name, include_private = false)
-		autoload?(name) || super
+		constants.include?(name) && const_get(name) && methods.include?(name)
 	end
 
 	def const_added(name)
