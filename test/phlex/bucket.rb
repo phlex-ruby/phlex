@@ -1,22 +1,6 @@
 # frozen_string_literal: true
 
-module Components
-	extend Phlex::Bucket
-
-	class SayHi < Phlex::HTML
-		def initialize(name, times: 1)
-			@name = name
-			@times = times
-		end
-
-		def template
-			article {
-				@times.times { h1 { "Hi #{@name}" } }
-				yield
-			}
-		end
-	end
-end
+require "components"
 
 class Example < Phlex::HTML
 	include Components
