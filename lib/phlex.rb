@@ -16,7 +16,7 @@ module Phlex
 	autoload :BlackHole, "phlex/black_hole"
 	autoload :CSV, "phlex/csv"
 	autoload :Callable, "phlex/callable"
-	autoload :Bucket, "phlex/bucket"
+	autoload :Kit, "phlex/kit"
 
 	# Included in all Phlex exceptions allowing you to match any Phlex error.
 	# @example Rescue any Phlex error:

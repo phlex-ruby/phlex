@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-module Phlex::Bucket
+module Phlex::Kit
 	def self.extended(mod)
 		warn "🚨 [WARNING] Phlex::Bucket is experimental and may be removed from future versions of Phlex."
 		super
 	end
 
-	# When a bucket is included in a module, we need to load all of its components.
+	# When a kit is included in a module, we need to load all of its components.
 	def included(mod)
 		constants.each { |c| mod.const_get(c) if autoload?(c) }
 		super
