@@ -3,11 +3,13 @@
 module Phlex::Bucket
 	def self.extended(mod)
 		warn "🚨 [WARNING] Phlex::Bucket is experimental and may be removed from future versions of Phlex."
+		super
 	end
 
 	# When a bucket is included in a module, we need to load all of its components.
 	def included(mod)
 		constants.each { |c| mod.const_get(c) if autoload?(c) }
+		super
 	end
 
 	def method_missing(name, *args, **kwargs, &block)
@@ -19,7 +21,11 @@ module Phlex::Bucket
 	end
 
 	def respond_to_missing?(name, include_private = false)
-		constants.include?(name) && const_get(name) && methods.include?(name)
+		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
+			true
+		else
+			super
+		end
 	end
 
 	def const_added(name)
@@ -46,5 +52,7 @@ module Phlex::Bucket
 				end
 			end
 		end
+
+		super
 	end
 end
