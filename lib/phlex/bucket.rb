@@ -3,22 +3,35 @@
 module Phlex::Bucket
 	def self.extended(mod)
 		warn "🚨 [WARNING] Phlex::Bucket is experimental and may be removed from future versions of Phlex."
+		super
+	end
 
-		# Eager load all constants in the module for apps that use Zeitwerk.
-		mod.constants.each { |c| mod.const_get(c) }
+	# When a bucket is included in a module, we need to load all of its components.
+	def included(mod)
+		constants.each { |c| mod.const_get(c) if autoload?(c) }
+		super
+	end
+
+	def method_missing(name, *args, **kwargs, &block)
+		if constants.include?(name) && const_get(name) && methods.include?(name)
+			public_send(name, *args, **kwargs, &block)
+		else
+			super
+		end
+	end
+
+	def respond_to_missing?(name, include_private = false)
+		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
+			true
+		else
+			super
+		end
 	end
 
 	def const_added(name)
-		# This can sometime be triggered by an autoload, which means it gets
-		# triggered a second time when we call `const_get` below and Ruby loads it.
-		return super if Fiber[:__phlex_adding_bucket_const__]
+		return if autoload?(name)
 
-		begin
-			Fiber[:__phlex_adding_bucket_const__] = true
-			constant = const_get(name)
-		ensure
-			Fiber[:__phlex_adding_bucket_const__] = false
-		end
+		constant = const_get(name)
 
 		if instance_methods.include?(name)
 			raise NameError, "The instance method `#{name}' is already defined on `#{inspect}`."
@@ -39,5 +52,7 @@ module Phlex::Bucket
 				end
 			end
 		end
+
+		super
 	end
 end
