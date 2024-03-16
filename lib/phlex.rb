@@ -40,7 +40,7 @@ module Phlex
 	end
 
 	# @api private
-	ATTRIBUTE_CACHE = Phlex::ConcurrentMap.new
+	ATTRIBUTE_CACHE = {}
 
 	SUPPORTS_FIBER_STORAGE = Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2")
 end
