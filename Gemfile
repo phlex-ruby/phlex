@@ -5,16 +5,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 gemspec
 
-gem "rubocop"
-gem "sus"
-gem "benchmark-ips"
-gem "yard"
-
 group :test do
-	gem "i18n"
-	gem "memory_profiler"
+	gem "rubocop"
+	gem "sus"
 end
 
 group :development do
 	gem "solargraph"
+	gem "yard"
+	gem "benchmark-ips"
 end

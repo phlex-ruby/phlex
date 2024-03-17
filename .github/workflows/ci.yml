@@ -51,7 +51,9 @@ jobs:
           bundler-cache: false
 
       - name: Install dependencies
-        run: bundle install
+        run: |
+          bundle config set --local without "development"
+          bundle install
 
       - name: Rubocop
         run: bundle exec rubocop
