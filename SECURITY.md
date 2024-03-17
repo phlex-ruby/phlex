@@ -1,13 +1,14 @@
-# Security Policy
+# Security
 
-## Reporting a vulnerability
+If you find a possible security vulnerability, please [send us a private advisory](https://github.com/phlex-ruby/phlex/security/advisories/new). 
 
-If you find a possible security vulnerability, please email security@phlex.fun. Do not create an issue or pull request either demonstrating or fixing the vulnerability.
+> [!WARNING]
+> Please do not open a public Issue or Pull Request.
 
 ## Bug bounty
 
-[The Gem Foundation](https://ryanbigg.com/2022/11/the-gem-foundation) has kindly sponsored a $1 bug bounty to discover security vulnerabilities in Phlex.
+There is currently a bounty of $100 USD, kindly sponsored by [Seth Horsley](https://twitter.com/SethHorsley), for the next serious vulnerability responsibly disclosed to us.
 
-## Sponsoring a bug bounty
+## Bug bounty pot
 
-If you wish to sponsor a bug bounty for Phlex, please get in touch with Joel at joel@drapper.me.
+If you wish to sponsor a bug bounty for Phlex, please get in touch with Joel at [joel@drapper.me](mailto:joel@drapper.me).
