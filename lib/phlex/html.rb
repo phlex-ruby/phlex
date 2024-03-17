@@ -52,7 +52,7 @@ module Phlex
 			self.class.__unbuffered_class__.new(self)
 		end
 
-		def file_name
+		def filename
 			nil
 		end
 

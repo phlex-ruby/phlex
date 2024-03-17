@@ -63,7 +63,7 @@ class Phlex::CSV
 		buffer
 	end
 
-	def file_name
+	def filename
 		nil
 	end
 
