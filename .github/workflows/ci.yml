@@ -19,7 +19,6 @@ jobs:
           - "head"
           - "truffleruby-22.2"
           - "truffleruby-22.3"
-          - "jruby-9.3.14.0"
           - "jruby-9.4.6.0"
           - "jruby-head"
         exclude:
