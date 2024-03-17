@@ -34,7 +34,9 @@ jobs:
           bundler-cache: false
 
       - name: Install dependencies
-        run: bundle install
+        run: |
+          bundle config set --local without "development"
+          bundle install
 
       - name: Tests
         run: bundle exec sus
@@ -47,13 +49,11 @@ jobs:
       - name: Setup
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.1"
+          ruby-version: "3.3"
           bundler-cache: false
 
       - name: Install dependencies
-        run: |
-          bundle config set --local without "development"
-          bundle install
+        run: bundle install
 
       - name: Rubocop
         run: bundle exec rubocop
