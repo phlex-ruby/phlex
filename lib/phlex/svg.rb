@@ -13,7 +13,7 @@ module Phlex
 			"image/svg+xml"
 		end
 
-		def file_name
+		def filename
 			nil
 		end
 	end
