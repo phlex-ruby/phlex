@@ -19,9 +19,14 @@ jobs:
           - "head"
           - "truffleruby-22.2"
           - "truffleruby-22.3"
-          - "truffleruby-head"
+          - "jruby-9.3.14.0"
           - "jruby-9.4.6.0"
           - "jruby-head"
+        exclude:
+          - os: "windows-latest"
+            ruby-version: "truffleruby-22.2"
+          - os: "windows-latest"
+            ruby-version: "truffleruby-22.3"
 
     runs-on: ${{ matrix.os }}
     steps:
