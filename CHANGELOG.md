@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file. The format 
 ## [Unreleased]
 
 - [Added] new `Phlex::CSV` class for streaming CSV views
-- [Added] new `Phlex::Kit` for collections of components
+- [Added] new (experimental) `Phlex::Kit` for collections of components
 - [Added] support for selective rendering
-- [Changed] Phlex will now try to use `to_s` on attribute values
-- [Changed] No runtime dependencies
-- [Deprecated] Defining the `template` method is now deprecated. You should define `view_template` instead. In Phlex 2.0, the `template` method will be for the `<template>` tag.
 - [Changed] `mix` does a better job when mixing different types of attributes
+- [Changed] Phlex will now try to call `to_s` on attribute values
+- [Changed] No runtime dependencies
 - [Deprecated] `Phlex::HTML#param`, (`<param>`) tags have been deprecated
+- [Deprecated] Defining the `template` method is now deprecated. You should define `view_template` instead. In Phlex 2.0, the `template` method will be for the `<template>` tag.
 
 # [1.9.1] 2024-03-11
 
