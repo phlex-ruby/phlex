@@ -13,7 +13,7 @@ module Phlex::Kit
 	end
 
 	def method_missing(name, *args, **kwargs, &block)
-		if constants.include?(name) && const_get(name) && methods.include?(name)
+		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
 			public_send(name, *args, **kwargs, &block)
 		else
 			super
