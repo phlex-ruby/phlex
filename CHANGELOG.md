@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+- [Added] new `Phlex::CSV` class for streaming CSV views
+- [Added] new `Phlex::Kit` for collections of components
+- [Added] support for selective rendering
+- [Changed] Phlex will now try to use `to_s` on attribute values
+- [Changed] No runtime dependencies
+- [Deprecated] Defining the `template` method is now deprecated. You should define `view_template` instead. In Phlex 2.0, the `template` method will be for the `<template>` tag.
+- [Changed] `mix` does a better job when mixing different types of attributes
+- [Deprecated] `Phlex::HTML#param`, (`<param>`) tags have been deprecated
+
+# [1.9.1] 2024-03-11
+
+- Security update
+
 ## [1.9.0] 2024-11-24
 
 - Improved documentation
@@ -42,6 +57,6 @@ All notable changes to this project will be documented in this file. The format 
 - Removed the `menuitem` element as it's a deprecated HTML element.
 - Removed the `SGML#text` method. This has been replaced with `SGML#plain`.
 
-***
+---
 
 Before this changelog was introduced, changes were logged in the [release notes](https://github.com/phlex-ruby/phlex/releases).
