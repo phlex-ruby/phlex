@@ -33,15 +33,15 @@ module Phlex::Kit
 
 		constant = const_get(name)
 
-		if instance_methods.include?(name)
-			raise NameError, "The instance method `#{name}' is already defined on `#{inspect}`."
-		elsif methods.include?(name)
-			raise NameError, "The method `#{name}' is already defined on `#{inspect}`."
-		end
-
-		constant.include(self)
-
 		if Class === constant && constant < Phlex::SGML
+			if instance_methods.include?(name)
+				raise NameError, "The instance method `#{name}' is already defined on `#{inspect}`."
+			elsif methods.include?(name)
+				raise NameError, "The method `#{name}' is already defined on `#{inspect}`."
+			end
+
+			constant.include(self)
+
 			define_method(name) do |*args, **kwargs, &block|
 				render(constant.new(*args, **kwargs), &block)
 			end
