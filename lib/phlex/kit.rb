@@ -52,7 +52,7 @@ module Phlex::Kit
 						render(constant.new(*args, **kwargs), &block)
 					end
 				else
-					raise RuntimeError, "You can't call `#{name}' outside of a Phlex rendering context."
+					raise "You can't call `#{name}' outside of a Phlex rendering context."
 				end
 			end
 		end
