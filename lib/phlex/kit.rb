@@ -8,7 +8,7 @@ module Phlex::Kit
 
 	# When a kit is included in a module, we need to load all of its components.
 	def included(mod)
-		constants.each { |c| mod.const_get(c) if autoload?(c) }
+		constants.each { |c| const_get(c) if autoload?(c) }
 		super
 	end
 
