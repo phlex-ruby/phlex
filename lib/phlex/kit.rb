@@ -47,8 +47,12 @@ module Phlex::Kit
 			end
 
 			define_singleton_method(name) do |*args, **kwargs, &block|
-				Fiber[:__phlex_component__].instance_exec do
-					render(constant.new(*args, **kwargs), &block)
+				if (component = Fiber[:__phlex_component__])
+					component.instance_exec do
+						render(constant.new(*args, **kwargs), &block)
+					end
+				else
+					raise RuntimeError, "You can't call `#{name}' outside of a Phlex rendering context."
 				end
 			end
 		end
