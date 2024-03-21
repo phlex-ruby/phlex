@@ -9,11 +9,16 @@ class Phlex::Context
 		@fragments = nil
 		@in_target_fragment = false
 		@halt_signal = nil
+		@element_count = 0
 	end
 
 	attr_accessor :buffer, :capturing, :user_context, :in_target_fragment
 
 	attr_reader :fragments
+
+	def bump
+		@element_count += 1
+	end
 
 	# Added for backwards compatibility with phlex-rails. We can remove this with 2.0
 	def target

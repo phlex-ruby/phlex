@@ -82,7 +82,8 @@ module Phlex::Elements
 					end
 				end
 
-				#{'flush' if tag == 'head'}
+				element_count = context.bump
+				flush if (element_count % 9) == 0
 
 				context.end_target if target_found
 
