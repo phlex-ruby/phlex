@@ -8,7 +8,7 @@ module Phlex::BlackHole
 		self
 	end
 
-	def length
+	def bytesize
 		0
 	end
 
