@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+class ExampleComponent < Phlex::HTML
+	def view_template(&)
+		div(&)
+	end
+end
+
+
 class StandardElementExample < Phlex::HTML
 	def initialize(execution_checker = -> {})
 		@execution_checker = execution_checker
@@ -11,6 +18,7 @@ class StandardElementExample < Phlex::HTML
 			comment { h1(id: "target") }
 			h1 { "Before" }
 			img(src: "before.jpg")
+			render ExampleComponent.new { "Should not render" }
 			whitespace
 			comment { "This is a comment" }
 			h1(id: "target") {
