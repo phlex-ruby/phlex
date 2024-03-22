@@ -337,7 +337,7 @@ module Phlex
 
 			original_length = buffer.bytesize
 			content = yield(self)
-			__text__(content) if original_length == buffer.bytesize
+			plain(content) if original_length == buffer.bytesize
 
 			nil
 		end
@@ -351,7 +351,7 @@ module Phlex
 
 			original_length = buffer.bytesize
 			content = yield
-			__text__(content) if original_length == buffer.bytesize
+			plain(content) if original_length == buffer.bytesize
 
 			nil
 		end
@@ -366,7 +366,7 @@ module Phlex
 
 			original_length = buffer.bytesize
 			content = yield(*args)
-			__text__(content) if original_length == buffer.bytesize
+			plain(content) if original_length == buffer.bytesize
 
 			nil
 		end
