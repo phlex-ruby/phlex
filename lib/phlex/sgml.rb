@@ -158,9 +158,6 @@ module Phlex
 		# @return [nil]
 		# @see #format_object
 		def plain(content)
-			context = @_context
-			return if context.fragments && !context.in_target_fragment
-
 			unless __text__(content)
 				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
 			end
@@ -374,6 +371,9 @@ module Phlex
 		# Performs the same task as the public method #plain, but does not raise an error if an unformattable object is passed
 		# @api private
 		def __text__(content)
+			context = @_context
+			return true if context.fragments && !context.in_target_fragment
+
 			case content
 			when String
 				@_context.buffer << Phlex::Escape.html_escape(content)
