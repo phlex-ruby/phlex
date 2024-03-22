@@ -6,7 +6,6 @@ class ExampleComponent < Phlex::HTML
 	end
 end
 
-
 class StandardElementExample < Phlex::HTML
 	def initialize(execution_checker = -> {})
 		@execution_checker = execution_checker
