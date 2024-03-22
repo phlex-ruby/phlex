@@ -335,9 +335,9 @@ module Phlex
 
 			buffer = @_context.buffer
 
-			original_length = buffer.length
+			original_length = buffer.bytesize
 			content = yield(self)
-			__text__(content) if original_length == buffer.length
+			__text__(content) if original_length == buffer.bytesize
 
 			nil
 		end
@@ -349,9 +349,9 @@ module Phlex
 
 			buffer = @_context.buffer
 
-			original_length = buffer.length
+			original_length = buffer.bytesize
 			content = yield
-			__text__(content) if original_length == buffer.length
+			__text__(content) if original_length == buffer.bytesize
 
 			nil
 		end
@@ -364,9 +364,9 @@ module Phlex
 
 			buffer = @_context.buffer
 
-			original_length = buffer.length
+			original_length = buffer.bytesize
 			content = yield(*args)
-			__text__(content) if original_length == buffer.length
+			__text__(content) if original_length == buffer.bytesize
 
 			nil
 		end
