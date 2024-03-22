@@ -6,26 +6,28 @@ module Example
 			render LayoutComponent.new do
 				h1 { "Hi" }
 
-				table id: "test", class: "a b c d e f g" do
-					tr do
-						td id: "test", class: "a b c d e f g" do
-							span { "Hi" }
-						end
+				100.times do
+					table id: "test", class: "a b c d e f g" do
+						tr do
+							td id: "test", class: "a b c d e f g" do
+								span { "Hi" }
+							end
 
-						td id: "test", class: "a b c d e f g" do
-							span { "Hi" }
-						end
+							td id: "test", class: "a b c d e f g" do
+								span { "Hi" }
+							end
 
-						td id: "test", class: "a b c d e f g" do
-							span { "Hi" }
-						end
+							td id: "test", class: "a b c d e f g" do
+								span { "Hi" }
+							end
 
-						td id: "test", class: "a b c d e f g" do
-							span { "Hi" }
-						end
+							td id: "test", class: "a b c d e f g" do
+								span { "Hi" }
+							end
 
-						td id: "test", class: "a b c d e f g" do
-							span { "Hi" }
+							td id: "test", class: "a b c d e f g" do
+								span { "Hi" }
+							end
 						end
 					end
 				end
