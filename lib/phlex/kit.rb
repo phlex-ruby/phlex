@@ -2,7 +2,7 @@
 
 module Phlex::Kit
 	def self.extended(mod)
-		warn "🚨 [WARNING] Phlex::Bucket is experimental and may be removed from future versions of Phlex."
+		warn "⚠️ [WARNING] Phlex::Kit is experimental and may be removed from future versions of Phlex."
 		super
 	end
 
