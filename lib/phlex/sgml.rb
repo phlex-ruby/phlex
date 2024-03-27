@@ -79,15 +79,13 @@ module Phlex
 			template(&block)
 		end
 
-		# @api private
 		def await(task)
-			if defined?(Concurrent::IVar) && task.is_a?(Concurrent::IVar)
+			case task
+			when defined?(Concurrent::IVar) && Concurrent::IVar
 				flush if task.pending?
-
 				task.wait.value
-			elsif defined?(Async::Task) && task.is_a?(Async::Task)
+			when defined?(Async::Task) && Async::Task
 				flush if task.running?
-
 				task.wait
 			else
 				raise ArgumentError, "Expected an asynchronous task / promise."

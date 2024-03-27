@@ -7,6 +7,8 @@ gemspec
 
 group :test do
 	gem "sus"
+	gem "async"
+	gem "concurrent-ruby"
 end
 
 group :development do
