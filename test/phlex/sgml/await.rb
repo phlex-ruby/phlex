@@ -22,7 +22,7 @@ describe Phlex::SGML do
 		describe "with Async tasks" do
 			it "flushes when waiting" do
 				Sync do
-					task = Async { sleep 0; "Hello" }
+					task = Async { sleep 0.1; "Hello" }
 					buffer = []
 					Example.new(task).call(buffer)
 					expect(buffer).to be == (["<h1>Before</h1>", "<h1>Hello</h1><h1>After</h1>"])
@@ -31,7 +31,7 @@ describe Phlex::SGML do
 
 			it "doesn't flush when it doesn't need to wait" do
 				Sync do
-					task = Async { sleep 0; "Hello" }
+					task = Async { sleep 0.1; "Hello" }
 					task.wait
 					buffer = []
 					Example.new(task).call(buffer)
@@ -43,14 +43,14 @@ describe Phlex::SGML do
 
 	describe "with Concurrent Promise" do
 		it "flushes when waiting" do
-			task = Concurrent::Promise.execute { sleep 0; "Hello" }
+			task = Concurrent::Promise.execute { sleep 0.1; "Hello" }
 			buffer = []
 			Example.new(task).call(buffer)
 			expect(buffer).to be == (["<h1>Before</h1>", "<h1>Hello</h1><h1>After</h1>"])
 		end
 
 		it "doesn't flush when it doesn't need to wait" do
-			task = Concurrent::Promise.execute { sleep 0; "Hello" }
+			task = Concurrent::Promise.execute { sleep 0.1; "Hello" }
 			task.wait
 			buffer = []
 			Example.new(task).call(buffer)
