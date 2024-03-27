@@ -7,7 +7,9 @@ gemspec
 
 group :test do
 	gem "sus"
-	gem "async"
+	if RUBY_ENGINE == "ruby" && RUBY_VERSION[0] > "3"
+		gem "async"
+	end
 	gem "concurrent-ruby"
 end
 
