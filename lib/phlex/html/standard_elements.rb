@@ -382,6 +382,13 @@ module Phlex::HTML::StandardElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/mark
 	register_element :mark
 
+	# @!method marquee(**attributes, &content)
+	# 	Outputs a `<marquee>` tag.
+	# 	@return [nil]
+	#   @yieldparam component [self]
+	#   @see https://developer.mozilla.org/docs/Web/HTML/Element/marquee
+	register_element :marquee
+
 	# @!method menu(**attributes, &content)
 	# 	Outputs a `<menu>` tag.
 	# 	@return [nil]
