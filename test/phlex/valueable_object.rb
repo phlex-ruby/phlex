@@ -35,11 +35,13 @@ describe Phlex::HTML do
 	end
 
 	it "renders phlex attribute value according to method call precedence" do
-		to_phlex_attribute_value_klass = Class.new { define_method(:to_phlex_attribute_value, -> { "to_phlex_attribute_value" }) }
-		to_str_klass = Class.new(to_phlex_attribute_value_klass) { define_method(:to_str, -> { "to_str" }) }
-		to_s_klass = Class.new(to_str_klass) { define_method(:to_s, -> { "to_s" }) }
+		klass = Class.new do
+			define_method(:to_phlex_attribute_value, -> { "to_phlex_attribute_value" })
+			define_method(:to_str, -> { "to_str" })
+			define_method(:to_s, -> { "to_s" })
+		end
 		component = build_component_with_template do
-			div class: to_s_klass.new
+			div class: klass.new
 		end
 
 		expect(component.call).to be == %(<div class="to_phlex_attribute_value"></div>)
