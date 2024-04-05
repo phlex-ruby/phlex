@@ -46,14 +46,17 @@ class Phlex::Context
 	def capturing_into(new_buffer)
 		original_buffer = @buffer
 		original_capturing = @capturing
+		original_fragments = @fragments
 
 		begin
 			@buffer = new_buffer
 			@capturing = true
+			@fragments = nil
 			yield
 		ensure
 			@buffer = original_buffer
 			@capturing = original_capturing
+			@fragments = original_fragments
 		end
 
 		new_buffer
