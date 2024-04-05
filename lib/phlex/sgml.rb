@@ -219,10 +219,7 @@ module Phlex
 		def capture(&block)
 			return "" unless block
 
-			context = @_context
-			return if context.fragments && !context.in_target_fragment
-
-			context.capturing_into(+"") { yield_content(&block) }
+			@_context.capturing_into(+"") { yield_content(&block) }
 		end
 
 		private
