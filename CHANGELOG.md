@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.10.0] 2024-04-05
 
 - [Added] new `Phlex::CSV` class for streaming CSV views
 - [Added] new (experimental) `Phlex::Kit` for collections of components
@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file. The format 
 - [Changed] Phlex will now try to call `to_s` on attribute values
 - [Changed] No runtime dependencies
 - [Deprecated] `Phlex::HTML#param`, (`<param>`) tags have been deprecated
-- [Deprecated] Defining the `template` method is now deprecated. You should define `view_template` instead. In Phlex 2.0, the `template` method will be for the `<template>` tag.
+- [Deprecated] Defining the `template` method is now deprecated. You should define `view_template` instead. In Phlex 2.0, the `template` method will render a `<template>` tag.
 
 # [1.9.1] 2024-03-11
 
