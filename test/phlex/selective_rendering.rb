@@ -53,6 +53,18 @@ class VoidElementExample < Phlex::HTML
 	end
 end
 
+class WithCaptureBlock < Phlex::HTML
+	def view_template
+		h1(id: "before") { "Before" }
+		div(id: "around") do
+			capture do
+				h1(id: "inside") { "Inside" }
+			end
+		end
+		h1(id: "after") { "After" }
+	end
+end
+
 describe Phlex::HTML do
 	it "renders the just the target fragment" do
 		expect(
@@ -77,5 +89,25 @@ describe Phlex::HTML do
 		checker = -> { called = true }
 		StandardElementExample.new(checker).call(fragments: ["target"])
 		expect(called).to be == false
+	end
+
+	describe "with a capture block" do
+		it "doesn't render the capture block" do
+			expect(
+				WithCaptureBlock.new.call(fragments: ["after"])
+			).to be == %(<h1 id="after">After</h1>)
+		end
+
+		it "renders the capture block when selected" do
+			expect(
+				WithCaptureBlock.new.call(fragments: ["around"])
+			).to be == %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
+		end
+
+		it "doesn't select from the capture block" do
+			expect(
+				WithCaptureBlock.new.call(fragments: ["inside"])
+			).to be == ""
+		end
 	end
 end
