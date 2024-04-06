@@ -19,7 +19,7 @@ class Phlex::FIFO
 			@hash[key] = value
 
 			if old_value
-				@bytesize =+ value.bytesize - old_value.bytesize
+				@bytesize += value.bytesize - old_value.bytesize
 			else
 				@bytesize += value.bytesize
 			end
