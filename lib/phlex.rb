@@ -25,7 +25,7 @@ module Phlex
 	Escape = ERB::Escape
 
 	# @api private
-	ATTRIBUTE_CACHE = FIFO.new(100_000)
+	ATTRIBUTE_CACHE = FIFO.new(1_000_000)
 
 	SUPPORTS_FIBER_STORAGE = RUBY_ENGINE == "ruby"
 end
