@@ -3,41 +3,25 @@
 require "erb"
 
 module Phlex
+	autoload :ArgumentError, "phlex/errors/argument_error"
+	autoload :BlackHole, "phlex/black_hole"
+	autoload :CSV, "phlex/csv"
+	autoload :Callable, "phlex/callable"
+	autoload :ConcurrentMap, "phlex/concurrent_map"
 	autoload :Context, "phlex/context"
 	autoload :DeferredRender, "phlex/deferred_render"
 	autoload :ElementClobberingGuard, "phlex/element_clobbering_guard"
 	autoload :Elements, "phlex/elements"
+	autoload :Error, "phlex/error"
 	autoload :HTML, "phlex/html"
 	autoload :Helpers, "phlex/helpers"
+	autoload :Kit, "phlex/kit"
+	autoload :NameError, "phlex/errors/name_error"
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Unbuffered, "phlex/unbuffered"
-	autoload :ConcurrentMap, "phlex/concurrent_map"
-	autoload :BlackHole, "phlex/black_hole"
-	autoload :CSV, "phlex/csv"
-	autoload :Callable, "phlex/callable"
-	autoload :Kit, "phlex/kit"
 
-	# Included in all Phlex exceptions allowing you to match any Phlex error.
-	# @example Rescue any Phlex error:
-	#  rescue Phlex::Error
-	module Error; end
-
-	if defined?(ERB::Escape)
-		Escape = ERB::Escape
-	else
-		Escape = ERB::Util
-	end
-
-	# A specialised ArgumentError for Phlex.
-	class ArgumentError < ::ArgumentError
-		include Error
-	end
-
-	# A specialised NameError for Phlex.
-	class NameError < ::NameError
-		include Error
-	end
+	Escape = ERB::Escape
 
 	# @api private
 	ATTRIBUTE_CACHE = {}
