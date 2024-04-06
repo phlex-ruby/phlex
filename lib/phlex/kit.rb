@@ -1,11 +1,6 @@
 # frozen_string_literal: true
 
 module Phlex::Kit
-	def self.extended(mod)
-		warn "⚠️ [WARNING] Phlex::Kit is experimental and may be removed from future versions of Phlex."
-		super
-	end
-
 	# When a kit is included in a module, we need to load all of its components.
 	def included(mod)
 		constants.each { |c| const_get(c) if autoload?(c) }

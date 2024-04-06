@@ -16,7 +16,7 @@ module Phlex
 			def new(*args, **kwargs, &block)
 				if block
 					object = super(*args, **kwargs, &nil)
-					object.instance_variable_set(:@_content_block, block)
+					object.instance_exec { @_content_block = block }
 					object
 				else
 					super
@@ -65,18 +65,8 @@ module Phlex
 		# 	def view_template(&block)
 		# 		article(class: "card", &block)
 		# 	end
-		def template
-			yield
-		end
-
-		def self.method_added(method_name)
-			if method_name == :template
-				Kernel.warn "⚠️ [DEPRECATION] Defining the `template` method on a Phlex component will not be supported in Phlex 2.0. Please rename the method to `view_template` instead."
-			end
-		end
-
-		def view_template(&block)
-			template(&block)
+		def view_template
+			yield if block_given?
 		end
 
 		def await(task)
@@ -105,8 +95,8 @@ module Phlex
 			@_context = context
 			@_view_context = view_context
 			@_parent = parent
+
 			if fragments
-				warn "⚠️ [WARNING] Selective Rendering is experimental, incomplete, and may change in future versions."
 				@_context.target_fragments(fragments)
 			end
 
@@ -407,7 +397,7 @@ module Phlex
 			end
 
 			buffer = +""
-			__build_attributes__(attributes, buffer: buffer)
+			__build_attributes__(attributes, buffer:)
 
 			buffer
 		end
@@ -427,7 +417,7 @@ module Phlex
 				next if lower_name == "href" && v.start_with?(/\s*javascript:/i)
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-				if HTML::EVENT_ATTRIBUTES[lower_name] || name.match?(/[<>&"']/)
+				if HTML::EVENT_ATTRIBUTES.include?(lower_name) || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 
@@ -447,7 +437,7 @@ module Phlex
 								when Symbol then"#{name}-#{subkey.name.tr('_', '-')}"
 								else "#{name}-#{subkey}"
 							end
-						}, buffer: buffer
+						}, buffer:
 					)
 				when Array
 					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.compact.join(" ")) << '"'

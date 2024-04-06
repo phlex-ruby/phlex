@@ -98,20 +98,11 @@ module Phlex::Elements
 	end
 
 	# @api private
-	def register_void_element(method_name, tag: method_name.name.tr("_", "-"), deprecated: false)
-		if deprecated
-			deprecation = <<~RUBY
-				Kernel.warn "#{deprecated}"
-			RUBY
-		else
-			deprecation = ""
-		end
-
+	def register_void_element(method_name, tag: method_name.name.tr("_", "-"))
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes)
-				#{deprecation}
 				context = @_context
 				buffer = context.buffer
 				fragment = context.fragments
