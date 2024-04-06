@@ -92,10 +92,6 @@ class Phlex::CSV
 		yield(record)
 	end
 
-	def template(...)
-		nil
-	end
-
 	# Override and set to `false` to disable rendering headers.
 	def render_headers?
 		true

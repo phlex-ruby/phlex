@@ -6,7 +6,7 @@ class Components::SayHi < Phlex::HTML
 		@times = times
 	end
 
-	def template
+	def view_template
 		article {
 			@times.times { h1 { "Hi #{@name}" } }
 			yield

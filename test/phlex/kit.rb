@@ -5,7 +5,7 @@ require "components"
 class Example < Phlex::HTML
 	include Components
 
-	def template
+	def view_template
 		SayHi("Joel", times: 2) { "Inside" }
 		Components::SayHi("Will", times: 1) { "Inside" }
 	end

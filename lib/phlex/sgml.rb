@@ -65,18 +65,8 @@ module Phlex
 		# 	def view_template(&block)
 		# 		article(class: "card", &block)
 		# 	end
-		def template
-			yield
-		end
-
-		def self.method_added(method_name)
-			if method_name == :template
-				Kernel.warn "⚠️ [DEPRECATION] Defining the `template` method on a Phlex component will not be supported in Phlex 2.0. Please rename the method to `view_template` instead."
-			end
-		end
-
-		def view_template(&block)
-			template(&block)
+		def view_template
+			yield if block_given?
 		end
 
 		def await(task)
