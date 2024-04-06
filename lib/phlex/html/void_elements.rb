@@ -58,12 +58,6 @@ module Phlex::HTML::VoidElements
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/meta
 	register_void_element :meta
 
-	# @!method param(**attributes, &content)
-	# 	Outputs a `<param>` tag.
-	# 	@return [nil]
-	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/param
-	register_void_element :param, deprecated: "⚠️ [DEPRECATION] The <param> tag is deprecated. See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/param"
-
 	# @!method source(**attributes, &content)
 	# 	Outputs a `<source>` tag.
 	# 	@return [nil]
