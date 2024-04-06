@@ -45,14 +45,6 @@ module Phlex
 	SUPPORTS_FIBER_STORAGE = RUBY_ENGINE == "ruby"
 end
 
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")
-	class Symbol
-		def name
-			to_s
-		end
-	end
-end
-
 def 💪
 	Phlex
 end
