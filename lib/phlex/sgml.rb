@@ -24,12 +24,6 @@ module Phlex
 			end
 
 			# @api private
-			def rendered_at_least_once!
-				alias_method :__attributes__, :__final_attributes__
-				alias_method :call, :__final_call__
-			end
-
-			# @api private
 			def element_method?(method_name)
 				return false unless instance_methods.include?(method_name)
 
@@ -83,14 +77,7 @@ module Phlex
 		end
 
 		# Renders the view and returns the buffer. The default buffer is a mutable String.
-		def call(...)
-			__final_call__(...).tap do
-				self.class.rendered_at_least_once!
-			end
-		end
-
-		# @api private
-		def __final_call__(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragments: nil, &block)
+		def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragments: nil, &block)
 			@_buffer = buffer
 			@_context = context
 			@_view_context = view_context
@@ -384,22 +371,12 @@ module Phlex
 		end
 
 		# @api private
-		def __attributes__(**attributes)
-			__final_attributes__(**attributes).tap do |buffer|
-				Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] = buffer.freeze
-			end
-		end
-
-		# @api private
-		def __final_attributes__(**attributes)
-			if respond_to?(:process_attributes)
-				attributes = process_attributes(**attributes)
-			end
-
-			buffer = +""
-			__build_attributes__(attributes, buffer:)
-
-			buffer
+		def __attributes__(attributes)
+			Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= (
+				buffer = +""
+				__build_attributes__(attributes, buffer:)
+				buffer
+			)
 		end
 
 		# @api private
