@@ -371,16 +371,7 @@ module Phlex
 		end
 
 		# @api private
-		def __attributes__(attributes)
-			Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= (
-				buffer = +""
-				__build_attributes__(attributes, buffer:)
-				buffer
-			)
-		end
-
-		# @api private
-		def __build_attributes__(attributes, buffer:)
+		def __attributes__(attributes, buffer = +"")
 			attributes.each do |k, v|
 				next unless v
 
@@ -408,13 +399,13 @@ module Phlex
 				when Integer, Float
 					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
-					__build_attributes__(
+					__attributes__(
 						v.transform_keys { |subkey|
 							case subkey
 								when Symbol then"#{name}-#{subkey.name.tr('_', '-')}"
 								else "#{name}-#{subkey}"
 							end
-						}, buffer:
+						}, buffer
 					)
 				when Array
 					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.compact.join(" ")) << '"'
