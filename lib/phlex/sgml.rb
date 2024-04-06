@@ -16,7 +16,7 @@ module Phlex
 			def new(*args, **kwargs, &block)
 				if block
 					object = super(*args, **kwargs, &nil)
-					object.instance_variable_set(:@_content_block, block)
+					object.instance_exec { @_content_block = block }
 					object
 				else
 					super
@@ -417,7 +417,7 @@ module Phlex
 				next if lower_name == "href" && v.start_with?(/\s*javascript:/i)
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-				if HTML::EVENT_ATTRIBUTES[lower_name] || name.match?(/[<>&"']/)
+				if HTML::EVENT_ATTRIBUTES.include?(lower_name) || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 
