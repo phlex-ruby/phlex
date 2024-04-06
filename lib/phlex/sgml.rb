@@ -105,8 +105,8 @@ module Phlex
 			@_context = context
 			@_view_context = view_context
 			@_parent = parent
+
 			if fragments
-				warn "⚠️ [WARNING] Selective Rendering is experimental, incomplete, and may change in future versions."
 				@_context.target_fragments(fragments)
 			end
 
