@@ -28,21 +28,11 @@ module Phlex::Elements
 	# @note The methods defined by this macro depend on other methods from {SGML} so they should always be mixed into an {HTML} or {SVG} component.
 	# @example Register the custom element `<trix-editor>`
 	# 	register_element :trix_editor
-	def register_element(method_name, tag: method_name.name.tr("_", "-"), deprecated: false)
-		if deprecated
-			deprecation = <<~RUBY
-				Kernel.warn "#{deprecated}"
-			RUBY
-		else
-			deprecation = ""
-		end
-
+	def register_element(method_name, tag: method_name.name.tr("_", "-"))
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes, &block)
-				#{deprecation}
-
 				context = @_context
 				buffer = context.buffer
 				fragment = context.fragments
@@ -66,11 +56,11 @@ module Phlex::Elements
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
-						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= __attributes__(attributes)) << ">"
 						yield_content(&block)
 						buffer << "</#{tag}>"
 					else # without content block
-						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << "></#{tag}>"
+						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= __attributes__(attributes)) << "></#{tag}>"
 					end
 				else # without attributes
 					if block # with content block
@@ -123,7 +113,7 @@ module Phlex::Elements
 				end
 
 				if attributes.length > 0 # with attributes
-					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[respond_to?(:process_attributes) ? (attributes.hash + self.class.hash) : attributes.hash] || __attributes__(**attributes)) << ">"
+					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= __attributes__(attributes)) << ">"
 				else # without attributes
 					buffer << "<#{tag}>"
 				end

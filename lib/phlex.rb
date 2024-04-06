@@ -13,6 +13,7 @@ module Phlex
 	autoload :ElementClobberingGuard, "phlex/element_clobbering_guard"
 	autoload :Elements, "phlex/elements"
 	autoload :Error, "phlex/error"
+	autoload :FIFO, "phlex/fifo"
 	autoload :HTML, "phlex/html"
 	autoload :Helpers, "phlex/helpers"
 	autoload :Kit, "phlex/kit"
@@ -22,10 +23,7 @@ module Phlex
 	autoload :Unbuffered, "phlex/unbuffered"
 
 	Escape = ERB::Escape
-
-	# @api private
-	ATTRIBUTE_CACHE = {}
-
+	ATTRIBUTE_CACHE = FIFO.new(3_000_000) # 3MB
 	SUPPORTS_FIBER_STORAGE = RUBY_ENGINE == "ruby"
 end
 
