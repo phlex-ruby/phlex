@@ -639,7 +639,7 @@ module Phlex::HTML::StandardElements
 	# 	@return [nil]
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/template
-	register_element :template_tag, tag: "template"
+	register_element :template
 
 	# @!method textarea(**attributes, &content)
 	# 	Outputs a `<textarea>` tag.
