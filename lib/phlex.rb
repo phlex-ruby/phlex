@@ -42,7 +42,7 @@ module Phlex
 	# @api private
 	ATTRIBUTE_CACHE = {}
 
-	SUPPORTS_FIBER_STORAGE = Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2")
+	SUPPORTS_FIBER_STORAGE = RUBY_ENGINE == "ruby"
 end
 
 if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.0")

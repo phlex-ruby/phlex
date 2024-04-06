@@ -3,7 +3,7 @@ inherit_from:
   - "https://www.goodcop.style/tabs.yml"
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2
 
 Style/ExplicitBlockArgument:
   Enabled: false
@@ -24,4 +24,10 @@ Naming/MethodName:
   Enabled: false
 
 Style/ReturnNilInPredicateMethodDefinition:
+  Enabled: false
+
+Naming/BlockForwarding:
+  Enabled: false
+
+Style/ArgumentsForwarding:
   Enabled: false

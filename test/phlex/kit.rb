@@ -12,7 +12,7 @@ class Example < Phlex::HTML
 end
 
 # This feature is only supported in Ruby 3.2 or later.
-if RUBY_VERSION >= "3.2"
+if Phlex::SUPPORTS_FIBER_STORAGE
 	describe Phlex::Kit do
 		it "raises when you try to render a component outside of a rendering context" do
 			expect { Components::SayHi() }.to raise_exception(RuntimeError)

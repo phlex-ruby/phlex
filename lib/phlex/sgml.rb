@@ -397,7 +397,7 @@ module Phlex
 			end
 
 			buffer = +""
-			__build_attributes__(attributes, buffer: buffer)
+			__build_attributes__(attributes, buffer:)
 
 			buffer
 		end
@@ -437,7 +437,7 @@ module Phlex
 								when Symbol then"#{name}-#{subkey.name.tr('_', '-')}"
 								else "#{name}-#{subkey}"
 							end
-						}, buffer: buffer
+						}, buffer:
 					)
 				when Array
 					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.compact.join(" ")) << '"'
