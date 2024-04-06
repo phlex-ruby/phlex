@@ -7,7 +7,6 @@ module Phlex
 	autoload :BlackHole, "phlex/black_hole"
 	autoload :CSV, "phlex/csv"
 	autoload :Callable, "phlex/callable"
-	autoload :ConcurrentMap, "phlex/concurrent_map"
 	autoload :Context, "phlex/context"
 	autoload :DeferredRender, "phlex/deferred_render"
 	autoload :ElementClobberingGuard, "phlex/element_clobbering_guard"
