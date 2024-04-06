@@ -18,7 +18,11 @@ class Phlex::FIFO
 			old_value = @hash.delete(key)
 			@hash[key] = value
 
-			@bytesize += value.bytesize - (old_value ? old_value.bytesize : 0)
+			if old_value
+				@bytesize =+ value.bytesize - old_value.bytesize
+			else
+				@bytesize += value.bytesize
+			end
 
 			while @bytesize > @max_bytesize
 				key, value = @hash.shift
