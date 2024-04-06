@@ -9,6 +9,8 @@ class Phlex::FIFO
 		@max_bytesize = max_bytesize
 	end
 
+	attr_reader :bytesize, :max_bytesize
+
 	def [](key)
 		@hash[key]
 	end
