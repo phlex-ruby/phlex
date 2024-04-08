@@ -7,6 +7,7 @@ gemspec
 
 group :test do
 	gem "sus"
+	gem "simplecov", require: false
 	if RUBY_ENGINE == "ruby" && RUBY_VERSION[0] > "3"
 		gem "async"
 	end
