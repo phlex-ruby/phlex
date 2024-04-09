@@ -74,6 +74,8 @@ module Phlex::Helpers
 	def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
+				next new if old.nil?
+
 				case new
 				when Hash
 					old.is_a?(Hash) ? mix(old, new) : new
@@ -95,6 +97,8 @@ module Phlex::Helpers
 					end
 				when String
 					old.is_a?(String) ? "#{old} #{new}" : old + old.class[new]
+				when nil
+					old
 				else
 					new
 				end
