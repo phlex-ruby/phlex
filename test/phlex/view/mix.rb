@@ -70,4 +70,14 @@ describe Phlex::Helpers do
 
 		expect(output).to be == { class: ["foo", "bar"] }
 	end
+
+	it "gracefully handles mixing with nils" do
+		output = mix({ class: "foo" }, { class: nil })
+
+		expect(output).to be == { class: "foo" }
+
+		output = mix({ class: nil }, { class: "foo" })
+
+		expect(output).to be == { class: "foo" }
+	end
 end
