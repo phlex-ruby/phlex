@@ -27,12 +27,12 @@ class WithBlock < WithoutBlock
 	end
 end
 
-describe Phlex::HTML do
-	it "can render enumerables without a block" do
-		expect(WithoutBlock.call).to be == "<article></article><article></article>"
+describe Phlex::SGML do
+	test "can render enumerables without a block" do
+		expect(WithoutBlock.call) == "<article></article><article></article>"
 	end
 
-	it "can render enumerables with a block" do
-		expect(WithBlock.call).to be == "<article><h1>Hi</h1></article><article><h1>Hi</h1></article>"
+	test "can render enumerables with a block" do
+		expect(WithBlock.call) == "<article><h1>Hi</h1></article><article><h1>Hi</h1></article>"
 	end
 end
