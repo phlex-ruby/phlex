@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "erb"
+require "set"
 
 module Phlex
 	autoload :ArgumentError, "phlex/errors/argument_error"

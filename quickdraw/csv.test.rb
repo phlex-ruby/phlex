@@ -20,7 +20,7 @@ class ExampleWithoutHeaders < Example
 end
 
 describe Phlex::CSV do
-	it "renders a CSV" do
+	test "renders a CSV" do
 		products = [
 			Product.new("Apple", 1.00),
 			Product.new("Banana", 2.00)
@@ -28,44 +28,44 @@ describe Phlex::CSV do
 
 		csv = Example.new(products).call
 
-		expect(csv).to be == <<~CSV
+		expect(csv) == <<~CSV
 			name,price
 			Apple,1.0
 			Banana,2.0
 		CSV
 	end
 
-	it "escapes commas" do
+	test "escapes commas" do
 		product = Product.new("Apple, Inc.", 1.00)
 		csv = Example.new([product]).call
 
-		expect(csv).to be == <<~CSV
+		expect(csv) == <<~CSV
 			name,price
 			"Apple, Inc.",1.0
 		CSV
 	end
 
-	it "escapes newlines" do
+	test "escapes newlines" do
 		product = Product.new("Apple\nInc.", 1.00)
 		csv = Example.new([product]).call
 
-		expect(csv).to be == <<~CSV
+		expect(csv) == <<~CSV
 			name,price
 			"Apple\nInc.",1.0
 		CSV
 	end
 
-	it "escapes quotes" do
+	test "escapes quotes" do
 		product = Product.new("Apple\"Inc.", 1.00)
 		csv = Example.new([product]).call
 
-		expect(csv).to be == <<~CSV
+		expect(csv) == <<~CSV
 			name,price
 			"Apple""Inc.",1.0
 		CSV
 	end
 
-	it "renders without headers" do
+	test "renders without headers" do
 		products = [
 			Product.new("Apple", 1.00),
 			Product.new("Banana", 2.00)
@@ -73,7 +73,7 @@ describe Phlex::CSV do
 
 		csv = ExampleWithoutHeaders.new(products).call
 
-		expect(csv).to be == <<~CSV
+		expect(csv) == <<~CSV
 			Apple,1.0
 			Banana,2.0
 		CSV

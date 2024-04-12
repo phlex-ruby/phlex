@@ -32,8 +32,11 @@ jobs:
           bundle config set --local without "development"
           bundle install
 
-      - name: Tests
+      - name: Sus Tests
         run: bundle exec sus
+
+      - name: Quickdraw Tests
+        run: bundle exec qt
 
   rubocop:
     runs-on: "ubuntu-latest"

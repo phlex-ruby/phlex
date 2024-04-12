@@ -9,18 +9,15 @@ Phlex is incredibly complex and requires a lot of meta-programming but when you 
 ## Setup
 
 - Install dependencies `bundle install`
-- Run the tests `bundle exec sus`
-- Run Rubocop and auto-correct `bundle exec rubocop -A`
+- Run the tests `bundle exec qt && bundle exec sus`
 
 ## Tests
 
-New tests should be written using [GreenDots](https://github.com/joeldrapper/green_dots) and placed in the `gd` folder. You can run these tests with:
+New tests should be written using [Quickdraw](https://github.com/joeldrapper/quickdraw) and placed in the `quickdraw` folder. You can run these tests with:
 
 ```
-bundle exec gd gd
+bundle exec qt
 ```
-
-Joel maintains GreenDots itself, so if you run into any issues, please reach out to him by creating an issue in the GreenDots repo so he can improve the framework.
 
 Previously, we used **[Sus](https://github.com/ioquatix/sus)**. Sus tests are in the `test` folder and can be run with:
 
