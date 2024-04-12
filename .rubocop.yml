@@ -31,3 +31,7 @@ Naming/BlockForwarding:
 
 Style/ArgumentsForwarding:
   Enabled: false
+
+# We need to disable this cop because it’s not compatible with TruffleRuby 23.1, which still needs a `require "set"`
+Lint/RedundantRequireStatement:
+  Enabled: false
