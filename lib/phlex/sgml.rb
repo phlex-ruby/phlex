@@ -393,9 +393,9 @@ module Phlex
 				when true
 					buffer << " " << name
 				when String
-					buffer << " " << name << '="' << Phlex::Escape.html_escape(v) << '"'
+					buffer << " " << name << '="' << v.gsub('"', "&quot;") << '"'
 				when Symbol
-					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.name) << '"'
+					buffer << " " << name << '="' << v.name.gsub('"', "&quot;") << '"'
 				when Integer, Float
 					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
@@ -408,9 +408,9 @@ module Phlex
 						}, buffer
 					)
 				when Array
-					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.compact.join(" ")) << '"'
+					buffer << " " << name << '="' << v.compact.join(" ").gsub('"', "&quot;") << '"'
 				when Set
-					buffer << " " << name << '="' << Phlex::Escape.html_escape(v.to_a.compact.join(" ")) << '"'
+					buffer << " " << name << '="' << v.to_a.compact.join(" ").gsub('"', "&quot;") << '"'
 				else
 					value = if v.respond_to?(:to_phlex_attribute_value)
 						v.to_phlex_attribute_value
@@ -420,7 +420,7 @@ module Phlex
 						v.to_s
 					end
 
-					buffer << " " << name << '="' << Phlex::Escape.html_escape(value) << '"'
+					buffer << " " << name << '="' << value.gsub('"', "&quot;") << '"'
 				end
 			end
 

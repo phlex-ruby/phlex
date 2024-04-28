@@ -92,13 +92,13 @@ describe Phlex::HTML do
 		end
 
 		it "should contain the full capture" do
-			expect(example.call(view_context: self)).to be == %(<h1>Before</h1><iframe srcdoc="&lt;h1&gt;Hello&lt;/h1&gt;&lt;h1&gt;World&lt;/h1&gt;"></iframe><h1>After</h1>)
+			expect(example.call(view_context: self)).to be == %(<h1>Before</h1><iframe srcdoc="<h1>Hello</h1><h1>World</h1>"></iframe><h1>After</h1>)
 		end
 
 		it "should contain the full capture if the buffer is provided" do
 			my_buffer = +""
 			example.call(my_buffer, view_context: self)
-			expect(my_buffer).to be == %(<h1>Before</h1><iframe srcdoc="&lt;h1&gt;Hello&lt;/h1&gt;&lt;h1&gt;World&lt;/h1&gt;"></iframe><h1>After</h1>)
+			expect(my_buffer).to be == %(<h1>Before</h1><iframe srcdoc="<h1>Hello</h1><h1>World</h1>"></iframe><h1>After</h1>)
 		end
 	end
 end
