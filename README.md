@@ -4,6 +4,17 @@ Phlex lets you compose web views in pure Ruby — kind of like JSX, but not real
 
 Docs and more at [Phlex.fun](https://www.phlex.fun/)
 
+## Maintenance schedule
+
+### Bug fixes
+- Only the latest minor version of each major version will receive bug fixes.
+- We may choose to fix bugs by releasing a new minor version rather than patching the existing minor version.
+- Major versions will stop receiving bug fixes one year after the next major version is released.
+
+### Security patches
+- When a security issue is brought to our attention, we aim to release patches for any minor version that was released in the last year.
+- Additionally, the latest minor version of the latest major version will receive security patches, even if that version is over a year old.
+
 ### Prior Art 🎨
 
 - [markaby](https://github.com/markaby/markaby)
