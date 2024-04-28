@@ -85,6 +85,78 @@ describe Phlex::HTML do
 		end
 	end
 
+	with "naughty javascript link protocol with a hidden tab character" do
+		view do
+			def template
+				a(href: "\tjavascript:alert(1)") { "XSS" }
+				a(href: "j\tavascript:alert(1)") { "XSS" }
+				a(href: "ja\tvascript:alert(1)") { "XSS" }
+				a(href: "jav\tascript:alert(1)") { "XSS" }
+				a(href: "java\tscript:alert(1)") { "XSS" }
+				a(href: "javas\tcript:alert(1)") { "XSS" }
+				a(href: "javasc\tript:alert(1)") { "XSS" }
+				a(href: "javascr\tipt:alert(1)") { "XSS" }
+				a(href: "javascri\tpt:alert(1)") { "XSS" }
+				a(href: "javascrip\tt:alert(1)") { "XSS" }
+				a(href: "javascript\t:alert(1)") { "XSS" }
+				a(href: "javascript:\talert(1)") { "XSS" }
+			end
+		end
+
+		it "strips the javascript protocol" do
+			expect(output.scan("<a>").size).to be == 12
+			expect(output.scan("href").size).to be == 0
+		end
+	end
+
+	with "naughty javascript link protocol with a hidden newline character" do
+		view do
+			def template
+				a(href: "\njavascript:alert(1)") { "XSS" }
+				a(href: "j\navascript:alert(1)") { "XSS" }
+				a(href: "ja\nvascript:alert(1)") { "XSS" }
+				a(href: "jav\nascript:alert(1)") { "XSS" }
+				a(href: "java\nscript:alert(1)") { "XSS" }
+				a(href: "javas\ncript:alert(1)") { "XSS" }
+				a(href: "javasc\nript:alert(1)") { "XSS" }
+				a(href: "javascr\nipt:alert(1)") { "XSS" }
+				a(href: "javascri\npt:alert(1)") { "XSS" }
+				a(href: "javascrip\nt:alert(1)") { "XSS" }
+				a(href: "javascript\n:alert(1)") { "XSS" }
+				a(href: "javascript:\nalert(1)") { "XSS" }
+			end
+		end
+
+		it "strips the javascript protocol" do
+			expect(output.scan("<a>").size).to be == 12
+			expect(output.scan("href").size).to be == 0
+		end
+	end
+
+	with "naughty javascript link protocol with a hidden whitespace character" do
+		view do
+			def template
+				a(href: " javascript:alert(1)") { "XSS" }
+				a(href: "j avascript:alert(1)") { "XSS" }
+				a(href: "ja vascript:alert(1)") { "XSS" }
+				a(href: "jav ascript:alert(1)") { "XSS" }
+				a(href: "java script:alert(1)") { "XSS" }
+				a(href: "javas cript:alert(1)") { "XSS" }
+				a(href: "javasc ript:alert(1)") { "XSS" }
+				a(href: "javascr ipt:alert(1)") { "XSS" }
+				a(href: "javascri pt:alert(1)") { "XSS" }
+				a(href: "javascrip t:alert(1)") { "XSS" }
+				a(href: "javascript :alert(1)") { "XSS" }
+				a(href: "javascript: alert(1)") { "XSS" }
+			end
+		end
+
+		it "strips the javascript protocol" do
+			expect(output.scan("<a>").size).to be == 12
+			expect(output.scan("href").size).to be == 0
+		end
+	end
+
 	Phlex::HTML::EVENT_ATTRIBUTES.each_key do |event_attribute|
 		with "with naughty #{event_attribute} attribute" do
 			naughty_attributes = { event_attribute => "alert(1);" }
