@@ -11,6 +11,7 @@ group :test do
 		gem "async"
 	end
 	gem "concurrent-ruby"
+	gem "selenium-webdriver"
 end
 
 group :development do

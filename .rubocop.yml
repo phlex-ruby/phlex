@@ -25,3 +25,6 @@ Naming/MethodName:
 
 Style/ReturnNilInPredicateMethodDefinition:
   Enabled: false
+
+Lint/UnreachableLoop:
+  Enabled: false
