@@ -13,3 +13,6 @@ Style/MixinUsage:
 
 Style/RedundantDoubleSplatHashBraces:
   Enabled: false
+
+Lint/UnreachableLoop:
+  Enabled: false

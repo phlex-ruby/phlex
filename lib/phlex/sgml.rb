@@ -384,10 +384,10 @@ module Phlex
 				end
 
 				lower_name = name.downcase
-				next if lower_name == "href" && v.to_s.downcase.tr("\t \n", "").start_with?("javascript:")
+				next if lower_name == "href" && v.to_s.downcase.tr("^a-z:",	"").start_with?("javascript:")
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-				if HTML::EVENT_ATTRIBUTES[lower_name] || name.match?(/[<>&"']/)
+				if HTML::EVENT_ATTRIBUTES.include?(lower_name.tr("^a-z-", "")) || name.match?(/[<>&"']/)
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 

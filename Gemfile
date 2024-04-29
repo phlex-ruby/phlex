@@ -14,4 +14,5 @@ gem "yard"
 group :test do
 	gem "i18n"
 	gem "memory_profiler"
+	gem "selenium-webdriver"
 end
