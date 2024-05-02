@@ -32,11 +32,12 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{method_name}(**attributes, &block)
+			def #{method_name}(*boolean_attributes, **attributes, &block)
 				context = @_context
 				buffer = context.buffer
 				fragment = context.fragments
 				target_found = false
+				attributes.merge!(Hash[boolean_attributes.map { |attribute| [attribute, true] }]) if boolean_attributes.any?
 
 				if fragment
 					return if fragment.length == 0 # we found all our fragments already
