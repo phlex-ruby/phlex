@@ -7,15 +7,12 @@ require "benchmark/ips"
 require_relative "fixtures/page"
 require_relative "fixtures/layout"
 
-puts RUBY_DESCRIPTION
+RubyVM::YJIT.enable
 
-a = Example::Page.new.call
-# Example::Page.compile
-# Example::LayoutComponent.compile
-b = Example::Page.new.call
-
-raise unless a == b
+sample = Example::Page.new.call
+puts sample.bytesize
 
 Benchmark.ips do |x|
+	x.time = 20
 	x.report("Page") { Example::Page.new.call }
 end
