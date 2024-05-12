@@ -216,10 +216,14 @@ module Phlex
 		# Capture a block of output as a String.
 		# @note This only works if the block's receiver is the current component or the block returns a String.
 		# @return [String]
-		def capture(&block)
+		def capture(*args, &block)
 			return "" unless block
 
-			@_context.capturing_into(+"") { yield_content(&block) }
+			if args.length > 0
+				@_context.capturing_into(+"") { yield_content_with_args(*args, &block) }
+			else
+				@_context.capturing_into(+"") { yield_content(&block) }
+			end
 		end
 
 		private
