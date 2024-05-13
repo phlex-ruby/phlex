@@ -3,6 +3,41 @@
 describe Phlex::HTML do
 	extend ViewHelper
 
+	with "implicit class binding" do
+		with "class: keyword argument" do
+			view do
+				def view_template
+					red(class: "buzz")
+				end
+
+				def red(class:)
+					div(class: tokens("fizz", class:))
+				end
+			end
+
+			it "implicitly binds class: keyword argument" do
+				expect(output).to be == %(<div class="fizz buzz"></div>)
+			end
+		end
+
+		with "endless argumens (...)" do
+			view do
+				def view_template
+					red(class: "buzz")
+				end
+
+				def red(...)
+					div(class: tokens("fizz", class:))
+				end
+			end
+
+			it "raises error" do
+				expect{ output }.to raise_exception ArgumentError,
+					message: be == "Implicit class binding is not supported. Use the class: keyword argument."
+			end
+		end
+	end
+
 	with "conditional classes" do
 		with "symbol conditionals" do
 			view do

@@ -18,7 +18,7 @@ module Phlex::Helpers
 	# 	tokens(
 	# 		active?: { then: "active", else: "inactive" }
 	# 	)
-	def tokens(*tokens, **conditional_tokens)
+	def tokens(*tokens, class: nil, **conditional_tokens)
 		conditional_tokens.each do |condition, token|
 			truthy = case condition
 				when Symbol then send(condition)
@@ -36,6 +36,13 @@ module Phlex::Helpers
 					when Hash then __append_token__(tokens, token[:else])
 				end
 			end
+		end
+
+		case binding.local_variable_get(:class)
+		when Class
+			raise ArgumentError, "Implicit class binding is not supported. Use the class: keyword argument."
+		else
+			tokens.append binding.local_variable_get(:class)
 		end
 
 		tokens = tokens.select(&:itself).join(" ")
