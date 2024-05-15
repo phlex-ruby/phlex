@@ -70,6 +70,20 @@ describe Phlex::HTML do
 					message: be == "Unsafe attribute name detected: #{event_attribute}."
 			end
 		end
+
+		with "with safe #{event_attribute} attribute" do
+			safe_attributes = { event_attribute => Phlex::SGML::SafeValue.new("alert(1);") }
+
+			view do
+				define_method :view_template do
+					send(:div, **safe_attributes)
+				end
+			end
+
+			it "outputs safe value" do
+				expect(output).to be == "<div #{event_attribute}=\"alert(1);\"></div>"
+			end
+		end
 	end
 
 	%w[< > & " '].each do |naughty_character|

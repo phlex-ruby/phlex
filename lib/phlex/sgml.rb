@@ -5,6 +5,8 @@ module Phlex
 	class SGML
 		include Helpers
 
+		autoload :SafeValue, "phlex/sgml/safe_value"
+
 		class << self
 			# Render the view to a String. Arguments are delegated to {.new}.
 			def call(...)
@@ -182,6 +184,13 @@ module Phlex
 
 			@_context.target << content
 			nil
+		end
+
+		# Marks strings as "safe" so they don't raise an exception when JavaScript or potentially dangerous values are passed into Phlex attributes.
+		# @param content [String|nil]
+		# @return [SafeValue]
+		def safe(value)
+			SafeValue.new(value)
 		end
 
 		# Capture a block of output as a String.
@@ -396,12 +405,16 @@ module Phlex
 				name = case k
 					when String then k
 					when Symbol then k.name.tr("_", "-")
-					else raise ArgumentError, "Attribute keys should be Strings or Symbols."
+					else raise ArgumentError, "Attribute keys should be Strings, Symbols, or SafeValues."
 				end
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
 				if HTML::EVENT_ATTRIBUTES[name] || name.match?(/[<>&"']/)
-					raise ArgumentError, "Unsafe attribute name detected: #{k}."
+					if v.is_a? Phlex::SGML::SafeValue
+						v = v.safe_value
+					else
+						raise ArgumentError, "Unsafe attribute name detected: #{k}."
+					end
 				end
 
 				case v
