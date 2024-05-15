@@ -1,40 +1,9 @@
 inherit_from:
-  - "https://www.goodcop.style/rubocop.yml"
   - "https://www.goodcop.style/tabs.yml"
 
 AllCops:
   TargetRubyVersion: 3.2
 
-Style/ExplicitBlockArgument:
-  Enabled: false
-
-Style/MixinUsage:
-  Enabled: false
-
-Style/RedundantDoubleSplatHashBraces:
-  Enabled: false
-
-Style/OptionalArguments:
-  Enabled: false
-
-Naming/AsciiIdentifiers:
-  Enabled: false
-
-Naming/MethodName:
-  Enabled: false
-
-Style/ReturnNilInPredicateMethodDefinition:
-  Enabled: false
-
-Naming/BlockForwarding:
-  Enabled: false
-
-Style/ArgumentsForwarding:
-  Enabled: false
-
 # We need to disable this cop because it’s not compatible with TruffleRuby 23.1, which still needs a `require "set"`
 Lint/RedundantRequireStatement:
-  Enabled: false
-
-Lint/UnreachableLoop:
   Enabled: false
