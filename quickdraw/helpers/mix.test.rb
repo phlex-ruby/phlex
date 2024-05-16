@@ -2,7 +2,7 @@
 
 include Phlex::Helpers
 
-test "supports string concatination" do
+test "supports string concatenation" do
 	output = mix({ class: "foo" }, { class: "bar" })
 	expect(output) == { class: "foo bar" }
 end
@@ -12,7 +12,7 @@ test "supports string override" do
 	expect(output) == { class: "bar" }
 end
 
-test "supports array concatination" do
+test "supports array concatenation" do
 	output = mix({ class: ["foo"] }, { class: ["bar"] })
 	expect(output) == { class: ["foo", "bar"] }
 end
@@ -22,7 +22,7 @@ test "supports array override" do
 	expect(output) == { class: ["bar"] }
 end
 
-test "supports hash concatination" do
+test "supports hash concatenation" do
 	output = mix(
 		{ data: { controller: "foo" } },
 			{ data: { controller: "bar" } }
