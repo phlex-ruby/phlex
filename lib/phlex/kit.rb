@@ -3,12 +3,23 @@
 module Phlex::Kit
 	def self.extended(mod)
 		warn "⚠️ [WARNING] Phlex::Kit is experimental and may be removed from future versions of Phlex."
-		super
-	end
 
-	# When a kit is included in a module, we need to load all of its components.
-	def included(mod)
-		constants.each { |c| const_get(c) if autoload?(c) }
+		mod.define_method(:respond_to_missing?) do |name, _include_private = false|
+			if name[0] == name[0].upcase && mod.constants.include?(name) && mod.const_get(name) && methods.include?(name)
+				true
+			else
+				super
+			end
+		end
+
+		mod.define_method(:method_missing) do |name, *args, **kwargs, &block|
+			if name[0] == name[0].upcase && mod.constants.include?(name) && mod.const_get(name) && methods.include?(name)
+				public_send(name, *args, **kwargs, &block)
+			else
+				super
+			end
+		end
+
 		super
 	end
 
