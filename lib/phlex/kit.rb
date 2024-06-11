@@ -1,31 +1,39 @@
 # frozen_string_literal: true
 
 module Phlex::Kit
+	module LazyLoader
+		def method_missing(name, *args, **kwargs, &block)
+			if name[0] == name[0].upcase && __phlex_kit_constants__.include?(name) && __get_phlex_kit_constant__(name) && methods.include?(name)
+				public_send(name, *args, **kwargs, &block)
+			else
+				super
+			end
+		end
+
+		def respond_to_missing?(name, include_private = false)
+			if name[0] == name[0].upcase && __phlex_kit_constants__.include?(name) && __get_phlex_kit_constant__(name) && methods.include?(name)
+				true
+			else
+				super
+			end
+		end
+	end
+
+	include LazyLoader
+
 	def self.extended(mod)
 		warn "⚠️ [WARNING] Phlex::Kit is experimental and may be removed from future versions of Phlex."
-		super
+		mod.include(LazyLoader)
+		mod.define_method(:__phlex_kit_constants__) { mod.__phlex_kit_constants__ }
+		mod.define_method(:__get_phlex_kit_constant__) { |name| mod.__get_phlex_kit_constant__(name) }
 	end
 
-	# When a kit is included in a module, we need to load all of its components.
-	def included(mod)
-		constants.each { |c| const_get(c) if autoload?(c) }
-		super
+	def __phlex_kit_constants__
+		constants
 	end
 
-	def method_missing(name, *args, **kwargs, &block)
-		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
-			public_send(name, *args, **kwargs, &block)
-		else
-			super
-		end
-	end
-
-	def respond_to_missing?(name, include_private = false)
-		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
-			true
-		else
-			super
-		end
+	def __get_phlex_kit_constant__(name)
+		const_get(name)
 	end
 
 	def const_added(name)
