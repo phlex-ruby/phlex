@@ -64,4 +64,21 @@ describe Phlex::HTML do
 			expect(output).to be == "<h1>Hi</h1>"
 		end
 	end
+
+	with "a view that is rendered twice" do
+		view do
+			def view_template
+				plain "Hi"
+			end
+		end
+
+		let(:output) do
+			example.call
+			example.call
+		end
+
+		it "raises an error" do
+			expect { output }.to raise_exception(Phlex::DoubleRenderError)
+		end
+	end
 end

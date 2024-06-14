@@ -83,6 +83,9 @@ module Phlex
 			@_view_context = view_context
 			@_parent = parent
 
+			raise Phlex::DoubleRenderError, "You can't render a #{self.class.name} more than once." if @_rendered
+			@_rendered = true
+
 			if fragments
 				@_context.target_fragments(fragments)
 			end
