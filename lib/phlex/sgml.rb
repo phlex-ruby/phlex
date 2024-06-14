@@ -107,8 +107,8 @@ module Phlex
 			@_parent = parent
 			if @_rendered
 			  warn "⚠️ [WARNING] You are rendering a component #{self.class.name} twice. This is not supported in Phlex 2.0."
-			  @_rendered = true
 			end
+	    @_rendered = true
 
 			if fragments
 				warn "⚠️ [WARNING] Selective Rendering is experimental, incomplete, and may change in future versions."
