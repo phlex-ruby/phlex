@@ -5,6 +5,7 @@ require "set"
 
 module Phlex
 	autoload :ArgumentError, "phlex/errors/argument_error"
+	autoload :DoubleRenderError, "phlex/errors/double_render_error"
 	autoload :BlackHole, "phlex/black_hole"
 	autoload :CSV, "phlex/csv"
 	autoload :Callable, "phlex/callable"

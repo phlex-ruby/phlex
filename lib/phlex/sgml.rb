@@ -13,9 +13,9 @@ module Phlex
 
 			# Create a new instance of the component.
 			# @note The block will not be delegated {#initialize}. Instead, it will be sent to {#template} when rendering.
-			def new(*args, **kwargs, &block)
+			def new(*, **, &block)
 				if block
-					object = super(*args, **kwargs, &nil)
+					object = super(*, **, &nil)
 					object.instance_exec { @_content_block = block }
 					object
 				else
@@ -83,6 +83,9 @@ module Phlex
 			@_view_context = view_context
 			@_parent = parent
 
+			raise Phlex::DoubleRenderError, "You can't render a #{self.class.name} more than once." if @_rendered
+			@_rendered = true
+
 			if fragments
 				@_context.target_fragments(fragments)
 			end
@@ -146,7 +149,7 @@ module Phlex
 		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
 		# @return [nil]
 		# @yield If a block is given, it yields the block with no arguments.
-		def whitespace(&block)
+		def whitespace(&)
 			context = @_context
 			return if context.fragments && !context.in_target_fragment
 
@@ -155,7 +158,7 @@ module Phlex
 			buffer << " "
 
 			if block_given?
-				yield_content(&block)
+				yield_content(&)
 				buffer << " "
 			end
 
@@ -164,14 +167,14 @@ module Phlex
 
 		# Output an HTML comment.
 		# @return [nil]
-		def comment(&block)
+		def comment(&)
 			context = @_context
 			return if context.fragments && !context.in_target_fragment
 
 			buffer = context.buffer
 
 			buffer << "<!-- "
-			yield_content(&block)
+			yield_content(&)
 			buffer << " -->"
 
 			nil
@@ -230,13 +233,13 @@ module Phlex
 		# 	@param enumerable [Enumerable]
 		# 	@example
 		# 		render @items
-		def render(renderable, &block)
+		def render(renderable, &)
 			case renderable
 			when Phlex::SGML
-				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &)
 			when Class
 				if renderable < Phlex::SGML
-					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &)
 				end
 			when Enumerable
 				renderable.each { |r| render(r, &block) }
