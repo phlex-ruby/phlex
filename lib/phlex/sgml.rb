@@ -105,6 +105,11 @@ module Phlex
 			@_context = context
 			@_view_context = view_context
 			@_parent = parent
+			if @_rendered
+			  warn "⚠️ [WARNING] You are rendering a component #{self.class.name} twice. This is not supported in Phlex 2.0."
+			end
+	    @_rendered = true
+
 			if fragments
 				warn "⚠️ [WARNING] Selective Rendering is experimental, incomplete, and may change in future versions."
 				@_context.target_fragments(fragments)
