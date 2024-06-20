@@ -44,6 +44,23 @@ describe Phlex::HTML do
 			end
 		end
 
+		with "boolean conditionals" do
+			view do
+				def view_template
+					a href: "/", **classes("a", "b", "c",
+						true => "true",
+						false => "false") do
+						"Home"
+					end
+				end
+			end
+
+			it "works" do
+				expect(output).to be ==
+					%(<a href="/" class="a b c true">Home</a>)
+			end
+		end
+
 		with "negative conditionals" do
 			view do
 				def view_template

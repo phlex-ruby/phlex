@@ -20,10 +20,11 @@ module Phlex::Helpers
 	# 	)
 	def tokens(*tokens, **conditional_tokens)
 		conditional_tokens.each do |condition, token|
-			truthy = case condition
+  		truthy = case condition
 				when Symbol then send(condition)
 				when Proc then condition.call
-				else raise ArgumentError, "The class condition must be a Symbol or a Proc."
+				when TrueClass, FalseClass then condition
+				else raise ArgumentError, "The class condition must be a Symbol, Proc, TrueClass or FalseClass."
 			end
 
 			if truthy
