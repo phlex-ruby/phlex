@@ -471,7 +471,7 @@ module Phlex
 			when nil, false
 				nil
 			else
-				buffer << if c.respond_to?(:to_phlex_attribute_value)
+				if c.respond_to?(:to_phlex_attribute_value)
 					c.to_phlex_attribute_value
 				elsif c.respond_to?(:to_str)
 					c.to_str
