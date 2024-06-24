@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ExampleComponent < Phlex::HTML
-	def view_template(&block)
-		div(&block)
+	def view_template(&)
+		div(&)
 	end
 end
 
@@ -67,19 +67,19 @@ end
 
 test "renders the just the target fragment" do
 	expect(
-		StandardElementExample.new.call(fragments: ["target"])
+		StandardElementExample.new.call(fragments: ["target"]),
 	) == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
 end
 
 test "works with void elements" do
 	expect(
-		VoidElementExample.new.call(fragments: ["target"])
+		VoidElementExample.new.call(fragments: ["target"]),
 	) == %(<img id="target" src="image.jpg">)
 end
 
 test "supports multiple fragments" do
 	expect(
-		StandardElementExample.new.call(fragments: ["target", "image"])
+		StandardElementExample.new.call(fragments: ["target", "image"]),
 	) == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1><img id="image" src="after.jpg">)
 end
 
@@ -93,19 +93,19 @@ end
 describe "with a capture block" do
 	test "doesn't render the capture block" do
 		expect(
-			WithCaptureBlock.new.call(fragments: ["after"])
+			WithCaptureBlock.new.call(fragments: ["after"]),
 		) == %(<h1 id="after">After</h1>)
 	end
 
 	test "renders the capture block when selected" do
 		expect(
-			WithCaptureBlock.new.call(fragments: ["around"])
+			WithCaptureBlock.new.call(fragments: ["around"]),
 		) == %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
 	end
 
 	test "doesn't select from the capture block" do
 		expect(
-			WithCaptureBlock.new.call(fragments: ["inside"])
+			WithCaptureBlock.new.call(fragments: ["inside"]),
 		) == ""
 	end
 end

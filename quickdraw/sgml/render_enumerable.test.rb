@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Card < Phlex::HTML
-	def view_template(&block)
-		article(&block)
+	def view_template(&)
+		article(&)
 	end
 end
 
@@ -10,7 +10,7 @@ class WithoutBlock < Phlex::HTML
 	def initialize
 		@cards = [
 			Card.new,
-			Card.new
+			Card.new,
 		]
 	end
 

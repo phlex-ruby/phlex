@@ -50,7 +50,7 @@ describe Phlex::HTML do
 					a href: "/", **classes("a", "b", "c",
 						active?: {
 							then: "active",
-							else: "inactive"
+							else: "inactive",
 						}) do
 						"Home"
 					end
@@ -72,8 +72,8 @@ describe Phlex::HTML do
 				def view_template
 					a href: "/", **classes(
 						active?: {
-							then: "active"
-						}
+							then: "active",
+						},
 					) do
 						"Home"
 					end

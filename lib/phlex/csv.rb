@@ -84,8 +84,8 @@ class Phlex::CSV
 		@_current_column_index += 1
 	end
 
-	def each_item(&block)
-		collection.each(&block)
+	def each_item(&)
+		collection.each(&)
 	end
 
 	def yielder(record)

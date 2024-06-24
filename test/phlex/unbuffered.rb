@@ -33,8 +33,8 @@ describe Phlex::Unbuffered do
 
 	it "delegates #send" do
 		view = Example.new
-		expect(view).to receive(:send).with(:bar)
+		expect(view).to receive(:__send__).with(:bar)
 
-		view.unbuffered.send(:bar)
+		view.unbuffered.__send__(:bar)
 	end
 end

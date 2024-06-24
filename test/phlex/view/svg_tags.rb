@@ -7,7 +7,7 @@ describe Phlex::SVG do
 		with "<#{tag}> called with an underscore prefix while overridden" do
 			svg_view do
 				define_method :view_template do
-					send("_#{method_name}")
+					__send__("_#{method_name}")
 				end
 
 				define_method tag do
@@ -23,7 +23,7 @@ describe Phlex::SVG do
 		with "<#{tag}> with block content and attributes" do
 			svg_view do
 				define_method :view_template do
-					send(method_name, class: "class", id: "id", disabled: true, selected: false) { text { "Hello" } }
+					__send__(method_name, class: "class", id: "id", disabled: true, selected: false) { text { "Hello" } }
 				end
 			end
 
@@ -35,7 +35,7 @@ describe Phlex::SVG do
 		with "<#{tag}> with block text content and attributes" do
 			svg_view do
 				define_method :view_template do
-					send(method_name, class: "class", id: "id", disabled: true, selected: false) { "content" }
+					__send__(method_name, class: "class", id: "id", disabled: true, selected: false) { "content" }
 				end
 			end
 

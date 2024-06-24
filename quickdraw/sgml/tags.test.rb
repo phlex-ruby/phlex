@@ -4,7 +4,7 @@ Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> called with an underscore prefix while overridden" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send("_#{method_name}")
+				__send__("_#{method_name}")
 			end
 
 			define_method method_name do
@@ -20,7 +20,7 @@ Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> with block content and attributes" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send(method_name, class: "class", id: "id", disabled: true, selected: false) { h1 { "Hello" } }
+				__send__(method_name, class: "class", id: "id", disabled: true, selected: false) { h1 { "Hello" } }
 			end
 		end
 
@@ -32,7 +32,7 @@ Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> with block text content and attributes" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send(method_name, class: "class", id: "id", disabled: true, selected: false) { "content" }
+				__send__(method_name, class: "class", id: "id", disabled: true, selected: false) { "content" }
 			end
 		end
 
@@ -44,7 +44,7 @@ Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> with string attribute keys" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send(method_name, "attribute_with_underscore" => true) { "content" }
+				__send__(method_name, "attribute_with_underscore" => true) { "content" }
 			end
 		end
 
@@ -56,7 +56,7 @@ Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> with hash attribute values" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send(method_name, aria: { hidden: true }, data_turbo: { frame: "_top" }) { "content" }
+				__send__(method_name, aria: { hidden: true }, data_turbo: { frame: "_top" }) { "content" }
 			end
 		end
 
@@ -70,7 +70,7 @@ Phlex::HTML::VoidElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> called with an underscore prefix while overridden" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send("_#{method_name}")
+				__send__("_#{method_name}")
 			end
 
 			define_method tag do
@@ -86,7 +86,7 @@ Phlex::HTML::VoidElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> with attributes" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send(method_name, class: "class", id: "id", disabled: true, selected: false)
+				__send__(method_name, class: "class", id: "id", disabled: true, selected: false)
 			end
 		end
 
@@ -98,7 +98,7 @@ Phlex::HTML::VoidElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> with string attribute keys" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send(method_name, "attribute_with_underscore" => true)
+				__send__(method_name, "attribute_with_underscore" => true)
 			end
 		end
 
@@ -110,7 +110,7 @@ Phlex::HTML::VoidElements.registered_elements.each do |method_name, tag|
 	describe "<#{tag}> with hash attribute values" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
-				send(method_name, aria: { hidden: true }, data_turbo: { frame: "_top" })
+				__send__(method_name, aria: { hidden: true }, data_turbo: { frame: "_top" })
 			end
 		end
 

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Example < Phlex::HTML
-	def view_template(&block)
-		h1(&block)
+	def view_template(&)
+		h1(&)
 	end
 end
 

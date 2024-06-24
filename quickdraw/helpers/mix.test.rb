@@ -25,7 +25,7 @@ end
 test "supports hash concatenation" do
 	output = mix(
 		{ data: { controller: "foo" } },
-			{ data: { controller: "bar" } }
+		{ data: { controller: "bar" } },
 	)
 
 	expect(output) == { data: { controller: "foo bar" } }
@@ -34,7 +34,7 @@ end
 test "supports hash override" do
 	output = mix(
 		{ data: { controller: "foo" } },
-			{ data!: { controller: "bar" } }
+		{ data!: { controller: "bar" } },
 	)
 
 	expect(output) == { data: { controller: "bar" } }
