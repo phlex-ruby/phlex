@@ -406,16 +406,32 @@ module Phlex
 				when Integer, Float
 					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
-					__attributes__(
-						v.transform_keys { |subkey|
-							case subkey
-								when Symbol then"#{name}-#{subkey.name.tr('_', '-')}"
-								else "#{name}-#{subkey}"
-							end
-						}, buffer
-					)
+			    case k
+					when :class
+						buffer << " " << name << '="' << __classes__(v).gsub('"', "&quot;") << '"'
+					when :style
+					  buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
+					else
+						__attributes__(
+							v.transform_keys { |subkey|
+								case subkey
+									when Symbol then"#{name}-#{subkey.name.tr('_', '-')}"
+									else "#{name}-#{subkey}"
+								end
+							}, buffer
+						)
+					end
 				when Array
-					buffer << " " << name << '="' << v.compact.join(" ").gsub('"', "&quot;") << '"'
+			    value = case k
+					when :class
+						__classes__(v)
+					when :style
+					  __styles__(v)
+					else
+						v.compact.join(" ")
+					end
+
+					buffer << " " << name << '="' << value.gsub('"', "&quot;") << '"'
 				when Set
 					buffer << " " << name << '="' << v.to_a.compact.join(" ").gsub('"', "&quot;") << '"'
 				else
@@ -432,6 +448,79 @@ module Phlex
 			end
 
 			buffer
+		end
+
+		# @api private
+		def __classes__(c)
+			case c
+			when String
+				c
+			when Symbol
+				c.name
+			when Array, Set
+				c.filter_map { |c| __classes__(c) }.join(" ")
+			when Hash
+				c.filter_map { |c, add|
+					next unless add
+					case c
+						when String then c
+						when Symbol then c.name.tr("_", "-").delete_suffix("?")
+						else raise ArgumentError, "Class keys should be Strings or Symbols."
+					end
+				}.join(" ")
+			when nil, false
+				nil
+			else
+				if c.respond_to?(:to_phlex_attribute_value)
+					c.to_phlex_attribute_value
+				elsif c.respond_to?(:to_str)
+					c.to_str
+				else
+					c.to_s
+				end
+			end
+		end
+
+		# @api private
+		def __styles__(s)
+			style = case s
+			when String
+				s
+			when Symbol
+				s.name
+			when Integer, Float
+				s.to_s
+			when Array, Set
+				s.filter_map { |s| __styles__(s) }.join
+			when Hash
+				buffer = +""
+				s.each do |k, v|
+					prop = case k
+						when String then k
+						when Symbol then k.name.tr("_", "-")
+						else raise ArgumentError, "Style keys should be Strings or Symbols."
+					end
+
+					value = __styles__(v)
+
+					if value
+						buffer << prop << ":" << value
+					end
+				end
+				buffer
+			when nil, false
+				return nil
+			else
+				if s.respond_to?(:to_phlex_attribute_value)
+					s.to_phlex_attribute_value
+				elsif s.respond_to?(:to_str)
+					s.to_str
+				else
+					s.to_s
+				end
+			end
+
+			style.end_with?(";") ? style : style + ";"
 		end
 	end
 end
