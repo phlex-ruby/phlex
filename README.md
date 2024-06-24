@@ -7,10 +7,9 @@ Docs and more at [Phlex.fun](https://www.phlex.fun/)
 ## Maintenance schedule
 
 ### Bug fixes
-- Only the latest minor version of each major version will receive bug fixes.
-- We may choose to fix bugs by releasing a new minor version rather than patching the existing minor version.
-- Major versions will stop receiving bug fixes one year after the next major version is released.
-- We are not likely to attempt to fix bugs that affect [maintained versions of Ruby](https://www.ruby-lang.org/en/downloads/branches/), even if our gemspec lists support for unmaintained versions of Ruby.
+- Only the latest minor version of each major version will receive bug fixes
+- We may choose to fix bugs by releasing a new minor version rather than patching the existing minor version
+- Major versions will stop receiving bug fixes one year after the next major version is released
 
 ### Security patches
 - When a security issue is brought to our attention, we aim to release patches for any minor version that was released in the last year.
