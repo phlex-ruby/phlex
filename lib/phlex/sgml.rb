@@ -13,9 +13,9 @@ module Phlex
 
 			# Create a new instance of the component.
 			# @note The block will not be delegated {#initialize}. Instead, it will be sent to {#template} when rendering.
-			def new(*args, **kwargs, &block)
+			def new(*, **, &block)
 				if block
-					object = super(*args, **kwargs, &nil)
+					object = super(*, **, &nil)
 					object.instance_exec { @_content_block = block }
 					object
 				else
@@ -72,7 +72,7 @@ module Phlex
 				flush if task.running?
 				task.wait
 			else
-				raise ArgumentError, "Expected an asynchronous task / promise."
+				raise ArgumentError.new("Expected an asynchronous task / promise.")
 			end
 		end
 
@@ -83,7 +83,7 @@ module Phlex
 			@_view_context = view_context
 			@_parent = parent
 
-			raise Phlex::DoubleRenderError, "You can't render a #{self.class.name} more than once." if @_rendered
+			raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
 			@_rendered = true
 
 			if fragments
@@ -140,7 +140,7 @@ module Phlex
 		# @see #format_object
 		def plain(content)
 			unless __text__(content)
-				raise ArgumentError, "You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information"
+				raise ArgumentError.new("You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information")
 			end
 
 			nil
@@ -149,7 +149,7 @@ module Phlex
 		# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
 		# @return [nil]
 		# @yield If a block is given, it yields the block with no arguments.
-		def whitespace(&block)
+		def whitespace(&)
 			context = @_context
 			return if context.fragments && !context.in_target_fragment
 
@@ -158,7 +158,7 @@ module Phlex
 			buffer << " "
 
 			if block_given?
-				yield_content(&block)
+				yield_content(&)
 				buffer << " "
 			end
 
@@ -167,14 +167,14 @@ module Phlex
 
 		# Output an HTML comment.
 		# @return [nil]
-		def comment(&block)
+		def comment(&)
 			context = @_context
 			return if context.fragments && !context.in_target_fragment
 
 			buffer = context.buffer
 
 			buffer << "<!-- "
-			yield_content(&block)
+			yield_content(&)
 			buffer << " -->"
 
 			nil
@@ -233,16 +233,16 @@ module Phlex
 		# 	@param enumerable [Enumerable]
 		# 	@example
 		# 		render @items
-		def render(renderable, &block)
+		def render(renderable, &)
 			case renderable
 			when Phlex::SGML
-				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+				renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &)
 			when Class
 				if renderable < Phlex::SGML
-					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &block)
+					renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &)
 				end
 			when Enumerable
-				renderable.each { |r| render(r, &block) }
+				renderable.each { |r| render(r, &) }
 			when Proc, Method
 				if renderable.arity == 0
 					yield_content_with_no_args(&renderable)
@@ -252,7 +252,7 @@ module Phlex
 			when String
 				plain(renderable)
 			else
-				raise ArgumentError, "You can't render a #{renderable.inspect}."
+				raise ArgumentError.new("You can't render a #{renderable.inspect}.")
 			end
 
 			nil
@@ -385,7 +385,7 @@ module Phlex
 				name = case k
 					when String then k
 					when Symbol then k.name.tr("_", "-")
-					else raise ArgumentError, "Attribute keys should be Strings or Symbols."
+					else raise ArgumentError.new("Attribute keys should be Strings or Symbols.")
 				end
 
 				lower_name = name.downcase
@@ -393,7 +393,7 @@ module Phlex
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
 				if HTML::EVENT_ATTRIBUTES.include?(lower_name.delete("^a-z-")) || name.match?(/[<>&"']/)
-					raise ArgumentError, "Unsafe attribute name detected: #{k}."
+					raise ArgumentError.new("Unsafe attribute name detected: #{k}.")
 				end
 
 				case v
@@ -406,11 +406,11 @@ module Phlex
 				when Integer, Float
 					buffer << " " << name << '="' << v.to_s << '"'
 				when Hash
-			    case k
+					case k
 					when :class
 						buffer << " " << name << '="' << __classes__(v).gsub('"', "&quot;") << '"'
 					when :style
-					  buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
+						buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
 					else
 						__attributes__(
 							v.transform_keys { |subkey|
@@ -422,11 +422,11 @@ module Phlex
 						)
 					end
 				when Array
-			    value = case k
+					value = case k
 					when :class
 						__classes__(v)
 					when :style
-					  __styles__(v)
+						__styles__(v)
 					else
 						v.compact.join(" ")
 					end
@@ -465,7 +465,7 @@ module Phlex
 					case c
 						when String then c
 						when Symbol then c.name.tr("_", "-").delete_suffix("?")
-						else raise ArgumentError, "Class keys should be Strings or Symbols."
+						else raise ArgumentError.new("Class keys should be Strings or Symbols.")
 					end
 				}.join(" ")
 			when nil, false
@@ -498,7 +498,7 @@ module Phlex
 					prop = case k
 						when String then k
 						when Symbol then k.name.tr("_", "-")
-						else raise ArgumentError, "Style keys should be Strings or Symbols."
+						else raise ArgumentError.new("Style keys should be Strings or Symbols.")
 					end
 
 					value = __styles__(v)
@@ -520,7 +520,7 @@ module Phlex
 				end
 			end
 
-			style.end_with?(";") ? style : style + ";"
+			style.end_with?(";") ? style : "#{style};"
 		end
 	end
 end

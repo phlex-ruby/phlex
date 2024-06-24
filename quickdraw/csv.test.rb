@@ -23,7 +23,7 @@ describe Phlex::CSV do
 	test "renders a CSV" do
 		products = [
 			Product.new("Apple", 1.00),
-			Product.new("Banana", 2.00)
+			Product.new("Banana", 2.00),
 		]
 
 		csv = Example.new(products).call
@@ -68,7 +68,7 @@ describe Phlex::CSV do
 	test "renders without headers" do
 		products = [
 			Product.new("Apple", 1.00),
-			Product.new("Banana", 2.00)
+			Product.new("Banana", 2.00),
 		]
 
 		csv = ExampleWithoutHeaders.new(products).call

@@ -33,7 +33,7 @@ describe Phlex::HTML do
 
 		let(:output) do
 			context_provider.new(ctx).call do |component|
-				component.send(:render, view)
+				component.__send__(:render, view)
 			end
 		end
 

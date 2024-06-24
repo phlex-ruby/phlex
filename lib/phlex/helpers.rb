@@ -21,9 +21,9 @@ module Phlex::Helpers
 	def tokens(*tokens, **conditional_tokens)
 		conditional_tokens.each do |condition, token|
 			truthy = case condition
-				when Symbol then send(condition)
+				when Symbol then __send__(condition)
 				when Proc then condition.call
-				else raise ArgumentError, "The class condition must be a Symbol or a Proc."
+				else raise ArgumentError.new("The class condition must be a Symbol or a Proc.")
 			end
 
 			if truthy
@@ -51,8 +51,7 @@ module Phlex::Helpers
 			when String then tokens << token
 			when Symbol then tokens << token.name
 			when Array then tokens.concat(token)
-			else raise ArgumentError,
-				"Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings."
+			else raise ArgumentError.new("Conditional classes must be Symbols, Strings, or Arrays of Symbols or Strings.")
 		end
 	end
 

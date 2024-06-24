@@ -163,7 +163,7 @@ describe Phlex::HTML do
 
 			view do
 				define_method :view_template do
-					send(:div, **naughty_attributes)
+					__send__(:div, **naughty_attributes)
 				end
 			end
 
@@ -181,7 +181,7 @@ describe Phlex::HTML do
 
 			view do
 				define_method :view_template do
-					send(:div, **naughty_attributes)
+					__send__(:div, **naughty_attributes)
 				end
 			end
 
