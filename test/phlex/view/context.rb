@@ -27,7 +27,7 @@ describe Phlex::HTML do
 	with "context" do
 		view do
 			def view_template
-				div(class: tokens(-> { context[:theme] == :dark } => { then: "dark", else: "light" }))
+				div(class: [((context[:theme] == :dark) ? "dark" : "light")])
 			end
 		end
 
