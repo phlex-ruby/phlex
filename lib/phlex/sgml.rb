@@ -520,7 +520,7 @@ module Phlex
 				end
 			end
 
-			style[-1] == ";" ? style : style + ";"
+			style.end_with?(";") ? style : style + ";"
 		end
 	end
 end
