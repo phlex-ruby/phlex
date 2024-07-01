@@ -42,4 +42,12 @@ module Phlex::Helpers
 			end
 		end
 	end
+
+	def grab(**bindings)
+		if bindings.size > 1
+			bindings.values
+		else
+			bindings.values.first
+		end
+	end
 end
