@@ -440,6 +440,10 @@ module Phlex
 					raise ArgumentError, "Unsafe attribute name detected: #{k}."
 				end
 
+				if lower_name.to_sym == :id && k != :id
+				  warn "⚠️ [WARNING] Starting 2.0 Phlex will raise on non lowercase or string :id attribute."
+				end
+
 				case v
 				when true
 					buffer << " " << name
