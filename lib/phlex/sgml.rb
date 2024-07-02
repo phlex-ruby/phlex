@@ -396,6 +396,10 @@ module Phlex
 					raise ArgumentError.new("Unsafe attribute name detected: #{k}.")
 				end
 
+				if lower_name.to_sym == :id && k != :id
+					raise ArgumentError.new(":id attribute should only be passed as a lowercase symbol.")
+				end
+
 				case v
 				when true
 					buffer << " " << name
