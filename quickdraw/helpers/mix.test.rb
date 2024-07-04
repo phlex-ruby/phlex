@@ -43,7 +43,7 @@ end
 test "supports mixing between arrays and strings" do
 	output = mix({ class: ["foo"] }, { class: "bar" })
 
-	expect(output)
+	expect(output) == { class: ["foo", "bar"] }
 
 	output = mix({ class: "foo" }, { class: ["bar"] })
 
@@ -53,8 +53,7 @@ end
 test "supports mixing between sets and strings" do
 	output = mix({ class: Set["foo"] }, { class: "bar" })
 
-	expect(output)
-	{ class: Set["foo", "bar"] }
+	expect(output) == { class: Set["foo", "bar"] }
 
 	output = mix({ class: "foo" }, { class: Set["bar"] })
 
@@ -64,7 +63,7 @@ end
 test "supports mixing between arrays and sets, keeping the less restrictive type" do
 	output = mix({ class: ["foo"] }, { class: Set["bar"] })
 
-	expect(output)
+	expect(output) == { class: ["foo", "bar"] }
 
 	output = mix({ class: Set["foo"] }, { class: ["bar"] })
 
@@ -74,7 +73,7 @@ end
 test "gracefully handles mixing with nils" do
 	output = mix({ class: "foo" }, { class: nil })
 
-	expect(output)
+	expect(output) == { class: "foo" }
 
 	output = mix({ class: nil }, { class: "foo" })
 
