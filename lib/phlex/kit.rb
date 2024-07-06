@@ -22,7 +22,6 @@ module Phlex::Kit
 	include LazyLoader
 
 	def self.extended(mod)
-		warn "⚠️ [WARNING] Phlex::Kit is experimental and may be removed from future versions of Phlex."
 		mod.include(LazyLoader)
 		mod.define_method(:__phlex_kit_constants__) { mod.__phlex_kit_constants__ }
 		mod.define_method(:__get_phlex_kit_constant__) { |name| mod.__get_phlex_kit_constant__(name) }
