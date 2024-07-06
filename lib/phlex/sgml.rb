@@ -71,7 +71,7 @@ module Phlex
 
 		def self.method_added(method_name)
 			if method_name == :template
-				Kernel.warn "⚠️ [DEPRECATION] Defining the `template` method on a Phlex component will not be supported in Phlex 2.0. Please rename the method to `view_template` instead."
+				Kernel.warn "⚠️ [DEPRECATION] Defining the `template` method on a Phlex component will not be supported in Phlex 2.0. Please rename `#{name}#template` to `#{name}#view_template` instead."
 			end
 		end
 
