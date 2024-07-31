@@ -38,6 +38,27 @@ jobs:
       - name: Quickdraw Tests
         run: bundle exec qt
 
+  test-edge-quickdraw:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: false
+
+      - name: Install dependencies
+        run: |
+          sed -e 's/gem "quickdraw".*/gem "quickdraw", github: "joeldrapper\/quickdraw"/' -i Gemfile
+          cat Gemfile
+          bundle config set --local without "development"
+          bundle install
+
+      - name: Quickdraw Tests
+        run: bundle exec qt
+
   rubocop:
     runs-on: "ubuntu-latest"
     steps:
@@ -50,7 +71,9 @@ jobs:
           bundler-cache: false
 
       - name: Install dependencies
-        run: bundle install
+        run: |
+          bundle config set --local only "development"
+          bundle install
 
       - name: Rubocop
         run: bundle exec rubocop

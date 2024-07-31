@@ -3,11 +3,11 @@
 include Phlex::Helpers
 
 test "supports many bindings" do
-	output = grab({ class: "foo" }, { if: "bar" })
+	output = grab(class: "foo", if: "bar")
 	expect(output) == ["foo", "bar"]
 end
 
 test "supports single binding" do
-	output = grab({ class: "foo" })
-	expect(output) == ["foo"]
+	output = grab(class: "foo")
+	expect(output) == "foo"
 end
