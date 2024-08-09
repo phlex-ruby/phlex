@@ -56,11 +56,11 @@ module Phlex::Elements
 
 				if attributes.length > 0 # with attributes
 					if block # with content block
-						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= __attributes__(attributes)) << ">"
+						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 						yield_content(&block)
 						buffer << "</#{tag}>"
 					else # without content block
-						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= __attributes__(attributes)) << "></#{tag}>"
+						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
 					end
 				else # without attributes
 					if block # with content block
@@ -113,7 +113,7 @@ module Phlex::Elements
 				end
 
 				if attributes.length > 0 # with attributes
-					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes.hash] ||= __attributes__(attributes)) << ">"
+					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 				else # without attributes
 					buffer << "<#{tag}>"
 				end

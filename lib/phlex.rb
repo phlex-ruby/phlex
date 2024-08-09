@@ -24,7 +24,7 @@ module Phlex
 	autoload :Unbuffered, "phlex/unbuffered"
 
 	Escape = ERB::Escape
-	ATTRIBUTE_CACHE = FIFO.new(4_000_000) # 4MB
+	ATTRIBUTE_CACHE = FIFO.new
 	SUPPORTS_FIBER_STORAGE = RUBY_ENGINE == "ruby"
 end
 
