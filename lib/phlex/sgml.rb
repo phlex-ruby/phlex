@@ -341,13 +341,13 @@ module Phlex
 		# Same as {#yield_content} but accepts a splat of arguments to yield. This is slightly slower than {#yield_content}.
 		# @yield [*args] Yields the given arguments.
 		# @return [nil]
-		def yield_content_with_args(*args)
+		def yield_content_with_args(*)
 			return unless block_given?
 
 			buffer = @_context.buffer
 
 			original_length = buffer.bytesize
-			content = yield(*args)
+			content = yield(*)
 			__text__(content) if original_length == buffer.bytesize
 
 			nil
