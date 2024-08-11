@@ -416,13 +416,10 @@ module Phlex
 					when :style
 						buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
 					else
-						__attributes__(
-							v.transform_keys { |subkey|
-								case subkey
-									when Symbol then"#{name}-#{subkey.name.tr('_', '-')}"
-									else "#{name}-#{subkey}"
-								end
-							}, buffer
+						__nested_attributes__(
+							v,
+							"#{name}-",
+							buffer,
 						)
 					end
 				when Array
@@ -452,6 +449,50 @@ module Phlex
 			end
 
 			buffer
+		end
+
+		# @api private
+		#
+		# Provides the nested-attributes case for serializing out attributes.
+		# This allows us to skip many of the checks the `__attributes__` method must perform.
+		def __nested_attributes__(attributes, base_name, buffer = +"")
+			attributes.each do |k, v|
+				next unless v
+
+				name = case k
+											when String then k
+											when Symbol then k.name.tr("_", "-")
+											else raise ArgumentError.new("Attribute keys should be Strings or Symbols")
+				end
+
+				case v
+				when true
+					buffer << " " << base_name << name
+				when String
+					buffer << " " << base_name << name << '="' << v.gsub('"', "&quot;") << '"'
+				when Symbol
+					buffer << " " << base_name << name << '="' << v.name.gsub('"', "&quot;") << '"'
+				when Integer, Float
+					buffer << " " << base_name << name << '="' << v.to_s << '"'
+				when Hash
+					__nested_attributes__(v, "#{base_name}-#{name}-", buffer)
+				when Array
+					buffer << " " << base_name << name << '="' << v.compact.join(" ").gsub('"', "&quot;") << '"'
+				when Set
+					buffer << " " << base_name << name << '="' << v.to_a.compact.join(" ").gsub('"', "&quot;") << '"'
+				else
+					value = if v.respond_to?(:to_phlex_attribute_value)
+						v.to_phlex_attribute_value
+					elsif v.respond_to?(:to_str)
+						v.to_str
+					else
+						v.to_s
+					end
+					buffer << " " << base_name << name << '="' << value.gsub('"', "&quot;") << '"'
+				end
+
+				buffer
+			end
 		end
 
 		# @api private
