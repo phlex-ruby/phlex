@@ -416,11 +416,7 @@ module Phlex
 					when :style
 						buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
 					else
-						__nested_attributes__(
-							v,
-							"#{name}-",
-							buffer,
-						)
+						__nested_attributes__(v, "#{name}-", buffer)
 					end
 				when Array
 					value = case k
