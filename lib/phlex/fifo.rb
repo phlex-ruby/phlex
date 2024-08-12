@@ -1,35 +1,21 @@
 # frozen_string_literal: true
 
 class Phlex::FIFO
-	def initialize(max_bytesize)
+	def initialize(max_size = 1_000_000)
 		@hash = {}
-		@mutex = Mutex.new
-
-		@bytesize = 0
-		@max_bytesize = max_bytesize
+		@max_size = max_size
 	end
 
-	attr_reader :bytesize, :max_bytesize
+	attr_reader :size, :max_size
 
 	def [](key)
-		@hash[key]
+		k, v = @hash[key.hash]
+		v if k == key
 	end
 
 	def []=(key, value)
-		@mutex.synchronize do
-			old_value = @hash.delete(key)
-			@hash[key] = value
-
-			if old_value
-				@bytesize += value.bytesize - old_value.bytesize
-			else
-				@bytesize += value.bytesize
-			end
-
-			while @bytesize > @max_bytesize
-				key, value = @hash.shift
-				@bytesize -= value.bytesize
-			end
-		end
+		hash = key.hash
+		@hash[hash] = [key, value]
+		@hash.shift while @hash.length > @max_size
 	end
 end

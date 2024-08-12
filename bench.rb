@@ -13,6 +13,6 @@ sample = Example::Page.new.call
 puts sample.bytesize
 
 Benchmark.ips do |x|
-	x.time = 20
+	x.time = 5
 	x.report("Page") { Example::Page.new.call }
 end
