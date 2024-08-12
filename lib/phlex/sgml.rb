@@ -206,6 +206,38 @@ module Phlex
 			end
 		end
 
+		def tag(name, ...)
+			normalized_name = case name
+				when Symbol then name.name.downcase
+				when String then name.downcase
+				else raise ArgumentError.new("Expected the tag namea as a Symbol or String.")
+			end
+
+			if name == "script"
+				raise ArgumentError.new("You can’t use the `<script>` tag from the `tag` method. Use `unsafe_tag` instead, but be careful if using user input.")
+			end
+
+			if registered_elements[normalized_name]
+				public_send(normalized_name, ...)
+			else
+				raise ArgumentError.new("Unknown tag: #{normalized_name}")
+			end
+		end
+
+		def unsafe_tag(name, ...)
+			normalized_name = case name
+				when Symbol then name.name.downcase
+				when String then name.downcase
+				else raise ArgumentError.new("Expected the tag namea as a Symbol or String.")
+			end
+
+			if registered_elements[normalized_name]
+				public_send(normalized_name, ...)
+			else
+				raise ArgumentError.new("Unknown tag: #{normalized_name}")
+			end
+		end
+
 		private
 
 		# @api private
