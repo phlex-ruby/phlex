@@ -213,7 +213,7 @@ module Phlex
 				else raise ArgumentError.new("Expected the tag namea as a Symbol or String.")
 			end
 
-			if name == "script"
+			if normalized_name == "script"
 				raise ArgumentError.new("You can’t use the `<script>` tag from the `tag` method. Use `unsafe_tag` instead, but be careful if using user input.")
 			end
 
