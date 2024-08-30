@@ -724,4 +724,25 @@ module Phlex::HTML::StandardElements
 	# 	@yieldparam component [self]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/wbr
 	register_element :wbr
+
+	# @!method g(**attributes, &content)
+	# 	Outputs a `<g>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/SVG/Element/g
+	register_element :g
+
+	# @!method text(**attributes, &content)
+	# 	Outputs a `<text>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/SVG/Element/text
+	register_element :text
+
+	# @!method circle(**attributes, &content)
+	# 	Outputs a `<circle>` tag.
+	# 	@return [nil]
+	# 	@yieldparam component [self]
+	# 	@see https://developer.mozilla.org/en-US/docs/Web/SVG/Element/circle
+	register_element :circle
 end
