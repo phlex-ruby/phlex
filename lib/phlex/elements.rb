@@ -61,8 +61,7 @@ module Phlex::Elements
 						buffer << "</#{tag}>"
 					elsif content
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
-						inline_block = content.is_a?(Proc) ? content : proc { content }
-						yield_content(&inline_block)
+						process_inline_content(content)
 						buffer << "</#{tag}>"
 					else # without content block
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
@@ -74,8 +73,7 @@ module Phlex::Elements
 						buffer << "</#{tag}>"
 					elsif content
 						buffer << "<#{tag}>"
-						inline_block = content.is_a?(Proc) ? content : proc { content }
-						yield_content(&inline_block)
+						process_inline_content(content)
 						buffer << "</#{tag}>"
 					else # without content block
 						buffer << "<#{tag}></#{tag}>"

@@ -353,6 +353,19 @@ module Phlex
 			nil
 		end
 
+		# Process inline content passed to a tag method
+		# [Block, Proc, String] are available. Raises ArgumentError in other cases
+		def process_inline_content(content)
+			case content
+			when Proc
+				yield_content(&content)
+			when String
+				plain(content)
+			else
+				raise ArgumentError.new("Only Block(Proc) and String variables allowed for inline tags content")
+			end
+		end
+
 		# Performs the same task as the public method #plain, but does not raise an error if an unformattable object is passed
 		# @api private
 		def __text__(content)

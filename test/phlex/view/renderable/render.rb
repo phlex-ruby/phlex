@@ -6,16 +6,6 @@ class Example < Phlex::HTML
 	end
 end
 
-class InlineExample < Phlex::HTML
-	def view_template
-		div class: "first" do
-			div class: "second" do
-				div "Hello", class: "third"
-			end
-		end
-	end
-end
-
 class InlineNestedExample < Phlex::HTML
 	# It's a specific case so it should be wrapped properly to keep execution sequence
 	def tag_method_wrapper(method_name, inline_content, **attributes)
@@ -137,12 +127,28 @@ describe Phlex::HTML do
 			with "regular nesting" do
 				view do
 					def view_template
-						render InlineExample
+						div class: "first" do
+							div class: "second" do
+								div "Hello", class: "third"
+							end
+						end
 					end
 				end
 
 				it "renders a new instance of that view" do
 					expect(output).to be == "<div class=\"first\"><div class=\"second\"><div class=\"third\">Hello</div></div></div>"
+				end
+			end
+
+			with "non block or string content" do
+				view do
+					def view_template
+						div :hello, class: "first"
+					end
+				end
+
+				it "raises argument error" do
+					expect { output }.to raise_exception(ArgumentError, message: be == "Only Block(Proc) and String variables allowed for inline tags content")
 				end
 			end
 		end
