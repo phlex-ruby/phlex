@@ -32,7 +32,7 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{method_name}(**attributes, &block)
+			def #{method_name}(content = nil, **attributes, &block)
 				context = @_context
 				buffer = context.buffer
 				fragment = context.fragments
@@ -59,6 +59,11 @@ module Phlex::Elements
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 						yield_content(&block)
 						buffer << "</#{tag}>"
+					elsif content
+						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+						inline_block = content.is_a?(Proc) ? content : proc { content }
+						yield_content(&inline_block)
+						buffer << "</#{tag}>"
 					else # without content block
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
 					end
@@ -66,6 +71,11 @@ module Phlex::Elements
 					if block # with content block
 						buffer << "<#{tag}>"
 						yield_content(&block)
+						buffer << "</#{tag}>"
+					elsif content
+						buffer << "<#{tag}>"
+						inline_block = content.is_a?(Proc) ? content : proc { content }
+						yield_content(&inline_block)
 						buffer << "</#{tag}>"
 					else # without content block
 						buffer << "<#{tag}></#{tag}>"

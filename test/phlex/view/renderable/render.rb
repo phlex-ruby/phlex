@@ -6,6 +6,35 @@ class Example < Phlex::HTML
 	end
 end
 
+class InlineExample < Phlex::HTML
+	def view_template
+		div class: "first" do
+			div class: "second" do
+				div "Hello", class: "third"
+			end
+		end
+	end
+end
+
+class InlineNestedExample < Phlex::HTML
+	# It's a specific case so it should be wrapped properly to keep execution sequence
+	def tag_method_wrapper(method_name, inline_content, **attributes)
+		proc do
+			public_send(method_name, **attributes) do
+				inline_content
+			end
+		end
+	end
+
+	def view_template
+		div class: "first" do
+			div class: "second" do
+				div(tag_method_wrapper(:div, "Hello", class: "fourth"), class: "third")
+			end
+		end
+	end
+end
+
 describe Phlex::HTML do
 	extend ViewHelper
 
@@ -88,6 +117,32 @@ describe Phlex::HTML do
 
 				it "renders the lambda" do
 					expect(output).to be == "<h1>Hi</h1>"
+				end
+			end
+		end
+
+		with "inline tag method call" do
+			with "contain block" do
+				view do
+					def view_template
+						render InlineNestedExample
+					end
+				end
+
+				it "renders a new instance of that view" do
+					expect(output).to be == "<div class=\"first\"><div class=\"second\"><div class=\"third\"><div class=\"fourth\">Hello</div></div></div></div>"
+				end
+			end
+
+			with "regular nesting" do
+				view do
+					def view_template
+						render InlineExample
+					end
+				end
+
+				it "renders a new instance of that view" do
+					expect(output).to be == "<div class=\"first\"><div class=\"second\"><div class=\"third\">Hello</div></div></div>"
 				end
 			end
 		end
