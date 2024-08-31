@@ -514,6 +514,7 @@ module Phlex
 						buffer << token.name
 					end
 				when nil
+					# Do nothing
 				else
 					if i > 0
 						buffer << " " << token.to_s
