@@ -66,7 +66,7 @@ module Phlex
 		# 		article(class: "card", &block)
 		# 	end
 		def template
-			yield
+			yield if block_given?
 		end
 
 		def self.method_added(method_name)
