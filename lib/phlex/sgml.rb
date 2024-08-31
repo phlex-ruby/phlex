@@ -501,8 +501,6 @@ module Phlex
 				token = tokens[i]
 
 				case token
-				when nil
-					next
 				when String
 					if i > 0
 						buffer << " " << token
@@ -515,6 +513,7 @@ module Phlex
 					else
 						buffer << token.name
 					end
+				when nil
 				else
 					if i > 0
 						buffer << " " << token.to_s
