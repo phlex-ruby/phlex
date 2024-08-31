@@ -425,12 +425,12 @@ module Phlex
 					when :style
 						__styles__(v)
 					else
-						v.compact.join(" ")
+						__nested_tokens__(v)
 					end
 
 					buffer << " " << name << '="' << value.gsub('"', "&quot;") << '"'
 				when Set
-					buffer << " " << name << '="' << v.to_a.compact.join(" ").gsub('"', "&quot;") << '"'
+					buffer << " " << name << '="' << __nested_tokens__(v.to_a) << '"'
 				else
 					value = if v.respond_to?(:to_phlex_attribute_value)
 						v.to_phlex_attribute_value
@@ -456,9 +456,9 @@ module Phlex
 				next unless v
 
 				name = case k
-											when String then k
-											when Symbol then k.name.tr("_", "-")
-											else raise ArgumentError.new("Attribute keys should be Strings or Symbols")
+					when String then k
+					when Symbol then k.name.tr("_", "-")
+					else raise ArgumentError.new("Attribute keys should be Strings or Symbols")
 				end
 
 				case v
@@ -473,9 +473,9 @@ module Phlex
 				when Hash
 					__nested_attributes__(v, "#{base_name}-#{name}-", buffer)
 				when Array
-					buffer << " " << base_name << name << '="' << v.compact.join(" ").gsub('"', "&quot;") << '"'
+					buffer << " " << base_name << name << '="' << __nested_tokens__(v) << '"'
 				when Set
-					buffer << " " << base_name << name << '="' << v.to_a.compact.join(" ").gsub('"', "&quot;") << '"'
+					buffer << " " << base_name << name << '="' << __nested_tokens__(v.to_a) << '"'
 				else
 					value = if v.respond_to?(:to_phlex_attribute_value)
 						v.to_phlex_attribute_value
@@ -489,6 +489,45 @@ module Phlex
 
 				buffer
 			end
+		end
+
+		# @api private
+		def __nested_tokens__(tokens)
+			buffer = +""
+
+			i, length = 0, tokens.length
+
+			while i < length
+				token = tokens[i]
+
+				case token
+				when String
+					if i > 0
+						buffer << " " << token
+					else
+						buffer << token
+					end
+				when Symbol
+					if i > 0
+						buffer << " " << token.name
+					else
+						buffer << token.name
+					end
+				when nil
+					# Do nothing
+				else
+					if i > 0
+						buffer << " " << token.to_s
+					else
+						buffer << token.to_s
+					end
+				end
+
+				i += 1
+			end
+
+			buffer.gsub!('"', "&quot;")
+			buffer
 		end
 
 		# @api private
