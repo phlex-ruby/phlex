@@ -6,25 +6,6 @@ class Example < Phlex::HTML
 	end
 end
 
-class InlineNestedExample < Phlex::HTML
-	# It's a specific case so it should be wrapped properly to keep execution sequence
-	def tag_method_wrapper(method_name, inline_content, **attributes)
-		proc do
-			public_send(method_name, **attributes) do
-				inline_content
-			end
-		end
-	end
-
-	def view_template
-		div class: "first" do
-			div class: "second" do
-				div(tag_method_wrapper(:div, "Hello", class: "fourth"), class: "third")
-			end
-		end
-	end
-end
-
 describe Phlex::HTML do
 	extend ViewHelper
 
@@ -112,15 +93,15 @@ describe Phlex::HTML do
 		end
 
 		with "inline tag method call" do
-			with "contain block" do
+			with "simple inline tag" do
 				view do
 					def view_template
-						render InlineNestedExample
+						h1 "Hello", class: "title"
 					end
 				end
 
 				it "renders a new instance of that view" do
-					expect(output).to be == "<div class=\"first\"><div class=\"second\"><div class=\"third\"><div class=\"fourth\">Hello</div></div></div></div>"
+					expect(output).to be == "<h1 class=\"title\">Hello</h1>"
 				end
 			end
 
@@ -140,7 +121,47 @@ describe Phlex::HTML do
 				end
 			end
 
-			with "non block or string content" do
+			with "contain block" do
+				view do
+					def block_div
+						proc { div "Hello" }
+					end
+
+					def view_template
+						div block_div
+					end
+				end
+
+				it "raise argument error" do
+					expect { output }.to raise_exception(ArgumentError, message: be == "Only String allowed for inline tags content")
+				end
+			end
+
+			with "contain nil argument" do
+				view do
+					def view_template
+						h1 div "Hello"
+					end
+				end
+
+				it "raise argument error" do
+					expect { output }.to raise_exception(ArgumentError, message: be == "Only String allowed for inline tags content")
+				end
+			end
+
+			with "both block and inline arguments" do
+				view do
+					def view_template
+						h1("Hello") { "Hello" }
+					end
+				end
+
+				it "raise argument error" do
+					expect { output }.to raise_exception(ArgumentError, message: be == "Using inline and block syntax at same time is forbidden")
+				end
+			end
+
+			with "non string content" do
 				view do
 					def view_template
 						div :hello, class: "first"
@@ -148,7 +169,7 @@ describe Phlex::HTML do
 				end
 
 				it "raises argument error" do
-					expect { output }.to raise_exception(ArgumentError, message: be == "Only Block(Proc) and String variables allowed for inline tags content")
+					expect { output }.to raise_exception(ArgumentError, message: be == "Only String allowed for inline tags content")
 				end
 			end
 		end
