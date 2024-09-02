@@ -27,6 +27,15 @@ module Phlex
 	ATTRIBUTE_CACHE = FIFO.new
 	SUPPORTS_FIBER_STORAGE = RUBY_ENGINE == "ruby"
 	Null = Object.new.freeze
+
+	CACHED_FILES = Set.new
+
+	def self.__expand_attribute_cache__(file_path)
+		unless CACHED_FILES.include?(file_path)
+			CACHED_FILES << file_path
+			Phlex::ATTRIBUTE_CACHE.expand(File.size(file_path))
+		end
+	end
 end
 
 def 💪
