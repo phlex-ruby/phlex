@@ -19,63 +19,61 @@ class ExampleWithoutHeaders < Example
 	end
 end
 
-describe Phlex::CSV do
-	test "renders a CSV" do
-		products = [
-			Product.new("Apple", 1.00),
-			Product.new("Banana", 2.00),
+test "renders a CSV" do
+	products = [
+		Product.new("Apple", 1.00),
+		Product.new("Banana", 2.00),
 		]
 
-		csv = Example.new(products).call
+	csv = Example.new(products).call
 
-		expect(csv) == <<~CSV
-			name,price
-			Apple,1.0
-			Banana,2.0
+	expect(csv) == <<~CSV
+  name,price
+  Apple,1.0
+  Banana,2.0
 		CSV
-	end
+end
 
-	test "escapes commas" do
-		product = Product.new("Apple, Inc.", 1.00)
-		csv = Example.new([product]).call
+test "escapes commas" do
+	product = Product.new("Apple, Inc.", 1.00)
+	csv = Example.new([product]).call
 
-		expect(csv) == <<~CSV
-			name,price
-			"Apple, Inc.",1.0
+	expect(csv) == <<~CSV
+  name,price
+  "Apple, Inc.",1.0
 		CSV
-	end
+end
 
-	test "escapes newlines" do
-		product = Product.new("Apple\nInc.", 1.00)
-		csv = Example.new([product]).call
+test "escapes newlines" do
+	product = Product.new("Apple\nInc.", 1.00)
+	csv = Example.new([product]).call
 
-		expect(csv) == <<~CSV
-			name,price
-			"Apple\nInc.",1.0
+	expect(csv) == <<~CSV
+  name,price
+  "Apple\nInc.",1.0
 		CSV
-	end
+end
 
-	test "escapes quotes" do
-		product = Product.new("Apple\"Inc.", 1.00)
-		csv = Example.new([product]).call
+test "escapes quotes" do
+	product = Product.new("Apple\"Inc.", 1.00)
+	csv = Example.new([product]).call
 
-		expect(csv) == <<~CSV
-			name,price
-			"Apple""Inc.",1.0
+	expect(csv) == <<~CSV
+  name,price
+  "Apple""Inc.",1.0
 		CSV
-	end
+end
 
-	test "renders without headers" do
-		products = [
-			Product.new("Apple", 1.00),
-			Product.new("Banana", 2.00),
+test "renders without headers" do
+	products = [
+		Product.new("Apple", 1.00),
+		Product.new("Banana", 2.00),
 		]
 
-		csv = ExampleWithoutHeaders.new(products).call
+	csv = ExampleWithoutHeaders.new(products).call
 
-		expect(csv) == <<~CSV
-			Apple,1.0
-			Banana,2.0
+	expect(csv) == <<~CSV
+  Apple,1.0
+  Banana,2.0
 		CSV
-	end
 end

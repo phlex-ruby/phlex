@@ -90,22 +90,20 @@ test "halts early after all fragments are found" do
 	expect(called) == false
 end
 
-describe "with a capture block" do
-	test "doesn't render the capture block" do
-		expect(
-			WithCaptureBlock.new.call(fragments: ["after"]),
-		) == %(<h1 id="after">After</h1>)
-	end
+test "with a capture block doesn't render the capture block" do
+	expect(
+		WithCaptureBlock.new.call(fragments: ["after"]),
+	) == %(<h1 id="after">After</h1>)
+end
 
-	test "renders the capture block when selected" do
-		expect(
-			WithCaptureBlock.new.call(fragments: ["around"]),
-		) == %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
-	end
+test "with a capture block renders the capture block when selected" do
+	expect(
+		WithCaptureBlock.new.call(fragments: ["around"]),
+	) == %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
+end
 
-	test "doesn't select from the capture block" do
-		expect(
-			WithCaptureBlock.new.call(fragments: ["inside"]),
-		) == ""
-	end
+test "with a capture block doesn't select from the capture block" do
+	expect(
+		WithCaptureBlock.new.call(fragments: ["inside"]),
+	) == ""
 end
