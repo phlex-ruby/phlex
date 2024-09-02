@@ -26,6 +26,7 @@ module Phlex
 	Escape = ERB::Escape
 	ATTRIBUTE_CACHE = FIFO.new
 	SUPPORTS_FIBER_STORAGE = RUBY_ENGINE == "ruby"
+	Null = Object.new.freeze
 end
 
 def 💪
