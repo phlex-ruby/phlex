@@ -25,10 +25,14 @@ module Phlex
 		# @return [nil]
 		# @see https://developer.mozilla.org/docs/Web/SVG/Element/svg
 		def svg(...)
-			super do
-				render Phlex::SVG.new do |svg|
-					yield(svg)
+			if block_given?
+				super do
+					render Phlex::SVG.new do |svg|
+						yield(svg)
+					end
 				end
+			else
+				super
 			end
 		end
 
