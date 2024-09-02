@@ -24,14 +24,18 @@ module Phlex
 			end
 
 			# @api private
-			def element_method?(method_name)
-				return false unless instance_methods.include?(method_name)
+			def __element_method__?(method_name)
+				if instance_methods.include?(method_name)
+					owner = instance_method(method_name).owner
 
-				owner = instance_method(method_name).owner
-
-				return true if owner.is_a?(Phlex::Elements) && owner.registered_elements[method_name]
-
-				false
+					if owner.is_a?(Phlex::Elements) && owner.registered_elements[method_name]
+						true
+					else
+						false
+					end
+				else
+					false
+				end
 			end
 		end
 
@@ -60,7 +64,9 @@ module Phlex
 		# 		article(class: "card", &block)
 		# 	end
 		def view_template
-			yield if block_given?
+			if block_given?
+				yield
+			end
 		end
 
 		def await(task)

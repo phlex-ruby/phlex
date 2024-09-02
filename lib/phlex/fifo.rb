@@ -6,7 +6,7 @@ class Phlex::FIFO
 		@max_size = max_size
 	end
 
-	attr_reader :size, :max_size
+	attr_reader :max_size
 
 	def [](key)
 		k, v = @hash[key.hash]
@@ -17,5 +17,9 @@ class Phlex::FIFO
 		hash = key.hash
 		@hash[hash] = [key, value]
 		@hash.shift while @hash.length > @max_size
+	end
+
+	def size
+		@hash.size
 	end
 end

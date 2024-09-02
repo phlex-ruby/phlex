@@ -8,6 +8,6 @@ class Example < Phlex::HTML
 	end
 end
 
-test do
+test "rendering SVG inside HTML components" do
 	expect(Example.call) == %(<svg><path d="321"></path></svg>)
 end

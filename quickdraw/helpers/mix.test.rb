@@ -2,27 +2,27 @@
 
 include Phlex::Helpers
 
-test "supports string concatenation" do
+test "string concatenation" do
 	output = mix({ class: "foo" }, { class: "bar" })
 	expect(output) == { class: "foo bar" }
 end
 
-test "supports string override" do
+test "string override" do
 	output = mix({ class: "foo" }, { class!: "bar" })
 	expect(output) == { class: "bar" }
 end
 
-test "supports array concatenation" do
+test "array concatenation" do
 	output = mix({ class: ["foo"] }, { class: ["bar"] })
 	expect(output) == { class: ["foo", "bar"] }
 end
 
-test "supports array override" do
+test "array override" do
 	output = mix({ class: ["foo"] }, { class!: ["bar"] })
 	expect(output) == { class: ["bar"] }
 end
 
-test "supports hash concatenation" do
+test "hash concatenation" do
 	output = mix(
 		{ data: { controller: "foo" } },
 		{ data: { controller: "bar" } },
@@ -31,7 +31,7 @@ test "supports hash concatenation" do
 	expect(output) == { data: { controller: "foo bar" } }
 end
 
-test "supports hash override" do
+test "hash override" do
 	output = mix(
 		{ data: { controller: "foo" } },
 		{ data!: { controller: "bar" } },
@@ -40,7 +40,7 @@ test "supports hash override" do
 	expect(output) == { data: { controller: "bar" } }
 end
 
-test "supports mixing between arrays and strings" do
+test "mixing between arrays and strings" do
 	output = mix({ class: ["foo"] }, { class: "bar" })
 
 	expect(output) == { class: ["foo", "bar"] }
@@ -50,7 +50,7 @@ test "supports mixing between arrays and strings" do
 	expect(output) == { class: ["foo", "bar"] }
 end
 
-test "supports mixing between sets and strings" do
+test "mixing between sets and strings" do
 	output = mix({ class: Set["foo"] }, { class: "bar" })
 
 	expect(output) == { class: Set["foo", "bar"] }
@@ -60,7 +60,7 @@ test "supports mixing between sets and strings" do
 	expect(output) == { class: Set["foo", "bar"] }
 end
 
-test "supports mixing between arrays and sets, keeping the less restrictive type" do
+test "mixing between arrays and sets, keeping the less restrictive type" do
 	output = mix({ class: ["foo"] }, { class: Set["bar"] })
 
 	expect(output) == { class: ["foo", "bar"] }
