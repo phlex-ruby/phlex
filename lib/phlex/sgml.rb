@@ -109,7 +109,7 @@ module Phlex
 				around_template do
 					if block
 						if DeferredRender === self
-							__vanish__(self, &block)
+							vanish(self, &block)
 							view_template
 						else
 							view_template do |*args|
@@ -299,8 +299,7 @@ module Phlex
 		# Like {#capture} but the output is vanished into a BlackHole buffer.
 		# Because the BlackHole does nothing with the output, this should be faster.
 		# @return [nil]
-		# @api private
-		def __vanish__(*args)
+		def vanish(*args)
 			return unless block_given?
 
 			@_context.capturing_into(BlackHole) { yield(*args) }
