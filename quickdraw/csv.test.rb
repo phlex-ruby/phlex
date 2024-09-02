@@ -77,3 +77,8 @@ test "renders without headers" do
   Banana,2.0
 		CSV
 end
+
+test "content type" do
+	component = Class.new(Phlex::CSV)
+	expect(component.new([]).content_type) == "text/csv"
+end

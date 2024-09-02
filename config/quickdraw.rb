@@ -2,10 +2,12 @@
 
 if ENV["COVERAGE"] == "true"
 	require "simplecov"
-	SimpleCov.command_name "quickdraw"
+
 	SimpleCov.start do
+		command_name "quickdraw"
+		enable_coverage_for_eval
 		enable_coverage :branch
-		primary_coverage :branch
+		minimum_coverage 100
 	end
 end
 
