@@ -210,7 +210,7 @@ module Phlex
 			normalized_name = case name
 				when Symbol then name.name.downcase
 				when String then name.downcase
-				else raise ArgumentError.new("Expected the tag namea as a Symbol or String.")
+				else raise ArgumentError.new("Expected the tag name as a Symbol or String.")
 			end
 
 			if normalized_name == "script"
