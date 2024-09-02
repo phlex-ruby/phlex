@@ -28,7 +28,7 @@ module Phlex
 				if instance_methods.include?(method_name)
 					owner = instance_method(method_name).owner
 
-					if owner.is_a?(Phlex::Elements) && owner.registered_elements[method_name]
+					if Phlex::Elements === owner && owner.registered_elements[method_name]
 						true
 					else
 						false
@@ -108,7 +108,7 @@ module Phlex
 			@_context.around_render do
 				around_template do
 					if block
-						if is_a?(DeferredRender)
+						if DeferredRender === self
 							__vanish__(self, &block)
 							view_template
 						else
