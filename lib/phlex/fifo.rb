@@ -33,13 +33,13 @@ class Phlex::FIFO
 			# Check the key definitely doesn't exist now we have the lock
 			return if @hash[hash]
 
+			@hash[hash] = [key, value]
+			@bytesize += value.bytesize
+
 			while @bytesize > @max_bytesize
 				k, v = @hash.shift
 				@bytesize -= v[1].bytesize
 			end
-
-			@hash[hash] = [key, value]
-			@bytesize += value.bytesize
 		end
 	end
 
