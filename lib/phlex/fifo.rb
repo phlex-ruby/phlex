@@ -46,4 +46,8 @@ class Phlex::FIFO
 	def size
 		@hash.size
 	end
+
+	def size
+		@hash.size
+	end
 end

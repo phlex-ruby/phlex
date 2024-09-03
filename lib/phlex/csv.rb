@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Phlex::CSV
-	include Phlex::Callable
-
 	FORMULA_PREFIXES = Set["=", "+", "-", "@", "\t", "\r"].freeze
 	SPACE_CHARACTERS = Set[" ", "\t", "\r"].freeze
 

@@ -7,31 +7,27 @@ module Phlex::Helpers
 	def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
-				next new if old.nil?
-
-				case new
-				when Hash
-					old.is_a?(Hash) ? mix(old, new) : new
-				when Array
-					case old
-					when Array then old + new
-					when Set then old.to_a + new
-					when Hash then new
-					else
-						[old] + new
-					end
-				when Set
-					case old
-					when Set then old + new
-					when Array then old + new.to_a
-					when Hash then new
-					else
-						new + [old]
-					end
-				when String
-					old.is_a?(String) ? "#{old} #{new}" : old + old.class[new]
-				when nil
-					old
+				case [old, new]
+				in [Array, Array]
+					old + new
+				in [Array, Set]
+					old + new.to_a
+				in [Array, String]
+					old + [new]
+				in [Hash, Hash]
+					mix(old, new)
+				in [Set, Array]
+					old.to_a + new
+				in [Set, Set]
+					old + new
+				in [Set, String]
+					old.to_a + [new]
+				in [String, Array]
+					[old] + new
+				in [String, Set]
+					[old] + new.to_a
+				in [String, String]
+					"#{old} #{new}"
 				else
 					new
 				end

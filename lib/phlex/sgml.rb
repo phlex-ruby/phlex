@@ -24,14 +24,18 @@ module Phlex
 			end
 
 			# @api private
-			def element_method?(method_name)
-				return false unless instance_methods.include?(method_name)
+			def __element_method__?(method_name)
+				if instance_methods.include?(method_name)
+					owner = instance_method(method_name).owner
 
-				owner = instance_method(method_name).owner
-
-				return true if owner.is_a?(Phlex::Elements) && owner.registered_elements[method_name]
-
-				false
+					if Phlex::Elements === owner && owner.registered_elements[method_name]
+						true
+					else
+						false
+					end
+				else
+					false
+				end
 			end
 		end
 
@@ -60,7 +64,9 @@ module Phlex
 		# 		article(class: "card", &block)
 		# 	end
 		def view_template
-			yield if block_given?
+			if block_given?
+				yield
+			end
 		end
 
 		def await(task)
@@ -102,8 +108,8 @@ module Phlex
 			@_context.around_render do
 				around_template do
 					if block
-						if is_a?(DeferredRender)
-							__vanish__(self, &block)
+						if DeferredRender === self
+							vanish(self, &block)
 							view_template
 						else
 							view_template do |*args|
@@ -293,8 +299,7 @@ module Phlex
 		# Like {#capture} but the output is vanished into a BlackHole buffer.
 		# Because the BlackHole does nothing with the output, this should be faster.
 		# @return [nil]
-		# @api private
-		def __vanish__(*args)
+		def vanish(*args)
 			return unless block_given?
 
 			@_context.capturing_into(BlackHole) { yield(*args) }

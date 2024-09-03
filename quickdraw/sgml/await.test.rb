@@ -18,7 +18,6 @@ end
 
 # The Async gem only works with CRuby 3.0 and above.
 if RUBY_ENGINE == "ruby" && RUBY_VERSION[0] > "3"
-
 	test "async task flushes when waiting" do
 		Sync do
 			task = Async { sleep 0.01; "Hello" }

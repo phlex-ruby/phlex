@@ -2,27 +2,36 @@
 
 include Phlex::Helpers
 
-test "supports string concatenation" do
-	output = mix({ class: "foo" }, { class: "bar" })
-	expect(output) == { class: "foo bar" }
+test "nil + string" do
+	output = mix({ class: nil }, { class: "a" })
+	expect(output) == { class: "a" }
 end
 
-test "supports string override" do
-	output = mix({ class: "foo" }, { class!: "bar" })
-	expect(output) == { class: "bar" }
-end
-
-test "supports array concatenation" do
+test "array + array" do
 	output = mix({ class: ["foo"] }, { class: ["bar"] })
 	expect(output) == { class: ["foo", "bar"] }
 end
 
-test "supports array override" do
-	output = mix({ class: ["foo"] }, { class!: ["bar"] })
-	expect(output) == { class: ["bar"] }
+test "array + set" do
+	output = mix({ class: ["foo"] }, { class: Set["bar"] })
+	expect(output) == { class: ["foo", "bar"] }
 end
 
-test "supports hash concatenation" do
+test "array + hash" do
+	output = mix(
+		{ data: ["foo"] },
+		{ data: { controller: "bar" } },
+	)
+
+	expect(output) == { data: { controller: "bar" } }
+end
+
+test "array + string" do
+	output = mix({ class: ["foo"] }, { class: "bar" })
+	expect(output) == { class: ["foo", "bar"] }
+end
+
+test "hash + hash" do
 	output = mix(
 		{ data: { controller: "foo" } },
 		{ data: { controller: "bar" } },
@@ -31,51 +40,37 @@ test "supports hash concatenation" do
 	expect(output) == { data: { controller: "foo bar" } }
 end
 
-test "supports hash override" do
-	output = mix(
-		{ data: { controller: "foo" } },
-		{ data!: { controller: "bar" } },
-	)
-
-	expect(output) == { data: { controller: "bar" } }
-end
-
-test "supports mixing between arrays and strings" do
-	output = mix({ class: ["foo"] }, { class: "bar" })
-
-	expect(output) == { class: ["foo", "bar"] }
-
+test "string + array" do
 	output = mix({ class: "foo" }, { class: ["bar"] })
-
 	expect(output) == { class: ["foo", "bar"] }
 end
 
-test "supports mixing between sets and strings" do
-	output = mix({ class: Set["foo"] }, { class: "bar" })
+test "string + string" do
+	output = mix({ class: "foo" }, { class: "bar" })
+	expect(output) == { class: "foo bar" }
+end
 
-	expect(output) == { class: Set["foo", "bar"] }
-
+test "string + set" do
 	output = mix({ class: "foo" }, { class: Set["bar"] })
+	expect(output) == { class: ["foo", "bar"] }
+end
 
+test "override" do
+	output = mix({ class: "foo" }, { class!: "bar" })
+	expect(output) == { class: "bar" }
+end
+
+test "set + set" do
+	output = mix({ class: Set["foo"] }, { class: Set["bar"] })
 	expect(output) == { class: Set["foo", "bar"] }
 end
 
-test "supports mixing between arrays and sets, keeping the less restrictive type" do
-	output = mix({ class: ["foo"] }, { class: Set["bar"] })
-
-	expect(output) == { class: ["foo", "bar"] }
-
+test "set + array" do
 	output = mix({ class: Set["foo"] }, { class: ["bar"] })
-
 	expect(output) == { class: ["foo", "bar"] }
 end
 
-test "gracefully handles mixing with nils" do
-	output = mix({ class: "foo" }, { class: nil })
-
-	expect(output) == { class: "foo" }
-
-	output = mix({ class: nil }, { class: "foo" })
-
-	expect(output) == { class: "foo" }
+test "set + string" do
+	output = mix({ class: Set["foo"] }, { class: "bar" })
+	expect(output) == { class: ["foo", "bar"] }
 end

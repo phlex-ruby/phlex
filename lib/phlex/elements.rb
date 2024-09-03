@@ -38,7 +38,7 @@ module Phlex::Elements
 				fragment = context.fragments
 				target_found = false
 
-				if content != Phlex::Null && !content.is_a?(String)
+				if content != Phlex::Null && !(String === content)
 					raise ArgumentError.new("Only String allowed for inline tags content")
 				end
 
