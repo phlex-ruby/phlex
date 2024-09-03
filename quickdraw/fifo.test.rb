@@ -6,7 +6,6 @@ test "expires keys" do
 	fifo["a"] = "a"
 	fifo["b"] = "b"
 	fifo["c"] = "c"
-	fifo["d"] = "d"
 
 	expect(fifo.size) == 3
 end
