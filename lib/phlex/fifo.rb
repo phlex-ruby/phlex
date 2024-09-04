@@ -2,7 +2,7 @@
 
 class Phlex::FIFO
 	def initialize(max_bytesize = 2_000, max_value_bytesize = 2_000)
-		@hash = {}
+		@store = {}
 		@max_bytesize = max_bytesize
 		@max_value_bytesize = max_value_bytesize
 		@bytesize = 0
@@ -18,36 +18,34 @@ class Phlex::FIFO
 	end
 
 	def [](key)
-		k, v = @hash[key.hash]
+		k, v = @store[key.hash]
 		v if k == key
 	end
 
 	def []=(key, value)
-		if value.bytesize > @max_value_bytesize
-			return value
-		end
+		return if value.bytesize > @max_value_bytesize
 
-		hash = key.hash
+		digest = key.hash
 
 		@mutex.synchronize do
 			# Check the key definitely doesn't exist now we have the lock
-			return if @hash[hash]
+			return if @store[digest]
 
-			@hash[hash] = [key, value]
+			@store[digest] = [key, value]
 			@bytesize += value.bytesize
 
 			while @bytesize > @max_bytesize
-				k, v = @hash.shift
+				k, v = @store.shift
 				@bytesize -= v[1].bytesize
 			end
 		end
 	end
 
 	def size
-		@hash.size
+		@store.size
 	end
 
 	def size
-		@hash.size
+		@store.size
 	end
 end
