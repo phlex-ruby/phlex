@@ -32,17 +32,18 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{method_name}(content = Phlex::Null, **attributes, &block)
+			def #{method_name}(content = Phlex::Null, **attributes)
 				context = @_context
 				buffer = context.buffer
 				fragment = context.fragments
 				target_found = false
+				block_given = block_given?
 
 				if content != Phlex::Null && !(String === content)
 					raise ArgumentError.new("Only String allowed for inline tags content")
 				end
 
-				if block && content != Phlex::Null
+				if block_given && content != Phlex::Null
 					raise ArgumentError.new("Using inline and block syntax at same time is forbidden")
 				end
 
@@ -56,16 +57,35 @@ module Phlex::Elements
 							context.begin_target(id)
 							target_found = true
 						else
-							yield(self) if block
+							yield(self) if block_given
 							return nil
 						end
 					end
 				end
 
 				if attributes.length > 0 # with attributes
-					if block # with content block
+					if block_given # with content block
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
-						yield_content(&block)
+
+						original_length = buffer.bytesize
+						content = yield(self)
+						if original_length == buffer.bytesize
+							case content
+							when String
+								buffer << Phlex::Escape.html_escape(content)
+							when Symbol
+								buffer << Phlex::Escape.html_escape(content.name)
+							when nil
+								nil
+							else
+								if (formatted_object = format_object(content))
+									buffer << Phlex::Escape.html_escape(formatted_object)
+								else
+									return false
+								end
+							end
+						end
+
 						buffer << "</#{tag}>"
 					elsif content != Phlex::Null # with inline content
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
@@ -75,9 +95,28 @@ module Phlex::Elements
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
 					end
 				else # without attributes
-					if block # with content block
+					if block_given # with content block
 						buffer << "<#{tag}>"
-						yield_content(&block)
+
+						original_length = buffer.bytesize
+						content = yield(self)
+						if original_length == buffer.bytesize
+							case content
+							when String
+								buffer << Phlex::Escape.html_escape(content)
+							when Symbol
+								buffer << Phlex::Escape.html_escape(content.name)
+							when nil
+								nil
+							else
+								if (formatted_object = format_object(content))
+									buffer << Phlex::Escape.html_escape(formatted_object)
+								else
+									return false
+								end
+							end
+						end
+
 						buffer << "</#{tag}>"
 					elsif content != Phlex::Null # with inline content
 						buffer << "<#{tag}>"

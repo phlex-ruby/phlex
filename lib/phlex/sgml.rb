@@ -397,14 +397,14 @@ class Phlex::SGML
 
 		case content
 		when String
-			@_context.buffer << Phlex::Escape.html_escape(content)
+			context.buffer << Phlex::Escape.html_escape(content)
 		when Symbol
-			@_context.buffer << Phlex::Escape.html_escape(content.name)
+			context.buffer << Phlex::Escape.html_escape(content.name)
 		when nil
 			nil
 		else
 			if (formatted_object = format_object(content))
-				@_context.buffer << Phlex::Escape.html_escape(formatted_object)
+				context.buffer << Phlex::Escape.html_escape(formatted_object)
 			else
 				return false
 			end
