@@ -18,8 +18,7 @@ class Phlex::FIFO
 	end
 
 	def [](key)
-		k, v = @hash[key.hash]
-		v if k == key
+		@hash[key]
 	end
 
 	def []=(key, value)
@@ -27,18 +26,16 @@ class Phlex::FIFO
 			return value
 		end
 
-		hash = key.hash
-
 		@mutex.synchronize do
 			# Check the key definitely doesn't exist now we have the lock
-			return if @hash[hash]
+			return if @hash[key]
 
-			@hash[hash] = [key, value]
+			@hash[key] = value
 			@bytesize += value.bytesize
 
 			while @bytesize > @max_bytesize
 				k, v = @hash.shift
-				@bytesize -= v[1].bytesize
+				@bytesize -= v.bytesize
 			end
 		end
 	end
