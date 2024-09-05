@@ -32,20 +32,12 @@ module Phlex::Elements
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
-			def #{method_name}(content = Phlex::Null, **attributes)
+			def #{method_name}(**attributes)
 				context = @_context
 				buffer = context.buffer
 				fragment = context.fragments
 				target_found = false
 				block_given = block_given?
-
-				if content != Phlex::Null && !(String === content)
-					raise ArgumentError.new("Only String allowed for inline tags content")
-				end
-
-				if block_given && content != Phlex::Null
-					raise ArgumentError.new("Using inline and block syntax at same time is forbidden")
-				end
 
 				if fragment
 					return if fragment.length == 0 # we found all our fragments already
@@ -87,10 +79,6 @@ module Phlex::Elements
 						end
 
 						buffer << "</#{tag}>"
-					elsif content != Phlex::Null # with inline content
-						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
-						plain(content)
-						buffer << "</#{tag}>"
 					else # without content
 						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
 					end
@@ -117,10 +105,6 @@ module Phlex::Elements
 							end
 						end
 
-						buffer << "</#{tag}>"
-					elsif content != Phlex::Null # with inline content
-						buffer << "<#{tag}>"
-						plain(content)
 						buffer << "</#{tag}>"
 					else # without content
 						buffer << "<#{tag}></#{tag}>"

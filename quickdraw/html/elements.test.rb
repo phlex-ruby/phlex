@@ -15,26 +15,6 @@ Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
 		expect(example.call) == %(<#{tag}></#{tag}>)
 	end
 
-	test "<#{tag}> with inline content" do
-		example = Class.new(Phlex::HTML) do
-			define_method :view_template do
-				__send__(method_name, "Hello")
-			end
-		end
-
-		expect(example.call) == %(<#{tag}>Hello</#{tag}>)
-	end
-
-	test "<#{tag}> with inline content with attributes" do
-		example = Class.new(Phlex::HTML) do
-			define_method :view_template do
-				__send__(method_name, "Hello", class: "class", id: "id", disabled: true, selected: false)
-			end
-		end
-
-		expect(example.call) == %(<#{tag} class="class" id="id" disabled>Hello</#{tag}>)
-	end
-
 	test "<#{tag}> with block content and attributes" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
