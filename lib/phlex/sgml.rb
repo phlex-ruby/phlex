@@ -442,7 +442,7 @@ class Phlex::SGML
 			when String
 				buffer << " " << name << '="' << v.gsub('"', "&quot;") << '"'
 			when Symbol
-				buffer << " " << name << '="' << v.name.gsub('"', "&quot;") << '"'
+				buffer << " " << name << '="' << v.name.tr("_", "-").gsub('"', "&quot;") << '"'
 			when Integer, Float
 				buffer << " " << name << '="' << v.to_s << '"'
 			when Hash
@@ -503,7 +503,7 @@ class Phlex::SGML
 			when String
 				buffer << " " << base_name << name << '="' << v.gsub('"', "&quot;") << '"'
 			when Symbol
-				buffer << " " << base_name << name << '="' << v.name.gsub('"', "&quot;") << '"'
+				buffer << " " << name << '="' << v.name.tr("_", "-").gsub('"', "&quot;") << '"'
 			when Integer, Float
 				buffer << " " << base_name << name << '="' << v.to_s << '"'
 			when Hash
@@ -545,9 +545,9 @@ class Phlex::SGML
 				end
 			when Symbol
 				if i > 0
-					buffer << " " << token.name
+					buffer << " " << token.name.tr("_", "-")
 				else
-					buffer << token.name
+					buffer << token.name.tr("_", "-")
 				end
 			when nil
 				# Do nothing
