@@ -69,6 +69,8 @@ module Phlex::Elements
 								buffer << Phlex::Escape.html_escape(content.name)
 							when nil
 								nil
+							when Phlex::SGML::SafeObject
+								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
 									buffer << Phlex::Escape.html_escape(formatted_object)
@@ -94,6 +96,8 @@ module Phlex::Elements
 								buffer << Phlex::Escape.html_escape(content.name)
 							when nil
 								nil
+							when Phlex::SGML::SafeObject
+								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
 									buffer << Phlex::Escape.html_escape(formatted_object)
