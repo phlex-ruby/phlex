@@ -15,7 +15,7 @@ class Phlex::HTML < Phlex::SGML
 		context = @_context
 		return if context.fragments && !context.in_target_fragment
 
-		context.buffer << "<!DOCTYPE html>"
+		context.buffer << "<!doctype html>"
 		nil
 	end
 
