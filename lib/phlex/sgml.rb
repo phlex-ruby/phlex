@@ -2,6 +2,9 @@
 
 # **Standard Generalized Markup Language** for behaviour common to {HTML} and {SVG}.
 class Phlex::SGML
+	autoload :SafeObject, "phlex/sgml/safe_object"
+	autoload :SafeValue, "phlex/sgml/safe_value"
+
 	include Phlex::Helpers
 
 	class << self
@@ -188,13 +191,18 @@ class Phlex::SGML
 	# This method is very dangerous and should usually be avoided. It will output the given String without any HTML safety. You should never use this method to output unsafe user input.
 	# @param content [String|nil]
 	# @return [nil]
-	def unsafe_raw(content = nil)
-		return nil unless content
+	def raw(content)
+		case content
+		when Phlex::SGML::SafeObject
+			context = @_context
+			return if context.fragments && !context.in_target_fragment
 
-		context = @_context
-		return if context.fragments && !context.in_target_fragment
+			context.buffer << content.to_s
+		when nil # do nothing
+		else
+			raise Phlex::ArgumentError.new("You passed an unsafe object to `raw`.")
+		end
 
-		context.buffer << content
 		nil
 	end
 
@@ -229,19 +237,11 @@ class Phlex::SGML
 		end
 	end
 
-	def unsafe_tag(name, ...)
-		normalized_name = case name
-			when Symbol then name.name.downcase
-			when String then name.downcase
-			else raise Phlex::ArgumentError.new("Expected the tag name as a Symbol or String.")
-		end
-
-		if registered_elements[normalized_name]
-			public_send(normalized_name, ...)
-		else
-			raise Phlex::ArgumentError.new("Unknown tag: #{normalized_name}")
-		end
+	def safe(value)
+		Phlex::SGML::SafeValue.new(value)
 	end
+
+	alias_method :🦺, :safe
 
 	private
 
@@ -425,10 +425,19 @@ class Phlex::SGML
 			end
 
 			lower_name = name.downcase
-			next if lower_name == "href" && v.to_s.downcase.delete("^a-z:").start_with?("javascript:")
 
-			# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-			if Phlex::HTML::EVENT_ATTRIBUTES.include?(lower_name.delete("^a-z-")) || name.match?(/[<>&"']/)
+			unless Phlex::SGML::SafeObject === v
+				if lower_name == "href" && v.to_s.downcase.delete("^a-z:").start_with?("javascript:")
+					next
+				end
+
+				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
+				if Phlex::HTML::EVENT_ATTRIBUTES.include?(lower_name.delete("^a-z-"))
+					raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
+				end
+			end
+
+			if name.match?(/[<>&"']/)
 				raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
 			end
 
@@ -467,6 +476,8 @@ class Phlex::SGML
 				buffer << " " << name << '="' << value.gsub('"', "&quot;") << '"'
 			when Set
 				buffer << " " << name << '="' << __nested_tokens__(v.to_a) << '"'
+			when Phlex::SGML::SafeObject
+				buffer << " " << name << '="' << v.to_s.gsub('"', "&quot;") << '"'
 			else
 				value = if v.respond_to?(:to_phlex_attribute_value)
 					v.to_phlex_attribute_value

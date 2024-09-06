@@ -3,10 +3,22 @@
 describe Phlex::HTML do
 	extend ViewHelper
 
-	with "raw content" do
+	with "raw unsafe content" do
 		view do
 			def view_template
-				unsafe_raw %(<h1 class="test">Hello</h1>)
+				raw %(<h1 class="test">Hello</h1>)
+			end
+		end
+
+		it "renders the correct output" do
+			expect { output }.to raise_exception ArgumentError
+		end
+	end
+
+	with "raw safe content" do
+		view do
+			def view_template
+				raw safe %(<h1 class="test">Hello</h1>)
 			end
 		end
 
@@ -18,7 +30,7 @@ describe Phlex::HTML do
 	with "nil content" do
 		view do
 			def view_template
-				unsafe_raw nil
+				raw nil
 			end
 		end
 
