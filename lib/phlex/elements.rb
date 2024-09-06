@@ -72,8 +72,6 @@ module Phlex::Elements
 							else
 								if (formatted_object = format_object(content))
 									buffer << Phlex::Escape.html_escape(formatted_object)
-								else
-									return false
 								end
 							end
 						end
@@ -99,8 +97,6 @@ module Phlex::Elements
 							else
 								if (formatted_object = format_object(content))
 									buffer << Phlex::Escape.html_escape(formatted_object)
-								else
-									return false
 								end
 							end
 						end
