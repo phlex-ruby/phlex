@@ -8,7 +8,7 @@ module Phlex::Helpers
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
 				case [old, new]
-				in [Array, Array]
+				in [Array, Array] | [Set, Set]
 					old + new
 				in [Array, Set]
 					old + new.to_a
@@ -18,8 +18,6 @@ module Phlex::Helpers
 					mix(old, new)
 				in [Set, Array]
 					old.to_a + new
-				in [Set, Set]
-					old + new
 				in [Set, String]
 					old.to_a + [new]
 				in [String, Array]

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Phlex::FIFO
-	def initialize(max_bytesize = 2_000, max_value_bytesize = 2_000)
+	def initialize(max_bytesize: 2_000, max_value_bytesize: 2_000)
 		@store = {}
 		@max_bytesize = max_bytesize
 		@max_value_bytesize = max_value_bytesize
@@ -39,10 +39,6 @@ class Phlex::FIFO
 				@bytesize -= v[1].bytesize
 			end
 		end
-	end
-
-	def size
-		@store.size
 	end
 
 	def size
