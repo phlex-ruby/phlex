@@ -21,7 +21,6 @@ module Phlex
 	autoload :NameError, "phlex/errors/name_error"
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
-	autoload :Unbuffered, "phlex/unbuffered"
 
 	Escape = ERB::Escape
 	ATTRIBUTE_CACHE = FIFO.new
