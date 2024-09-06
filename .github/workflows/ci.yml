@@ -11,10 +11,8 @@ jobs:
       matrix:
         os: ["ubuntu-latest", "macos-latest"]
         ruby-version:
-          - "3.2"
           - "3.3"
           - "head"
-          - "truffleruby-23.1"
           - "truffleruby-24.0"
 
     runs-on: ${{ matrix.os }}
