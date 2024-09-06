@@ -301,7 +301,7 @@ class Phlex::SGML
 	def vanish(*args)
 		return unless block_given?
 
-		@_context.capturing_into(BlackHole) { yield(*args) }
+		@_context.capturing_into(Phlex::BlackHole) { yield(*args) }
 
 		nil
 	end
