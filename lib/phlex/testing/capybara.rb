@@ -8,12 +8,12 @@ module Phlex::Testing::Capybara
 	def self.included(mod)
 		if defined?(Minitest::Test) && Minitest::Test > mod
 			require "capybara/minitest"
-			include Capybara::Minitest::Assertions
+			mod.include Capybara::Minitest::Assertions
 		end
 
 		if defined?(RSpec::Core::ExampleGroup) && RSpec::Core::ExampleGroup > mod
 			require "capybara/rspec"
-			include Capybara::RSpecMatchers
+			mod.include Capybara::RSpecMatchers
 		end
 	end
 
