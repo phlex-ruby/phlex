@@ -40,4 +40,14 @@
 
 		expect(example.call) == %(<#{tag} style="color:red;font-weight:bold;">content</#{tag}>)
 	end
+
+	test "<#{tag}> with data attributes" do
+		example = Class.new(Phlex::HTML) do
+			define_method :view_template do
+				__send__(method_name, data: { controller: "foo", turbo_action: :delete }) { "content" }
+			end
+		end
+
+		expect(example.call) == %(<#{tag} data-controller="foo" data-turbo-action="delete">content</#{tag}>)
+	end
 end
