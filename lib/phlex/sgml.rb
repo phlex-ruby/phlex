@@ -518,7 +518,7 @@ class Phlex::SGML
 			when Integer, Float
 				buffer << " " << base_name << name << '="' << v.to_s << '"'
 			when Hash
-				__nested_attributes__(v, "#{base_name}-#{name}-", buffer)
+				__nested_attributes__(v, "#{base_name}#{name}-", buffer)
 			when Array
 				buffer << " " << base_name << name << '="' << __nested_tokens__(v) << '"'
 			when Set

@@ -50,4 +50,24 @@
 
 		expect(example.call) == %(<#{tag} data-controller="foo" data-turbo-action="delete">content</#{tag}>)
 	end
+
+	test "<#{tag}> with nil attributes" do
+		example = Class.new(Phlex::HTML) do
+			define_method :view_template do
+				__send__(method_name, class: nil, style: nil, data: { controller: nil }) { "content" }
+			end
+		end
+
+		expect(example.call) == %(<#{tag}>content</#{tag}>)
+	end
+
+	test "<#{tag}> with deeply nested attributes" do
+		example = Class.new(Phlex::HTML) do
+			define_method :view_template do
+				__send__(method_name, data: { controller: "foo", foo: { comments_outlet: "#comments" } }) { "content" }
+			end
+		end
+
+		expect(example.call) == %(<#{tag} data-controller="foo" data-foo-comments-outlet="#comments">content</#{tag}>)
+	end
 end
