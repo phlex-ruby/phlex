@@ -84,6 +84,10 @@ class Phlex::SGML
 		end
 	end
 
+	def to_proc
+		proc { |c| c.render(self) }
+	end
+
 	# Renders the view and returns the buffer. The default buffer is a mutable String.
 	def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragments: nil, &block)
 		@_buffer = buffer
@@ -243,9 +247,6 @@ class Phlex::SGML
 
 	alias_method :🦺, :safe
 
-	private
-
-	# @api private
 	def flush
 		return if @_context.capturing
 
@@ -254,23 +255,7 @@ class Phlex::SGML
 		buffer.clear
 	end
 
-	# Render another component, block or enumerable
-	# @return [nil]
-	# @overload render(component, &block)
-	# 	Renders the component.
-	# 	@param component [Phlex::SGML]
-	# @overload render(component_class, &block)
-	# 	Renders a new instance of the component class. This is useful for component classes that take no arguments.
-	# 	@param component_class [Class<Phlex::SGML>]
-	# @overload render(proc)
-	# 	Renders the proc with {#yield_content}.
-	# 	@param proc [Proc]
-	# @overload render(enumerable)
-	# 	Renders each item of the enumerable.
-	# 	@param enumerable [Enumerable]
-	# 	@example
-	# 		render @items
-	def render(renderable, &)
+	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
 			renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &)
@@ -288,12 +273,16 @@ class Phlex::SGML
 			end
 		when String
 			plain(renderable)
+		when nil
+			yield_content(&) if block_given?
 		else
 			raise Phlex::ArgumentError.new("You can't render a #{renderable.inspect}.")
 		end
 
 		nil
 	end
+
+	private
 
 	# Like {#capture} but the output is vanished into a BlackHole buffer.
 	# Because the BlackHole does nothing with the output, this should be faster.
