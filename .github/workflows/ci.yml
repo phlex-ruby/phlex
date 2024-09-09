@@ -13,7 +13,6 @@ jobs:
         ruby-version:
           - "3.3"
           - "head"
-          - "truffleruby-24.0"
 
     runs-on: ${{ matrix.os }}
     steps:
