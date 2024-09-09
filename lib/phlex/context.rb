@@ -15,11 +15,6 @@ class Phlex::Context
 
 	attr_reader :fragments
 
-	# Added for backwards compatibility with phlex-rails. We can remove this with 2.0
-	def target
-		@buffer
-	end
-
 	def target_fragments(fragments)
 		@fragments = fragments.to_h { |it| [it, true] }
 	end
