@@ -38,12 +38,14 @@ module Phlex::Kit
 	def const_added(name)
 		return if autoload?(name)
 
+		me = self
 		constant = const_get(name)
 
 		if Class === constant && constant < Phlex::SGML
 			constant.include(self)
 
 			define_method(name) do |*args, **kwargs, &block|
+				constant = me.const_get(name)
 				render(constant.new(*args, **kwargs), &block)
 			end
 
