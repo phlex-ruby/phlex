@@ -572,7 +572,7 @@ class Phlex::SGML
 		when String
 			c
 		when Symbol
-			c.name
+			c.name.tr("_", "-")
 		when Array, Set
 			c.filter_map { |c| __classes__(c) }.join(" ")
 		when Hash
@@ -603,7 +603,7 @@ class Phlex::SGML
 		when String
 			s
 		when Symbol
-			s.name
+			s.name.tr("_", "-")
 		when Integer, Float
 			s.to_s
 		when Array, Set
