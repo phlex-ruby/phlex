@@ -202,7 +202,7 @@ class Phlex::SGML
 			return if context.fragments && !context.in_target_fragment
 
 			context.buffer << content.to_s
-		when nil # do nothing
+		when nil, "" # do nothing
 		else
 			raise Phlex::ArgumentError.new("You passed an unsafe object to `raw`.")
 		end
