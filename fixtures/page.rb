@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module Example
+	extend Phlex::Kit
 	class Page < Phlex::HTML
 		def view_template
-			render LayoutComponent.new do
+			LayoutComponent do
 				h1 { "Hi" }
 
 				100.times do
