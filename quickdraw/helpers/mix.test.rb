@@ -7,6 +7,11 @@ test "nil + string" do
 	expect(output) == { class: "a" }
 end
 
+test "string + nil" do
+	output = mix({ class: "a" }, { class: nil })
+	expect(output) == { class: "a" }
+end
+
 test "array + array" do
 	output = mix({ class: ["foo"] }, { class: ["bar"] })
 	expect(output) == { class: ["foo", "bar"] }

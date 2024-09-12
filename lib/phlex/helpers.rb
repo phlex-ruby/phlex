@@ -26,6 +26,8 @@ module Phlex::Helpers
 					[old] + new.to_a
 				in [String, String]
 					"#{old} #{new}"
+				in [String, nil]
+					old
 				else
 					new
 				end
