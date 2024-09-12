@@ -6,9 +6,11 @@ module Phlex::ElementClobberingGuard
 		if method_name[0] == "_" && __element_method__?(method_name[1..].to_sym)
 			raise Phlex::NameError.new("👋 Redefining the method `#{name}##{method_name}` is not a good idea.")
 		elsif method_name == :view_template
-			Phlex.__expand_attribute_cache__(
-				instance_method(method_name).source_location[0],
-			)
+			location = instance_method(method_name).source_location[0]
+
+			if location.start_with?("/")
+				Phlex.__expand_attribute_cache__(location)
+			end
 		else
 			super
 		end
