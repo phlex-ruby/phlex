@@ -421,7 +421,7 @@ class Phlex::SGML
 				end
 
 				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-				if Phlex::HTML::EVENT_ATTRIBUTES.include?(lower_name.delete("^a-z-"))
+				if Phlex::HTML::UNSAFE_ATTRIBUTES.include?(lower_name.delete("^a-z-"))
 					raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
 				end
 			end

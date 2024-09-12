@@ -76,7 +76,7 @@ describe Phlex::HTML do
 				def view_template
 					srcdoc = capture { yield } if block_given?
 
-					iframe srcdoc:
+					iframe srcdoc: safe(srcdoc)
 				end
 			end
 		end
