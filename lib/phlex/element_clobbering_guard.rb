@@ -8,7 +8,7 @@ module Phlex::ElementClobberingGuard
 		elsif method_name == :view_template
 			location = instance_method(method_name).source_location[0]
 
-			if location.start_with?("/")
+			if location[0] in "/" | "."
 				Phlex.__expand_attribute_cache__(location)
 			end
 		else
