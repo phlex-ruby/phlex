@@ -64,23 +64,23 @@ module Phlex::Elements
 						if original_length == buffer.bytesize
 							case content
 							when String
-								buffer << Phlex::Escape.html_escape(content)
+								buffer << ::Phlex::Escape.html_escape(content)
 							when Symbol
-								buffer << Phlex::Escape.html_escape(content.name)
+								buffer << ::Phlex::Escape.html_escape(content.name)
 							when nil
 								nil
-							when Phlex::SGML::SafeObject
+							when ::Phlex::SGML::SafeObject
 								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
-									buffer << Phlex::Escape.html_escape(formatted_object)
+									buffer << ::Phlex::Escape.html_escape(formatted_object)
 								end
 							end
 						end
 
 						buffer << "</#{tag}>"
 					else # without content
-						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
+						buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
 					end
 				else # without attributes
 					if block_given # with content block
@@ -91,16 +91,16 @@ module Phlex::Elements
 						if original_length == buffer.bytesize
 							case content
 							when String
-								buffer << Phlex::Escape.html_escape(content)
+								buffer << ::Phlex::Escape.html_escape(content)
 							when Symbol
-								buffer << Phlex::Escape.html_escape(content.name)
+								buffer << ::Phlex::Escape.html_escape(content.name)
 							when nil
 								nil
-							when Phlex::SGML::SafeObject
+							when ::Phlex::SGML::SafeObject
 								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
-									buffer << Phlex::Escape.html_escape(formatted_object)
+									buffer << ::Phlex::Escape.html_escape(formatted_object)
 								end
 							end
 						end
@@ -152,7 +152,7 @@ module Phlex::Elements
 				end
 
 				if attributes.length > 0 # with attributes
-					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 				else # without attributes
 					buffer << "<#{tag}>"
 				end
