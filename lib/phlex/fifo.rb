@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# @api private
 class Phlex::FIFO
 	def initialize(max_bytesize: 2_000, max_value_bytesize: 2_000)
 		@store = {}
