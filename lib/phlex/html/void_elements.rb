@@ -8,65 +8,65 @@ module Phlex::HTML::VoidElements
 	# 	Outputs an `<area>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/area
-	register_void_element :area
+	__register_void_element__ :area
 
 	# @!method br(**attributes, &content)
 	# 	Outputs a `<br>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/br
-	register_void_element :br
+	__register_void_element__ :br
 
 	# @!method col(**attributes, &content)
 	# 	Outputs a `<col>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/col
-	register_void_element :col
+	__register_void_element__ :col
 
 	# @!method embed(**attributes, &content)
 	# 	Outputs an `<embed>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/embed
-	register_void_element :embed
+	__register_void_element__ :embed
 
 	# @!method hr(**attributes, &content)
 	# 	Outputs an `<hr>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/hr
-	register_void_element :hr
+	__register_void_element__ :hr
 
 	# @!method img(**attributes, &content)
 	# 	Outputs an `<img>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/img
-	register_void_element :img
+	__register_void_element__ :img
 
 	# @!method input(**attributes, &content)
 	# 	Outputs an `<input>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/input
-	register_void_element :input
+	__register_void_element__ :input
 
 	# @!method link(**attributes, &content)
 	# 	Outputs a `<link>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/link
-	register_void_element :link
+	__register_void_element__ :link
 
 	# @!method meta(**attributes, &content)
 	# 	Outputs a `<meta>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/meta
-	register_void_element :meta
+	__register_void_element__ :meta
 
 	# @!method source(**attributes, &content)
 	# 	Outputs a `<source>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/source
-	register_void_element :source
+	__register_void_element__ :source
 
 	# @!method track(**attributes, &content)
 	# 	Outputs a `<track>` tag.
 	# 	@return [nil]
 	# 	@see https://developer.mozilla.org/docs/Web/HTML/Element/track
-	register_void_element :track
+	__register_void_element__ :track
 end

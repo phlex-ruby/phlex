@@ -73,12 +73,12 @@ class Phlex::CSV
 
 	def column(header = nil, value)
 		if @_first
-			@_headers << escape(header)
+			@_headers << __escape__(header)
 		elsif header != @_headers[@_current_column_index]
 			raise "Inconsistent header."
 		end
 
-		@_current_row << escape(value)
+		@_current_row << __escape__(value)
 		@_current_column_index += 1
 	end
 
@@ -109,7 +109,7 @@ class Phlex::CSV
 		@_view_context
 	end
 
-	def escape(value)
+	def __escape__(value)
 		value = trim_whitespace? ? value.to_s.strip : value.to_s
 		first_char = value[0]
 		last_char = value[-1]

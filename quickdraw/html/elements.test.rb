@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
+Phlex::HTML::StandardElements.__registered_elements__.each do |method_name, tag|
 	test "<#{tag}> called with an underscore prefix while overridden" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
@@ -56,7 +56,7 @@ Phlex::HTML::StandardElements.registered_elements.each do |method_name, tag|
 	end
 end
 
-Phlex::HTML::VoidElements.registered_elements.each do |method_name, tag|
+Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, tag|
 	test "<#{tag}> called with an underscore prefix while overridden" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do
