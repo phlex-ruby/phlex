@@ -3,7 +3,7 @@
 describe Phlex::SVG do
 	extend ViewHelper
 
-	Phlex::SVG::StandardElements.registered_elements.each do |method_name, tag|
+	Phlex::SVG::StandardElements.__registered_elements__.each do |method_name, tag|
 		with "<#{tag}> called with an underscore prefix while overridden" do
 			svg_view do
 				define_method :view_template do

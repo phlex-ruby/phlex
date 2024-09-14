@@ -25,12 +25,11 @@ class Phlex::SGML
 			end
 		end
 
-		# @api private
 		def __element_method__?(method_name)
 			if instance_methods.include?(method_name)
 				owner = instance_method(method_name).owner
 
-				if Phlex::Elements === owner && owner.registered_elements[method_name]
+				if Phlex::Elements === owner && owner.__registered_elements__[method_name]
 					true
 				else
 					false
@@ -120,7 +119,7 @@ class Phlex::SGML
 					else
 						view_template do |*args|
 							if args.length > 0
-								yield_content_with_args(*args, &block)
+								__yield_content_with_args__(*args, &block)
 							else
 								yield_content(&block)
 							end
@@ -217,7 +216,7 @@ class Phlex::SGML
 		return "" unless block
 
 		if args.length > 0
-			@_context.capturing_into(+"") { yield_content_with_args(*args, &block) }
+			@_context.capturing_into(+"") { __yield_content_with_args__(*args, &block) }
 		else
 			@_context.capturing_into(+"") { yield_content(&block) }
 		end
@@ -234,7 +233,7 @@ class Phlex::SGML
 			raise Phlex::ArgumentError.new("You can’t use the `<script>` tag from the `tag` method. Use `unsafe_tag` instead, but be careful if using user input.")
 		end
 
-		if registered_elements[normalized_name]
+		if __registered_elements__[normalized_name]
 			public_send(normalized_name, ...)
 		else
 			raise Phlex::ArgumentError.new("Unknown tag: #{normalized_name}")
@@ -267,7 +266,7 @@ class Phlex::SGML
 			renderable.each { |r| render(r, &) }
 		when Proc, Method
 			if renderable.arity == 0
-				yield_content_with_no_args(&renderable)
+				__yield_content_with_no_args__(&renderable)
 			else
 				yield_content(&renderable)
 			end
@@ -351,7 +350,7 @@ class Phlex::SGML
 
 	# Same as {#yield_content} but yields no arguments.
 	# @yield Yields the block with no arguments.
-	def yield_content_with_no_args
+	def __yield_content_with_no_args__
 		return unless block_given?
 
 		buffer = @_context.buffer
@@ -366,7 +365,7 @@ class Phlex::SGML
 	# Same as {#yield_content} but accepts a splat of arguments to yield. This is slightly slower than {#yield_content}.
 	# @yield [*args] Yields the given arguments.
 	# @return [nil]
-	def yield_content_with_args(*)
+	def __yield_content_with_args__(*)
 		return unless block_given?
 
 		buffer = @_context.buffer
@@ -378,8 +377,6 @@ class Phlex::SGML
 		nil
 	end
 
-	# Performs the same task as the public method #plain, but does not raise an error if an unformattable object is passed
-	# @api private
 	def __text__(content)
 		context = @_context
 		return true if context.fragments && !context.in_target_fragment
@@ -402,7 +399,6 @@ class Phlex::SGML
 		true
 	end
 
-	# @api private
 	def __attributes__(attributes, buffer = +"")
 		attributes.each do |k, v|
 			next unless v
@@ -483,8 +479,6 @@ class Phlex::SGML
 		buffer
 	end
 
-	# @api private
-	#
 	# Provides the nested-attributes case for serializing out attributes.
 	# This allows us to skip many of the checks the `__attributes__` method must perform.
 	def __nested_attributes__(attributes, base_name, buffer = +"")
@@ -527,7 +521,6 @@ class Phlex::SGML
 		end
 	end
 
-	# @api private
 	def __nested_tokens__(tokens)
 		buffer = +""
 
@@ -566,7 +559,6 @@ class Phlex::SGML
 		buffer
 	end
 
-	# @api private
 	def __classes__(c)
 		case c
 		when String
@@ -597,7 +589,6 @@ class Phlex::SGML
 		end
 	end
 
-	# @api private
 	def __styles__(s)
 		style = case s
 		when String

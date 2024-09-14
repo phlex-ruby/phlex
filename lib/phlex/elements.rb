@@ -1,33 +1,10 @@
 # frozen_string_literal: true
 
-# Extending this module provides the {register_element} macro for registering your own custom elements. It's already extended by {HTML} and {SVG}.
-# @example
-# 	module MyCustomElements
-# 		extend Phlex::Elements
-#
-# 		register_element :trix_editor
-# 	end
-#
-# 	class MyComponent < Phlex::HTML
-# 		include MyCustomElements
-#
-# 		def view_template
-# 			trix_editor
-# 		end
-# 	end
 module Phlex::Elements
-	# @api private
-	def registered_elements
-		@registered_elements ||= {}
+	def __registered_elements__
+		@__registered_elements__ ||= {}
 	end
 
-	# Register a custom element. This macro defines an element method for the current class and descendents only. There is no global element registry.
-	# @param method_name [Symbol]
-	# @param tag [String] the name of the tag, otherwise this will be the method name with underscores replaced with dashes.
-	# @return [Symbol] the name of the method created
-	# @note The methods defined by this macro depend on other methods from {SGML} so they should always be mixed into an {HTML} or {SVG} component.
-	# @example Register the custom element `<trix-editor>`
-	# 	register_element :trix_editor
 	def register_element(method_name, tag: method_name.name.tr("_", "-"))
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
@@ -121,13 +98,12 @@ module Phlex::Elements
 			alias_method :_#{method_name}, :#{method_name}
 		RUBY
 
-		registered_elements[method_name] = tag
+		__registered_elements__[method_name] = tag
 
 		method_name
 	end
 
-	# @api private
-	def register_void_element(method_name, tag: method_name.name.tr("_", "-"))
+	def __register_void_element__(method_name, tag: method_name.name.tr("_", "-"))
 		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
@@ -165,7 +141,7 @@ module Phlex::Elements
 			alias_method :_#{method_name}, :#{method_name}
 		RUBY
 
-		registered_elements[method_name] = tag
+		__registered_elements__[method_name] = tag
 
 		method_name
 	end
