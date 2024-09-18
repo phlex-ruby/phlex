@@ -7,7 +7,6 @@ if ENV["COVERAGE"] == "true"
 		command_name "quickdraw"
 		enable_coverage_for_eval
 		enable_coverage :branch
-		minimum_coverage 100
 	end
 end
 
