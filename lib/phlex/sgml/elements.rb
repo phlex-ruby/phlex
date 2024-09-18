@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Phlex::Elements
+module Phlex::SGML::Elements
 	def __registered_elements__
 		@__registered_elements__ ||= {}
 	end

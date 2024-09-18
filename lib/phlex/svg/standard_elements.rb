@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Phlex::SVG::StandardElements
-	extend Phlex::Elements
+	extend Phlex::SGML::Elements
 
 	# @!method a(**attributes, &content)
 	# 	Outputs an `<a>` tag.

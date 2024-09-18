@@ -2,6 +2,7 @@
 
 # **Standard Generalized Markup Language** for behaviour common to {HTML} and {SVG}.
 class Phlex::SGML
+	autoload :Elements, "phlex/sgml/elements"
 	autoload :SafeObject, "phlex/sgml/safe_object"
 	autoload :SafeValue, "phlex/sgml/safe_value"
 
@@ -29,7 +30,7 @@ class Phlex::SGML
 			if instance_methods.include?(method_name)
 				owner = instance_method(method_name).owner
 
-				if Phlex::Elements === owner && owner.__registered_elements__[method_name]
+				if Phlex::SGML::Elements === owner && owner.__registered_elements__[method_name]
 					true
 				else
 					false

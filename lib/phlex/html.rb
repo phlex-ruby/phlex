@@ -7,7 +7,7 @@ class Phlex::HTML < Phlex::SGML
 	# A list of HTML attributes that have the potential to execute unsafe JavaScript.
 	UNSAFE_ATTRIBUTES = Set.new(%w[onabort onafterprint onbeforeprint onbeforeunload onblur oncanplay oncanplaythrough onchange onclick oncontextmenu oncopy oncuechange oncut ondblclick ondrag ondragend ondragenter ondragleave ondragover ondragstart ondrop ondurationchange onemptied onended onerror onfocus onhashchange oninput oninvalid onkeydown onkeypress onkeyup onload onloadeddata onloadedmetadata onloadstart onmessage onmousedown onmousemove onmouseout onmouseover onmouseup onmousewheel onoffline ononline onpagehide onpageshow onpaste onpause onplay onplaying onpopstate onprogress onratechange onreset onresize onscroll onsearch onseeked onseeking onselect onstalled onstorage onsubmit onsuspend ontimeupdate ontoggle onunload onvolumechange onwaiting onwheel srcdoc]).freeze
 
-	extend Phlex::Elements
+	extend Phlex::SGML::Elements
 	include VoidElements, StandardElements
 
 	# Output an HTML doctype.

@@ -2,7 +2,7 @@
 
 # Void HTML elements don't accept content and never have a closing tag.
 module Phlex::HTML::VoidElements
-	extend Phlex::Elements
+	extend Phlex::SGML::Elements
 
 	# @!method area(**attributes, &content)
 	# 	Outputs an `<area>` tag.

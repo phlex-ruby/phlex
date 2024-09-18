@@ -2,7 +2,7 @@
 
 # Standard HTML elements accept content and always have a closing tag.
 module Phlex::HTML::StandardElements
-	extend Phlex::Elements
+	extend Phlex::SGML::Elements
 
 	# @!method a(**attributes, &content)
 	# 	Outputs an `<a>` tag.
