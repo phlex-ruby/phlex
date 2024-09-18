@@ -4,7 +4,6 @@
 module Phlex::Helpers
 	private
 
-	# @return [Hash]
 	def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|

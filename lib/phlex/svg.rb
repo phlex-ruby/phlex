@@ -5,9 +5,6 @@ class Phlex::SVG < Phlex::SGML
 
 	include StandardElements
 
-	# This should be extended after all method definitions
-	extend Phlex::ElementClobberingGuard
-
 	def content_type
 		"image/svg+xml"
 	end
@@ -15,4 +12,7 @@ class Phlex::SVG < Phlex::SGML
 	def filename
 		nil
 	end
+
+	# This should be extended after all method definitions
+	extend Phlex::ElementClobberingGuard
 end

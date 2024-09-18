@@ -41,30 +41,6 @@ class Phlex::SGML
 		end
 	end
 
-	# @!method initialize
-	# @abstract Override to define an initializer for your component.
-	# @note Your initializer will not receive a block passed to {.new}. Instead, this block will be sent to {#template} when rendering.
-	# @example
-	# 	def initialize(articles:)
-	# 		@articles = articles
-	# 	end
-
-	# @abstract Override to define a template for your component.
-	# @example
-	# 	def view_template
-	# 		h1 { "👋 Hello World!" }
-	# 	end
-	# @example Your template may yield a content block.
-	# 	def view_template
-	# 		main {
-	# 			h1 { "Hello World" }
-	# 			yield
-	# 		}
-	# 	end
-	# @example Alternatively, you can delegate the content block to an element.
-	# 	def view_template(&block)
-	# 		article(class: "card", &block)
-	# 	end
 	def view_template
 		if block_given?
 			yield
@@ -88,7 +64,6 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
-	# Renders the view and returns the buffer. The default buffer is a mutable String.
 	def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragments: nil, &block)
 		@_buffer = buffer
 		@_context = context
@@ -140,16 +115,10 @@ class Phlex::SGML
 		end
 	end
 
-	# Access the current render context data
-	# @return the supplied context object, by default a Hash
 	def context
 		@_context.user_context
 	end
 
-	# Output text content. The text will be HTML-escaped.
-	# @param content [String, Symbol, Integer, void] the content to be output on the buffer. Strings, Symbols, and Integers are handled by `plain` directly, but any object can be handled by overriding `format_object`
-	# @return [nil]
-	# @see #format_object
 	def plain(content)
 		unless __text__(content)
 			raise Phlex::ArgumentError.new("You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information")
@@ -158,9 +127,6 @@ class Phlex::SGML
 		nil
 	end
 
-	# Output a whitespace character. This is useful for getting inline elements to wrap. If you pass a block, a whitespace will be output before and after yielding the block.
-	# @return [nil]
-	# @yield If a block is given, it yields the block with no arguments.
 	def whitespace(&)
 		context = @_context
 		return if context.fragments && !context.in_target_fragment
@@ -177,8 +143,6 @@ class Phlex::SGML
 		nil
 	end
 
-	# Output an HTML comment.
-	# @return [nil]
 	def comment(&)
 		context = @_context
 		return if context.fragments && !context.in_target_fragment
@@ -192,9 +156,6 @@ class Phlex::SGML
 		nil
 	end
 
-	# This method is very dangerous and should usually be avoided. It will output the given String without any HTML safety. You should never use this method to output unsafe user input.
-	# @param content [String|nil]
-	# @return [nil]
 	def raw(content)
 		case content
 		when Phlex::SGML::SafeObject
@@ -210,9 +171,6 @@ class Phlex::SGML
 		nil
 	end
 
-	# Capture a block of output as a String.
-	# @note This only works if the block's receiver is the current component or the block returns a String.
-	# @return [String]
 	def capture(*args, &block)
 		return "" unless block
 
@@ -284,9 +242,6 @@ class Phlex::SGML
 
 	private
 
-	# Like {#capture} but the output is vanished into a BlackHole buffer.
-	# Because the BlackHole does nothing with the output, this should be faster.
-	# @return [nil]
 	def vanish(*args)
 		return unless block_given?
 
@@ -295,16 +250,10 @@ class Phlex::SGML
 		nil
 	end
 
-	# Determines if the component should render. By default, it returns `true`.
-	# @abstract Override to define your own predicate to prevent rendering.
-	# @return [Boolean]
 	def render?
 		true
 	end
 
-	# Format the object for output
-	# @abstract Override to define your own format handling for different object types. Please remember to call `super` in the case that the passed object doesn't match, so that object formatting can be added at different layers of the inheritance tree.
-	# @return [String]
 	def format_object(object)
 		case object
 		when Float, Integer
@@ -312,8 +261,6 @@ class Phlex::SGML
 		end
 	end
 
-	# @abstract Override this method to hook in around a template render. You can do things before and after calling `super` to render the template. You should always call `super` so that callbacks can be added at different layers of the inheritance tree.
-	# @return [nil]
 	def around_template
 		before_template
 		yield
@@ -322,21 +269,14 @@ class Phlex::SGML
 		nil
 	end
 
-	# @abstract Override this method to hook in right before a template is rendered. Please remember to call `super` so that callbacks can be added at different layers of the inheritance tree.
-	# @return [nil]
 	def before_template
 		nil
 	end
 
-	# @abstract Override this method to hook in right after a template is rendered. Please remember to call `super` so that callbacks can be added at different layers of the inheritance tree.
-	# @return [nil]
 	def after_template
 		nil
 	end
 
-	# Yields the block and checks if it buffered anything. If nothing was buffered, the return value is treated as text. The text is always HTML-escaped.
-	# @yieldparam component [self]
-	# @return [nil]
 	def yield_content
 		return unless block_given?
 
@@ -349,8 +289,6 @@ class Phlex::SGML
 		nil
 	end
 
-	# Same as {#yield_content} but yields no arguments.
-	# @yield Yields the block with no arguments.
 	def __yield_content_with_no_args__
 		return unless block_given?
 
@@ -363,9 +301,6 @@ class Phlex::SGML
 		nil
 	end
 
-	# Same as {#yield_content} but accepts a splat of arguments to yield. This is slightly slower than {#yield_content}.
-	# @yield [*args] Yields the given arguments.
-	# @return [nil]
 	def __yield_content_with_args__(*)
 		return unless block_given?
 
