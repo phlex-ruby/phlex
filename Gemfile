@@ -9,8 +9,6 @@ group :test do
 	gem "sus"
 	gem "quickdraw", github: "joeldrapper/quickdraw"
 	gem "simplecov", require: false
-	gem "async" if RUBY_ENGINE == "ruby"
-	gem "concurrent-ruby"
 	gem "selenium-webdriver"
 end
 
@@ -20,3 +18,6 @@ group :development do
 	gem "yard"
 	gem "benchmark-ips"
 end
+
+gem "concurrent-ruby"
+gem "async" if RUBY_ENGINE == "ruby"
