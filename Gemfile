@@ -9,9 +9,7 @@ group :test do
 	gem "sus"
 	gem "quickdraw", github: "joeldrapper/quickdraw"
 	gem "simplecov", require: false
-	if RUBY_ENGINE == "ruby" && RUBY_VERSION[0] > "3"
-		gem "async"
-	end
+	gem "async" if RUBY_ENGINE == "ruby"
 	gem "concurrent-ruby"
 	gem "selenium-webdriver"
 end

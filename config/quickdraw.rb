@@ -6,6 +6,7 @@ if ENV["COVERAGE"] == "true"
 	SimpleCov.start do
 		command_name "quickdraw"
 		enable_coverage_for_eval
+		enable_for_subprocesses true
 		enable_coverage :branch
 		add_filter %r{^/fixtures/}
 
@@ -17,6 +18,7 @@ if ENV["COVERAGE"] == "true"
 end
 
 Bundler.require :test
+
 require "phlex"
 
 # Previous content of test helper now starts here
