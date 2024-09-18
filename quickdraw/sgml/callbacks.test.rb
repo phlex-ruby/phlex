@@ -1,19 +1,31 @@
 # frozen_string_literal: true
 
 class Example < Phlex::HTML
-	def before_template
-		h1 { "Before" }
+	def around_template
+		i { "1" }
+
+		super do
+			i { "3" }
+			yield
+			i { "5" }
+		end
+
+		i { "7" }
 	end
 
-	def view_template
-		h2 { "Hello World" }
+	def before_template
+		i { "2" }
 	end
 
 	def after_template
-		h3 { "After" }
+		i { "6" }
+	end
+
+	def view_template
+		i { "4" }
 	end
 end
 
-test do
-	expect(Example.call) == ("<h1>Before</h1><h2>Hello World</h2><h3>After</h3>")
+test "callbacks are called in the correct order" do
+	expect(Example.call) == ("<i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i>")
 end
