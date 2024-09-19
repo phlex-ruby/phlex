@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+rm -rf ./coverage && COVERAGE=true bundle exec qt && open ./coverage/index.html
