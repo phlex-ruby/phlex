@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-class Example < Phlex::HTML
-end
-
 def div(**attributes)
-	Example.new.call do |e|
+	Phlex::HTML.new.call do |e|
 		e.div(**attributes)
 	end
 end
