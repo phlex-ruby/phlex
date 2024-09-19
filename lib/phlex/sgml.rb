@@ -390,19 +390,19 @@ class Phlex::SGML
 					__nested_attributes__(v, "#{name}-", buffer)
 				end
 			when Array
-				value = case k
-					when :style then __styles__(v)
-					else __nested_tokens__(v)
+				case k
+				when :style
+					buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
+				else
+					buffer << " " << name << '="' << __nested_tokens__(v) << '"'
 				end
-
-				buffer << " " << name << '="' << value.gsub('"', "&quot;") << '"'
 			when Set
-				value = case k
-					when :style then __styles__(v)
-					else __nested_tokens__(v.to_a)
+				case k
+				when :style
+					buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
+				else
+					buffer << " " << name << '="' << __nested_tokens__(v.to_a) << '"'
 				end
-
-				buffer << " " << name << '="' << value.gsub('"', "&quot;") << '"'
 			when Phlex::SGML::SafeObject
 				buffer << " " << name << '="' << v.to_s.gsub('"', "&quot;") << '"'
 			else
@@ -425,6 +425,10 @@ class Phlex::SGML
 				else raise Phlex::ArgumentError.new("Attribute keys should be Strings or Symbols")
 			end
 
+			if name.match?(/[<>&"']/)
+				raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
+			end
+
 			case v
 			when true
 				buffer << " " << base_name << name
@@ -442,6 +446,8 @@ class Phlex::SGML
 				buffer << " " << base_name << name << '="' << __nested_tokens__(v.to_a) << '"'
 			when Phlex::SGML::SafeObject
 				buffer << " " << base_name << name << '="' << v.to_s.gsub('"', "&quot;") << '"'
+			else
+				raise Phlex::ArgumentError.new("Invalid attribute value #{v.inspect}.")
 			end
 
 			buffer
@@ -484,36 +490,36 @@ class Phlex::SGML
 			i += 1
 		end
 
-		buffer
+		buffer.gsub('"', "&quot;")
 	end
 
-	# Result is unsafe, so it should be escaped.
-	def __styles__(s)
-		style = case s
+	# Result is **unsafe**, so it should be escaped!
+	def __styles__(styles)
+		case styles
 		when Array, Set
-			s.filter_map do |ss|
-				case ss
+			styles.filter_map do |s|
+				case s
 				when String
-					if ss == "" || ss.end_with?(";")
-						ss
+					if s == "" || s.end_with?(";")
+						s
 					else
-						"#{ss};"
+						"#{s};"
 					end
 				when Phlex::SGML::SafeObject
-					value = ss.to_s
+					value = s.to_s
 					value.end_with?(";") ? value : "#{value};"
 				when Hash
-					next __styles__(ss)
+					next __styles__(s)
 				when nil
 					next nil
 				else
-					raise Phlex::ArgumentError.new("Invalid style: #{ss.inspect}.")
+					raise Phlex::ArgumentError.new("Invalid style: #{s.inspect}.")
 				end
 			end.join(" ")
 		when Hash
 			buffer = +""
 			i = 0
-			s.each do |k, v|
+			styles.each do |k, v|
 				prop = case k
 				when String
 					k
@@ -548,16 +554,6 @@ class Phlex::SGML
 			end
 
 			buffer
-		when nil
-			return nil
-		else
-			raise Phlex::ArgumentError.new("Invalid style value: #{s.inspect}")
-		end
-
-		if style == "" || style.end_with?(";")
-			style
-		else
-			"#{style};"
 		end
 	end
 end

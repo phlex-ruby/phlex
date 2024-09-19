@@ -1,29 +1,27 @@
 # frozen_string_literal: true
 
-def render(&)
-	Phlex::HTML.new.call do |e|
+def phlex(component = Phlex::HTML, *, **, &)
+	component.new(*, **).call do |e|
 		e.instance_exec(&)
 	end
 end
 
 test "whitespae between" do
 	expect(
-		render do
+		phlex {
 			div
 			whitespace
 			div
-		end,
+		},
 	) == %(<div></div> <div></div>)
 end
 
 test "whitespae around" do
 	expect(
-		render do
+		phlex {
 			div
-			whitespace do
-				div
-			end
+			whitespace { div }
 			div
-		end,
+		},
 	) == %(<div></div> <div></div> <div></div>)
 end
