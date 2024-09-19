@@ -3,451 +3,323 @@
 module Phlex::SVG::StandardElements
 	extend Phlex::SGML::Elements
 
-	# @!method a(**attributes, &content)
-	# 	Outputs an `<a>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/a
+	# Outputs an `<a>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/a
+	def a(**attributes, &content) = nil
 	register_element :a
 
-	# @!method animate(**attributes, &content)
-	# 	Outputs an `<animate>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/animate
+	# Outputs an `<animate>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/animate
+	def animate(**attributes, &content) = nil
 	register_element :animate
 
-	# @!method animateMotion(**attributes, &content)
-	# 	Outputs an `<animateMotion>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/animateMotion
+	# Outputs an `<animateMotion>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/animateMotion
+	def animateMotion(**attributes, &content) = nil
 	register_element :animateMotion
 
-	# @!method animateTransform(**attributes, &content)
-	# 	Outputs an `<animateTransform>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/animateTransform
+	# Outputs an `<animateTransform>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/animateTransform
+	def animateTransform(**attributes, &content) = nil
 	register_element :animateTransform
 
-	# @!method circle(**attributes, &content)
-	# 	Outputs a `<circle>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/circle
+	# Outputs a `<circle>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/circle
+	def circle(**attributes, &content) = nil
 	register_element :circle
 
-	# @!method clipPath(**attributes, &content)
-	# 	Outputs a `<clipPath>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/clipPath
+	# Outputs a `<clipPath>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/clipPath
+	def clipPath(**attributes, &content) = nil
 	register_element :clipPath
 
-	# @!method defs(**attributes, &content)
-	# 	Outputs a `<defs>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/defs
+	# Outputs a `<defs>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/defs
+	def defs(**attributes, &content) = nil
 	register_element :defs
 
-	# @!method desc(**attributes, &content)
-	# 	Outputs a `<desc>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/desc
+	# Outputs a `<desc>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/desc
+	def desc(**attributes, &content) = nil
 	register_element :desc
 
-	# @!method discard(**attributes, &content)
-	# 	Outputs a `<discard>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/discard
+	# Outputs a `<discard>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/discard
+	def discard(**attributes, &content) = nil
 	register_element :discard
 
-	# @!method ellipse(**attributes, &content)
-	# 	Outputs an `<ellipse>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/ellipse
+	# Outputs an `<ellipse>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/ellipse
+	def ellipse(**attributes, &content) = nil
 	register_element :ellipse
 
-	# @!method feBlend(**attributes, &content)
-	# 	Outputs an `<feBlend>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feBlend
+	# Outputs an `<feBlend>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feBlend
+	def feBlend(**attributes, &content) = nil
 	register_element :feBlend
 
-	# @!method feColorMatrix(**attributes, &content)
-	# 	Outputs an `<feColorMatrix>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feColorMatrix
+	# Outputs an `<feColorMatrix>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feColorMatrix
+	def feColorMatrix(**attributes, &content) = nil
 	register_element :feColorMatrix
 
-	# @!method feComponentTransfer(**attributes, &content)
-	# 	Outputs an `<feComponentTransfer>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feComponentTransfer
+	# Outputs an `<feComponentTransfer>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feComponentTransfer
+	def feComponentTransfer(**attributes, &content) = nil
 	register_element :feComponentTransfer
 
-	# @!method feComposite(**attributes, &content)
-	# 	Outputs an `<feComposite>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feComposite
+	# Outputs an `<feComposite>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feComposite
+	def feComposite(**attributes, &content) = nil
 	register_element :feComposite
 
-	# @!method feConvolveMatrix(**attributes, &content)
-	# 	Outputs an `<feConvolveMatrix>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feConvolveMatrix
+	# Outputs an `<feConvolveMatrix>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feConvolveMatrix
+	def feConvolveMatrix(**attributes, &content) = nil
 	register_element :feConvolveMatrix
 
-	# @!method feDiffuseLighting(**attributes, &content)
-	# 	Outputs an `<feDiffuseLighting>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDiffuseLighting
+	# Outputs an `<feDiffuseLighting>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDiffuseLighting
+	def feDiffuseLighting(**attributes, &content) = nil
 	register_element :feDiffuseLighting
 
-	# @!method feDisplacementMap(**attributes, &content)
-	# 	Outputs an `<feDisplacementMap>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDisplacementMap
+	# Outputs an `<feDisplacementMap>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDisplacementMap
+	def feDisplacementMap(**attributes, &content) = nil
 	register_element :feDisplacementMap
 
-	# @!method feDistantLight(**attributes, &content)
-	# 	Outputs an `<feDistantLight>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDistantLight
+	# Outputs an `<feDistantLight>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDistantLight
+	def feDistantLight(**attributes, &content) = nil
 	register_element :feDistantLight
 
-	# @!method feDropShadow(**attributes, &content)
-	# 	Outputs an `<feDropShadow>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feDropShadow
+	# Outputs an `<feDropShadow>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDropShadow
+	def feDropShadow(**attributes, &content) = nil
 	register_element :feDropShadow
 
-	# @!method feFlood(**attributes, &content)
-	# 	Outputs an `<feFlood>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFlood
+	# Outputs an `<feFlood>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFlood
+	def feFlood(**attributes, &content) = nil
 	register_element :feFlood
 
-	# @!method feFuncA(**attributes, &content)
-	# 	Outputs an `<feFuncA>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncA
+	# Outputs an `<feFuncA>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncA
+	def feFuncA(**attributes, &content) = nil
 	register_element :feFuncA
 
-	# @!method feFuncB(**attributes, &content)
-	# 	Outputs an `<feFuncB>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncB
+	# Outputs an `<feFuncB>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncB
+	def feFuncB(**attributes, &content) = nil
 	register_element :feFuncB
 
-	# @!method feFuncG(**attributes, &content)
-	# 	Outputs an `<feFuncG>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncG
+	# Outputs an `<feFuncG>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncG
+	def feFuncG(**attributes, &content) = nil
 	register_element :feFuncG
 
-	# @!method feFuncR(**attributes, &content)
-	# 	Outputs an `<feFuncR>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feFuncR
+	# Outputs an `<feFuncR>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncR
+	def feFuncR(**attributes, &content) = nil
 	register_element :feFuncR
 
-	# @!method feGaussianBlur(**attributes, &content)
-	# 	Outputs an `<feGaussianBlur>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feGaussianBlur
+	# Outputs an `<feGaussianBlur>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feGaussianBlur
+	def feGaussianBlur(**attributes, &content) = nil
 	register_element :feGaussianBlur
 
-	# @!method feImage(**attributes, &content)
-	# 	Outputs an `<feImage>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feImage
+	# Outputs an `<feImage>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feImage
+	def feImage(**attributes, &content) = nil
 	register_element :feImage
 
-	# @!method feMerge(**attributes, &content)
-	# 	Outputs an `<feMerge>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feMerge
+	# Outputs an `<feMerge>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feMerge
+	def feMerge(**attributes, &content) = nil
 	register_element :feMerge
 
-	# @!method feMergeNode(**attributes, &content)
-	# 	Outputs an `<feMergeNode>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feMergeNode
+	# Outputs an `<feMergeNode>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feMergeNode
+	def feMergeNode(**attributes, &content) = nil
 	register_element :feMergeNode
 
-	# @!method feMorphology(**attributes, &content)
-	# 	Outputs an `<feMorphology>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feMorphology
+	# Outputs an `<feMorphology>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feMorphology
+	def feMorphology(**attributes, &content) = nil
 	register_element :feMorphology
 
-	# @!method feOffset(**attributes, &content)
-	# 	Outputs an `<feOffset>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feOffset
+	# Outputs an `<feOffset>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feOffset
+	def feOffset(**attributes, &content) = nil
 	register_element :feOffset
 
-	# @!method fePointLight(**attributes, &content)
-	# 	Outputs an `<fePointLight>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/fePointLight
+	# Outputs an `<fePointLight>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/fePointLight
+	def fePointLight(**attributes, &content) = nil
 	register_element :fePointLight
 
-	# @!method feSpecularLighting(**attributes, &content)
-	# 	Outputs an `<feSpecularLighting>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feSpecularLighting
+	# Outputs an `<feSpecularLighting>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feSpecularLighting
+	def feSpecularLighting(**attributes, &content) = nil
 	register_element :feSpecularLighting
 
-	# @!method feSpotLight(**attributes, &content)
-	# 	Outputs an `<feSpotLight>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feSpotLight
+	# Outputs an `<feSpotLight>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feSpotLight
+	def feSpotLight(**attributes, &content) = nil
 	register_element :feSpotLight
 
-	# @!method feTile(**attributes, &content)
-	# 	Outputs an `<feTile>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feTile
+	# Outputs an `<feTile>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feTile
+	def feTile(**attributes, &content) = nil
 	register_element :feTile
 
-	# @!method feTurbulence(**attributes, &content)
-	# 	Outputs an `<feTurbulence>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/feTurbulence
+	# Outputs an `<feTurbulence>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/feTurbulence
+	def feTurbulence(**attributes, &content) = nil
 	register_element :feTurbulence
 
-	# @!method filter(**attributes, &content)
-	# 	Outputs a `<filter>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/filter
+	# Outputs a `<filter>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/filter
+	def filter(**attributes, &content) = nil
 	register_element :filter
 
-	# @!method foreignObject(**attributes, &content)
-	# 	Outputs a `<foreignObject>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/foreignObject
+	# Outputs a `<foreignObject>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/foreignObject
+	def foreignObject(**attributes, &content) = nil
 	register_element :foreignObject
 
-	# @!method g(**attributes, &content)
-	# 	Outputs a `<g>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/g
+	# Outputs a `<g>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/g
+	def g(**attributes, &content) = nil
 	register_element :g
 
-	# @!method image(**attributes, &content)
-	# 	Outputs an `<image>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/image
+	# Outputs an `<image>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/image
+	def image(**attributes, &content) = nil
 	register_element :image
 
-	# @!method line(**attributes, &content)
-	# 	Outputs a `<line>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/line
+	# Outputs a `<line>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/line
+	def line(**attributes, &content) = nil
 	register_element :line
 
-	# @!method linearGradient(**attributes, &content)
-	# 	Outputs a `<linearGradient>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/linearGradient
+	# Outputs a `<linearGradient>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/linearGradient
+	def linearGradient(**attributes, &content) = nil
 	register_element :linearGradient
 
-	# @!method marker(**attributes, &content)
-	# 	Outputs a `<marker>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/marker
+	# Outputs a `<marker>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/marker
+	def marker(**attributes, &content) = nil
 	register_element :marker
 
-	# @!method mask(**attributes, &content)
-	# 	Outputs a `<mask>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/mask
+	# Outputs a `<mask>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/mask
+	def mask(**attributes, &content) = nil
 	register_element :mask
 
-	# @!method metadata(**attributes, &content)
-	# 	Outputs a `<metadata>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/metadata
+	# Outputs a `<metadata>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/metadata
+	def metadata(**attributes, &content) = nil
 	register_element :metadata
 
-	# @!method mpath(**attributes, &content)
-	# 	Outputs an `<mpath>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/mpath
+	# Outputs an `<mpath>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/mpath
+	def mpath(**attributes, &content) = nil
 	register_element :mpath
 
-	# @!method path(**attributes, &content)
-	# 	Outputs a `<path>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/path
+	# Outputs a `<path>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/path
+	def path(**attributes, &content) = nil
 	register_element :path
 
-	# @!method pattern(**attributes, &content)
-	# 	Outputs a `<pattern>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/pattern
+	# Outputs a `<pattern>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/pattern
+	def pattern(**attributes, &content) = nil
 	register_element :pattern
 
-	# @!method polygon(**attributes, &content)
-	# 	Outputs a `<polygon>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/polygon
+	# Outputs a `<polygon>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/polygon
+	def polygon(**attributes, &content) = nil
 	register_element :polygon
 
-	# @!method polyline(**attributes, &content)
-	# 	Outputs a `<polyline>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/polyline
+	# Outputs a `<polyline>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/polyline
+	def polyline(**attributes, &content) = nil
 	register_element :polyline
 
-	# @!method radialGradient(**attributes, &content)
-	# 	Outputs a `<radialGradient>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/radialGradient
+	# Outputs a `<radialGradient>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/radialGradient
+	def radialGradient(**attributes, &content) = nil
 	register_element :radialGradient
 
-	# @!method rect(**attributes, &content)
-	# 	Outputs a `<rect>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/rect
+	# Outputs a `<rect>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/rect
+	def rect(**attributes, &content) = nil
 	register_element :rect
 
-	# @!method script(**attributes, &content)
-	# 	Outputs a `<script>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/script
+	# Outputs a `<script>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/script
+	def script(**attributes, &content) = nil
 	register_element :script
 
-	# @!method set(**attributes, &content)
-	# 	Outputs a `<set>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/set
+	# Outputs a `<set>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/set
+	def set(**attributes, &content) = nil
 	register_element :set
 
-	# @!method stop(**attributes, &content)
-	# 	Outputs a `<stop>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/stop
+	# Outputs a `<stop>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/stop
+	def stop(**attributes, &content) = nil
 	register_element :stop
 
-	# @!method style(**attributes, &content)
-	# 	Outputs a `<style>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/style
+	# Outputs a `<style>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/style
+	def style(**attributes, &content) = nil
 	register_element :style
 
-	# @!method svg(**attributes, &content)
-	# 	Outputs an `<svg>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/svg
+	# Outputs an `<svg>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/svg
+	def svg(**attributes, &content) = nil
 	register_element :svg
 
-	# @!method switch(**attributes, &content)
-	# 	Outputs a `<switch>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/switch
+	# Outputs a `<switch>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/switch
+	def switch(**attributes, &content) = nil
 	register_element :switch
 
-	# @!method symbol(**attributes, &content)
-	# 	Outputs a `<symbol>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/symbol
+	# Outputs a `<symbol>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/symbol
+	def symbol(**attributes, &content) = nil
 	register_element :symbol
 
-	# @!method text(**attributes, &content)
-	# 	Outputs a `<text>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/text
+	# Outputs a `<text>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/text
+	def text(**attributes, &content) = nil
 	register_element :text
 
-	# @!method textPath(**attributes, &content)
-	# 	Outputs a `<textPath>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/textPath
+	# Outputs a `<textPath>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/textPath
+	def textPath(**attributes, &content) = nil
 	register_element :textPath
 
-	# @!method title(**attributes, &content)
-	# 	Outputs a `<title>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/title
+	# Outputs a `<title>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/title
+	def title(**attributes, &content) = nil
 	register_element :title
 
-	# @!method tspan(**attributes, &content)
-	# 	Outputs a `<tspan>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/tspan
+	# Outputs a `<tspan>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/tspan
+	def tspan(**attributes, &content) = nil
 	register_element :tspan
 
-	# @!method use(**attributes, &content)
-	# 	Outputs a `<use>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/use
+	# Outputs a `<use>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/use
+	def use(**attributes, &content) = nil
 	register_element :use
 
-	# @!method view(**attributes, &content)
-	# 	Outputs a `<view>` tag.
-	# 	@return [nil]
-	# 	@yieldparam component [self]
-	# 	@see https://developer.mozilla.org/docs/Web/SVG/Element/view
+	# Outputs a `<view>` tag.
+	# See https://developer.mozilla.org/docs/Web/SVG/Element/view
+	def view(**attributes, &content) = nil
 	register_element :view
 end
