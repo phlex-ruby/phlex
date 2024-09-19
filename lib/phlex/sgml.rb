@@ -181,32 +181,12 @@ class Phlex::SGML
 		end
 	end
 
-	def tag(name, ...)
-		normalized_name = case name
-			when Symbol then name.name.downcase
-			when String then name.downcase
-			else raise Phlex::ArgumentError.new("Expected the tag name as a Symbol or String.")
-		end
-
-		if normalized_name == "script"
-			raise Phlex::ArgumentError.new("You can’t use the `<script>` tag from the `tag` method. Use `unsafe_tag` instead, but be careful if using user input.")
-		end
-
-		if __registered_elements__[normalized_name]
-			public_send(normalized_name, ...)
-		else
-			raise Phlex::ArgumentError.new("Unknown tag: #{normalized_name}")
-		end
-	end
-
 	def safe(value)
 		case value
 		when String
 			Phlex::SGML::SafeValue.new(value)
-		when Symbol
-			Phlex::SGML::SafeValue.new(value.to_s)
 		else
-			raise Phlex::ArgumentError.new("Expected a String or Symbol.")
+			raise Phlex::ArgumentError.new("Expected a String.")
 		end
 	end
 
