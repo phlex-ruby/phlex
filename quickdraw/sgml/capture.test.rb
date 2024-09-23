@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class ExampleCaptureWithArguments < Phlex::HTML
-	def view_template(&block)
-		h1 { capture("a", "b", "c", &block) }
+	def yielder = yield("a", "b", "c")
+
+	def view_template(...)
+		h1(...)
 	end
 end
 

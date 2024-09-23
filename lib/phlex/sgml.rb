@@ -64,6 +64,10 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
+	def yielder
+		yield(self)
+	end
+
 	def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragments: nil, &block)
 		@_buffer = buffer
 		@_context = context
@@ -89,17 +93,14 @@ class Phlex::SGML
 		@_context.around_render do
 			around_template do
 				if block
-					if Phlex::DeferredRender === self
-						vanish(self, &block)
-						view_template
-					else
-						view_template do |*args|
-							if args.length > 0
-								__yield_content_with_args__(*args, &block)
-							else
-								yield_content(&block)
-							end
-						end
+					content = capture(self) { yielder(&block) }
+
+					view_template do
+						context = @_context
+						next if context.fragments && !context.in_target_fragment
+
+						context.buffer << content
+						nil
 					end
 				else
 					view_template
