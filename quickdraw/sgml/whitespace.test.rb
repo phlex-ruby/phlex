@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-def phlex(component = Phlex::HTML, *, **, &)
-	component.new(*, **).call do |e|
-		e.instance_exec(&)
-	end
-end
+require "sgml_helper"
+
+include SGMLHelper
 
 test "whitespae between" do
 	expect(

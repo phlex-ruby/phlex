@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Example < Phlex::HTML
-end
+Example = Class.new(Phlex::HTML)
 
 test "raises if you try to redefine an underscored method" do
 	expect { Example.define_method(:_h1) { nil } }.to_raise(Phlex::NameError)

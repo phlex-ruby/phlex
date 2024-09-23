@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-class App < Phlex::HTML
-	def view_template
-		render Example do |e|
-			e.slot(&Sub.new)
-		end
-	end
-end
+require "sgml_helper"
+include SGMLHelper
 
 class Example < Phlex::HTML
 	def view_template(&)
@@ -24,6 +19,12 @@ class Sub < Phlex::HTML
 	end
 end
 
-test do
-	expect(App.new.call) == "<article><h1>Sub</h1></article>"
+test "rendering components via #to_proc" do
+	expect(
+		phlex {
+			render Example do |e|
+				e.slot(&Sub.new)
+			end
+		},
+	) == "<article><h1>Sub</h1></article>"
 end
