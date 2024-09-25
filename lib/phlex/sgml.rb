@@ -120,7 +120,7 @@ class Phlex::SGML
 	end
 
 	def plain(content)
-		unless __text__(content)
+		unless  __text__(content)
 			raise Phlex::ArgumentError.new("You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information")
 		end
 
@@ -271,7 +271,7 @@ class Phlex::SGML
 
 		original_length = buffer.bytesize
 		content = yield(self)
-		__text__(content) if original_length == buffer.bytesize
+	  __implicit_output__(content) if original_length == buffer.bytesize
 
 		nil
 	end
@@ -283,7 +283,7 @@ class Phlex::SGML
 
 		original_length = buffer.bytesize
 		content = yield
-		__text__(content) if original_length == buffer.bytesize
+	  __implicit_output__(content) if original_length == buffer.bytesize
 
 		nil
 	end
@@ -295,18 +295,41 @@ class Phlex::SGML
 
 		original_length = buffer.bytesize
 		content = yield(*)
-		__text__(content) if original_length == buffer.bytesize
+	  __implicit_output__(content) if original_length == buffer.bytesize
 
 		nil
 	end
 
-	def __text__(content)
+	def  __implicit_output__(content)
 		context = @_context
 		return true if context.fragments && !context.in_target_fragment
 
 		case content
 		when Phlex::SGML::SafeObject
 		  context.buffer << content.to_s
+		when String
+			context.buffer << Phlex::Escape.html_escape(content)
+		when Symbol
+			context.buffer << Phlex::Escape.html_escape(content.name)
+		when nil
+			nil
+		else
+			if (formatted_object = format_object(content))
+				context.buffer << Phlex::Escape.html_escape(formatted_object)
+			else
+				return false
+			end
+		end
+
+		true
+	end
+
+	# same as __implicit_output__ but escapes even `safe` objects
+	def  __text__(content)
+  	context = @_context
+  	return true if context.fragments && !context.in_target_fragment
+
+		case content
 		when String
 			context.buffer << Phlex::Escape.html_escape(content)
 		when Symbol
