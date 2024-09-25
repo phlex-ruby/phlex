@@ -40,14 +40,14 @@ module Phlex::SGML::Elements
 						content = yield(self)
 						if original_length == buffer.bytesize
 							case content
+							when ::Phlex::SGML::SafeObject
+								buffer << content.to_s
 							when String
 								buffer << ::Phlex::Escape.html_escape(content)
 							when Symbol
 								buffer << ::Phlex::Escape.html_escape(content.name)
 							when nil
 								nil
-							when ::Phlex::SGML::SafeObject
-								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
 									buffer << ::Phlex::Escape.html_escape(formatted_object)
@@ -67,14 +67,14 @@ module Phlex::SGML::Elements
 						content = yield(self)
 						if original_length == buffer.bytesize
 							case content
+							when ::Phlex::SGML::SafeObject
+								buffer << content.to_s
 							when String
 								buffer << ::Phlex::Escape.html_escape(content)
 							when Symbol
 								buffer << ::Phlex::Escape.html_escape(content.name)
 							when nil
 								nil
-							when ::Phlex::SGML::SafeObject
-								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
 									buffer << ::Phlex::Escape.html_escape(formatted_object)

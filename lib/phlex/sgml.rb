@@ -305,6 +305,8 @@ class Phlex::SGML
 		return true if context.fragments && !context.in_target_fragment
 
 		case content
+		when Phlex::SGML::SafeObject
+		  context.buffer << content.to_s
 		when String
 			context.buffer << Phlex::Escape.html_escape(content)
 		when Symbol
