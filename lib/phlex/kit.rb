@@ -3,7 +3,9 @@
 module Phlex::Kit
 	module LazyLoader
 		def method_missing(name, ...)
-			if name[0] == name[0].upcase && __phlex_kit_constants__.include?(name) && __get_phlex_kit_constant__(name) && methods.include?(name)
+			mod = self.class
+
+			if name[0] == name[0].upcase && mod.constants.include?(name) && mod.const_get(name) && methods.include?(name)
 				public_send(name, ...)
 			else
 				super
@@ -11,7 +13,9 @@ module Phlex::Kit
 		end
 
 		def respond_to_missing?(name, include_private = false)
-			if name[0] == name[0].upcase && __phlex_kit_constants__.include?(name) && __get_phlex_kit_constant__(name) && methods.include?(name)
+			mod = self.class
+
+			if name[0] == name[0].upcase && mod.constants.include?(name) && mod.const_get(name) && methods.include?(name)
 				true
 			else
 				super
@@ -19,20 +23,24 @@ module Phlex::Kit
 		end
 	end
 
-	include LazyLoader
-
 	def self.extended(mod)
 		mod.include(LazyLoader)
-		mod.define_method(:__phlex_kit_constants__) { mod.__phlex_kit_constants__ }
-		mod.define_method(:__get_phlex_kit_constant__) { |name| mod.__get_phlex_kit_constant__(name) }
 	end
 
-	def __phlex_kit_constants__
-		constants
+	def method_missing(name, ...)
+		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
+			public_send(name, ...)
+		else
+			super
+		end
 	end
 
-	def __get_phlex_kit_constant__(name)
-		const_get(name)
+	def respond_to_missing?(name, include_private = false)
+		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
+			true
+		else
+			super
+		end
 	end
 
 	def const_added(name)
