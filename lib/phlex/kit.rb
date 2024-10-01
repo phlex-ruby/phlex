@@ -52,6 +52,8 @@ module Phlex::Kit
 		if Class === constant && constant < Phlex::SGML
 			constant.include(self)
 
+			constant = nil
+
 			define_method(name) do |*args, **kwargs, &block|
 				constant = me.const_get(name)
 				render(constant.new(*args, **kwargs), &block)
@@ -60,6 +62,7 @@ module Phlex::Kit
 			define_singleton_method(name) do |*args, **kwargs, &block|
 				if (component = Fiber[:__phlex_component__])
 					component.instance_exec do
+						constant = me.const_get(name)
 						render(constant.new(*args, **kwargs), &block)
 					end
 				else
