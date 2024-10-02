@@ -12,6 +12,17 @@ module Phlex::HTML::VoidElements
 		**attributes
 	) = nil
 
+	# Outputs a `<base>` tag.
+	# See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+	def base(
+		class: nil,
+		href: nil,
+		id: nil,
+		target: nil,
+		**attributes
+	) = nil
+	register_element :base
+
 	# Outputs a `<br>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/br
 	__register_void_element__ def br(

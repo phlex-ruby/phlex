@@ -83,18 +83,6 @@ module Phlex::HTML::StandardElements
 	) = nil
 	register_element :b
 
-	# Outputs a `<base>` tag.
-	# See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-	def base(
-		class: nil,
-		href: nil,
-		id: nil,
-		target: nil,
-		**attributes,
-		&content
-	) = nil
-	register_element :base
-
 	# Outputs a `<bdi>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/bdi
 	def bdi(id: nil, class: nil, **attributes, &content) = nil
