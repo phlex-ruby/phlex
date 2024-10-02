@@ -6,56 +6,95 @@ module Phlex::HTML::VoidElements
 
 	# Outputs an `<area>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/area
-	def area(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :area
+	__register_void_element__ def area(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 
 	# Outputs a `<br>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/br
-	def br(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :br
+	__register_void_element__ def br(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 
 	# Outputs a `<col>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/col
-	def col(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :col
+	__register_void_element__ def col(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 
 	# Outputs an `<embed>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/embed
-	def embed(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :embed
+	__register_void_element__ def embed(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 
 	# Outputs an `<hr>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/hr
-	def hr(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :hr
+	__register_void_element__ def hr(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 
 	# Outputs an `<img>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/img
-	def img(id: nil, class: nil, src: nil, alt: nil, **attributes) = nil
-	__register_void_element__ :img
+	__register_void_element__ def img(
+		alt: nil,
+		class: nil,
+		id: nil,
+		src: nil,
+		**attributes
+	) = nil
 
 	# Outputs an `<input>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/input
-	def input(id: nil, class: nil, type: nil, name: nil, **attributes) = nil
-	__register_void_element__ :input
+	__register_void_element__ def input(
+		class: nil,
+		id: nil,
+		name: nil,
+		type: nil,
+		**attributes
+	) = nil
 
 	# Outputs a `<link>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/link
-	def link(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :link
+	__register_void_element__ def link(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 
 	# Outputs a `<meta>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/meta
-	def meta(id: nil, class: nil, name: nil, charset: nil, **attributes) = nil
-	__register_void_element__ :meta
+	__register_void_element__ def meta(
+		charset: nil,
+		class: nil,
+		id: nil,
+		name: nil,
+		**attributes
+	) = nil
 
 	# Outputs a `<source>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/source
-	def source(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :source
+	__register_void_element__ def source(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 
 	# Outputs a `<track>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/track
-	def track(id: nil, class: nil, **attributes) = nil
-	__register_void_element__ :track
+	__register_void_element__ def track(
+		class: nil,
+		id: nil,
+		**attributes
+	) = nil
 end
