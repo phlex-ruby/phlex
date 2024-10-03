@@ -106,7 +106,7 @@ class Phlex::SGML
 				end
 			end
 
-			after_template
+			after_template(&block)
 		end
 
 		unless parent
