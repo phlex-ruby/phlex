@@ -90,24 +90,23 @@ class Phlex::SGML
 		end
 
 		@_context.around_render do
+			before_template(&block)
+
 			around_template do
 				if block
-					if Phlex::DeferredRender === self
-						vanish(self, &block)
-						view_template
-					else
-						view_template do |*args|
-							if args.length > 0
-								__yield_content_with_args__(*args, &block)
-							else
-								__yield_content__(&block)
-							end
+					view_template do |*args|
+						if args.length > 0
+							__yield_content_with_args__(*args, &block)
+						else
+							__yield_content__(&block)
 						end
 					end
 				else
 					view_template
 				end
 			end
+
+			after_template
 		end
 
 		unless parent
@@ -235,7 +234,11 @@ class Phlex::SGML
 	def vanish(*args)
 		return unless block_given?
 
-		@_context.capturing_into(Phlex::BlackHole) { yield(*args) }
+		if args.length > 0
+			@_context.capturing_into(Phlex::BlackHole) { yield(*args) }
+		else
+			@_context.capturing_into(Phlex::BlackHole) { yield(self) }
+		end
 
 		nil
 	end
@@ -252,10 +255,7 @@ class Phlex::SGML
 	end
 
 	def around_template
-		before_template
 		yield
-		after_template
-
 		nil
 	end
 

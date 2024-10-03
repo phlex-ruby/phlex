@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class Example < Phlex::HTML
-	def around_template
+	def before_template
 		i { "1" }
+	end
+
+	def around_template
+		i { "2" }
 
 		super do
 			i { "3" }
@@ -10,15 +14,11 @@ class Example < Phlex::HTML
 			i { "5" }
 		end
 
-		i { "7" }
-	end
-
-	def before_template
-		i { "2" }
+		i { "6" }
 	end
 
 	def after_template
-		i { "6" }
+		i { "7" }
 	end
 
 	def view_template
