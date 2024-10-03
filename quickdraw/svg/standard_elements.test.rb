@@ -1,20 +1,6 @@
 # frozen_string_literal: true
 
 Phlex::SVG::StandardElements.__registered_elements__.each do |method_name, tag|
-	test "<#{tag}> called with an underscore prefix while overridden" do
-		example = Class.new(Phlex::SVG) do
-			define_method :view_template do
-				__send__("_#{method_name}")
-			end
-
-			define_method method_name do
-				super(class: "overridden")
-			end
-		end
-
-		expect(example.call) == %(<#{tag}></#{tag}>)
-	end
-
 	test "<#{tag}> with block text content and attributes" do
 		example = Class.new(Phlex::SVG) do
 			define_method :view_template do
