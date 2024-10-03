@@ -38,7 +38,4 @@ class Phlex::HTML < Phlex::SGML
 	def content_type
 		"text/html"
 	end
-
-	# This should be extended after all method definitions
-	extend Phlex::ElementClobberingGuard
 end

@@ -12,7 +12,4 @@ class Phlex::SVG < Phlex::SGML
 	def filename
 		nil
 	end
-
-	# This should be extended after all method definitions
-	extend Phlex::ElementClobberingGuard
 end
