@@ -2,6 +2,9 @@
 
 # **Standard Generalized Markup Language** for behaviour common to {HTML} and {SVG}.
 class Phlex::SGML
+	UNSAFE_ATTRIBUTES = Set.new(%w[srcdoc sandbox http-equiv]).freeze
+	REF_ATTRIBUTES = Set.new(%w[href src action formaction lowsrc dynsrc background ping]).freeze
+
 	autoload :Elements, "phlex/sgml/elements"
 	autoload :SafeObject, "phlex/sgml/safe_object"
 	autoload :SafeValue, "phlex/sgml/safe_value"
@@ -357,15 +360,57 @@ class Phlex::SGML
 				else raise Phlex::ArgumentError.new("Attribute keys should be Strings or Symbols.")
 			end
 
+			value = case v
+			when true
+				true
+			when String
+				v.gsub('"', "&quot;")
+			when Symbol
+				v.name.tr("_", "-").gsub('"', "&quot;")
+			when Integer, Float
+				v.to_s
+			when Hash
+				case k
+				when :style
+					__styles__(v).gsub('"', "&quot;")
+				else
+					__nested_attributes__(v, "#{name}-", buffer)
+				end
+			when Array
+				case k
+				when :style
+					__styles__(v).gsub('"', "&quot;")
+				else
+					__nested_tokens__(v)
+				end
+			when Set
+				case k
+				when :style
+					__styles__(v).gsub('"', "&quot;")
+				else
+					__nested_tokens__(v.to_a)
+				end
+			when Phlex::SGML::SafeObject
+				v.to_s.gsub('"', "&quot;")
+			else
+				raise Phlex::ArgumentError.new("Invalid attribute value for #{k}: #{v.inspect}.")
+			end
+
 			lower_name = name.downcase
 
 			unless Phlex::SGML::SafeObject === v
-				if lower_name == "href" && v.to_s.downcase.delete("^a-z:").start_with?("javascript:")
+				normalized_name = lower_name.delete("^a-z-")
+
+				if value != true && REF_ATTRIBUTES.include?(normalized_name) && value.downcase.delete("^a-z:").start_with?("javascript:")
+					# We just ignore these because they were likely not specified by the developer.
 					next
 				end
 
-				# Detect unsafe attribute names. Attribute names are considered unsafe if they match an event attribute or include unsafe characters.
-				if Phlex::HTML::UNSAFE_ATTRIBUTES.include?(lower_name.delete("^a-z-"))
+				if normalized_name.bytesize > 2 && normalized_name.start_with?("on") && !normalized_name.include?("-")
+					raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
+				end
+
+				if UNSAFE_ATTRIBUTES.include?(normalized_name)
 					raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
 				end
 			end
@@ -378,40 +423,11 @@ class Phlex::SGML
 				raise Phlex::ArgumentError.new(":id attribute should only be passed as a lowercase symbol.")
 			end
 
-			case v
+			case value
 			when true
 				buffer << " " << name
 			when String
-				buffer << " " << name << '="' << v.gsub('"', "&quot;") << '"'
-			when Symbol
-				buffer << " " << name << '="' << v.name.tr("_", "-").gsub('"', "&quot;") << '"'
-			when Integer, Float
-				buffer << " " << name << '="' << v.to_s << '"'
-			when Hash
-				case k
-				when :style
-					buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
-				else
-					__nested_attributes__(v, "#{name}-", buffer)
-				end
-			when Array
-				case k
-				when :style
-					buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
-				else
-					buffer << " " << name << '="' << __nested_tokens__(v) << '"'
-				end
-			when Set
-				case k
-				when :style
-					buffer << " " << name << '="' << __styles__(v).gsub('"', "&quot;") << '"'
-				else
-					buffer << " " << name << '="' << __nested_tokens__(v.to_a) << '"'
-				end
-			when Phlex::SGML::SafeObject
-				buffer << " " << name << '="' << v.to_s.gsub('"', "&quot;") << '"'
-			else
-				raise Phlex::ArgumentError.new("Invalid attribute value for #{k}: #{v.inspect}.")
+				buffer << " " << name << '="' << value << '"'
 			end
 		end
 
