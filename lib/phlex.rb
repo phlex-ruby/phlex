@@ -5,12 +5,11 @@ require "set"
 
 module Phlex
 	autoload :ArgumentError, "phlex/errors/argument_error"
-	autoload :DoubleRenderError, "phlex/errors/double_render_error"
 	autoload :BlackHole, "phlex/black_hole"
 	autoload :CSV, "phlex/csv"
 	autoload :Callable, "phlex/callable"
 	autoload :Context, "phlex/context"
-	autoload :ElementClobberingGuard, "phlex/element_clobbering_guard"
+	autoload :DoubleRenderError, "phlex/errors/double_render_error"
 	autoload :Elements, "phlex/elements"
 	autoload :Error, "phlex/error"
 	autoload :FIFO, "phlex/fifo"
