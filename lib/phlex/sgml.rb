@@ -578,7 +578,7 @@ class Phlex::SGML
 		end
 	end
 
-	def self.method_added(method_name)
+	private_class_method def self.method_added(method_name)
 		if method_name == :view_template
 			location = instance_method(method_name).source_location[0]
 
