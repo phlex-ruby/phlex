@@ -9,7 +9,6 @@ module Phlex
 	autoload :CSV, "phlex/csv"
 	autoload :Callable, "phlex/callable"
 	autoload :Context, "phlex/context"
-	autoload :DeferredRender, "phlex/deferred_render"
 	autoload :DoubleRenderError, "phlex/errors/double_render_error"
 	autoload :Elements, "phlex/elements"
 	autoload :Error, "phlex/error"
