@@ -1,20 +1,6 @@
 # frozen_string_literal: true
 
 Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, tag|
-	test "<#{tag}> called with an underscore prefix while overridden" do
-		example = Class.new(Phlex::HTML) do
-			define_method :view_template do
-				__send__("_#{method_name}")
-			end
-
-			define_method tag do
-				super(class: "overridden")
-			end
-		end
-
-		expect(example.call) == %(<#{tag}>)
-	end
-
 	test "<#{tag}> with attributes" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do

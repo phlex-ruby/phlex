@@ -94,8 +94,6 @@ module Phlex::SGML::Elements
 
 				nil
 			end
-
-			alias_method :_#{method_name}, :#{method_name}
 		RUBY
 
 		__registered_elements__[method_name] = tag
