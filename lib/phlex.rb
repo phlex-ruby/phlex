@@ -10,7 +10,6 @@ module Phlex
 	autoload :CSV, "phlex/csv"
 	autoload :Callable, "phlex/callable"
 	autoload :Context, "phlex/context"
-	autoload :DeferredRender, "phlex/deferred_render"
 	autoload :ElementClobberingGuard, "phlex/element_clobbering_guard"
 	autoload :Elements, "phlex/elements"
 	autoload :Error, "phlex/error"

@@ -92,7 +92,7 @@ class Phlex::SGML
 		@_context.around_render do
 			around_template do
 				if block
-					if Phlex::DeferredRender === self
+					if deferred?
 						vanish(self, &block)
 						view_template
 					else
@@ -116,6 +116,10 @@ class Phlex::SGML
 			end
 			buffer << context.buffer
 		end
+	end
+
+	def deferred?
+		false
 	end
 
 	def context
