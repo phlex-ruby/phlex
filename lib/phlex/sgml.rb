@@ -100,7 +100,7 @@ class Phlex::SGML
 							if args.length > 0
 								__yield_content_with_args__(*args, &block)
 							else
-								yield_content(&block)
+								__yield_content__(&block)
 							end
 						end
 					end
@@ -139,7 +139,7 @@ class Phlex::SGML
 		buffer << " "
 
 		if block_given?
-			yield_content(&)
+			__yield_content__(&)
 			buffer << " "
 		end
 
@@ -153,7 +153,7 @@ class Phlex::SGML
 		buffer = context.buffer
 
 		buffer << "<!-- "
-		yield_content(&)
+		__yield_content__(&)
 		buffer << " -->"
 
 		nil
@@ -180,7 +180,7 @@ class Phlex::SGML
 		if args.length > 0
 			@_context.capturing_into(+"") { __yield_content_with_args__(*args, &block) }
 		else
-			@_context.capturing_into(+"") { yield_content(&block) }
+			@_context.capturing_into(+"") { __yield_content__(&block) }
 		end
 	end
 
@@ -217,12 +217,12 @@ class Phlex::SGML
 			if renderable.arity == 0
 				__yield_content_with_no_args__(&renderable)
 			else
-				yield_content(&renderable)
+				__yield_content__(&renderable)
 			end
 		when String
 			plain(renderable)
 		when nil
-			yield_content(&) if block_given?
+			__yield_content__(&) if block_given?
 		else
 			raise Phlex::ArgumentError.new("You can't render a #{renderable.inspect}.")
 		end
@@ -267,7 +267,7 @@ class Phlex::SGML
 		nil
 	end
 
-	def yield_content
+	def __yield_content__
 		return unless block_given?
 
 		buffer = @_context.buffer
