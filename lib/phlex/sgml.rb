@@ -502,6 +502,14 @@ class Phlex::SGML
 				else
 					buffer << token.to_s
 				end
+			when Array
+				if token.length > 0
+					if i > 0
+						buffer << " " << __nested_tokens__(token)
+					else
+						buffer << __nested_tokens__(token)
+					end
+				end
 			when nil
 				# Do nothing
 			else
