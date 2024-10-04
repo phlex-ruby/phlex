@@ -229,8 +229,6 @@ class Phlex::SGML
 		nil
 	end
 
-	private
-
 	def vanish(*args)
 		return unless block_given?
 
@@ -242,6 +240,8 @@ class Phlex::SGML
 
 		nil
 	end
+
+	private
 
 	def render?
 		true
