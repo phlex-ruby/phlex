@@ -258,6 +258,24 @@ test "_, Array(Phlex::SGML::SafeObject)" do
 	) == %(<div attribute="Hello"></div>)
 end
 
+test "_, Array(String | Array)" do
+	expect(
+		phlex { div(attribute: ["hello", ["world"]]) },
+	) == %(<div attribute="hello world"></div>)
+end
+
+test "_, Array(Array | String)" do
+	expect(
+		phlex { div(attribute: [["hello"], "world"]) },
+	) == %(<div attribute="hello world"></div>)
+end
+
+test "_, Array(String | EmptyArray)" do
+	expect(
+		phlex { div(attribute: ["hello", []]) },
+	) == %(<div attribute="hello"></div>)
+end
+
 test "_, Array(*invalid*)" do
 	expect {
 		phlex { div(attribute: [Object.new]) }
