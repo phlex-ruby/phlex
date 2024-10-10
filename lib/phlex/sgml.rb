@@ -267,6 +267,10 @@ class Phlex::SGML
 		nil
 	end
 
+	def styles(value)
+		__styles__(value).gsub('"', "&quot;")
+	end
+
 	def __yield_content__
 		return unless block_given?
 
@@ -372,21 +376,21 @@ class Phlex::SGML
 			when Hash
 				case k
 				when :style
-					__styles__(v).gsub('"', "&quot;")
+					styles(v)
 				else
 					__nested_attributes__(v, "#{name}-", buffer)
 				end
 			when Array
 				case k
 				when :style
-					__styles__(v).gsub('"', "&quot;")
+					styles(v)
 				else
 					__nested_tokens__(v)
 				end
 			when Set
 				case k
 				when :style
-					__styles__(v).gsub('"', "&quot;")
+					styles(v)
 				else
 					__nested_tokens__(v.to_a)
 				end
