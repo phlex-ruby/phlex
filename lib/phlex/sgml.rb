@@ -229,6 +229,125 @@ class Phlex::SGML
 		nil
 	end
 
+	def tag(tag_name, ...)
+		normalized_tag_name = case tag_name
+		when Symbol
+			tag_name.name.downcase.tr("_", "-")
+		when String
+			tag_name.downcase.tr("_", "-")
+		else
+			raise Phlex::ArgumentError.new("Expected the tag name as a Symbol or String.")
+		end
+
+		if normalized_tag_name == "script"
+			raise Phlex::ArgumentError.new("You can’t use the `<script>` tag from the `tag` method. Use `unsafe_tag` instead, but be careful if using user input.")
+		end
+
+		unsafe_tag(normalized_tag_name, ...)
+	end
+
+	VOID_TAGS = %w[area base br col embed hr img input link meta source track].to_set.freeze
+	def unsafe_tag(tag, **attributes)
+		tag = case tag
+		when Symbol
+			tag.name.downcase.tr("_", "-")
+		when String
+			tag.downcase.tr("_", "-")
+		else
+			raise Phlex::ArgumentError.new("Expected the tag name as a Symbol or String.")
+		end
+		context = @_context
+		buffer = context.buffer
+		fragment = context.fragments
+		target_found = false
+		block_given = block_given?
+		void = VOID_TAGS.include?(tag)
+
+		if fragment
+			return if fragment.length == 0 # we found all our fragments already
+
+			id = attributes[:id]
+
+			if !context.in_target_fragment
+			  if fragment[id]
+					context.begin_target(id)
+					target_found = true
+				else
+					yield(self) if block_given && !void
+					return nil
+				end
+			end
+		end
+
+		if attributes.length > 0 # with attributes
+			if void
+				buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+			else
+				if block_given # with content block
+					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+
+					original_length = buffer.bytesize
+					content = yield(self)
+					if original_length == buffer.bytesize
+						case content
+						when ::Phlex::SGML::SafeObject
+							buffer << content.to_s
+						when String
+							buffer << ::Phlex::Escape.html_escape(content)
+						when Symbol
+							buffer << ::Phlex::Escape.html_escape(content.name)
+						when nil
+							nil
+						else
+							if (formatted_object = format_object(content))
+								buffer << ::Phlex::Escape.html_escape(formatted_object)
+							end
+						end
+					end
+
+					buffer << "</#{tag}>"
+				else # without content
+					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
+				end
+			end
+		else # without attributes
+			if void
+				buffer << "<#{tag}>"
+			else
+				if block_given # with content block
+					buffer << "<#{tag}>"
+
+					original_length = buffer.bytesize
+					content = yield(self)
+					if original_length == buffer.bytesize
+						case content
+						when ::Phlex::SGML::SafeObject
+							buffer << content.to_s
+						when String
+							buffer << ::Phlex::Escape.html_escape(content)
+						when Symbol
+							buffer << ::Phlex::Escape.html_escape(content.name)
+						when nil
+							nil
+						else
+							if (formatted_object = format_object(content))
+								buffer << ::Phlex::Escape.html_escape(formatted_object)
+							end
+						end
+					end
+
+					buffer << "</#{tag}>"
+				else # without content
+					buffer << "<#{tag}></#{tag}>"
+				end
+			end
+		end
+
+		context.end_target if target_found
+
+		nil
+	end
+
 	private
 
 	def vanish(*args)
