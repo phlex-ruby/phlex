@@ -26,6 +26,14 @@ test "unsafe event attribute" do
 	end
 end
 
+test "href with hash" do
+	expect {
+		phlex { a(href: {}) }
+	}.to_raise(Phlex::ArgumentError) do |error|
+		expect(error.message) == "Invalid attribute value for href: #{{}.inspect}."
+	end
+end
+
 test "unsafe href attribute" do
 	expect(
 		phlex { div(href: "javascript:alert('hello')") },

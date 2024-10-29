@@ -401,9 +401,16 @@ class Phlex::SGML
 			unless Phlex::SGML::SafeObject === v
 				normalized_name = lower_name.delete("^a-z-")
 
-				if value != true && REF_ATTRIBUTES.include?(normalized_name) && value.downcase.delete("^a-z:").start_with?("javascript:")
-					# We just ignore these because they were likely not specified by the developer.
-					next
+				if value != true && REF_ATTRIBUTES.include?(normalized_name)
+					case value
+					when String
+						if value.downcase.delete("^a-z:").start_with?("javascript:")
+							# We just ignore these because they were likely not specified by the developer.
+							next
+						end
+					else
+						raise Phlex::ArgumentError.new("Invalid attribute value for #{k}: #{v.inspect}.")
+					end
 				end
 
 				if normalized_name.bytesize > 2 && normalized_name.start_with?("on") && !normalized_name.include?("-")
