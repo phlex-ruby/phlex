@@ -5,7 +5,7 @@ require "set"
 
 module Phlex
 	autoload :ArgumentError, "phlex/errors/argument_error"
-	autoload :BlackHole, "phlex/black_hole"
+	autoload :Vanish, "phlex/vanish"
 	autoload :CSV, "phlex/csv"
 	autoload :Callable, "phlex/callable"
 	autoload :Context, "phlex/context"
