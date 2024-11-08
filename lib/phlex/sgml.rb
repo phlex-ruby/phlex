@@ -235,9 +235,9 @@ class Phlex::SGML
 		return unless block_given?
 
 		if args.length > 0
-			@_context.capturing_into(Phlex::BlackHole) { yield(*args) }
+			@_context.capturing_into(Phlex::Vanish) { yield(*args) }
 		else
-			@_context.capturing_into(Phlex::BlackHole) { yield(self) }
+			@_context.capturing_into(Phlex::Vanish) { yield(self) }
 		end
 
 		nil

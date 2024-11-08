@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # @api private
-module Phlex::BlackHole
+module Phlex::Vanish
 	extend self
 
 	def <<(anything)
