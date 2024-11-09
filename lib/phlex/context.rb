@@ -2,18 +2,19 @@
 
 # @api private
 class Phlex::Context
-	def initialize(user_context = {})
+	def initialize(user_context: {}, view_context: nil)
 		@buffer = +""
 		@capturing = false
 		@user_context = user_context
 		@fragments = nil
 		@in_target_fragment = false
 		@halt_signal = nil
+		@view_context = view_context
 	end
 
 	attr_accessor :buffer, :capturing, :user_context, :in_target_fragment
 
-	attr_reader :fragments
+	attr_reader :fragments, :view_context
 
 	def target_fragments(fragments)
 		@fragments = fragments.to_h { |it| [it, true] }

@@ -67,17 +67,16 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
-	def call(buffer = +"", context: Phlex::Context.new, view_context: nil, parent: nil, fragments: nil, &block)
+	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &block)
 		@_buffer = buffer
-		@_context = context
-		@_view_context = view_context
+		@_context = phlex_context = parent&.__context__ || Phlex::Context.new(user_context: context, view_context:)
 		@_parent = parent
 
 		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
 		@_rendered = true
 
 		if fragments
-			@_context.target_fragments(fragments)
+			phlex_context.target_fragments(fragments)
 		end
 
 		block ||= @_content_block
@@ -89,7 +88,7 @@ class Phlex::SGML
 			Fiber[:__phlex_component__] = self
 		end
 
-		@_context.around_render do
+		phlex_context.around_render do
 			before_template(&block)
 
 			around_template do
@@ -113,9 +112,11 @@ class Phlex::SGML
 			if Phlex::SUPPORTS_FIBER_STORAGE
 				Fiber[:__phlex_component__] = original_fiber_storage
 			end
-			buffer << context.buffer
+			buffer << phlex_context.buffer
 		end
 	end
+
+	protected def __context__ = @_context
 
 	def context
 		@_context.user_context
@@ -205,10 +206,10 @@ class Phlex::SGML
 	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
-			renderable.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &)
+			renderable.call(@_buffer, parent: self, &)
 		when Class
 			if renderable < Phlex::SGML
-				renderable.new.call(@_buffer, context: @_context, view_context: @_view_context, parent: self, &)
+				renderable.new.call(@_buffer, parent: self, &)
 			end
 		when Enumerable
 			renderable.each { |r| render(r, &) }
