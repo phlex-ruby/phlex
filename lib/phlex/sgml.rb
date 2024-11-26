@@ -19,9 +19,9 @@ class Phlex::SGML
 
 		# Create a new instance of the component.
 		# @note The block will not be delegated {#initialize}. Instead, it will be sent to {#template} when rendering.
-		def new(*, **, &block)
+		def new(*a, **k, &block)
 			if block
-				object = super(*, **, &nil)
+				object = super(*a, **k, &nil)
 				object.instance_exec { @_content_block = block }
 				object
 			else
@@ -70,10 +70,7 @@ class Phlex::SGML
 
 		return "" unless render?
 
-		if !parent && Phlex::SUPPORTS_FIBER_STORAGE
-			original_fiber_storage = Fiber[:__phlex_component__]
-			Fiber[:__phlex_component__] = self
-		end
+		Thread.current[:__phlex_component__] = self
 
 		phlex_context.around_render do
 			before_template(&block)
@@ -96,11 +93,10 @@ class Phlex::SGML
 		end
 
 		unless parent
-			if Phlex::SUPPORTS_FIBER_STORAGE
-				Fiber[:__phlex_component__] = original_fiber_storage
-			end
 			buffer << phlex_context.buffer
 		end
+	ensure
+		Thread.current[:__phlex_component__] = parent
 	end
 
 	protected def __context__ = @_context
@@ -287,13 +283,13 @@ class Phlex::SGML
 		nil
 	end
 
-	def __yield_content_with_args__(*)
+	def __yield_content_with_args__(*a)
 		return unless block_given?
 
 		buffer = @_context.buffer
 
 		original_length = buffer.bytesize
-		content = yield(*)
+		content = yield(*a)
 		__implicit_output__(content) if original_length == buffer.bytesize
 
 		nil

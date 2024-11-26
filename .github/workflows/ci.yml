@@ -11,8 +11,11 @@ jobs:
       matrix:
         os: ["ubuntu-latest", "macos-latest"]
         ruby-version:
+          - "3.2"
           - "3.3"
           - "head"
+          - "truffleruby"
+          - "truffleruby-head"
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -33,7 +36,7 @@ jobs:
         run: bundle exec sus
 
       - name: Quickdraw Tests
-        run: bundle exec qt
+        run: bundle exec qt -t 1
 
   rubocop:
     runs-on: "ubuntu-latest"
