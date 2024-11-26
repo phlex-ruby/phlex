@@ -71,8 +71,8 @@ class Phlex::SGML
 		return "" unless render?
 
 		if !parent && Phlex::SUPPORTS_FIBER_STORAGE
-			original_fiber_storage = Fiber[:__phlex_component__]
-			Fiber[:__phlex_component__] = self
+			original_fiber_storage = Thread.current[:__phlex_component__]
+			Thread.current[:__phlex_component__] = self
 		end
 
 		phlex_context.around_render do
@@ -97,7 +97,7 @@ class Phlex::SGML
 
 		unless parent
 			if Phlex::SUPPORTS_FIBER_STORAGE
-				Fiber[:__phlex_component__] = original_fiber_storage
+				Thread.current[:__phlex_component__] = original_fiber_storage
 			end
 			buffer << phlex_context.buffer
 		end
