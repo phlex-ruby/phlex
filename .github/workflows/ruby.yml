@@ -1,0 +1,49 @@
+name: Ruby
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  ruby-versions:
+    uses: ruby/actions/.github/workflows/ruby_versions.yml@3fbf038d6f0d8043b914f923764c61bc2a114a77
+    with:
+      engine: all
+      min_version: 3.1
+
+  test:
+    needs: ruby-versions
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: ${{ fromJson(needs.ruby-versions.outputs.versions) }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          bundler-args: --without development
+      - name: Quickdraw tests
+        run: bundle exec qt -t 1 "./quickdraw/**/*.test.rb"
+      - name: Sus Tests
+        run: bundle exec sus
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Run RuboCop
+        run: bundle exec rubocop
