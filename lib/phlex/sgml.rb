@@ -50,19 +50,6 @@ class Phlex::SGML
 		end
 	end
 
-	def await(task)
-		case task
-		when defined?(Concurrent::IVar) && Concurrent::IVar
-			flush if task.pending?
-			task.wait.value
-		when defined?(Async::Task) && Async::Task
-			flush if task.running?
-			task.wait
-		else
-			raise Phlex::ArgumentError.new("Expected an asynchronous task / promise.")
-		end
-	end
-
 	def to_proc
 		proc { |c| c.render(self) }
 	end
