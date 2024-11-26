@@ -35,7 +35,7 @@ jobs:
         run: bundle exec sus
 
       - name: Quickdraw Tests
-        run: bundle exec qt -t 1 quickdraw/**/*.test.rb
+        run: bundle exec qt -t 1
 
   rubocop:
     runs-on: "ubuntu-latest"
