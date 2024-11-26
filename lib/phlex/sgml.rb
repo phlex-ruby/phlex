@@ -109,6 +109,7 @@ class Phlex::SGML
 		@_context.user_context
 	end
 
+	# Output plain text.
 	def plain(content)
 		unless __text__(content)
 			raise Phlex::ArgumentError.new("You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information")
@@ -117,6 +118,7 @@ class Phlex::SGML
 		nil
 	end
 
+	# Output a single space character. If a block is given, a space will be output before and after the block.
 	def whitespace(&)
 		context = @_context
 		return if context.fragments && !context.in_target_fragment
@@ -133,6 +135,9 @@ class Phlex::SGML
 		nil
 	end
 
+	# Wrap the output in an HTML comment.
+	#
+	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Comments)
 	def comment(&)
 		context = @_context
 		return if context.fragments && !context.in_target_fragment
@@ -146,6 +151,7 @@ class Phlex::SGML
 		nil
 	end
 
+	# Output the given safe object as-is. You may need to use `safe` to mark a string as a safe object.
 	def raw(content)
 		case content
 		when Phlex::SGML::SafeObject
@@ -161,6 +167,7 @@ class Phlex::SGML
 		nil
 	end
 
+	# Capture the output of the block and returns it as a string.
 	def capture(*args, &block)
 		return "" unless block
 
@@ -171,6 +178,7 @@ class Phlex::SGML
 		end
 	end
 
+	# Mark the given string as safe for HTML output.
 	def safe(value)
 		case value
 		when String
