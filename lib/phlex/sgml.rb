@@ -70,10 +70,7 @@ class Phlex::SGML
 
 		return "" unless render?
 
-		unless parent
-			original_component = Thread.current[:__phlex_component__]
-			Thread.current[:__phlex_component__] = self
-		end
+		Thread.current[:__phlex_component__] = self
 
 		phlex_context.around_render do
 			before_template(&block)
@@ -96,9 +93,10 @@ class Phlex::SGML
 		end
 
 		unless parent
-			Thread.current[:__phlex_component__] = original_component
 			buffer << phlex_context.buffer
 		end
+	ensure
+		Thread.current[:__phlex_component__] = parent
 	end
 
 	protected def __context__ = @_context
