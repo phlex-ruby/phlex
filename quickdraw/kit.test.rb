@@ -15,7 +15,7 @@ end
 if Phlex::SUPPORTS_FIBER_STORAGE
 	# this test is flaky
 	test "raises when you try to render a component outside of a rendering context" do
-		expect { Components::SayHi() }.to_raise(RuntimeError) do |error|
+		expect { Components::SayHi("Joel") }.to_raise(RuntimeError) do |error|
 			expect(error.message) == "You can't call `SayHi' outside of a Phlex rendering context."
 		end
 	end
