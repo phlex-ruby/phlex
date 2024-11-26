@@ -70,7 +70,7 @@ class Phlex::SGML
 
 		return "" unless render?
 
-		Thread.current[:__phlex_component__] = self
+		Thread.current[:__phlex_component__] = [self, Fiber.current.object_id]
 
 		phlex_context.around_render do
 			before_template(&block)
@@ -96,7 +96,7 @@ class Phlex::SGML
 			buffer << phlex_context.buffer
 		end
 	ensure
-		Thread.current[:__phlex_component__] = parent
+		Thread.current[:__phlex_component__] = [parent, Fiber.current.object_id]
 	end
 
 	protected def __context__ = @_context
