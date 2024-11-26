@@ -15,6 +15,9 @@ jobs:
           - "3.3"
           - "head"
           - "truffleruby"
+          - "truffleruby-head"
+          - "jruby"
+          - "jruby-head"
 
     runs-on: ${{ matrix.os }}
     steps:
