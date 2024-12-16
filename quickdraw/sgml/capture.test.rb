@@ -11,5 +11,5 @@ test "arguments are passed to the capture block" do
 		"#{a} #{b} #{c}"
 	end
 
-	expect(output) == "<h1>a b c</h1>"
+	assert_equal output, "<h1>a b c</h1>"
 end

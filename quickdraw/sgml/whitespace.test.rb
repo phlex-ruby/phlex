@@ -5,21 +5,21 @@ require "sgml_helper"
 include SGMLHelper
 
 test "whitespae between" do
-	expect(
-		phlex {
-			div
-			whitespace
-			div
-		},
-	) == %(<div></div> <div></div>)
+	output = phlex do
+		div
+		whitespace
+		div
+	end
+
+	assert_equal output, %(<div></div> <div></div>)
 end
 
 test "whitespae around" do
-	expect(
-		phlex {
-			div
-			whitespace { div }
-			div
-		},
-	) == %(<div></div> <div></div> <div></div>)
+	output = phlex do
+		div
+		whitespace { div }
+		div
+	end
+
+	assert_equal output, %(<div></div> <div></div> <div></div>)
 end

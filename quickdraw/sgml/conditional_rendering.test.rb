@@ -13,6 +13,6 @@ class Example < Phlex::HTML
 end
 
 test do
-	expect(Example.new(render: true).call) == "<h1>Hello</h1>"
-	expect(Example.new(render: false).call) == ""
+	assert_equal Example.new(render: true).call, "<h1>Hello</h1>"
+	assert_equal Example.new(render: false).call, ""
 end

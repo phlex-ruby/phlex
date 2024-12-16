@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 test "using a component without a source location" do
-	expect {
+	refute_raises do
 		# Intentionally not passing a source location here.
 		eval <<~RUBY
 			class Example < Phlex::HTML
@@ -9,5 +9,5 @@ test "using a component without a source location" do
 				end
 			end
 		RUBY
-	}.not_to_raise
+	end
 end

@@ -27,5 +27,5 @@ class Example < Phlex::HTML
 end
 
 test "callbacks are called in the correct order" do
-	expect(Example.call) == ("<i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i>")
+	assert_equal Example.call, "<i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i>"
 end

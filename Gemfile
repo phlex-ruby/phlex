@@ -7,7 +7,7 @@ gemspec
 
 group :test do
 	gem "sus"
-	gem "quickdraw", github: "joeldrapper/quickdraw"
+	gem "quickdraw", github: "joeldrapper/quickdraw", branch: "assert-style"
 	gem "simplecov", require: false
 	gem "selenium-webdriver"
 end

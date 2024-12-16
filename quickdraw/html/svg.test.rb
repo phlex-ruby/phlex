@@ -15,9 +15,9 @@ class ExampleWithoutContent < Phlex::HTML
 end
 
 test "rendering SVG without content" do
-	expect(ExampleWithoutContent.call) == %(<svg></svg>)
+	assert_equal %(<svg></svg>), ExampleWithoutContent.call
 end
 
 test "rendering SVG inside HTML components" do
-	expect(Example.call) == %(<svg><path d="321"></path></svg>)
+	assert_equal %(<svg><path d="321"></path></svg>), Example.call
 end

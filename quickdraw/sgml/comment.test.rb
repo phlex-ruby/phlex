@@ -5,19 +5,19 @@ require "sgml_helper"
 include SGMLHelper
 
 test "text comment" do
-	expect(
-		phlex {
-			comment { "Hello World" }
-		},
-	) == %(<!-- Hello World -->)
+	output = phlex do
+		comment { "Hello World" }
+	end
+
+	assert_equal output, "<!-- Hello World -->"
 end
 
 test "block comment with markup" do
-	expect(
-		phlex {
-			comment {
-				h1 { "Hello World" }
-			}
-		},
-	) == %(<!-- <h1>Hello World</h1> -->)
+	output = phlex do
+		comment do
+			h1 { "Hello World" }
+		end
+	end
+
+	assert_equal output, "<!-- <h1>Hello World</h1> -->"
 end

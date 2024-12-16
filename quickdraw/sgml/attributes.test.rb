@@ -5,613 +5,519 @@ require "sgml_helper"
 include SGMLHelper
 
 test "id attributes must be lower case symbols" do
-	expect { phlex { div("id" => "abc") } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div("ID" => "abc") } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(:ID => "abc") } }.to_raise(Phlex::ArgumentError)
+	assert_raises(Phlex::ArgumentError) { phlex { div("id" => "abc") } }
+	assert_raises(Phlex::ArgumentError) { phlex { div("ID" => "abc") } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(:ID => "abc") } }
 
-	expect(
-		phlex { div(id: "abc") },
-	) == %(<div id="abc"></div>)
+	output = phlex { div(id: "abc") }
+	assert_equal output, %(<div id="abc"></div>)
 end
 
 test "*invalid*, _" do
-	expect { phlex { div(Object.new => "abc") } }.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Attribute keys should be Strings or Symbols."
+	error = assert_raises(Phlex::ArgumentError) do
+		phlex { div(Object.new => "abc") }
 	end
+
+	assert_equal error.message, "Attribute keys should be Strings or Symbols."
 end
 
 test "unsafe event attribute" do
-	expect { phlex { div("onclick" => true) } }.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Unsafe attribute name detected: onclick."
+	error = assert_raises(Phlex::ArgumentError) do
+		phlex { div("onclick" => true) }
 	end
+
+	assert_equal error.message, "Unsafe attribute name detected: onclick."
 end
 
 test "href with hash" do
-	expect {
+	error = assert_raises(Phlex::ArgumentError) do
 		phlex { a(href: {}) }
-	}.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Invalid attribute value for href: #{{}.inspect}."
 	end
+
+	assert_equal error.message, "Invalid attribute value for href: #{{}.inspect}."
 end
 
 test "unsafe href attribute" do
-	expect(
-		phlex { div(href: "javascript:alert('hello')") },
-	) == %(<div></div>)
-
-	expect(
-		phlex { div(href: "Javascript:alert('hello')") },
-	) == %(<div></div>)
-
-	expect(
-		phlex { div("href" => "javascript:alert('hello')") },
-	) == %(<div></div>)
-
-	expect(
-		phlex { div("Href" => "javascript:alert('hello')") },
-	) == %(<div></div>)
-
-	expect(
-		phlex { div("Href" => "javascript:javascript:alert('hello')") },
-	) == %(<div></div>)
-
-	expect(
-		phlex { div(href: " \t\njavascript:alert('hello')") },
-	) == %(<div></div>)
+	[
+		phlex { a(href: "javascript:alert('hello')") },
+		phlex { a(href: "Javascript:alert('hello')") },
+		phlex { a("href" => "javascript:alert('hello')") },
+		phlex { a("Href" => "javascript:alert('hello')") },
+		phlex { a("Href" => "javascript:javascript:alert('hello')") },
+		phlex { a(href: " \t\njavascript:alert('hello')") },
+	].each do |output|
+		assert_equal output, %(<a></a>)
+	end
 end
 
-test "unsafe attribute name with escape characters" do
-	expect {
+test "unsafe attribute name <" do
+	error = assert_raises(Phlex::ArgumentError) do
 		phlex { div("<" => true) }
-	}.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Unsafe attribute name detected: <."
 	end
 
-	expect {
+	assert_equal error.message, "Unsafe attribute name detected: <."
+end
+
+test "unsafe attribute name >" do
+	error = assert_raises(Phlex::ArgumentError) do
 		phlex { div(">" => true) }
-	}.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Unsafe attribute name detected: >."
 	end
 
-	expect {
+	assert_equal error.message, "Unsafe attribute name detected: >."
+end
+
+test "unsafe attribute name &" do
+	error = assert_raises(Phlex::ArgumentError) do
 		phlex { div("&" => true) }
-	}.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Unsafe attribute name detected: &."
 	end
 
-	expect {
+	assert_equal error.message, "Unsafe attribute name detected: &."
+end
+
+test "unsafe attribute name '" do
+	error = assert_raises(Phlex::ArgumentError) do
 		phlex { div("'" => true) }
-	}.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Unsafe attribute name detected: '."
 	end
 
-	expect {
+	assert_equal error.message, "Unsafe attribute name detected: '."
+end
+
+test "unsafe attribute name \"" do
+	error = assert_raises(Phlex::ArgumentError) do
 		phlex { div('"' => true) }
-	}.to_raise(Phlex::ArgumentError) do |error|
-		expect(error.message) == "Unsafe attribute name detected: \"."
 	end
+
+	assert_equal error.message, "Unsafe attribute name detected: \"."
 end
 
 test "_, nil" do
-	expect(
-		phlex { div(attribute: nil) },
-	) == %(<div></div>)
+	output = phlex { div(attribute: nil) }
+	assert_equal output, %(<div></div>)
 end
 
 test "_, true" do
-	expect(
-		phlex { div(attribute: true) },
-	) == %(<div attribute></div>)
+	output = phlex { div(attribute: true) }
+	assert_equal output, %(<div attribute></div>)
 end
 
 test "_, false" do
-	expect(
-		phlex { div(attribute: false) },
-	) == %(<div></div>)
+	output = phlex { div(attribute: false) }
+	assert_equal output, %(<div></div>)
 end
 
 test "_, String" do
-	expect(
-		phlex { div(attribute: "") },
-	) == %(<div attribute=""></div>)
+	with_empty_string = phlex { div(attribute: "") }
+	assert_equal with_empty_string, %(<div attribute=""></div>)
 
-	expect(
-		phlex { div(attribute: "test") },
-	) == %(<div attribute="test"></div>)
+	with_regular_string = phlex { div(attribute: "test") }
+	assert_equal with_regular_string, %(<div attribute="test"></div>)
 
-	expect(
-		phlex { div(attribute: "with_underscores") },
-	) == %(<div attribute="with_underscores"></div>)
+	with_underscores = phlex { div(attribute: "with_underscores") }
+	assert_equal with_underscores, %(<div attribute="with_underscores"></div>)
 
-	expect(
-		phlex { div(attribute: "with-dashes") },
-	) == %(<div attribute="with-dashes"></div>)
+	with_dashes = phlex { div(attribute: "with-dashes") }
+	assert_equal with_dashes, %(<div attribute="with-dashes"></div>)
 
-	expect(
-		phlex { div(attribute: "with spaces") },
-	) == %(<div attribute="with spaces"></div>)
+	with_spaces = phlex { div(attribute: "with spaces") }
+	assert_equal with_spaces, %(<div attribute="with spaces"></div>)
 
-	expect(
-		phlex { div(attribute: "with 'single quotes'") },
-	) == %(<div attribute="with 'single quotes'"></div>)
+	with_single_quotes = phlex { div(attribute: "with 'single quotes'") }
+	assert_equal with_single_quotes, %(<div attribute="with 'single quotes'"></div>)
 
-	expect(
-		phlex { div(attribute: "with <html>") },
-	) == %(<div attribute="with <html>"></div>)
+	with_html = phlex { div(attribute: "with <html>") }
+	assert_equal with_html, %(<div attribute="with <html>"></div>)
 
-	expect(
-		phlex { div(attribute: 'with "double quotes"') },
-	) == %(<div attribute="with &quot;double quotes&quot;"></div>)
+	with_double_quotes = phlex { div(attribute: 'with "double quotes"') }
+	assert_equal with_double_quotes, %(<div attribute="with &quot;double quotes&quot;"></div>)
 end
 
 test "_, Symbol" do
-	expect(
-		phlex { div(attribute: :"") },
-	) == %(<div attribute=""></div>)
+	empty_symbol = phlex { div(attribute: :"") }
+	assert_equal empty_symbol, %(<div attribute=""></div>)
 
-	expect(
-		phlex { div(attribute: :test) },
-	) == %(<div attribute="test"></div>)
+	simple_symbol = phlex { div(attribute: :test) }
+	assert_equal simple_symbol, %(<div attribute="test"></div>)
 
-	expect(
-		phlex { div(attribute: :with_underscores) },
-	) == %(<div attribute="with-underscores"></div>)
+	symbol_with_underscores = phlex { div(attribute: :with_underscores) }
+	assert_equal symbol_with_underscores, %(<div attribute="with-underscores"></div>)
 
-	expect(
-		phlex { div(attribute: :"with-dashes") },
-	) == %(<div attribute="with-dashes"></div>)
+	symbol_with_dashes = phlex { div(attribute: :"with-dashes") }
+	assert_equal symbol_with_dashes, %(<div attribute="with-dashes"></div>)
 
-	expect(
-		phlex { div(attribute: :"with spaces") },
-	) == %(<div attribute="with spaces"></div>)
+	symbol_with_spaces = phlex { div(attribute: :"with spaces") }
+	assert_equal symbol_with_spaces, %(<div attribute="with spaces"></div>)
 
-	expect(
-		phlex { div(attribute: :"with 'single quotes'") },
-	) == %(<div attribute="with 'single quotes'"></div>)
+	symbol_with_single_quotes = phlex { div(attribute: :"with 'single quotes'") }
+	assert_equal symbol_with_single_quotes, %(<div attribute="with 'single quotes'"></div>)
 
-	expect(
-		phlex { div(attribute: :"with <html>") },
-	) == %(<div attribute="with <html>"></div>)
+	symbol_with_html = phlex { div(attribute: :"with <html>") }
+	assert_equal symbol_with_html, %(<div attribute="with <html>"></div>)
 
-	expect(
-		phlex { div(attribute: :'with "double quotes"') },
-	) == %(<div attribute="with &quot;double quotes&quot;"></div>)
+	symbol_with_double_quotes = phlex { div(attribute: :'with "double quotes"') }
+	assert_equal symbol_with_double_quotes, %(<div attribute="with &quot;double quotes&quot;"></div>)
 end
 
 test "_, Integer" do
-	expect(
-		phlex { div(attribute: 0) },
-	) == %(<div attribute="0"></div>)
+	output = phlex { div(attribute: 0) }
+	assert_equal output, %(<div attribute="0"></div>)
 
-	expect(
-		phlex { div(attribute: 42) },
-	) == %(<div attribute="42"></div>)
+	output = phlex { div(attribute: 42) }
+	assert_equal output, %(<div attribute="42"></div>)
 end
 
 test "_, Float" do
-	expect(
-		phlex { div(attribute: 0.0) },
-	) == %(<div attribute="0.0"></div>)
+	output = phlex { div(attribute: 0.0) }
+	assert_equal output, %(<div attribute="0.0"></div>)
 
-	expect(
-		phlex { div(attribute: 42.0) },
-	) == %(<div attribute="42.0"></div>)
+	output = phlex { div(attribute: 42.0) }
+	assert_equal output, %(<div attribute="42.0"></div>)
 
-	expect(
-		phlex { div(attribute: 1.234) },
-	) == %(<div attribute="1.234"></div>)
+	output = phlex { div(attribute: 1.234) }
+	assert_equal output, %(<div attribute="1.234"></div>)
 end
 
 test "_, *invalid*" do
-	expect {
+	assert_raises(Phlex::ArgumentError) do
 		phlex { div(attribute: Object.new) }
-	}.to_raise(Phlex::ArgumentError)
+	end
 end
 
 test "_, Array" do
-	expect(
-		phlex { div(attribute: []) },
-	) == %(<div attribute=""></div>)
+	output = phlex { div(attribute: []) }
+	assert_equal output, %(<div attribute=""></div>)
 end
 
 test "_, Array(nil)" do
-	expect(
-		phlex { div(attribute: [nil, nil, nil]) },
-	) == %(<div attribute=""></div>)
+	output = phlex { div(attribute: [nil, nil, nil]) }
+	assert_equal output, %(<div attribute=""></div>)
 end
 
 test "_, Array(String)" do
-	expect(
-		phlex { div(attribute: ["Hello", "World"]) },
-	) == %(<div attribute="Hello World"></div>)
+	output = phlex { div(attribute: ["Hello", "World"]) }
+	assert_equal output, %(<div attribute="Hello World"></div>)
 
-	expect(
-		phlex { div(attribute: ["with_underscores", "with-dashes", "with spaces"]) },
-	) == %(<div attribute="with_underscores with-dashes with spaces"></div>)
+	output = phlex { div(attribute: ["with_underscores", "with-dashes", "with spaces"]) }
+	assert_equal output, %(<div attribute="with_underscores with-dashes with spaces"></div>)
 
-	expect(
-		phlex { div(attribute: ["with 'single quotes'", 'with "double quotes"']) },
-	) == %(<div attribute="with 'single quotes' with &quot;double quotes&quot;"></div>)
+	output = phlex { div(attribute: ["with 'single quotes'", 'with "double quotes"']) }
+	assert_equal output, %(<div attribute="with 'single quotes' with &quot;double quotes&quot;"></div>)
 end
 
 test "_, Array(Symbol)" do
-	expect(
-		phlex { div(attribute: [:hello, :world]) },
-	) == %(<div attribute="hello world"></div>)
+	output = phlex { div(attribute: [:hello, :world]) }
+	assert_equal output, %(<div attribute="hello world"></div>)
 
-	expect(
-		phlex { div(attribute: [:with_underscores, :"with-dashes", :"with spaces"]) },
-	) == %(<div attribute="with-underscores with-dashes with spaces"></div>)
+	output = phlex { div(attribute: [:with_underscores, :"with-dashes", :"with spaces"]) }
+	assert_equal output, %(<div attribute="with-underscores with-dashes with spaces"></div>)
 
-	expect(
-		phlex { div(attribute: [:with, :"single quotes", :'"double quotes"']) },
-	) == %(<div attribute="with single quotes &quot;double quotes&quot;"></div>)
+	output = phlex { div(attribute: [:with, :"'single quotes'", :'"double quotes"']) }
+	assert_equal output, %(<div attribute="with 'single quotes' &quot;double quotes&quot;"></div>)
 end
 
 test "_, Array(Integer)" do
-	expect(
-		phlex { div(attribute: [0, 42]) },
-	) == %(<div attribute="0 42"></div>)
+	output = phlex { div(attribute: [0, 42]) }
+	assert_equal output, %(<div attribute="0 42"></div>)
 end
 
 test "_, Array(Float)" do
-	expect(
-		phlex { div(attribute: [0.0, 42.0, 1.234]) },
-	) == %(<div attribute="0.0 42.0 1.234"></div>)
+	output = phlex { div(attribute: [0.0, 42.0, 1.234]) }
+	assert_equal output, %(<div attribute="0.0 42.0 1.234"></div>)
 end
 
 test "_, Array(Phlex::SGML::SafeObject)" do
-	expect(
-		phlex { div(attribute: [Phlex::SGML::SafeValue.new("Hello")]) },
-	) == %(<div attribute="Hello"></div>)
+	output = phlex { div(attribute: [Phlex::SGML::SafeValue.new("Hello")]) }
+	assert_equal output, %(<div attribute="Hello"></div>)
 end
 
 test "_, Array(String | Array)" do
-	expect(
-		phlex { div(attribute: ["hello", ["world"]]) },
-	) == %(<div attribute="hello world"></div>)
+	output = phlex { div(attribute: ["hello", ["world"]]) }
+	assert_equal output, %(<div attribute="hello world"></div>)
 end
 
 test "_, Array(Array | String)" do
-	expect(
-		phlex { div(attribute: [["hello"], "world"]) },
-	) == %(<div attribute="hello world"></div>)
+	output = phlex { div(attribute: [["hello"], "world"]) }
+	assert_equal output, %(<div attribute="hello world"></div>)
 end
 
 test "_, Array(String | EmptyArray)" do
-	expect(
-		phlex { div(attribute: ["hello", []]) },
-	) == %(<div attribute="hello"></div>)
+	output = phlex { div(attribute: ["hello", []]) }
+	assert_equal output, %(<div attribute="hello"></div>)
 end
 
 test "_, Array(*invalid*)" do
-	expect {
+	assert_raises(Phlex::ArgumentError) do
 		phlex { div(attribute: [Object.new]) }
-	}.to_raise(Phlex::ArgumentError)
+	end
 end
 
 test "_, Hash(Symbol, _)" do
-	expect(
-		phlex { div(attribute: { a_b_c: "world" }) },
-	) == %(<div attribute-a-b-c="world"></div>)
+	output = phlex { div(attribute: { a_b_c: "world" }) }
+	assert_equal output, %(<div attribute-a-b-c="world"></div>)
 
-	expect { phlex { div(attribute: { :'"' => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { :"'" => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { :"&" => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { :"<" => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { :">" => "a" }) } }.to_raise(Phlex::ArgumentError)
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { :'"' => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { :"'" => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { :"&" => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { :"<" => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { :">" => "a" }) } }
 end
 
 test "_, Hash(String, _)" do
-	expect(
-		phlex { div(attribute: { "a_b_c" => "world" }) },
-	) == %(<div attribute-a_b_c="world"></div>)
+	output = phlex { div(attribute: { "a_b_c" => "world" }) }
+	assert_equal output, %(<div attribute-a_b_c="world"></div>)
 
-	expect { phlex { div(attribute: { '"' => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { "'" => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { "&" => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { "<" => "a" }) } }.to_raise(Phlex::ArgumentError)
-	expect { phlex { div(attribute: { ">" => "a" }) } }.to_raise(Phlex::ArgumentError)
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { '"' => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { "'" => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { "&" => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { "<" => "a" }) } }
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { ">" => "a" }) } }
 end
 
 test "_, Hash(*invalid*, _)" do
-	expect { phlex { div(attribute: { Object.new => "a" }) } }.to_raise(Phlex::ArgumentError)
+	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { Object.new => "a" }) } }
 end
 
 test "_, Hash(_, String)" do
-	expect(
-		phlex { div(data: { controller: "with_underscores" }) },
-	) == %(<div data-controller="with_underscores"></div>)
+	with_underscores = phlex { div(data: { controller: "with_underscores" }) }
+	assert_equal with_underscores, %(<div data-controller="with_underscores"></div>)
 
-	expect(
-		phlex { div(data: { controller: "with-dashes" }) },
-	) == %(<div data-controller="with-dashes"></div>)
+	with_dashes = phlex { div(data: { controller: "with-dashes" }) }
+	assert_equal with_dashes, %(<div data-controller="with-dashes"></div>)
 
-	expect(
-		phlex { div(data: { controller: "with spaces" }) },
-	) == %(<div data-controller="with spaces"></div>)
+	with_spaces = phlex { div(data: { controller: "with spaces" }) }
+	assert_equal with_spaces, %(<div data-controller="with spaces"></div>)
 
-	expect(
-		phlex { div(data: { controller: "with 'single quotes'" }) },
-	) == %(<div data-controller="with 'single quotes'"></div>)
+	with_single_quotes = phlex { div(data: { controller: "with 'single quotes'" }) }
+	assert_equal with_single_quotes, %(<div data-controller="with 'single quotes'"></div>)
 
-	expect(
-		phlex { div(data: { controller: "with <html>" }) },
-	) == %(<div data-controller="with <html>"></div>)
+	with_html = phlex { div(data: { controller: "with <html>" }) }
+	assert_equal with_html, %(<div data-controller="with <html>"></div>)
 
-	expect(
-		phlex { div(data: { controller: 'with "double quotes"' }) },
-	) == %(<div data-controller="with &quot;double quotes&quot;"></div>)
+	with_double_quotes = phlex { div(data: { controller: 'with "double quotes"' }) }
+	assert_equal with_double_quotes, %(<div data-controller="with &quot;double quotes&quot;"></div>)
 end
 
 test "_, Hash(_, Symbol)" do
-	expect(
-		phlex { div(data: { controller: :with_underscores }) },
-	) == %(<div data-controller="with-underscores"></div>)
+	output = phlex { div(data: { controller: :with_underscores }) }
+	assert_equal output, %(<div data-controller="with-underscores"></div>)
 
-	expect(
-		phlex { div(data: { controller: :"with-dashes" }) },
-	) == %(<div data-controller="with-dashes"></div>)
+	output = phlex { div(data: { controller: :"with-dashes" }) }
+	assert_equal output, %(<div data-controller="with-dashes"></div>)
 
-	expect(
-		phlex { div(data: { controller: :"with spaces" }) },
-	) == %(<div data-controller="with spaces"></div>)
+	output = phlex { div(data: { controller: :"with spaces" }) }
+	assert_equal output, %(<div data-controller="with spaces"></div>)
 
-	expect(
-		phlex { div(data: { controller: :"with 'single quotes'" }) },
-	) == %(<div data-controller="with 'single quotes'"></div>)
+	output = phlex { div(data: { controller: :"with 'single quotes'" }) }
+	assert_equal output, %(<div data-controller="with 'single quotes'"></div>)
 
-	expect(
-		phlex { div(data: { controller: :"with <html>" }) },
-	) == %(<div data-controller="with <html>"></div>)
+	output = phlex { div(data: { controller: :"with <html>" }) }
+	assert_equal output, %(<div data-controller="with <html>"></div>)
 
-	expect(
-		phlex { div(data: { controller: :'with "double quotes"' }) },
-	) == %(<div data-controller="with &quot;double quotes&quot;"></div>)
+	output = phlex { div(data: { controller: :'with "double quotes"' }) }
+	assert_equal output, %(<div data-controller="with &quot;double quotes&quot;"></div>)
 end
 
 test "_, Hash(_, Integer)" do
-	expect(
-		phlex { div(data: { controller: 42 }) },
-	) == %(<div data-controller="42"></div>)
+	output = phlex { div(data: { controller: 42 }) }
+	assert_equal output, %(<div data-controller="42"></div>)
 
-	expect(
-		phlex { div(data: { controller: 1_234 }) },
-	) == %(<div data-controller="1234"></div>)
+	output = phlex { div(data: { controller: 1_234 }) }
+	assert_equal output, %(<div data-controller="1234"></div>)
 
-	expect(
-		phlex { div(data: { controller: 0 }) },
-	) == %(<div data-controller="0"></div>)
+	output = phlex { div(data: { controller: 0 }) }
+	assert_equal output, %(<div data-controller="0"></div>)
 end
 
 test "_, Hash(_, Float)" do
-	expect(
-		phlex { div(data: { controller: 42.0 }) },
-	) == %(<div data-controller="42.0"></div>)
+	output = phlex { div(data: { controller: 42.0 }) }
+	assert_equal output, %(<div data-controller="42.0"></div>)
 
-	expect(
-		phlex { div(data: { controller: 1.234 }) },
-	) == %(<div data-controller="1.234"></div>)
+	output = phlex { div(data: { controller: 1.234 }) }
+	assert_equal output, %(<div data-controller="1.234"></div>)
 
-	expect(
-		phlex { div(data: { controller: 0.0 }) },
-	) == %(<div data-controller="0.0"></div>)
+	output = phlex { div(data: { controller: 0.0 }) }
+	assert_equal output, %(<div data-controller="0.0"></div>)
 end
 
 test "_, Hash(_, Array)" do
-	expect(
-		phlex { div(data: { controller: [1, 2, 3] }) },
-	) == %(<div data-controller="1 2 3"></div>)
+	output = phlex { div(data: { controller: [1, 2, 3] }) }
+	assert_equal output, %(<div data-controller="1 2 3"></div>)
 end
 
 test "_, Hash(_, Set)" do
-	expect(
-		phlex { div(data: { controller: Set[1, 2, 3] }) },
-	) == %(<div data-controller="1 2 3"></div>)
+	output = phlex { div(data: { controller: Set[1, 2, 3] }) }
+	assert_equal output, %(<div data-controller="1 2 3"></div>)
 end
 
 test "_, Hash(_, Hash)" do
-	expect(
-		phlex { div(data: { controller: { hello: "world" } }) },
-	) == %(<div data-controller-hello="world"></div>)
+	output = phlex { div(data: { controller: { hello: "world" } }) }
+	assert_equal output, %(<div data-controller-hello="world"></div>)
 end
 
 test "_, Hash(_, Phlex::SGML::SafeObject)" do
-	expect(
-		phlex { div(data: { controller: Phlex::SGML::SafeValue.new("Hello") }) },
-	) == %(<div data-controller="Hello"></div>)
+	output = phlex { div(data: { controller: Phlex::SGML::SafeValue.new("Hello") }) }
+	assert_equal output, %(<div data-controller="Hello"></div>)
 end
 
 test "_, Hash(_, false)" do
-	expect(
-		phlex { div(data: { controller: false }) },
-	) == %(<div></div>)
+	output = phlex { div(data: { controller: false }) }
+	assert_equal output, %(<div></div>)
 end
 
 test "_, Hash(_, nil)" do
-	expect(
-		phlex { div(data: { controller: nil }) },
-	) == %(<div></div>)
+	output = phlex { div(data: { controller: nil }) }
+	assert_equal output, %(<div></div>)
 end
 
 test "_, Hash(_, *invalid*)" do
-	expect {
+	assert_raises(Phlex::ArgumentError) do
 		phlex { div(data: { controller: Object.new }) }
-	}.to_raise(Phlex::ArgumentError)
+	end
 end
 
 test "_, Set(nil)" do
-	expect(
-		phlex { div(attribute: Set[nil, nil, nil]) },
-	) == %(<div attribute=""></div>)
+	output = phlex { div(attribute: Set[nil, nil, nil]) }
+	assert_equal output, %(<div attribute=""></div>)
 end
 
 test "_, Set(String)" do
-	expect(
-		phlex { div(attribute: Set["Hello", "World"]) },
-	) == %(<div attribute="Hello World"></div>)
+	output = phlex { div(attribute: Set["Hello", "World"]) }
+	assert_equal output, %(<div attribute="Hello World"></div>)
 
-	expect(
-		phlex { div(attribute: Set["with_underscores", "with-dashes", "with spaces"]) },
-	) == %(<div attribute="with_underscores with-dashes with spaces"></div>)
+	output = phlex { div(attribute: Set["with_underscores", "with-dashes", "with spaces"]) }
+	assert_equal output, %(<div attribute="with_underscores with-dashes with spaces"></div>)
 
-	expect(
-		phlex { div(attribute: Set["with 'single quotes'", 'with "double quotes"']) },
-	) == %(<div attribute="with 'single quotes' with &quot;double quotes&quot;"></div>)
+	output = phlex { div(attribute: Set["with 'single quotes'", 'with "double quotes"']) }
+	assert_equal output, %(<div attribute="with 'single quotes' with &quot;double quotes&quot;"></div>)
 end
 
 test "_, Set(Symbol)" do
-	expect(
-		phlex { div(attribute: Set[:hello, :world]) },
-	) == %(<div attribute="hello world"></div>)
+	output = phlex { div(attribute: Set[:hello, :world]) }
+	assert_equal output, %(<div attribute="hello world"></div>)
 
-	expect(
-		phlex { div(attribute: Set[:with_underscores, :"with-dashes", :"with spaces"]) },
-	) == %(<div attribute="with-underscores with-dashes with spaces"></div>)
+	output = phlex { div(attribute: Set[:with_underscores, :"with-dashes", :"with spaces"]) }
+	assert_equal output, %(<div attribute="with-underscores with-dashes with spaces"></div>)
 
-	expect(
-		phlex { div(attribute: Set[:with, :"single quotes", :'"double quotes"']) },
-	) == %(<div attribute="with single quotes &quot;double quotes&quot;"></div>)
+	output = phlex { div(attribute: Set[:with, :"single quotes", :'"double quotes"']) }
+	assert_equal output, %(<div attribute="with single quotes &quot;double quotes&quot;"></div>)
 end
 
 test "_, Set(Integer)" do
-	expect(
-		phlex { div(attribute: Set[0, 42]) },
-	) == %(<div attribute="0 42"></div>)
+	output = phlex { div(attribute: Set[0, 42]) }
+	assert_equal output, %(<div attribute="0 42"></div>)
 end
 
 test "_, Set(Float)" do
-	expect(
-		phlex { div(attribute: Set[0.0, 42.0, 1.234]) },
-	) == %(<div attribute="0.0 42.0 1.234"></div>)
+	output = phlex { div(attribute: Set[0.0, 42.0, 1.234]) }
+	assert_equal output, %(<div attribute="0.0 42.0 1.234"></div>)
 end
 
 test "_, Set(Phlex::SGML::SafeObject)" do
-	expect(
-		phlex {
-			div(attribute: Set[
-			Phlex::SGML::SafeValue.new("Hello"),
-		])
-		},
-	) == %(<div attribute="Hello"></div>)
+	output = phlex do
+		div(attribute: Set[Phlex::SGML::SafeValue.new("Hello")])
+	end
+
+	assert_equal output, %(<div attribute="Hello"></div>)
 end
 
 test "_, Set(*invalid*)" do
-	expect {
+	assert_raises(Phlex::ArgumentError) do
 		phlex { div(attribute: Set[Object.new]) }
-	}.to_raise(Phlex::ArgumentError)
+	end
 end
 
 test ":style, Array(nil)" do
-	expect(
-		phlex { div(style: [nil, nil, nil]) },
-	) == %(<div style=""></div>)
+	output = phlex { div(style: [nil, nil, nil]) }
+	assert_equal output, %(<div style=""></div>)
 end
 
 test ":style, Array(Symbol)" do
-	expect {
+	assert_raises(Phlex::ArgumentError) do
 		phlex { div(style: [:color_blue]) }
-	}.to_raise(Phlex::ArgumentError)
+	end
 end
 
 test ":style, Array(String)" do
-	expect(
-		phlex { div(style: ["color: blue;", "font-weight: bold"]) },
-	) == %(<div style="color: blue; font-weight: bold;"></div>)
+	output = phlex { div(style: ["color: blue;", "font-weight: bold"]) }
+	assert_equal output, %(<div style="color: blue; font-weight: bold;"></div>)
 
-	expect(
-		phlex { div(style: ["font-family: 'MonoLisa'"]) },
-	) == %(<div style="font-family: 'MonoLisa';"></div>)
+	output = phlex { div(style: ["font-family: 'MonoLisa'"]) }
+	assert_equal output, %(<div style="font-family: 'MonoLisa';"></div>)
 
-	expect(
-		phlex { div(style: ['font-family: "MonoLisa"']) },
-	) == %(<div style="font-family: &quot;MonoLisa&quot;;"></div>)
+	output = phlex { div(style: ['font-family: "MonoLisa"']) }
+	assert_equal output, %(<div style="font-family: &quot;MonoLisa&quot;;"></div>)
 end
 
 test ":style, Array(Phlex::SGML::SafeObject)" do
-	expect(
-		phlex { div(style: [Phlex::SGML::SafeValue.new("color: blue")]) },
-	) == %(<div style="color: blue;"></div>)
+	output = phlex { div(style: [Phlex::SGML::SafeValue.new("color: blue")]) }
+	assert_equal output, %(<div style="color: blue;"></div>)
 
-	expect(
-		phlex { div(style: [Phlex::SGML::SafeValue.new("font-weight: bold;")]) },
-	) == %(<div style="font-weight: bold;"></div>)
+	output = phlex { div(style: [Phlex::SGML::SafeValue.new("font-weight: bold;")]) }
+	assert_equal output, %(<div style="font-weight: bold;"></div>)
 end
 
 test ":style, Array(Hash)" do
-	expect(
-		phlex { div(style: [{ color: "blue" }, { font_weight: "bold", line_height: 1.5 }]) },
-	) == %(<div style="color: blue; font-weight: bold; line-height: 1.5;"></div>)
+	output = phlex { div(style: [{ color: "blue" }, { font_weight: "bold", line_height: 1.5 }]) }
+	assert_equal output, %(<div style="color: blue; font-weight: bold; line-height: 1.5;"></div>)
 end
 
 test ":style, Set(nil)" do
-	expect(
-		phlex { div(style: Set[nil]) },
-	) == %(<div style=""></div>)
+	output = phlex { div(style: Set[nil]) }
+	assert_equal output, %(<div style=""></div>)
 end
 
 test ":style, Set(String)" do
-	expect(
-		phlex { div(style: Set["color: blue"]) },
-	) == %(<div style="color: blue;"></div>)
+	output = phlex { div(style: Set["color: blue"]) }
+	assert_equal output, %(<div style="color: blue;"></div>)
 end
 
 test ":style, Hash(Symbol, String)" do
-	expect(
-		phlex { div(style: { color: "blue", font_weight: "bold" }) },
-	) == %(<div style="color: blue; font-weight: bold;"></div>)
+	output = phlex { div(style: { color: "blue", font_weight: "bold" }) }
+	assert_equal output, %(<div style="color: blue; font-weight: bold;"></div>)
 end
 
 test ":style, Hash(Symbol, Integer)" do
-	expect(
-		phlex { div(style: { line_height: 2 }) },
-	) == %(<div style="line-height: 2;"></div>)
+	output = phlex { div(style: { line_height: 2 }) }
+	assert_equal output, %(<div style="line-height: 2;"></div>)
 end
 
 test ":style, Hash(Symbol, Float)" do
-	expect(
-		phlex { div(style: { line_height: 1.5 }) },
-	) == %(<div style="line-height: 1.5;"></div>)
+	output = phlex { div(style: { line_height: 1.5 }) }
+	assert_equal output, %(<div style="line-height: 1.5;"></div>)
 end
 
 test ":style, Hash(Symbol, Symbol)" do
-	expect(
-		phlex { div(style: { flex_direction: :column_reverse }) },
-	) == %(<div style="flex-direction: column-reverse;"></div>)
+	output = phlex { div(style: { flex_direction: :column_reverse }) }
+	assert_equal output, %(<div style="flex-direction: column-reverse;"></div>)
 
-	expect(
-		phlex { div(style: { flex_direction: :'"double quotes"' }) },
-	) == %(<div style="flex-direction: &quot;double quotes&quot;;"></div>)
+	output = phlex { div(style: { flex_direction: :'"double quotes"' }) }
+	assert_equal output, %(<div style="flex-direction: &quot;double quotes&quot;;"></div>)
 end
 
 test ":style, Hash(Symbol, Phlex::SGML::SafeObject)" do
-	expect(
-		phlex { div(style: { color: Phlex::SGML::SafeValue.new("blue") }) },
-	) == %(<div style="color: blue;"></div>)
+	output = phlex { div(style: { color: Phlex::SGML::SafeValue.new("blue") }) }
+	assert_equal output, %(<div style="color: blue;"></div>)
 end
 
 test ":style, Hash(Symbol, nil)" do
-	expect(
-		phlex { div(style: { color: nil }) },
-	) == %(<div style=""></div>)
+	output = phlex { div(style: { color: nil }) }
+	assert_equal output, %(<div style=""></div>)
 end
 
 test ":style, Hash(Symbol, *invalid*)" do
-	expect {
+	assert_raises(Phlex::ArgumentError) do
 		phlex { div(style: { color: Object.new }) }
-	}.to_raise(Phlex::ArgumentError)
+	end
 end
 
 test ":style, Hash(String, String)" do
-	expect(
-		phlex { div(style: { "color" => "blue" }) },
-	) == %(<div style="color: blue;"></div>)
+	output = phlex { div(style: { "color" => "blue" }) }
+	assert_equal output, %(<div style="color: blue;"></div>)
 end
 
 test ":style, Hash(*invalid*, String)" do
-	expect {
+	assert_raises(Phlex::ArgumentError) do
 		phlex { div(style: { Object.new => "blue" }) }
-	}.to_raise(Phlex::ArgumentError)
+	end
 end
 
 # This is just for coverage.

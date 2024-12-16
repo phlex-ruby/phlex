@@ -11,7 +11,7 @@ class TestClass < Phlex::HTML
 end
 
 test "should render the test class" do
-	expect(TestClass.call) == %q(<select name="test"></select><input type="text" name="other">)
+	assert_equal TestClass.call, %q(<select name="test"></select><input type="text" name="other">)
 end
 
 class OtherTestClass < Phlex::HTML
@@ -25,5 +25,5 @@ class OtherTestClass < Phlex::HTML
 end
 
 test "should render the test class" do
-	expect(OtherTestClass.call) == %q(<ul></ul><p>hi there</p>)
+	assert_equal OtherTestClass.call, %q(<ul></ul><p>hi there</p>)
 end

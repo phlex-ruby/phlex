@@ -66,44 +66,39 @@ class WithCaptureBlock < Phlex::HTML
 end
 
 test "renders the just the target fragment" do
-	expect(
-		StandardElementExample.new.call(fragments: ["target"]),
-	) == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
+	output = StandardElementExample.new.call(fragments: ["target"])
+	assert_equal output, %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
 end
 
 test "works with void elements" do
-	expect(
-		VoidElementExample.new.call(fragments: ["target"]),
-	) == %(<img id="target" src="image.jpg">)
+	output = VoidElementExample.new.call(fragments: ["target"])
+	assert_equal output, %(<img id="target" src="image.jpg">)
 end
 
 test "supports multiple fragments" do
-	expect(
-		StandardElementExample.new.call(fragments: ["target", "image"]),
-	) == %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1><img id="image" src="after.jpg">)
+	output = StandardElementExample.new.call(fragments: ["target", "image"])
+	assert_equal output, %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1><img id="image" src="after.jpg">)
 end
 
 test "halts early after all fragments are found" do
 	called = false
 	checker = -> { called = true }
 	StandardElementExample.new(checker).call(fragments: ["target"])
-	expect(called) == false
+
+	refute called
 end
 
 test "with a capture block doesn't render the capture block" do
-	expect(
-		WithCaptureBlock.new.call(fragments: ["after"]),
-	) == %(<h1 id="after">After</h1>)
+	output = WithCaptureBlock.new.call(fragments: ["after"])
+	assert_equal output, %(<h1 id="after">After</h1>)
 end
 
 test "with a capture block renders the capture block when selected" do
-	expect(
-		WithCaptureBlock.new.call(fragments: ["around"]),
-	) == %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
+	output = WithCaptureBlock.new.call(fragments: ["around"])
+	assert_equal output, %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
 end
 
 test "with a capture block doesn't select from the capture block" do
-	expect(
-		WithCaptureBlock.new.call(fragments: ["inside"]),
-	) == ""
+	output = WithCaptureBlock.new.call(fragments: ["inside"])
+	assert_equal output, ""
 end
