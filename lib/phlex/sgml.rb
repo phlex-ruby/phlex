@@ -47,6 +47,8 @@ class Phlex::SGML
 	def view_template
 		if block_given?
 			yield
+		else
+			plain "Phlex Warning: Your `#{self.class.name}` class doesn't define a `view_template` method. If you are upgrading to Phlex 2.x make sure to rename your `template` method to `view_template`. See: https://beta.phlex.fun/guides/v2-upgrade.html"
 		end
 	end
 
