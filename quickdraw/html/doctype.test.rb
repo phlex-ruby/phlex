@@ -11,5 +11,5 @@ class Example < Phlex::HTML
 end
 
 test do
-	expect(Example.call) == "<html><head><!doctype html></head></html>"
+	assert_equal Example.call, "<html><head><!doctype html></head></html>"
 end

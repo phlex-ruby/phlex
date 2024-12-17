@@ -5,35 +5,32 @@ require "sgml_helper"
 include SGMLHelper
 
 test "with string" do
-	expect(
-		phlex { plain "Hello, World!" },
-	) == "Hello, World!"
+	output = phlex { plain "Hello, World!" }
+	assert_equal output, "Hello, World!"
 end
 
 test "with symbol" do
-	expect(
-		phlex { plain :hello_world },
-	) == "hello_world"
+	output = phlex { plain :hello_world }
+	assert_equal output, "hello_world"
 end
 
 test "with integer" do
-	expect(
-		phlex { plain 42 },
-	) == "42"
+	output =	phlex { plain 42 }
+	assert_equal output, "42"
 end
 
 test "with float" do
-	expect(
-		phlex { plain 3.14 },
-	) == "3.14"
+	output = phlex { plain 3.14 }
+	assert_equal output, "3.14"
 end
 
 test "with nil" do
-	expect(
-		phlex { plain nil },
-	) == ""
+	output = phlex { plain nil }
+	assert_equal output, ""
 end
 
 test "with invalid arguments" do
-	expect { phlex { plain [] } }.to_raise(Phlex::ArgumentError)
+	assert_raises(Phlex::ArgumentError) do
+		phlex { plain [] }
+	end
 end

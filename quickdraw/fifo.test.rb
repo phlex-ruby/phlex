@@ -7,7 +7,7 @@ test "expires keys" do
 		fifo[i] = "a"
 	end
 
-	expect(fifo.size) == 3
+	assert_equal fifo.size, 3
 end
 
 test "reading a key" do
@@ -15,7 +15,7 @@ test "reading a key" do
 
 	fifo[0] = "a"
 
-	expect(fifo[0]) == "a"
+	assert_equal fifo[0], "a"
 end
 
 test "ignores values that are too large" do
@@ -24,5 +24,5 @@ test "ignores values that are too large" do
 	fifo[1] = "a" * 10
 	fifo[2] = "a" * 11
 
-	expect(fifo.size) == 1
+	assert_equal fifo.size, 1
 end

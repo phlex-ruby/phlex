@@ -39,7 +39,7 @@ test "basic csv" do
 		Product.new(" Banana ", 2.00),
 	]
 
-	expect(Example.new(products).call) == <<~CSV
+	assert_equal Example.new(products).call, <<~CSV
 		name,price
 		Apple,1.0
 		" Banana ",2.0
@@ -52,7 +52,7 @@ test "trim whitespace" do
 		Product.new("Banana ", 2.00),
 	]
 
-	expect(TrimWhitespace.new(products).call) == <<~CSV
+	assert_equal TrimWhitespace.new(products).call, <<~CSV
 		name,price
 		Apple,1.0
 		Banana,2.0
@@ -65,7 +65,7 @@ test "escape csv injection" do
 		Product.new("Banana", "+C2"),
 	]
 
-	expect(EscapeCSVInjection.new(products).call) == <<~CSV
+	assert_equal EscapeCSVInjection.new(products).call, <<~CSV
 		name,price
 		Apple,"'=SUM(A1:B1)"
 		Banana,"'+C2"
@@ -78,16 +78,18 @@ test "no headers" do
 		Product.new("Banana", 2.00),
 	]
 
-	expect(NoHeaders.new(products).call) == <<~CSV
+	assert_equal NoHeaders.new(products).call, <<~CSV
 		Apple,1.0
 		Banana,2.0
 	CSV
 end
 
 test "content type" do
-	expect(Example.new([]).content_type) == "text/csv"
+	assert_equal Example.new([]).content_type, "text/csv"
 end
 
 test "raises an error if there's no escape plan" do
-	expect { Base.new([]).call }.to_raise
+	assert_raises(RuntimeError) do
+		Base.new([]).call
+	end
 end

@@ -6,7 +6,7 @@ test "components render with a default blank view_template" do
 		end
 	end
 
-	expect(component.new.call) == ""
+	assert_equal component.new.call, ""
 end
 
 test "components with old `template` method render warning" do
@@ -16,7 +16,7 @@ test "components with old `template` method render warning" do
 		end
 	end
 
-	expect(component.new.call) == Phlex::Escape.html_escape(
+	assert_equal component.new.call, Phlex::Escape.html_escape(
 		%(Phlex Warning: Your `#{component.name}` class doesn't define a `view_template` method. If you are upgrading to Phlex 2.x make sure to rename your `template` method to `view_template`. See: https://beta.phlex.fun/guides/v2-upgrade.html)
 	)
 end
@@ -24,7 +24,7 @@ end
 test "components with no `view_template` method render warning" do
 	component = Class.new(Phlex::HTML)
 
-	expect(component.new.call) == Phlex::Escape.html_escape(
+	assert_equal component.new.call, Phlex::Escape.html_escape(
 		%(Phlex Warning: Your `#{component.name}` class doesn't define a `view_template` method. If you are upgrading to Phlex 2.x make sure to rename your `template` method to `view_template`. See: https://beta.phlex.fun/guides/v2-upgrade.html)
 	)
 end
@@ -34,5 +34,6 @@ test "can't render a component more than once" do
 
 	instance = component.new
 	instance.call
-	expect { instance.call }.to_raise(Phlex::DoubleRenderError)
+
+	assert_raises(Phlex::DoubleRenderError) { instance.call }
 end

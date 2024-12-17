@@ -7,5 +7,5 @@ class Example < 💪::HTML
 end
 
 test "💪" do
-	expect(Example.new.call) == %(<h1>💪</h1>)
+	assert_equal Example.new.call, %(<h1>💪</h1>)
 end

@@ -9,10 +9,10 @@ class Example < Phlex::SVG
 end
 
 test do
-	expect(Example.call) == %(<svg><path d="123"></path></svg>)
+	assert_equal Example.call, %(<svg><path d="123"></path></svg>)
 end
 
 test "content_type" do
 	component = Class.new(Phlex::SVG)
-	expect(component.new.content_type) == "image/svg+xml"
+	assert_equal component.new.content_type, "image/svg+xml"
 end

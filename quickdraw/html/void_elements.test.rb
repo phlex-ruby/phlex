@@ -8,7 +8,7 @@ Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, tag|
 			end
 		end
 
-		expect(example.call) == %(<#{tag} class="class" id="id" disabled>)
+		assert_equal(example.call, %(<#{tag} class="class" id="id" disabled>))
 	end
 
 	test "<#{tag}> with string attribute keys" do
@@ -18,7 +18,7 @@ Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, tag|
 			end
 		end
 
-		expect(example.call) == %(<#{tag} attribute_with_underscore>)
+		assert_equal(example.call, %(<#{tag} attribute_with_underscore>))
 	end
 
 	test "<#{tag}> with hash attribute values" do
@@ -28,6 +28,6 @@ Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, tag|
 			end
 		end
 
-		expect(example.call) == %(<#{tag} aria-hidden data-turbo-frame="_top">)
+		assert_equal(example.call, %(<#{tag} aria-hidden data-turbo-frame="_top">))
 	end
 end

@@ -8,7 +8,7 @@ Phlex::HTML::StandardElements.__registered_elements__.each do |method_name, tag|
 			end
 		end
 
-		expect(example.call) == %(<#{tag} class="class" id="id" disabled><h1>Hello</h1></#{tag}>)
+		assert_equal example.call, %(<#{tag} class="class" id="id" disabled><h1>Hello</h1></#{tag}>)
 	end
 
 	test "<#{tag}> with block text content and attributes" do
@@ -18,7 +18,7 @@ Phlex::HTML::StandardElements.__registered_elements__.each do |method_name, tag|
 			end
 		end
 
-		expect(example.call) == %(<#{tag} class="class" id="id" disabled>content</#{tag}>)
+		assert_equal example.call, %(<#{tag} class="class" id="id" disabled>content</#{tag}>)
 	end
 
 	test "<#{tag}> with string attribute keys" do
@@ -28,7 +28,7 @@ Phlex::HTML::StandardElements.__registered_elements__.each do |method_name, tag|
 			end
 		end
 
-		expect(example.call) == %(<#{tag} attribute_with_underscore>content</#{tag}>)
+		assert_equal example.call, %(<#{tag} attribute_with_underscore>content</#{tag}>)
 	end
 
 	test "<#{tag}> with hash attribute values" do
@@ -38,6 +38,6 @@ Phlex::HTML::StandardElements.__registered_elements__.each do |method_name, tag|
 			end
 		end
 
-		expect(example.call) == %(<#{tag} aria-hidden data-turbo-frame="_top">content</#{tag}>)
+		assert_equal example.call, %(<#{tag} aria-hidden data-turbo-frame="_top">content</#{tag}>)
 	end
 end

@@ -20,11 +20,11 @@ class Sub < Phlex::HTML
 end
 
 test "rendering components via #to_proc" do
-	expect(
-		phlex {
-			render Example do |e|
-				e.slot(&Sub.new)
-			end
-		},
-	) == "<article><h1>Sub</h1></article>"
+	output = phlex do
+		render Example do |e|
+			e.slot(&Sub.new)
+		end
+	end
+
+	assert_equal output, %(<article><h1>Sub</h1></article>)
 end

@@ -11,7 +11,6 @@ module Phlex::HTML::VoidElements
 		id: nil,
 		**attributes
 	) = nil
-
 	# Outputs a `<base>` tag.
 	# See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
 	__register_void_element__ def base(
@@ -21,7 +20,6 @@ module Phlex::HTML::VoidElements
 		target: nil,
 		**attributes
 	) = nil
-
 	# Outputs a `<br>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/br
 	__register_void_element__ def br(
@@ -29,7 +27,6 @@ module Phlex::HTML::VoidElements
 		id: nil,
 		**attributes
 	) = nil
-
 	# Outputs a `<col>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/col
 	__register_void_element__ def col(
@@ -37,7 +34,6 @@ module Phlex::HTML::VoidElements
 		id: nil,
 		**attributes
 	) = nil
-
 	# Outputs an `<embed>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/embed
 	__register_void_element__ def embed(
@@ -45,7 +41,6 @@ module Phlex::HTML::VoidElements
 		id: nil,
 		**attributes
 	) = nil
-
 	# Outputs an `<hr>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/hr
 	__register_void_element__ def hr(
@@ -53,7 +48,6 @@ module Phlex::HTML::VoidElements
 		id: nil,
 		**attributes
 	) = nil
-
 	# Outputs an `<img>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/img
 	__register_void_element__ def img(
@@ -63,7 +57,6 @@ module Phlex::HTML::VoidElements
 		src: nil,
 		**attributes
 	) = nil
-
 	# Outputs an `<input>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/input
 	__register_void_element__ def input(
@@ -73,7 +66,6 @@ module Phlex::HTML::VoidElements
 		type: nil,
 		**attributes
 	) = nil
-
 	# Outputs a `<link>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/link
 	__register_void_element__ def link(
@@ -81,7 +73,6 @@ module Phlex::HTML::VoidElements
 		id: nil,
 		**attributes
 	) = nil
-
 	# Outputs a `<meta>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/meta
 	__register_void_element__ def meta(
@@ -91,7 +82,6 @@ module Phlex::HTML::VoidElements
 		name: nil,
 		**attributes
 	) = nil
-
 	# Outputs a `<source>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/source
 	__register_void_element__ def source(
@@ -99,7 +89,6 @@ module Phlex::HTML::VoidElements
 		id: nil,
 		**attributes
 	) = nil
-
 	# Outputs a `<track>` tag.
 	# See https://developer.mozilla.org/docs/Web/HTML/Element/track
 	__register_void_element__ def track(
