@@ -17,7 +17,7 @@ class Phlex::Context
 	attr_reader :fragments, :view_context
 
 	def target_fragments(fragments)
-		@fragments = fragments.to_h { |it| [it, true] }
+		@fragments = fragments.to_h { |it| [it, true].freeze }
 	end
 
 	def around_render

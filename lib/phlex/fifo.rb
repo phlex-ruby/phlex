@@ -32,7 +32,7 @@ class Phlex::FIFO
 			# Check the key definitely doesn't exist now we have the lock
 			return if @store[digest]
 
-			@store[digest] = [key, value]
+			@store[digest] = [key, value].freeze
 			@bytesize += value.bytesize
 
 			while @bytesize > @max_bytesize

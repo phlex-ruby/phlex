@@ -7,7 +7,7 @@ module Phlex::Helpers
 	def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
-				case [old, new]
+				case [old, new].freeze
 				in [Array, Array] | [Set, Set]
 					old + new
 				in [Array, Set]
