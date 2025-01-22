@@ -26,5 +26,5 @@ test "rendering components via #to_proc" do
 		end
 	end
 
-	assert_equal output, %(<article><h1>Sub</h1></article>)
+	assert_equal_html output, %(<article><h1>Sub</h1></article>)
 end

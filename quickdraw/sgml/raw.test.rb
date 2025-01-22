@@ -14,15 +14,15 @@ end
 
 test "with a safe object" do
 	output = phlex { raw safe %(<div class="hello">&</div>) }
-	assert_equal output, %(<div class="hello">&</div>)
+	assert_equal_html output, %(<div class="hello">&</div>)
 end
 
 test "with nil" do
 	output = phlex { div { raw nil } }
-	assert_equal output, "<div></div>"
+	assert_equal_html output, "<div></div>"
 end
 
 test "with empty string" do
 	output = phlex { div { raw "" } }
-	assert_equal output, "<div></div>"
+	assert_equal_html output, "<div></div>"
 end

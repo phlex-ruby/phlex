@@ -9,7 +9,7 @@ test "text comment" do
 		comment { "Hello World" }
 	end
 
-	assert_equal output, "<!-- Hello World -->"
+	assert_equal_html output, "<!-- Hello World -->"
 end
 
 test "block comment with markup" do
@@ -19,5 +19,5 @@ test "block comment with markup" do
 		end
 	end
 
-	assert_equal output, "<!-- <h1>Hello World</h1> -->"
+	assert_equal_html output, "<!-- <h1>Hello World</h1> -->"
 end

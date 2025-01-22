@@ -12,7 +12,7 @@ test "safe attribute values" do
 		)
 	end
 
-	assert_equal output, %(<a onclick="window.history.back()" href="javascript:window.history.back()"></a>)
+	assert_equal_html output, %(<a onclick="window.history.back()" href="javascript:window.history.back()"></a>)
 end
 
 test "element content blocks that return safe values" do
@@ -22,7 +22,7 @@ test "element content blocks that return safe values" do
 		}
 	end
 
-	assert_equal output, %(<script>console.log("Hello World");</script>)
+	assert_equal_html output, %(<script>console.log("Hello World");</script>)
 end
 
 test "with invalid input" do

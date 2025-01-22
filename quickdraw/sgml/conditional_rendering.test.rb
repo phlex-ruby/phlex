@@ -13,6 +13,6 @@ class Example < Phlex::HTML
 end
 
 test do
-	assert_equal Example.new(render: true).call, "<h1>Hello</h1>"
-	assert_equal Example.new(render: false).call, ""
+	assert_equal_html Example.new(render: true).call, "<h1>Hello</h1>"
+	assert_equal_html Example.new(render: false).call, ""
 end

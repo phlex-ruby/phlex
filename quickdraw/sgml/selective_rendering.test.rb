@@ -67,17 +67,17 @@ end
 
 test "renders the just the target fragment" do
 	output = StandardElementExample.new.call(fragments: ["target"])
-	assert_equal output, %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
+	assert_equal_html output, %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1>)
 end
 
 test "works with void elements" do
 	output = VoidElementExample.new.call(fragments: ["target"])
-	assert_equal output, %(<img id="target" src="image.jpg">)
+	assert_equal_html output, %(<img id="target" src="image.jpg">)
 end
 
 test "supports multiple fragments" do
 	output = StandardElementExample.new.call(fragments: ["target", "image"])
-	assert_equal output, %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1><img id="image" src="after.jpg">)
+	assert_equal_html output, %(<h1 id="target">Hello<strong>World</strong><img src="image.jpg"></h1><img id="image" src="after.jpg">)
 end
 
 test "halts early after all fragments are found" do
@@ -90,15 +90,15 @@ end
 
 test "with a capture block doesn't render the capture block" do
 	output = WithCaptureBlock.new.call(fragments: ["after"])
-	assert_equal output, %(<h1 id="after">After</h1>)
+	assert_equal_html output, %(<h1 id="after">After</h1>)
 end
 
 test "with a capture block renders the capture block when selected" do
 	output = WithCaptureBlock.new.call(fragments: ["around"])
-	assert_equal output, %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
+	assert_equal_html output, %(<div id="around">&lt;h1 id=&quot;inside&quot;&gt;Inside&lt;/h1&gt;</div>)
 end
 
 test "with a capture block doesn't select from the capture block" do
 	output = WithCaptureBlock.new.call(fragments: ["inside"])
-	assert_equal output, ""
+	assert_equal_html output, ""
 end

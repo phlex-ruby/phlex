@@ -11,7 +11,7 @@ test "whitespae between" do
 		div
 	end
 
-	assert_equal output, %(<div></div> <div></div>)
+	assert_equal_html output, %(<div></div> <div></div>)
 end
 
 test "whitespae around" do
@@ -21,5 +21,5 @@ test "whitespae around" do
 		div
 	end
 
-	assert_equal output, %(<div></div> <div></div> <div></div>)
+	assert_equal_html output, %(<div></div> <div></div> <div></div>)
 end
