@@ -60,6 +60,7 @@ class Phlex::SGML
 		@_buffer = buffer
 		@_context = phlex_context = parent&.__context__ || Phlex::Context.new(user_context: context, view_context:)
 		@_parent = parent
+		@_cache_keys = Set[]
 
 		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
 		@_rendered = true
@@ -223,13 +224,24 @@ class Phlex::SGML
 		nil
 	end
 
-	def cache(*keys, **, &)
+	def cache(*user_key, **, &)
 		context = @_context
 		return if context.fragments && !context.in_target_fragment
 
-		context.buffer << cache_store.fetch(
-			[Phlex::DEPLOY_KEY, self.class.name, __method__, keys].freeze, **
-		) { capture(&) }
+		# If no user keys are provided, we use the line number of the caller as the key.
+		if user_key.length == 0
+			user_key = caller_locations(1, 1)[0].lineno
+		end
+
+		full_key = [Phlex::DEPLOY_KEY, self.class.name, __method__, user_key].freeze
+
+		if @_cache_keys.include?(full_key)
+			raise "You can’t cache the same key more than once in the same method. If you meant for both uses to share the same cache, you should extract a new method, do the caching in there and call it from both places."
+		end
+
+		@_cache_keys << full_key
+
+		context.buffer << cache_store.fetch(full_key, **) { capture(&) }
 	end
 
 	def cache_store
