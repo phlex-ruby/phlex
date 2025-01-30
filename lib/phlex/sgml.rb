@@ -223,6 +223,19 @@ class Phlex::SGML
 		nil
 	end
 
+	def cache(*keys, **, &)
+		context = @_context
+		return if context.fragments && !context.in_target_fragment
+
+		context.buffer << cache_store.fetch(
+			[Phlex::DEPLOY_KEY, self.class.name, __method__, keys].freeze, **
+		) { capture(&) }
+	end
+
+	def cache_store
+		Phlex::CACHE_STORE
+	end
+
 	private
 
 	def vanish(*args)
