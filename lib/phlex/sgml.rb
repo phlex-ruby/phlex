@@ -240,9 +240,9 @@ class Phlex::SGML
 
 		full_key = [
 			Phlex::DEPLOY_KEY,   # invalidates the key when deploying new code in case of changes
-			self.class.name,     # prevents collissions between classes
-			location.base_label, # prevents collissions between different methods
-			location.lineno,     # prevents collissions between different lines
+			self.class.name,     # prevents collisions between classes
+			location.base_label, # prevents collisions between different methods
+			location.lineno,     # prevents collisions between different lines
 			cache_key,           # allows for custom cache keys
 		].freeze
 
