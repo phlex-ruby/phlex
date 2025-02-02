@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# An extremely fast in-memory cache store that evicts keys on a first-in-first-out basis.
 class Phlex::FIFOCacheStore
 	def initialize(max_bytesize: 2 ** 20)
 		@fifo = Phlex::FIFO.new(
@@ -16,10 +17,19 @@ class Phlex::FIFOCacheStore
 			result
 		else
 			result = yield
-			fifo[key] = result
+
+			case result
+			when String
+				fifo[key] = result
+			else
+				raise ArgumentError.new("Invalid cache value: #{result.class}")
+			end
+
 			result
 		end
 	end
+
+	private
 
 	def map_key(value)
 		case value
@@ -33,7 +43,7 @@ class Phlex::FIFOCacheStore
 			if value.respond_to?(:cache_key)
 				map_key(value.cache_key)
 			else
-				raise ArgumentError.new("Cannot cache #{value.class}")
+				raise ArgumentError.new("Invalid cache key: #{value.class}")
 			end
 		end
 	end

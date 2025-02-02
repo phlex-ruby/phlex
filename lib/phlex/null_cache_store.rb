@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Phlex::NullCacheStore
+module Phlex::NullCacheStore
+	extend self
+
 	def fetch(key)
 		yield
 	end

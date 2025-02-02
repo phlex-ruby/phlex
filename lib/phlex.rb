@@ -28,7 +28,6 @@ module Phlex
 
 	CACHED_FILES = Set.new
 	DEPLOY_KEY = Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
-	CACHE_STORE = NullCacheStore.new
 
 	def self.__expand_attribute_cache__(file_path)
 		unless CACHED_FILES.include?(file_path)

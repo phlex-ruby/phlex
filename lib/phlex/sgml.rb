@@ -60,7 +60,6 @@ class Phlex::SGML
 		@_buffer = buffer
 		@_context = phlex_context = parent&.__context__ || Phlex::Context.new(user_context: context, view_context:)
 		@_parent = parent
-		@_cache_keys = Set[]
 
 		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
 		@_rendered = true
@@ -224,28 +223,56 @@ class Phlex::SGML
 		nil
 	end
 
-	def cache(*user_key, **, &)
+	# Cache a block of content.
+	#
+	# ```ruby
+	# @products.each do |product|
+	#   cache product do
+	#     h1 { product.name }
+	#   end
+	# end
+	# ```
+	def cache(*cache_key, **options, &content)
 		context = @_context
 		return if context.fragments && !context.in_target_fragment
 
-		# If no user keys are provided, we use the line number of the caller as the key.
-		if user_key.length == 0
-			user_key = caller_locations(1, 1)[0].lineno
-		end
+		location = caller_locations(1, 1)[0]
 
-		full_key = [Phlex::DEPLOY_KEY, self.class.name, __method__, user_key].freeze
+		full_key = [
+			Phlex::DEPLOY_KEY,   # invalidates the key when deploying new code in case of changes
+			self.class.name,     # prevents collissions between classes
+			location.base_label, # prevents collissions between different methods
+			location.lineno,     # prevents collissions between different lines
+			cache_key,           # allows for custom cache keys
+		].freeze
 
-		if @_cache_keys.include?(full_key)
-			raise "You can’t cache the same key more than once in the same method. If you meant for both uses to share the same cache, you should extract a new method, do the caching in there and call it from both places."
-		end
-
-		@_cache_keys << full_key
-
-		context.buffer << cache_store.fetch(full_key, **) { capture(&) }
+		context.buffer << cache_store.fetch(full_key, **options) { capture(&content) }
 	end
 
+	# Cache a block of content where you control the entire cache key.
+	# If you really know what you’re doing and want to take full control
+	# and responsibility for the cache key, use this method.
+	#
+	# ```ruby
+	# low_level_cache([Commonmarker::VERSION, Digest::MD5.hexdigest(@content)]) do
+	#   markdown(@content)
+	# end
+	# ```
+	#
+	# Note: To allow you more control, this method does not take a splat of cache keys.
+	# If you need to pass multiple cache keys, you should pass an array.
+	def low_level_cache(cache_key, **options, &content)
+		context = @_context
+		return if context.fragments && !context.in_target_fragment
+
+		context.buffer << cache_store.fetch(cache_key, **options) { capture(&content) }
+	end
+
+	# Points to the cache store used by this component.
+	# By default, it points to `Phlex::NullCacheStore`, which does no caching.
+	# Override this method to use a different cache store.
 	def cache_store
-		Phlex::CACHE_STORE
+		Phlex::NullCacheStore
 	end
 
 	private
