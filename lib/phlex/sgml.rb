@@ -223,6 +223,58 @@ class Phlex::SGML
 		nil
 	end
 
+	# Cache a block of content.
+	#
+	# ```ruby
+	# @products.each do |product|
+	#   cache product do
+	#     h1 { product.name }
+	#   end
+	# end
+	# ```
+	def cache(*cache_key, **options, &content)
+		context = @_context
+		return if context.fragments && !context.in_target_fragment
+
+		location = caller_locations(1, 1)[0]
+
+		full_key = [
+			Phlex::DEPLOY_KEY,   # invalidates the key when deploying new code in case of changes
+			self.class.name,     # prevents collisions between classes
+			location.base_label, # prevents collisions between different methods
+			location.lineno,     # prevents collisions between different lines
+			cache_key,           # allows for custom cache keys
+		].freeze
+
+		context.buffer << cache_store.fetch(full_key, **options) { capture(&content) }
+	end
+
+	# Cache a block of content where you control the entire cache key.
+	# If you really know what you’re doing and want to take full control
+	# and responsibility for the cache key, use this method.
+	#
+	# ```ruby
+	# low_level_cache([Commonmarker::VERSION, Digest::MD5.hexdigest(@content)]) do
+	#   markdown(@content)
+	# end
+	# ```
+	#
+	# Note: To allow you more control, this method does not take a splat of cache keys.
+	# If you need to pass multiple cache keys, you should pass an array.
+	def low_level_cache(cache_key, **options, &content)
+		context = @_context
+		return if context.fragments && !context.in_target_fragment
+
+		context.buffer << cache_store.fetch(cache_key, **options) { capture(&content) }
+	end
+
+	# Points to the cache store used by this component.
+	# By default, it points to `Phlex::NullCacheStore`, which does no caching.
+	# Override this method to use a different cache store.
+	def cache_store
+		Phlex::NullCacheStore
+	end
+
 	private
 
 	def vanish(*args)

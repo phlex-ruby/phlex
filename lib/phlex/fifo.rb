@@ -7,7 +7,7 @@ class Phlex::FIFO
 		@max_bytesize = max_bytesize
 		@max_value_bytesize = max_value_bytesize
 		@bytesize = 0
-		@mutex = Mutex.new
+		@mutex = Monitor.new
 	end
 
 	attr_reader :bytesize, :max_bytesize
