@@ -17,17 +17,16 @@ module Phlex
 	autoload :Helpers, "phlex/helpers"
 	autoload :Kit, "phlex/kit"
 	autoload :NameError, "phlex/errors/name_error"
-	autoload :NullCacheStore, "phlex/null_cache_store"
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Vanish, "phlex/vanish"
 
 	Escape = ERB::Escape
-	ATTRIBUTE_CACHE = FIFO.new
 	Null = Object.new.freeze
 
-	CACHED_FILES = Set.new
 	DEPLOY_KEY = Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
+	CACHED_FILES = Set.new
+	ATTRIBUTE_CACHE = FIFO.new
 
 	def self.__expand_attribute_cache__(file_path)
 		unless CACHED_FILES.include?(file_path)
