@@ -49,27 +49,32 @@ module Phlex::Kit
 		me = self
 		constant = const_get(name)
 
-		if Class === constant && constant < Phlex::SGML
-			constant.include(self)
+		case constant
+		when Class
+			if constant < Phlex::SGML
+				constant.include(self)
 
-			constant = nil
+				constant = nil
 
-			define_method(name) do |*args, **kwargs, &block|
-				constant = me.const_get(name)
-				render(constant.new(*args, **kwargs), &block)
-			end
+				define_method(name) do |*args, **kwargs, &block|
+					constant = me.const_get(name)
+					render(constant.new(*args, **kwargs), &block)
+				end
 
-			define_singleton_method(name) do |*args, **kwargs, &block|
-				component, fiber_id = Thread.current[:__phlex_component__]
-				if (component && fiber_id == Fiber.current.object_id)
-					component.instance_exec do
-						constant = me.const_get(name)
-						render(constant.new(*args, **kwargs), &block)
+				define_singleton_method(name) do |*args, **kwargs, &block|
+					component, fiber_id = Thread.current[:__phlex_component__]
+					if (component && fiber_id == Fiber.current.object_id)
+						component.instance_exec do
+							constant = me.const_get(name)
+							render(constant.new(*args, **kwargs), &block)
+						end
+					else
+						raise "You can't call `#{name}' outside of a Phlex rendering context."
 					end
-				else
-					raise "You can't call `#{name}' outside of a Phlex rendering context."
 				end
 			end
+		when Module
+			constant.extend(Phlex::Kit)
 		end
 
 		super

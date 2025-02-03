@@ -5,4 +5,12 @@ module Components
 
 	autoload :SayHi, "components/say_hi"
 	autoload :Article, "components/article"
+
+	module Foo
+		class Bar < Phlex::HTML
+			def view_template
+				h1 { "Bar" }
+			end
+		end
+	end
 end
