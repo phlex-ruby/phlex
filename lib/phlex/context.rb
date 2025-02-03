@@ -6,24 +6,59 @@ class Phlex::Context
 		@buffer = +""
 		@capturing = false
 		@user_context = user_context
+		@fragments = nil
+		@fragment_depth = 0
+		@halt_signal = nil
 		@view_context = view_context
 	end
 
 	attr_accessor :buffer, :capturing, :user_context
 
-	attr_reader :view_context
+	attr_reader :fragments, :fragment_depth, :view_context
+
+	def target_fragments(fragments)
+		@fragments = fragments.to_h { |it| [it, true].freeze }
+	end
+
+	def around_render
+		return yield if !@fragments || @halt_signal
+
+		catch do |signal|
+			@halt_signal = signal
+			yield
+		end
+	end
+
+	def in_target_fragment
+		!@fragments || @fragment_depth > 0
+	end
+
+	def begin_target(id)
+		@fragment_depth += 1 if @fragments&.[](id)
+	end
+
+	def end_target(id)
+		return unless @fragments&.[](id)
+
+		@fragments.delete(id)
+		@fragment_depth -= 1
+		throw @halt_signal if @fragments.length == 0
+	end
 
 	def capturing_into(new_buffer)
 		original_buffer = @buffer
 		original_capturing = @capturing
+		original_fragments = @fragments
 
 		begin
 			@buffer = new_buffer
 			@capturing = true
+			@fragments = nil
 			yield
 		ensure
 			@buffer = original_buffer
 			@capturing = original_capturing
+			@fragments = original_fragments
 		end
 
 		new_buffer
