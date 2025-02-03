@@ -10,7 +10,6 @@ class Phlex::HTML < Phlex::SGML
 	# Output an HTML doctype.
 	def doctype
 		context = @_context
-		return if context.fragments && !context.in_target_fragment
 
 		context.buffer << "<!doctype html>"
 		nil

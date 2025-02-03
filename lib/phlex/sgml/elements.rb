@@ -12,25 +12,7 @@ module Phlex::SGML::Elements
 			def #{method_name}(**attributes)
 				context = @_context
 				buffer = context.buffer
-				fragment = context.fragments
-				target_found = false
 				block_given = block_given?
-
-				if fragment
-					return if fragment.length == 0 # we found all our fragments already
-
-					id = attributes[:id]
-
-					if !context.in_target_fragment
-					  if fragment[id]
-							context.begin_target(id)
-							target_found = true
-						else
-							yield(self) if block_given
-							return nil
-						end
-					end
-				end
 
 				if attributes.length > 0 # with attributes
 					if block_given # with content block
@@ -90,8 +72,6 @@ module Phlex::SGML::Elements
 
 				#{'flush' if tag == 'head'}
 
-				context.end_target if target_found
-
 				nil
 			end
 		RUBY
@@ -108,30 +88,12 @@ module Phlex::SGML::Elements
 			def #{method_name}(**attributes)
 				context = @_context
 				buffer = context.buffer
-				fragment = context.fragments
-
-				if fragment
-					return if fragment.length == 0 # we found all our fragments already
-
-					id = attributes[:id]
-
-					if !context.in_target_fragment
-					  if fragment[id]
-							context.begin_target(id)
-							target_found = true
-						else
-							return nil
-						end
-					end
-				end
 
 				if attributes.length > 0 # with attributes
 					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 				else # without attributes
 					buffer << "<#{tag}>"
 				end
-
-				context.end_target if target_found
 
 				nil
 			end
