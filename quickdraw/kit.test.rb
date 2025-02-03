@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "components"
+require "sgml_helper"
+include SGMLHelper
 
 class Example < Phlex::HTML
 	include Components
@@ -18,4 +20,8 @@ end
 
 test "defines methods for its components" do
 	assert_equal Example.new.call, %(<article><h1>Hi Joel</h1><h1>Hi Joel</h1>Inside</article><article><h1>Hi Will</h1>Inside</article>)
+end
+
+test "nested kits" do
+	assert_equal_html phlex { Components::Foo::Bar() }, "<h1>Bar</h1>"
 end
