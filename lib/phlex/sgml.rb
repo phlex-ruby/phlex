@@ -56,7 +56,7 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
-	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &block)
+	def call(buffer = +"", context: {}, view_context: nil, parent: nil, &block)
 		@_buffer = buffer
 		@_context = phlex_context = parent&.__context__ || Phlex::Context.new(user_context: context, view_context:)
 		@_parent = parent
@@ -64,35 +64,29 @@ class Phlex::SGML
 		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
 		@_rendered = true
 
-		if fragments
-			phlex_context.target_fragments(fragments)
-		end
-
 		block ||= @_content_block
 
 		return "" unless render?
 
 		Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 
-		phlex_context.around_render do
-			before_template(&block)
+		before_template(&block)
 
-			around_template do
-				if block
-					view_template do |*args|
-						if args.length > 0
-							__yield_content_with_args__(*args, &block)
-						else
-							__yield_content__(&block)
-						end
+		around_template do
+			if block
+				view_template do |*args|
+					if args.length > 0
+						__yield_content_with_args__(*args, &block)
+					else
+						__yield_content__(&block)
 					end
-				else
-					view_template
 				end
+			else
+				view_template
 			end
-
-			after_template(&block)
 		end
+
+		after_template(&block)
 
 		unless parent
 			buffer << phlex_context.buffer
@@ -119,7 +113,6 @@ class Phlex::SGML
 	# Output a single space character. If a block is given, a space will be output before and after the block.
 	def whitespace(&)
 		context = @_context
-		return if context.fragments && !context.in_target_fragment
 
 		buffer = context.buffer
 
@@ -138,7 +131,6 @@ class Phlex::SGML
 	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Comments)
 	def comment(&)
 		context = @_context
-		return if context.fragments && !context.in_target_fragment
 
 		buffer = context.buffer
 
@@ -154,7 +146,6 @@ class Phlex::SGML
 		case content
 		when Phlex::SGML::SafeObject
 			context = @_context
-			return if context.fragments && !context.in_target_fragment
 
 			context.buffer << content.to_s
 		when nil, "" # do nothing
@@ -234,7 +225,6 @@ class Phlex::SGML
 	# ```
 	def cache(*cache_key, **options, &content)
 		context = @_context
-		return if context.fragments && !context.in_target_fragment
 
 		location = caller_locations(1, 1)[0]
 
@@ -263,7 +253,6 @@ class Phlex::SGML
 	# If you need to pass multiple cache keys, you should pass an array.
 	def low_level_cache(cache_key, **options, &content)
 		context = @_context
-		return if context.fragments && !context.in_target_fragment
 
 		context.buffer << cache_store.fetch(cache_key, **options) { capture(&content) }
 	end
@@ -351,7 +340,6 @@ class Phlex::SGML
 
 	def __implicit_output__(content)
 		context = @_context
-		return true if context.fragments && !context.in_target_fragment
 
 		case content
 		when Phlex::SGML::SafeObject
@@ -376,7 +364,6 @@ class Phlex::SGML
 	# same as __implicit_output__ but escapes even `safe` objects
 	def __text__(content)
 		context = @_context
-		return true if context.fragments && !context.in_target_fragment
 
 		case content
 		when String
