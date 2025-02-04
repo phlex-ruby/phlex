@@ -15,6 +15,7 @@ module Phlex
 	autoload :Helpers, "phlex/helpers"
 	autoload :Kit, "phlex/kit"
 	autoload :NameError, "phlex/errors/name_error"
+	autoload :NullCacheStore, "phlex/null_cache_store"
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Vanish, "phlex/vanish"

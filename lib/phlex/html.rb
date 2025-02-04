@@ -10,6 +10,7 @@ class Phlex::HTML < Phlex::SGML
 	# Output an HTML doctype.
 	def doctype
 		context = @_context
+		return unless context.should_render?
 
 		context.buffer << "<!doctype html>"
 		nil

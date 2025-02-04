@@ -14,19 +14,18 @@ class Phlex::FIFOCacheStore
 		key = map_key(key)
 
 		if (result = fifo[key])
-			result
+			JSON.parse(result)
 		else
 			result = yield
 
-			case result
-			when String
-				fifo[key] = result
-			else
-				raise ArgumentError.new("Invalid cache value: #{result.class}")
-			end
+			fifo[key] = JSON.fast_generate(result)
 
 			result
 		end
+	end
+
+	def clear
+		@fifo.clear
 	end
 
 	private

@@ -33,11 +33,3 @@ test "nested caches do not lead to contention" do
 
 	assert_equal result, "A, B"
 end
-
-test "caching something other than a string" do
-	store = Phlex::FIFOCacheStore.new
-
-	assert_raises(ArgumentError) do
-		store.fetch("a") { 1 }
-	end
-end
