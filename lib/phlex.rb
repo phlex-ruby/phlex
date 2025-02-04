@@ -32,6 +32,17 @@ module Phlex
 			Phlex::ATTRIBUTE_CACHE.expand(File.size(file_path))
 		end
 	end
+
+	def self.eager_load
+		queue = [self]
+
+		while (mod = queue.shift)
+			mod.constants.each do |const_name|
+				const = mod.const_get(const_name)
+				queue << const if Module === const
+			end
+		end
+	end
 end
 
 def 💪
