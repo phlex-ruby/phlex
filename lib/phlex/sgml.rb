@@ -28,20 +28,6 @@ class Phlex::SGML
 				super
 			end
 		end
-
-		def __element_method__?(method_name)
-			if instance_methods.include?(method_name)
-				owner = instance_method(method_name).owner
-
-				if Phlex::SGML::Elements === owner && owner.__registered_elements__[method_name]
-					true
-				else
-					false
-				end
-			else
-				false
-			end
-		end
 	end
 
 	def view_template
