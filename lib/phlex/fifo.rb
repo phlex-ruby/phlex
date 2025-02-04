@@ -45,4 +45,11 @@ class Phlex::FIFO
 	def size
 		@store.size
 	end
+
+	def clear
+		@mutex.synchronize do
+			@store.clear
+			@bytesize = 0
+		end
+	end
 end

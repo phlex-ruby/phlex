@@ -29,6 +29,10 @@ class Phlex::FIFOCacheStore
 		end
 	end
 
+	def clear
+		@fifo.clear
+	end
+
 	private
 
 	def map_key(value)
