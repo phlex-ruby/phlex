@@ -119,7 +119,7 @@ class Phlex::SGML
 	# Output a single space character. If a block is given, a space will be output before and after the block.
 	def whitespace(&)
 		context = @_context
-		return unless context.in_target_fragment
+		return unless context.should_render?
 
 		buffer = context.buffer
 
@@ -138,7 +138,7 @@ class Phlex::SGML
 	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Comments)
 	def comment(&)
 		context = @_context
-		return unless context.in_target_fragment
+		return unless context.should_render?
 
 		buffer = context.buffer
 
@@ -154,7 +154,7 @@ class Phlex::SGML
 		case content
 		when Phlex::SGML::SafeObject
 			context = @_context
-			return unless context.in_target_fragment
+			return unless context.should_render?
 
 			context.buffer << content.to_s
 		when nil, "" # do nothing
@@ -178,9 +178,11 @@ class Phlex::SGML
 
 	# Define a named fragment that can be selectively rendered.
 	def fragment(name)
-		@_context.begin_target(name)
+		context = @_context
+		context.begin_fragment(name)
 		yield
-		@_context.end_target(name)
+		context.end_fragment(name)
+		nil
 	end
 
 	# Mark the given string as safe for HTML output.
@@ -239,7 +241,7 @@ class Phlex::SGML
 	#   end
 	# end
 	# ```
-	def cache(*cache_key, **options, &content)
+	def cache(*cache_key, **, &content)
 		context = @_context
 
 		location = caller_locations(1, 1)[0]
@@ -252,7 +254,7 @@ class Phlex::SGML
 			cache_key,           # allows for custom cache keys
 		].freeze
 
-		context.buffer << cache_store.fetch(full_key, **options) { capture(&content) }
+		low_level_cache(full_key, **, &content)
 	end
 
 	# Cache a block of content where you control the entire cache key.
@@ -270,7 +272,22 @@ class Phlex::SGML
 	def low_level_cache(cache_key, **options, &content)
 		context = @_context
 
-		context.buffer << cache_store.fetch(cache_key, **options) { capture(&content) }
+		cached_buffer, fragment_map = cache_store.fetch(cache_key, **options) { context.caching(&content) }
+
+		if context.should_render?
+			fragment_map.each do |fragment_name, (offset, length, nested_fragments)|
+				context.record_fragment(fragment_name, offset, length, nested_fragments)
+			end
+			context.buffer << cached_buffer
+		else
+			fragment_map.each do |fragment_name, (offset, length, nested_fragments)|
+				if context.fragments.include?(fragment_name)
+					context.fragments.delete(fragment_name)
+					context.fragments.subtract(nested_fragments)
+					context.buffer << cached_buffer.byteslice(offset, length)
+				end
+			end
+		end
 	end
 
 	# Points to the cache store used by this component.
@@ -356,7 +373,7 @@ class Phlex::SGML
 
 	def __implicit_output__(content)
 		context = @_context
-		return true unless context.in_target_fragment
+		return true unless context.should_render?
 
 		case content
 		when Phlex::SGML::SafeObject
@@ -381,7 +398,7 @@ class Phlex::SGML
 	# same as __implicit_output__ but escapes even `safe` objects
 	def __text__(content)
 		context = @_context
-		return true unless context.in_target_fragment
+		return true unless context.should_render?
 
 		case content
 		when String

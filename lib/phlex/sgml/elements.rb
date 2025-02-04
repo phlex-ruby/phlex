@@ -14,7 +14,7 @@ module Phlex::SGML::Elements
 				buffer = context.buffer
 				block_given = block_given?
 
-				unless context.in_target_fragment
+				unless context.should_render?
 					yield(self) if block_given
 					return nil
 				end
@@ -94,7 +94,7 @@ module Phlex::SGML::Elements
 				context = @_context
 				buffer = context.buffer
 
-				return unless context.in_target_fragment
+				return unless context.should_render?
 
 				if attributes.length > 0 # with attributes
 					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
