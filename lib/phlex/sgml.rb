@@ -43,20 +43,20 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
-	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &)
-		phlex_context = Phlex::SGML::Renderer.new(
+	def call(buffer = +"", context: {}, view_context: nil, fragments: nil, &)
+		renderer = Phlex::SGML::Renderer.new(
 			user_context: context,
 			view_context:,
 			output_buffer: buffer,
 			fragments: fragments&.to_set,
 		)
 
-		internal_call(parent:, phlex_context:, &)
+		internal_call(parent: nil, renderer:, &)
 
-		phlex_context.output_buffer << phlex_context.buffer
+		renderer.output_buffer << renderer.buffer
 	end
 
-	def internal_call(parent: nil, phlex_context: nil, &block)
+	def internal_call(parent: nil, renderer: nil, &block)
 		return "" unless render?
 
 		if @_context
@@ -65,13 +65,13 @@ class Phlex::SGML
 			)
 		end
 
-		@_context = phlex_context
+		@_context = renderer
 
 		block ||= @_content_block
 
 		Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 
-		phlex_context.around_render do
+		renderer.around_render(self) do
 			before_template(&block)
 
 			around_template do
@@ -93,8 +93,6 @@ class Phlex::SGML
 	ensure
 		Thread.current[:__phlex_component__] = [parent, Fiber.current.object_id].freeze
 	end
-
-	protected def __context__ = @_context
 
 	def context
 		@_context.user_context
@@ -197,10 +195,12 @@ class Phlex::SGML
 	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
-			renderable.internal_call(phlex_context: @_context, parent: self, &)
+			Thread.current[:__phlex_component__] = [renderable, Fiber.current.object_id].freeze
+			renderable.internal_call(renderer: @_context, parent: self, &)
+			Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 		when Class
 			if renderable < Phlex::SGML
-				renderable.new.internal_call(phlex_context: @_context, parent: self, &)
+				render(renderable.new, &)
 			end
 		when Enumerable
 			renderable.each { |r| render(r, &) }

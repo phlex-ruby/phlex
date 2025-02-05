@@ -18,13 +18,21 @@ class Phlex::SGML::Renderer
 
 	attr_reader :fragments, :fragment_depth, :view_context, :output_buffer
 
-	def around_render
-		return yield if !@fragments || @halt_signal
+	def around_render(component)
+		stack = @stack
 
-		catch do |signal|
-			@halt_signal = signal
+		if !@fragments || @halt_signal
 			yield
+		else
+			catch do |signal|
+				@halt_signal = signal
+				yield
+			end
 		end
+	end
+
+	def render(component, &)
+		component.internal_call(renderer: self, parent: @stack.last, &)
 	end
 
 	def should_render?
