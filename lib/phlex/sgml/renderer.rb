@@ -31,10 +31,6 @@ class Phlex::SGML::Renderer
 		end
 	end
 
-	def render(component, &)
-		component.internal_call(renderer: self, parent: @stack.last, &)
-	end
-
 	def should_render?
 		!@fragments || @fragment_depth > 0
 	end
