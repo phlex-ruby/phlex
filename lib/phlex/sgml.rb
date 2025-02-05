@@ -8,6 +8,7 @@ class Phlex::SGML
 	autoload :Elements, "phlex/sgml/elements"
 	autoload :SafeObject, "phlex/sgml/safe_object"
 	autoload :SafeValue, "phlex/sgml/safe_value"
+	autoload :Renderer, "phlex/sgml/renderer"
 
 	include Phlex::Helpers
 
@@ -44,7 +45,7 @@ class Phlex::SGML
 
 	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &block)
 		@_buffer = buffer
-		@_context = phlex_context = parent&.__context__ || Phlex::Context.new(user_context: context, view_context:)
+		@_context = phlex_context = parent&.__context__ || Phlex::SGML::Renderer.new(user_context: context, view_context:)
 		@_parent = parent
 
 		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered

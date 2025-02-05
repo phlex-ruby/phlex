@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # @api private
-class Phlex::Context
+class Phlex::SGML::Renderer
 	def initialize(user_context: {}, view_context: nil)
 		@buffer = +""
 		@capturing = false

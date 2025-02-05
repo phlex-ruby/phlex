@@ -6,7 +6,6 @@ require "set"
 module Phlex
 	autoload :ArgumentError, "phlex/errors/argument_error"
 	autoload :CSV, "phlex/csv"
-	autoload :Context, "phlex/context"
 	autoload :DoubleRenderError, "phlex/errors/double_render_error"
 	autoload :Error, "phlex/error"
 	autoload :FIFO, "phlex/fifo"
