@@ -2,11 +2,11 @@
 
 # @api private
 class Phlex::SGML::Renderer
-	def initialize(user_context: {}, view_context: nil, output_buffer:)
+	def initialize(user_context: {}, view_context: nil, output_buffer:, fragments:)
 		@buffer = +""
 		@capturing = false
 		@user_context = user_context
-		@fragments = nil
+		@fragments = fragments
 		@fragment_depth = 0
 		@cache_stack = []
 		@halt_signal = nil
@@ -16,11 +16,7 @@ class Phlex::SGML::Renderer
 
 	attr_accessor :buffer, :capturing, :user_context
 
-	attr_reader :fragments, :fragment_depth, :view_context
-
-	def target_fragments(fragments)
-		@fragments = fragments.to_set
-	end
+	attr_reader :fragments, :fragment_depth, :view_context, :output_buffer
 
 	def around_render
 		return yield if !@fragments || @halt_signal

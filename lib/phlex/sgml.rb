@@ -43,25 +43,31 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
-	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &block)
-		@_buffer = buffer
-		@_context = phlex_context = parent&.__context__ || Phlex::SGML::Renderer.new(
+	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &)
+		phlex_context = Phlex::SGML::Renderer.new(
 			user_context: context,
 			view_context:,
 			output_buffer: buffer,
+			fragments: fragments&.to_set,
 		)
-		@_parent = parent
 
-		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
-		@_rendered = true
+		internal_call(parent:, phlex_context:, &)
 
-		if fragments
-			phlex_context.target_fragments(fragments)
+		phlex_context.output_buffer << phlex_context.buffer
+	end
+
+	def internal_call(parent: nil, phlex_context: nil, &block)
+		return "" unless render?
+
+		if @_context
+			raise Phlex::DoubleRenderError.new(
+				"You can't render a #{self.class.name} more than once."
+			)
 		end
 
-		block ||= @_content_block
+		@_context = phlex_context
 
-		return "" unless render?
+		block ||= @_content_block
 
 		Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 
@@ -83,10 +89,6 @@ class Phlex::SGML
 			end
 
 			after_template(&block)
-		end
-
-		unless parent
-			buffer << phlex_context.buffer
 		end
 	ensure
 		Thread.current[:__phlex_component__] = [parent, Fiber.current.object_id].freeze
@@ -195,10 +197,10 @@ class Phlex::SGML
 	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
-			renderable.call(@_buffer, parent: self, &)
+			renderable.internal_call(phlex_context: @_context, parent: self, &)
 		when Class
 			if renderable < Phlex::SGML
-				renderable.new.call(@_buffer, parent: self, &)
+				renderable.new.internal_call(phlex_context: @_context, parent: self, &)
 			end
 		when Enumerable
 			renderable.each { |r| render(r, &) }
