@@ -2,7 +2,7 @@
 
 # @api private
 class Phlex::SGML::Renderer
-	def initialize(user_context: {}, view_context: nil)
+	def initialize(user_context: {}, view_context: nil, output_buffer:)
 		@buffer = +""
 		@capturing = false
 		@user_context = user_context
@@ -11,6 +11,7 @@ class Phlex::SGML::Renderer
 		@cache_stack = []
 		@halt_signal = nil
 		@view_context = view_context
+		@output_buffer = output_buffer
 	end
 
 	attr_accessor :buffer, :capturing, :user_context
@@ -104,5 +105,15 @@ class Phlex::SGML::Renderer
 		end
 
 		new_buffer
+	end
+
+	def flush
+		return if capturing
+
+		buffer = @buffer
+		@output_buffer << buffer.dup
+
+		buffer.clear
+		nil
 	end
 end

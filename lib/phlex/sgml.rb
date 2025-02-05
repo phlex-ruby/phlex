@@ -45,7 +45,11 @@ class Phlex::SGML
 
 	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &block)
 		@_buffer = buffer
-		@_context = phlex_context = parent&.__context__ || Phlex::SGML::Renderer.new(user_context: context, view_context:)
+		@_context = phlex_context = parent&.__context__ || Phlex::SGML::Renderer.new(
+			user_context: context,
+			view_context:,
+			output_buffer: buffer,
+		)
 		@_parent = parent
 
 		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
@@ -185,11 +189,7 @@ class Phlex::SGML
 	alias_method :🦺, :safe
 
 	def flush
-		return if @_context.capturing
-
-		buffer = @_context.buffer
-		@_buffer << buffer.dup
-		buffer.clear
+		@_context.flush
 	end
 
 	def render(renderable = nil, &)
