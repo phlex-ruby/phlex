@@ -10,11 +10,11 @@ module Phlex::SGML::Elements
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes)
-				context = @_context
-				buffer = context.buffer
+				state = @_state
+				buffer = state.buffer
 				block_given = block_given?
 
-				unless context.should_render?
+				unless state.should_render?
 					yield(self) if block_given
 					return nil
 				end
@@ -91,14 +91,14 @@ module Phlex::SGML::Elements
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes)
-				context = @_context
+				state = @_state
 
-				return unless context.should_render?
+				return unless state.should_render?
 
 				if attributes.length > 0 # with attributes
-					context.buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+					state.buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 				else # without attributes
-					context.buffer << "<#{tag}>"
+					state.buffer << "<#{tag}>"
 				end
 
 				nil

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# @api private
-class Phlex::SGML::Renderer
+class Phlex::SGML::State
 	def initialize(user_context: {}, view_context: nil, output_buffer:, fragments:)
 		@buffer = +""
 		@capturing = false
