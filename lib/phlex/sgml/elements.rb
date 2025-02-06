@@ -6,15 +6,15 @@ module Phlex::SGML::Elements
 	end
 
 	def register_element(method_name, tag: method_name.name.tr("_", "-"))
-		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+		class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes)
-				context = @_context
-				buffer = context.buffer
+				state = @_state
+				buffer = state.buffer
 				block_given = block_given?
 
-				unless context.should_render?
+				unless state.should_render?
 					yield(self) if block_given
 					return nil
 				end
@@ -27,14 +27,14 @@ module Phlex::SGML::Elements
 						content = yield(self)
 						if original_length == buffer.bytesize
 							case content
-							when ::Phlex::SGML::SafeObject
-								buffer << content.to_s
+							when nil
+								nil
 							when String
 								buffer << ::Phlex::Escape.html_escape(content)
 							when Symbol
 								buffer << ::Phlex::Escape.html_escape(content.name)
-							when nil
-								nil
+							when ::Phlex::SGML::SafeObject
+								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
 									buffer << ::Phlex::Escape.html_escape(formatted_object)
@@ -54,14 +54,14 @@ module Phlex::SGML::Elements
 						content = yield(self)
 						if original_length == buffer.bytesize
 							case content
-							when ::Phlex::SGML::SafeObject
-								buffer << content.to_s
+							when nil
+								nil
 							when String
 								buffer << ::Phlex::Escape.html_escape(content)
 							when Symbol
 								buffer << ::Phlex::Escape.html_escape(content.name)
-							when nil
-								nil
+							when ::Phlex::SGML::SafeObject
+								buffer << content.to_s
 							else
 								if (formatted_object = format_object(content))
 									buffer << ::Phlex::Escape.html_escape(formatted_object)
@@ -87,25 +87,22 @@ module Phlex::SGML::Elements
 	end
 
 	def __register_void_element__(method_name, tag: method_name.name.tr("_", "-"))
-		class_eval(<<-RUBY, __FILE__, __LINE__ + 1)
+		class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
 
 			def #{method_name}(**attributes)
-				context = @_context
-				buffer = context.buffer
+				state = @_state
 
-				return unless context.should_render?
+				return unless state.should_render?
 
 				if attributes.length > 0 # with attributes
-					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+					state.buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 				else # without attributes
-					buffer << "<#{tag}>"
+					state.buffer << "<#{tag}>"
 				end
 
 				nil
 			end
-
-			alias_method :_#{method_name}, :#{method_name}
 		RUBY
 
 		__registered_elements__[method_name] = tag

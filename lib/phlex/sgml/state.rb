@@ -1,32 +1,32 @@
 # frozen_string_literal: true
 
-# @api private
-class Phlex::Context
-	def initialize(user_context: {}, view_context: nil)
+class Phlex::SGML::State
+	def initialize(user_context: {}, view_context: nil, output_buffer:, fragments:)
 		@buffer = +""
 		@capturing = false
 		@user_context = user_context
-		@fragments = nil
+		@fragments = fragments
 		@fragment_depth = 0
 		@cache_stack = []
 		@halt_signal = nil
 		@view_context = view_context
+		@output_buffer = output_buffer
 	end
 
 	attr_accessor :buffer, :capturing, :user_context
 
-	attr_reader :fragments, :fragment_depth, :view_context
+	attr_reader :fragments, :fragment_depth, :view_context, :output_buffer
 
-	def target_fragments(fragments)
-		@fragments = fragments.to_set
-	end
+	def around_render(component)
+		stack = @stack
 
-	def around_render
-		return yield if !@fragments || @halt_signal
-
-		catch do |signal|
-			@halt_signal = signal
+		if !@fragments || @halt_signal
 			yield
+		else
+			catch do |signal|
+				@halt_signal = signal
+				yield
+			end
 		end
 	end
 
@@ -104,5 +104,15 @@ class Phlex::Context
 		end
 
 		new_buffer
+	end
+
+	def flush
+		return if capturing
+
+		buffer = @buffer
+		@output_buffer << buffer.dup
+
+		buffer.clear
+		nil
 	end
 end

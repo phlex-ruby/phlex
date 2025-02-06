@@ -8,6 +8,7 @@ class Phlex::SGML
 	autoload :Elements, "phlex/sgml/elements"
 	autoload :SafeObject, "phlex/sgml/safe_object"
 	autoload :SafeValue, "phlex/sgml/safe_value"
+	autoload :State, "phlex/sgml/state"
 
 	include Phlex::Helpers
 
@@ -42,25 +43,36 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
-	def call(buffer = +"", context: {}, view_context: nil, parent: nil, fragments: nil, &block)
-		@_buffer = buffer
-		@_context = phlex_context = parent&.__context__ || Phlex::Context.new(user_context: context, view_context:)
-		@_parent = parent
+	def call(buffer = +"", context: {}, view_context: nil, fragments: nil, &)
+		state = Phlex::SGML::State.new(
+			user_context: context,
+			view_context:,
+			output_buffer: buffer,
+			fragments: fragments&.to_set,
+		)
 
-		raise Phlex::DoubleRenderError.new("You can't render a #{self.class.name} more than once.") if @_rendered
-		@_rendered = true
+		internal_call(parent: nil, state:, &)
 
-		if fragments
-			phlex_context.target_fragments(fragments)
+		state.output_buffer << state.buffer
+	end
+
+	def internal_call(parent: nil, state: nil, &block)
+		return "" unless render?
+
+		if @_context
+			raise Phlex::DoubleRenderError.new(
+				"You can't render a #{self.class.name} more than once."
+			)
 		end
+
+		@_context = state
+		@_state = state
 
 		block ||= @_content_block
 
-		return "" unless render?
-
 		Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 
-		phlex_context.around_render do
+		state.around_render(self) do
 			before_template(&block)
 
 			around_template do
@@ -79,18 +91,12 @@ class Phlex::SGML
 
 			after_template(&block)
 		end
-
-		unless parent
-			buffer << phlex_context.buffer
-		end
 	ensure
 		Thread.current[:__phlex_component__] = [parent, Fiber.current.object_id].freeze
 	end
 
-	protected def __context__ = @_context
-
 	def context
-		@_context.user_context
+		@_state._state
 	end
 
 	# Output plain text.
@@ -104,10 +110,10 @@ class Phlex::SGML
 
 	# Output a single space character. If a block is given, a space will be output before and after the block.
 	def whitespace(&)
-		context = @_context
-		return unless context.should_render?
+		state = @_state
+		return unless state.should_render?
 
-		buffer = context.buffer
+		buffer = state.buffer
 
 		buffer << " "
 
@@ -123,10 +129,10 @@ class Phlex::SGML
 	#
 	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Comments)
 	def comment(&)
-		context = @_context
-		return unless context.should_render?
+		state = @_state
+		return unless state.should_render?
 
-		buffer = context.buffer
+		buffer = state.buffer
 
 		buffer << "<!-- "
 		__yield_content__(&)
@@ -139,10 +145,10 @@ class Phlex::SGML
 	def raw(content)
 		case content
 		when Phlex::SGML::SafeObject
-			context = @_context
-			return unless context.should_render?
+			state = @_state
+			return unless state.should_render?
 
-			context.buffer << content.to_s
+			state.buffer << content.to_s
 		when nil, "" # do nothing
 		else
 			raise Phlex::ArgumentError.new("You passed an unsafe object to `raw`.")
@@ -156,18 +162,18 @@ class Phlex::SGML
 		return "" unless block
 
 		if args.length > 0
-			@_context.capturing_into(+"") { __yield_content_with_args__(*args, &block) }
+			@_state.capturing_into(+"") { __yield_content_with_args__(*args, &block) }
 		else
-			@_context.capturing_into(+"") { __yield_content__(&block) }
+			@_state.capturing_into(+"") { __yield_content__(&block) }
 		end
 	end
 
 	# Define a named fragment that can be selectively rendered.
 	def fragment(name)
-		context = @_context
-		context.begin_fragment(name)
+		state = @_state
+		state.begin_fragment(name)
 		yield
-		context.end_fragment(name)
+		state.end_fragment(name)
 		nil
 	end
 
@@ -184,20 +190,18 @@ class Phlex::SGML
 	alias_method :🦺, :safe
 
 	def flush
-		return if @_context.capturing
-
-		buffer = @_context.buffer
-		@_buffer << buffer.dup
-		buffer.clear
+		@_state.flush
 	end
 
 	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
-			renderable.call(@_buffer, parent: self, &)
+			Thread.current[:__phlex_component__] = [renderable, Fiber.current.object_id].freeze
+			renderable.internal_call(state: @_context, parent: self, &)
+			Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 		when Class
 			if renderable < Phlex::SGML
-				renderable.new.call(@_buffer, parent: self, &)
+				render(renderable.new, &)
 			end
 		when Enumerable
 			renderable.each { |r| render(r, &) }
@@ -228,8 +232,6 @@ class Phlex::SGML
 	# end
 	# ```
 	def cache(*cache_key, **, &content)
-		context = @_context
-
 		location = caller_locations(1, 1)[0]
 
 		full_key = [
@@ -256,21 +258,21 @@ class Phlex::SGML
 	# Note: To allow you more control, this method does not take a splat of cache keys.
 	# If you need to pass multiple cache keys, you should pass an array.
 	def low_level_cache(cache_key, **options, &content)
-		context = @_context
+		state = @_state
 
-		cached_buffer, fragment_map = cache_store.fetch(cache_key, **options) { context.caching(&content) }
+		cached_buffer, fragment_map = cache_store.fetch(cache_key, **options) { state.caching(&content) }
 
-		if context.should_render?
+		if state.should_render?
 			fragment_map.each do |fragment_name, (offset, length, nested_fragments)|
-				context.record_fragment(fragment_name, offset, length, nested_fragments)
+				state.record_fragment(fragment_name, offset, length, nested_fragments)
 			end
-			context.buffer << cached_buffer
+			state.buffer << cached_buffer
 		else
 			fragment_map.each do |fragment_name, (offset, length, nested_fragments)|
-				if context.fragments.include?(fragment_name)
-					context.fragments.delete(fragment_name)
-					context.fragments.subtract(nested_fragments)
-					context.buffer << cached_buffer.byteslice(offset, length)
+				if state.fragments.include?(fragment_name)
+					state.fragments.delete(fragment_name)
+					state.fragments.subtract(nested_fragments)
+					state.buffer << cached_buffer.byteslice(offset, length)
 				end
 			end
 		end
@@ -289,9 +291,9 @@ class Phlex::SGML
 		return unless block_given?
 
 		if args.length > 0
-			@_context.capturing_into(Phlex::Vanish) { yield(*args) }
+			@_state.capturing_into(Phlex::Vanish) { yield(*args) }
 		else
-			@_context.capturing_into(Phlex::Vanish) { yield(self) }
+			@_state.capturing_into(Phlex::Vanish) { yield(self) }
 		end
 
 		nil
@@ -324,7 +326,7 @@ class Phlex::SGML
 	def __yield_content__
 		return unless block_given?
 
-		buffer = @_context.buffer
+		buffer = @_state.buffer
 
 		original_length = buffer.bytesize
 		content = yield(self)
@@ -336,7 +338,7 @@ class Phlex::SGML
 	def __yield_content_with_no_args__
 		return unless block_given?
 
-		buffer = @_context.buffer
+		buffer = @_state.buffer
 
 		original_length = buffer.bytesize
 		content = yield
@@ -348,7 +350,7 @@ class Phlex::SGML
 	def __yield_content_with_args__(*a)
 		return unless block_given?
 
-		buffer = @_context.buffer
+		buffer = @_state.buffer
 
 		original_length = buffer.bytesize
 		content = yield(*a)
@@ -358,21 +360,21 @@ class Phlex::SGML
 	end
 
 	def __implicit_output__(content)
-		context = @_context
-		return true unless context.should_render?
+		state = @_state
+		return true unless state.should_render?
 
 		case content
 		when Phlex::SGML::SafeObject
-			context.buffer << content.to_s
+			state.buffer << content.to_s
 		when String
-			context.buffer << Phlex::Escape.html_escape(content)
+			state.buffer << Phlex::Escape.html_escape(content)
 		when Symbol
-			context.buffer << Phlex::Escape.html_escape(content.name)
+			state.buffer << Phlex::Escape.html_escape(content.name)
 		when nil
 			nil
 		else
 			if (formatted_object = format_object(content))
-				context.buffer << Phlex::Escape.html_escape(formatted_object)
+				state.buffer << Phlex::Escape.html_escape(formatted_object)
 			else
 				return false
 			end
@@ -383,19 +385,19 @@ class Phlex::SGML
 
 	# same as __implicit_output__ but escapes even `safe` objects
 	def __text__(content)
-		context = @_context
-		return true unless context.should_render?
+		state = @_state
+		return true unless state.should_render?
 
 		case content
 		when String
-			context.buffer << Phlex::Escape.html_escape(content)
+			state.buffer << Phlex::Escape.html_escape(content)
 		when Symbol
-			context.buffer << Phlex::Escape.html_escape(content.name)
+			state.buffer << Phlex::Escape.html_escape(content.name)
 		when nil
 			nil
 		else
 			if (formatted_object = format_object(content))
-				context.buffer << Phlex::Escape.html_escape(formatted_object)
+				state.buffer << Phlex::Escape.html_escape(formatted_object)
 			else
 				return false
 			end
