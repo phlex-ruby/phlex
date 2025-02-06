@@ -20,7 +20,7 @@ class Phlex::FIFO
 
 	def [](key)
 		k, v = @store[key.hash]
-		v if k == key
+		v if k.eql?(key)
 	end
 
 	def []=(key, value)
