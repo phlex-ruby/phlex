@@ -59,13 +59,12 @@ class Phlex::SGML
 	def internal_call(parent: nil, state: nil, &block)
 		return "" unless render?
 
-		if @_context
+		if @_state
 			raise Phlex::DoubleRenderError.new(
 				"You can't render a #{self.class.name} more than once."
 			)
 		end
 
-		@_context = state
 		@_state = state
 
 		block ||= @_content_block
@@ -197,7 +196,7 @@ class Phlex::SGML
 		case renderable
 		when Phlex::SGML
 			Thread.current[:__phlex_component__] = [renderable, Fiber.current.object_id].freeze
-			renderable.internal_call(state: @_context, parent: self, &)
+			renderable.internal_call(state: @_state, parent: self, &)
 			Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 		when Class
 			if renderable < Phlex::SGML
