@@ -95,7 +95,7 @@ class Phlex::SGML
 	end
 
 	def context
-		@_state._state
+		@_state.user_context
 	end
 
 	# Output plain text.
