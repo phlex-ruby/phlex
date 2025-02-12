@@ -206,7 +206,7 @@ class Phlex::SGML
 			renderable.each { |r| render(r, &) }
 		when Proc, Method
 			if renderable.arity == 0
-				__yield_content_with_no_args__(&renderable)
+				__yield_content_with_no_yield_args__(&renderable)
 			else
 				__yield_content__(&renderable)
 			end
@@ -334,13 +334,13 @@ class Phlex::SGML
 		nil
 	end
 
-	def __yield_content_with_no_args__
+	def __yield_content_with_no_yield_args__
 		return unless block_given?
 
 		buffer = @_state.buffer
 
 		original_length = buffer.bytesize
-		content = yield
+		content = yield # <-- doesn’t yield self 😉
 		__implicit_output__(content) if original_length == buffer.bytesize
 
 		nil
