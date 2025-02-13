@@ -195,9 +195,7 @@ class Phlex::SGML
 	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
-			Thread.current[:__phlex_component__] = [renderable, Fiber.current.object_id].freeze
 			renderable.internal_call(state: @_state, parent: self, &)
-			Thread.current[:__phlex_component__] = [self, Fiber.current.object_id].freeze
 		when Class
 			if renderable < Phlex::SGML
 				render(renderable.new, &)
