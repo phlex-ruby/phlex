@@ -14,10 +14,6 @@ end
 
 group :development do
 	gem "rubocop"
-	gem "solargraph"
-	gem "yard"
+	gem "ruby-lsp"
 	gem "benchmark-ips"
 end
-
-gem "concurrent-ruby"
-gem "async" if RUBY_ENGINE == "ruby"
