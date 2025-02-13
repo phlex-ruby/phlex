@@ -5,95 +5,62 @@ module Phlex::HTML::VoidElements
 	extend Phlex::SGML::Elements
 
 	# Outputs an `<area>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/area
-	__register_void_element__ def area(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/area)
+	# [Spec](https://html.spec.whatwg.org/#the-area-element)
+	__register_void_element__ def area(**attributes) = nil
+
 	# Outputs a `<base>` tag.
-	# See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-	__register_void_element__ def base(
-		class: nil,
-		href: nil,
-		id: nil,
-		target: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base)
+	# [Spec](https://html.spec.whatwg.org/#the-base-element)
+	__register_void_element__ def base(**attributes) = nil
+
 	# Outputs a `<br>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/br
-	__register_void_element__ def br(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/br)
+	# [Spec](https://html.spec.whatwg.org/#the-br-element)
+	__register_void_element__ def br(**attributes) = nil
+
 	# Outputs a `<col>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/col
-	__register_void_element__ def col(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/col)
+	# [Spec](https://html.spec.whatwg.org/#the-col-element)
+	__register_void_element__ def col(**attributes) = nil
+
 	# Outputs an `<embed>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/embed
-	__register_void_element__ def embed(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/embed)
+	# [Spec](https://html.spec.whatwg.org/#the-embed-element)
+	__register_void_element__ def embed(**attributes) = nil
+
 	# Outputs an `<hr>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/hr
-	__register_void_element__ def hr(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/hr)
+	# [Spec](https://html.spec.whatwg.org/#the-hr-element)
+	__register_void_element__ def hr(**attributes) = nil
+
 	# Outputs an `<img>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/img
-	__register_void_element__ def img(
-		alt: nil,
-		class: nil,
-		id: nil,
-		src: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/img)
+	# [Spec](https://html.spec.whatwg.org/#the-img-element)
+	__register_void_element__ def img(**attributes) = nil
+
 	# Outputs an `<input>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/input
-	__register_void_element__ def input(
-		class: nil,
-		id: nil,
-		name: nil,
-		type: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/input)
+	# [Spec](https://html.spec.whatwg.org/#the-input-element)
+	__register_void_element__ def input(**attributes) = nil
+
 	# Outputs a `<link>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/link
-	__register_void_element__ def link(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/link)
+	# [Spec](https://html.spec.whatwg.org/#the-link-element)
+	__register_void_element__ def link(**attributes) = nil
+
 	# Outputs a `<meta>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/meta
-	__register_void_element__ def meta(
-		charset: nil,
-		class: nil,
-		id: nil,
-		name: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/meta)
+	# [Spec](https://html.spec.whatwg.org/#the-meta-element)
+	__register_void_element__ def meta(**attributes) = nil
+
 	# Outputs a `<source>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/source
-	__register_void_element__ def source(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/source)
+	# [Spec](https://html.spec.whatwg.org/#the-source-element)
+	__register_void_element__ def source(**attributes) = nil
+
 	# Outputs a `<track>` tag.
-	# See https://developer.mozilla.org/docs/Web/HTML/Element/track
-	__register_void_element__ def track(
-		class: nil,
-		id: nil,
-		**attributes
-	) = nil
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/track)
+	# [Spec](https://html.spec.whatwg.org/#the-track-element)
+	__register_void_element__ def track(**attributes) = nil
 end
