@@ -24,7 +24,16 @@ module Phlex::Kit
 	end
 
 	def self.extended(mod)
-		mod.include(LazyLoader)
+		case mod
+		when Class
+			raise Phlex::ArgumentError.new(<<~MESSAGE)
+				`Phlex::Kit` was extended into #{mod.name}.
+
+				You should only extend modules with `Phlex::Kit` as it is not compatible with classes.
+			MESSAGE
+		else
+			mod.include(LazyLoader)
+		end
 	end
 
 	def method_missing(name, ...)
@@ -52,7 +61,7 @@ module Phlex::Kit
 		case constant
 		when Class
 			if constant < Phlex::SGML
-				constant.include(self)
+				constant.include(me)
 
 				constant = nil
 
@@ -74,7 +83,7 @@ module Phlex::Kit
 				end
 			end
 		when Module
-			constant.extend(Phlex::Kit) unless Class === constant
+			constant.extend(Phlex::Kit)
 		end
 
 		super
