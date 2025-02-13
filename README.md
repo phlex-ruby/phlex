@@ -7,7 +7,7 @@ Phlex lets you build object-oriented web views in pure Ruby.
 
 ## Versioning and Maintenance
 
-Phlex does not follow semantic versioning (SemVer). Instead, we follow [BreakVer](https://www.taoensso.com/break-versioning).
+Phlex does not follow Semantic Versioning (SemVer). Instead, we follow [BreakVer](https://www.taoensso.com/break-versioning).
 
 ### Security
 
