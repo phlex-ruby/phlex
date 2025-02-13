@@ -176,6 +176,12 @@ module Phlex::HTML::StandardElements
 	# [Spec](https://html.spec.whatwg.org/#the-em-element)
 	register_element def em(**attributes, &content) = nil
 
+	# [EXPERIMENTAL] Outputs a `<fencedframe>` tag.
+	#
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/fencedframe)
+	# [Can I Use?](https://caniuse.com/mdn-html_elements_fencedframe)
+	register_element def fencedframe(**attributes, &content) = nil
+
 	# Outputs a `<fieldset>` tag.
 	#
 	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/fieldset)
