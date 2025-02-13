@@ -32,13 +32,12 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3"
+          ruby-version: "3.4"
           bundler-cache: false
 
       - name: Install dependencies
         run: |
-          bundle config set --local without "development"
-          bundle install
+          bundle install --jobs 4 --without development
 
       - name: Generate coverage report
         run: |

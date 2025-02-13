@@ -13,6 +13,7 @@ jobs:
         ruby-version:
           - "3.2"
           - "3.3"
+          - "3.4"
           - "head"
           - "truffleruby"
           - "truffleruby-head"
@@ -29,8 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          bundle config set --local without "development"
-          bundle install
+          bundle install --jobs 4 --without development
 
       - name: Sus Tests
         run: bundle exec sus
@@ -46,13 +46,12 @@ jobs:
       - name: Setup
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3"
+          ruby-version: "3.4"
           bundler-cache: false
 
       - name: Install dependencies
         run: |
-          bundle config set --local only "development"
-          bundle install
+          bundle install --jobs 4
 
       - name: Rubocop
         run: bundle exec rubocop
