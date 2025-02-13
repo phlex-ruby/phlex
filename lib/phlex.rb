@@ -18,6 +18,7 @@ module Phlex
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Vanish, "phlex/vanish"
+	autoload :Proxy, "phlex/proxy"
 
 	Escape = ERB::Escape
 	Null = Object.new.freeze
@@ -42,6 +43,14 @@ module Phlex
 				queue << const if Module === const
 			end
 		end
+	end
+
+	def self.html(&block)
+		HTML.new.call(&Proxy.inliner(block))
+	end
+
+	def self.svg(&block)
+		SVG.new.call(&Proxy.inliner(block))
 	end
 end
 
