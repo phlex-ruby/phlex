@@ -51,7 +51,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          bundle install --jobs 4 --without development
+          bundle install --jobs 4
 
       - name: Rubocop
         run: bundle exec rubocop
