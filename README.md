@@ -1,6 +1,6 @@
-<a href="https://www.phlex.fun/"><img alt="Phlex logo" src="https://www.phlex.fun/assets/logo.png" width="180" /></a>
+# Phlex
 
-Phlex lets you compose web views in pure Ruby.
+Phlex lets you build object-oriented web views in pure Ruby.
 
 - [v1 Stable Docs](https://www.phlex.fun)
 - [v2 Beta Docs](https://beta.phlex.fun)
