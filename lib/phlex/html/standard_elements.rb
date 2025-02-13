@@ -399,13 +399,6 @@ module Phlex::HTML::StandardElements
 	# [Can I Use?](https://caniuse.com/picture)
 	register_element def picture(**attributes, &content) = nil
 
-	# Outputs a `<portal>` tag. (Experimental)
-	#
-	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/portal)
-	# [Spec](https://html.spec.whatwg.org/#the-portal-element)
-	# [Can I Use?](https://caniuse.com/portals)
-	register_element def portal(**attributes, &content) = nil
-
 	# Outputs a `<pre>` tag.
 	#
 	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/pre)
