@@ -74,7 +74,7 @@ module Phlex::Kit
 				end
 			end
 		when Module
-			constant.extend(Phlex::Kit)
+			constant.extend(Phlex::Kit) unless Class === constant
 		end
 
 		super
