@@ -36,7 +36,7 @@ module Phlex::HTML::StandardElements
 
 	# Outputs an `<audio>` tag.
 	#
-	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio)
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/audio)
 	# [Spec](https://html.spec.whatwg.org/#the-audio-element)
 	# [Can I Use?](https://caniuse.com/audio)
 	register_element def audio(**attributes, &content) = nil
@@ -334,7 +334,7 @@ module Phlex::HTML::StandardElements
 
 	# Outputs a `<menu>` tag.
 	#
-	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/menu)
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/menu)
 	# [Spec](https://html.spec.whatwg.org/#the-menu-element)
 	register_element def menu(**attributes, &content) = nil
 
@@ -455,7 +455,7 @@ module Phlex::HTML::StandardElements
 
 	# Outputs a `<search>` tag.
 	#
-	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/search)
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/search)
 	# [Spec](https://html.spec.whatwg.org/#the-search-element)
 	# [Can I Use?](https://caniuse.com/mdn-html_elements_search)
 	register_element def search(**attributes, &content) = nil
@@ -523,7 +523,7 @@ module Phlex::HTML::StandardElements
 
 	# Outputs an `<svg>` tag.
 	#
-	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg)
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/SVG/Element/svg)
 	# [Spec](https://html.spec.whatwg.org/#the-svg-element)
 	register_element def svg(**attributes, &content) = nil
 
@@ -607,7 +607,7 @@ module Phlex::HTML::StandardElements
 
 	# Outputs a `<var>` tag.
 	#
-	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/var)
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/var)
 	# [Spec](https://html.spec.whatwg.org/#the-var-element)
 	register_element def var(**attributes, &content) = nil
 
