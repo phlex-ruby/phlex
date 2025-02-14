@@ -188,6 +188,7 @@ class Phlex::SGML
 
 	alias_method :🦺, :safe
 
+	# Flush the current state to the output buffer.
 	def flush
 		@_state.flush
 	end
