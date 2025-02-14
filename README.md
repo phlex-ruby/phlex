@@ -2,8 +2,8 @@
 
 Phlex lets you build object-oriented web views in pure Ruby.
 
-- [v1 Stable Docs](https://www.phlex.fun)
-- [v2 Beta Docs](https://beta.phlex.fun)
+- [v2 Docs](https://www.phlex.fun)
+- [v1 Docs](https://v1.phlex.fun)
 
 ## Versioning and Maintenance
 
