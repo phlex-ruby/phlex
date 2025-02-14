@@ -16,10 +16,10 @@ test "inline html with a yield param" do
 	@ivar = "Hi"
 	h1 = "foo"
 
-	output = Phlex.html do |_|
+	output = Phlex.html do |receiver|
 		h1 { h1 }
 		h1 { @ivar }
-		title { _.title }
+		title { receiver.title }
 	end
 
 	assert_equal_html output, <<~HTML.strip
