@@ -43,6 +43,36 @@ module Phlex
 			end
 		end
 	end
+
+	def self.html(&block)
+		HTML.call do |component|
+			receiver = block.binding.receiver
+
+			receiver.instance_variables.each do |ivar|
+				next if component.instance_variable_defined?(ivar)
+
+				value = receiver.instance_variable_get(ivar)
+				component.instance_variable_set(ivar, value)
+			end
+
+			component.instance_exec(receiver, &block)
+		end
+	end
+
+	def self.svg(&block)
+		SVG.call do |component|
+			receiver = block.binding.receiver
+
+			receiver.instance_variables.each do |ivar|
+				next if component.instance_variable_defined?(ivar)
+
+				value = receiver.instance_variable_get(ivar)
+				component.instance_variable_set(ivar, value)
+			end
+
+			component.instance_exec(receiver, &block)
+		end
+	end
 end
 
 def 💪
