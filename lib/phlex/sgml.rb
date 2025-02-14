@@ -282,55 +282,6 @@ class Phlex::SGML
 		Phlex::NullCacheStore
 	end
 
-	def tag(name, **attributes, &)
-		state = @_state
-		block_given = block_given?
-		buffer = state.buffer
-
-		unless state.should_render?
-			yield(self) if block_given
-			return nil
-		end
-
-		unless Symbol === name
-			raise Phlex::ArgumentError.new("Expected the tag name to be a Symbol.")
-		end
-
-		if (tag = Phlex::HTML::StandardElements.__registered_elements__[name]) || (tag = name.name.tr("_", "-")).include?("-")
-			if attributes.length > 0 # with attributes
-				if block_given # with content block
-					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
-					__yield_content__(&)
-					buffer << "</#{tag}>"
-				else # without content
-					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
-				end
-			else # without attributes
-				if block_given # with content block
-					buffer << ("<#{tag}>")
-					__yield_content__(&)
-					buffer << "</#{tag}>"
-				else # without content
-					buffer << "<#{tag}></#{tag}>"
-				end
-			end
-		elsif (tag = Phlex::HTML::VoidElements.__registered_elements__[name])
-			if block_given
-				raise Phlex::ArgumentError.new("Void elements cannot have content blocks.")
-			end
-
-			if attributes.length > 0 # with attributes
-				buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
-			else # without attributes
-				buffer << "<#{tag}>"
-			end
-
-			nil
-		else
-			raise Phlex::ArgumentError.new("Invalid HTML tag: #{name}")
-		end
-	end
-
 	private
 
 	def vanish(*args)

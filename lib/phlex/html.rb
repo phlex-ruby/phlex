@@ -19,13 +19,9 @@ class Phlex::HTML < Phlex::SGML
 	# Outputs an `<svg>` tag
 	# @return [nil]
 	# @see https://developer.mozilla.org/docs/Web/SVG/Element/svg
-	def svg(...)
+	def svg(*, **, &)
 		if block_given?
-			super do
-				render Phlex::SVG.new do |svg|
-					yield(svg)
-				end
-			end
+			super { render Phlex::SVG.new(&) }
 		else
 			super
 		end
@@ -37,5 +33,62 @@ class Phlex::HTML < Phlex::SGML
 
 	def content_type
 		"text/html"
+	end
+
+	def tag(name, **attributes, &)
+		state = @_state
+		block_given = block_given?
+		buffer = state.buffer
+
+		unless state.should_render?
+			yield(self) if block_given
+			return nil
+		end
+
+		unless Symbol === name
+			raise Phlex::ArgumentError.new("Expected the tag name to be a Symbol.")
+		end
+
+		if (tag = StandardElements.__registered_elements__[name]) || (tag = name.name.tr("_", "-")).include?("-")
+			if attributes.length > 0 # with attributes
+				if block_given # with content block
+					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+					if tag == "svg"
+						render Phlex::SVG.new(&)
+					else
+						__yield_content__(&)
+					end
+					buffer << "</#{tag}>"
+				else # without content
+					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
+				end
+			else # without attributes
+				if block_given # with content block
+					buffer << ("<#{tag}>")
+					if tag == "svg"
+						render Phlex::SVG.new(&)
+					else
+						__yield_content__(&)
+					end
+					buffer << "</#{tag}>"
+				else # without content
+					buffer << "<#{tag}></#{tag}>"
+				end
+			end
+		elsif (tag = VoidElements.__registered_elements__[name])
+			if block_given
+				raise Phlex::ArgumentError.new("Void elements cannot have content blocks.")
+			end
+
+			if attributes.length > 0 # with attributes
+				buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+			else # without attributes
+				buffer << "<#{tag}>"
+			end
+
+			nil
+		else
+			raise Phlex::ArgumentError.new("Invalid HTML tag: #{name}")
+		end
 	end
 end
