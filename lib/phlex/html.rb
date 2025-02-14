@@ -16,9 +16,10 @@ class Phlex::HTML < Phlex::SGML
 		nil
 	end
 
-	# Outputs an `<svg>` tag
-	# @return [nil]
-	# @see https://developer.mozilla.org/docs/Web/SVG/Element/svg
+	# Outputs an `<svg>` tag.
+	#
+	# [MDN Docs](https://developer.mozilla.org/docs/Web/SVG/Element/svg)
+	# [Spec](https://html.spec.whatwg.org/#the-svg-element)
 	def svg(*, **, &)
 		if block_given?
 			super { render Phlex::SVG.new(&) }
@@ -27,14 +28,22 @@ class Phlex::HTML < Phlex::SGML
 		end
 	end
 
+	# Override to provide a filename for the HTML file
 	def filename
 		nil
 	end
 
+	# Returns the string "text/html"
 	def content_type
 		"text/html"
 	end
 
+	# Output an HTML tag dynamically, e.g:
+	#
+	# ```ruby
+	# @tag_name = :h1
+	# tag(@tag_name, class: "title")
+	# ```
 	def tag(name, **attributes, &)
 		state = @_state
 		block_given = block_given?

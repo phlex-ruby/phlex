@@ -5,10 +5,12 @@ class Phlex::SVG < Phlex::SGML
 
 	include StandardElements
 
+	# Returns the string "image/svg+xml"
 	def content_type
 		"image/svg+xml"
 	end
 
+	# Override to provide a filename for the SVG file
 	def filename
 		nil
 	end
