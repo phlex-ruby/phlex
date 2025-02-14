@@ -81,7 +81,16 @@ module Phlex::SGML::Elements
 			end
 		RUBY
 
-		__registered_elements__[method_name] = tag
+		__registered_elements__[method_name] = [
+			tag,
+			[
+				"<#{tag}",
+				"<#{tag}>",
+				"></#{tag}>",
+				"<#{tag}></#{tag}>",
+				"</#{tag}>",
+			].freeze,
+		].freeze
 
 		method_name
 	end
@@ -105,7 +114,13 @@ module Phlex::SGML::Elements
 			end
 		RUBY
 
-		__registered_elements__[method_name] = tag
+		__registered_elements__[method_name] = [
+			tag,
+			[
+				"<#{tag}",
+				"<#{tag}>",
+			].freeze,
+		].freeze
 
 		method_name
 	end
