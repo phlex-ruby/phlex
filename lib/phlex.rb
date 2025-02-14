@@ -23,7 +23,7 @@ module Phlex
 
 	Escape = ERB::Escape
 
-	DEPLOY_KEY = Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
+	DEPLOYED_AT = Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
 	CACHED_FILES = Set.new
 	ATTRIBUTE_CACHE = FIFO.new
 

@@ -39,7 +39,9 @@ class Phlex::FIFOCacheStore
 		when String, Symbol, Integer, Float, Time, true, false, nil
 			value
 		else
-			if value.respond_to?(:cache_key)
+			if value.respond_to?(:cache_key_with_version)
+				map_key(value.cache_key_with_version)
+			elsif value.respond_to?(:cache_key)
 				map_key(value.cache_key)
 			else
 				raise ArgumentError.new("Invalid cache key: #{value.class}")

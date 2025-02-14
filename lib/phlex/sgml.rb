@@ -233,11 +233,12 @@ class Phlex::SGML
 		location = caller_locations(1, 1)[0]
 
 		full_key = [
-			Phlex::DEPLOY_KEY,   # invalidates the key when deploying new code in case of changes
-			self.class.name,     # prevents collisions between classes
-			location.base_label, # prevents collisions between different methods
-			location.lineno,     # prevents collisions between different lines
-			cache_key,           # allows for custom cache keys
+			app_version_key,                                    # invalidates the key when deploying new code in case of changes
+			self.class.name,                                   # prevents collisions between classes
+			(self.class.object_id if enable_cache_reloading?), # enables reloading
+			location.base_label,                               # prevents collisions between different methods
+			location.lineno,                                   # prevents collisions between different lines
+			cache_key,                                        # allows for custom cache keys
 		].freeze
 
 		low_level_cache(full_key, **, &content)
@@ -276,12 +277,21 @@ class Phlex::SGML
 		end
 	end
 
-	# Override this method to use a different cache store.
-	def cache_store
-		raise "Cache store not implemented"
+	private
+
+	# Override this method to use a different deployment key.
+	def app_version_key
+		Phlex::DEPLOYED_AT
 	end
 
-	private
+	# Override this method to use a different cache store.
+	def cache_store
+		raise "Cache store not implemented."
+	end
+
+	def enable_cache_reloading?
+		false
+	end
 
 	def vanish(*args)
 		return unless block_given?
