@@ -45,6 +45,7 @@ module Phlex
 		end
 	end
 
+	# Generate an HTML string using Phlex’ HTML DSL
 	def self.html(&block)
 		HTML.call do |component|
 			receiver = block.binding.receiver
@@ -60,6 +61,7 @@ module Phlex
 		end
 	end
 
+	# Generate an SVG string using Phlex’ SVG DSL
 	def self.svg(&block)
 		SVG.call do |component|
 			receiver = block.binding.receiver
