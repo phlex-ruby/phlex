@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Phlex::SGML::State
-	def initialize(user_context: {}, view_context: nil, output_buffer:, fragments:)
+	def initialize(user_context: {}, output_buffer:, fragments:)
 		@buffer = +""
 		@capturing = false
 		@user_context = user_context
@@ -9,13 +9,12 @@ class Phlex::SGML::State
 		@fragment_depth = 0
 		@cache_stack = []
 		@halt_signal = nil
-		@view_context = view_context
 		@output_buffer = output_buffer
 	end
 
 	attr_accessor :buffer, :capturing, :user_context
 
-	attr_reader :fragments, :fragment_depth, :view_context, :output_buffer
+	attr_reader :fragments, :fragment_depth, :output_buffer
 
 	def around_render(component)
 		stack = @stack

@@ -43,10 +43,9 @@ class Phlex::SGML
 		proc { |c| c.render(self) }
 	end
 
-	def call(buffer = +"", context: {}, view_context: nil, fragments: nil, &)
+	def call(buffer = +"", context: {}, fragments: nil, &)
 		state = Phlex::SGML::State.new(
 			user_context: context,
-			view_context:,
 			output_buffer: buffer,
 			fragments: fragments&.to_set,
 		)
