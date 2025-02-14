@@ -49,11 +49,10 @@ module Phlex
 			receiver = block.binding.receiver
 
 			receiver.instance_variables.each do |ivar|
-				value = receiver.instance_variable_get(ivar)
+				next if component.instance_variable_defined?(ivar)
 
-				unless component.instance_variable_defined?(ivar)
-					component.instance_variable_set(ivar, value)
-				end
+				value = receiver.instance_variable_get(ivar)
+				component.instance_variable_set(ivar, value)
 			end
 
 			component.instance_exec(receiver, &block)
@@ -65,11 +64,10 @@ module Phlex
 			receiver = block.binding.receiver
 
 			receiver.instance_variables.each do |ivar|
-				value = receiver.instance_variable_get(ivar)
+				next if component.instance_variable_defined?(ivar)
 
-				unless component.instance_variable_defined?(ivar)
-					component.instance_variable_set(ivar, value)
-				end
+				value = receiver.instance_variable_get(ivar)
+				component.instance_variable_set(ivar, value)
 			end
 
 			component.instance_exec(receiver, &block)
