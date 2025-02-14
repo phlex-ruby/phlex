@@ -4,20 +4,22 @@ require "erb"
 require "set"
 
 module Phlex
-	autoload :ArgumentError, "phlex/errors/argument_error"
-	autoload :CSV, "phlex/csv"
-	autoload :DoubleRenderError, "phlex/errors/double_render_error"
-	autoload :Error, "phlex/error"
-	autoload :FIFO, "phlex/fifo"
-	autoload :FIFOCacheStore, "phlex/fifo_cache_store"
-	autoload :HTML, "phlex/html"
-	autoload :Helpers, "phlex/helpers"
 	autoload :Kit, "phlex/kit"
-	autoload :NameError, "phlex/errors/name_error"
-	autoload :NullCacheStore, "phlex/null_cache_store"
-	autoload :SGML, "phlex/sgml"
-	autoload :SVG, "phlex/svg"
+	autoload :FIFO, "phlex/fifo"
 	autoload :Vanish, "phlex/vanish"
+	autoload :Helpers, "phlex/helpers"
+	autoload :FIFOCacheStore, "phlex/fifo_cache_store"
+
+	autoload :CSV, "phlex/csv"
+	autoload :SVG, "phlex/svg"
+	autoload :HTML, "phlex/html"
+	autoload :SGML, "phlex/sgml"
+
+	autoload :Error, "phlex/error"
+	autoload :NameError, "phlex/errors/name_error"
+	autoload :RuntimeError, "phlex/errors/runtime_error"
+	autoload :ArgumentError, "phlex/errors/argument_error"
+	autoload :DoubleRenderError, "phlex/errors/double_render_error"
 
 	Escape = ERB::Escape
 	Null = Object.new.freeze

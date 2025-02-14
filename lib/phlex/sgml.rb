@@ -276,11 +276,9 @@ class Phlex::SGML
 		end
 	end
 
-	# Points to the cache store used by this component.
-	# By default, it points to `Phlex::NullCacheStore`, which does no caching.
 	# Override this method to use a different cache store.
 	def cache_store
-		Phlex::NullCacheStore
+		raise "Cache store not implemented"
 	end
 
 	private
