@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, (tag)|
+Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, tag|
 	test "<#{tag}> with attributes" do
 		example = Class.new(Phlex::HTML) do
 			define_method :view_template do

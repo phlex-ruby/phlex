@@ -11,7 +11,7 @@ class Example < Phlex::HTML
 	end
 end
 
-Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, (tag)|
+Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, tag|
 	test "<#{tag}> without attributes" do
 		output = Example.call(tag.to_sym)
 
@@ -39,7 +39,7 @@ Phlex::HTML::VoidElements.__registered_elements__.each do |method_name, (tag)|
 	end
 end
 
-Phlex::HTML::StandardElements.__registered_elements__.each do |method_name, (tag)|
+Phlex::HTML::StandardElements.__registered_elements__.each do |method_name, tag|
 	test "<#{tag}> without attributes" do
 		output = Example.call(tag.to_sym)
 

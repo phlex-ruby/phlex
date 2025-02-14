@@ -285,6 +285,7 @@ class Phlex::SGML
 	def tag(name, **attributes)
 		state = @_state
 		block_given = block_given?
+		buffer = state.buffer
 
 		unless state.should_render?
 			yield(self) if block_given
@@ -295,12 +296,10 @@ class Phlex::SGML
 			raise Phlex::ArgumentError.new("Expected the tag name to be a Symbol.")
 		end
 
-		if (tag, strings = Phlex::HTML::StandardElements.__registered_elements__[name]) || (tag = name.name.tr("_", "-")).include?("-")
-			buffer = state.buffer
-
+		if (tag = Phlex::HTML::StandardElements.__registered_elements__[name]) || (tag = name.name.tr("_", "-")).include?("-")
 			if attributes.length > 0 # with attributes
 				if block_given # with content block
-					buffer << ((strings && strings[0]) || "<#{tag}") << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+					buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 
 					original_length = buffer.bytesize
 					content = yield(self)
@@ -321,13 +320,13 @@ class Phlex::SGML
 						end
 					end
 
-					buffer << ((strings && strings[4]) || "</#{tag}>")
+					buffer << "</#{tag}>"
 				else # without content
-					buffer << ((strings && strings[0]) || "<#{tag}") << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ((strings && strings[2]) || "></#{tag}>")
+					buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
 				end
 			else # without attributes
 				if block_given # with content block
-					buffer << ((strings && strings[1]) || "<#{tag}>")
+					buffer << ("<#{tag}>")
 
 					original_length = buffer.bytesize
 					content = yield(self)
@@ -348,20 +347,20 @@ class Phlex::SGML
 						end
 					end
 
-					buffer << ((strings && strings[4]) || "</#{tag}>")
+					buffer << "</#{tag}>"
 				else # without content
-					buffer << ((strings && strings[3]) || "<#{tag}></#{tag}>")
+					buffer << "<#{tag}></#{tag}>"
 				end
 			end
-		elsif (tag, strings = Phlex::HTML::VoidElements.__registered_elements__[name])
+		elsif (tag = Phlex::HTML::VoidElements.__registered_elements__[name])
 			if block_given
 				raise Phlex::ArgumentError.new("Void elements cannot have content blocks.")
 			end
 
 			if attributes.length > 0 # with attributes
-				state.buffer << ((strings && strings[0]) || "<#{tag}") << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+				buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
 			else # without attributes
-				state.buffer << ((strings && strings[1]) || "<#{tag}>")
+				buffer << "<#{tag}>"
 			end
 
 			nil

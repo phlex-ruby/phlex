@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Phlex::SVG::StandardElements.__registered_elements__.each do |method_name, (tag)|
+Phlex::SVG::StandardElements.__registered_elements__.each do |method_name, tag|
 	test "<#{tag}> with block text content and attributes" do
 		example = Class.new(Phlex::SVG) do
 			define_method :view_template do
