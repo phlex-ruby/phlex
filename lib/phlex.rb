@@ -18,7 +18,6 @@ module Phlex
 	autoload :SGML, "phlex/sgml"
 	autoload :SVG, "phlex/svg"
 	autoload :Vanish, "phlex/vanish"
-	autoload :Proxy, "phlex/proxy"
 
 	Escape = ERB::Escape
 	Null = Object.new.freeze
