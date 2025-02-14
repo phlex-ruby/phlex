@@ -22,7 +22,6 @@ module Phlex
 	autoload :DoubleRenderError, "phlex/errors/double_render_error"
 
 	Escape = ERB::Escape
-	Null = Object.new.freeze
 
 	DEPLOY_KEY = Process.clock_gettime(Process::CLOCK_MONOTONIC, :millisecond)
 	CACHED_FILES = Set.new
