@@ -56,8 +56,6 @@ class Phlex::SGML
 	end
 
 	def internal_call(parent: nil, state: nil, &block)
-		return "" unless render?
-
 		if @_state
 			raise Phlex::DoubleRenderError.new(
 				"You can't render a #{self.class.name} more than once."
@@ -65,6 +63,8 @@ class Phlex::SGML
 		end
 
 		@_state = state
+
+		return "" unless render?
 
 		block ||= @_content_block
 
