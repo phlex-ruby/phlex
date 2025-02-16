@@ -94,7 +94,19 @@ class Phlex::SGML
 	end
 
 	def context
-		@_state.user_context
+		if rendering?
+			@_state.user_context
+		else
+			raise Phlex::ArgumentError.new(<<~MESSAGE)
+				You can’t access the context before the component has started rendering.
+			MESSAGE
+		end
+	end
+
+	# Returns `false` before rendering and `true` once the component has started rendering.
+	# It will not reset back to false after rendering.
+	def rendering?
+		!!@_state
 	end
 
 	# Output plain text.
