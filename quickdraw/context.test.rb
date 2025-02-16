@@ -27,3 +27,13 @@ test "user context passed down" do
 
 	assert_equal_html b.new.call, %(<h1>Hello, World!</h1>)
 end
+
+test "raises an ArgumentError if you access the context before rendering" do
+	component = Phlex::HTML.new
+
+	error = assert_raises(Phlex::ArgumentError) { component.context }
+
+	assert_equal error.message, <<~MESSAGE
+		You can’t access the context before the component has started rendering.
+	MESSAGE
+end
