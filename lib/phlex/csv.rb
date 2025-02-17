@@ -14,7 +14,7 @@ class Phlex::CSV
 
 	attr_reader :collection
 
-	def call(buffer = +"", context: nil)
+	def call(buffer = +"", context: {})
 		unless escape_csv_injection? == true || escape_csv_injection? == false
 			raise <<~MESSAGE
 				You need to define escape_csv_injection? in #{self.class.name}, returning either `true` or `false`.
@@ -38,6 +38,8 @@ class Phlex::CSV
 				Unfortunately, there is no one-size-fits-all solution to CSV injection. You need to decide based on your specific use case.
 			MESSAGE
 		end
+
+		@_context = context
 
 		each_item do |record|
 			yielder(record) do |*args, **kwargs|
@@ -100,6 +102,10 @@ class Phlex::CSV
 	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
 	def escape_csv_injection?
 		nil
+	end
+
+	def context
+		@_context
 	end
 
 	def __escape__(value)

@@ -33,6 +33,14 @@ class NoHeaders < Example
 	end
 end
 
+class Context < Example
+	def view_template(product)
+		column("name", product.name)
+		column("price", product.price)
+		column("admin_only", "secret") if context[:role] == :admin
+	end
+end
+
 test "basic csv" do
 	products = [
 		Product.new("Apple", 1.00),
@@ -92,4 +100,23 @@ test "raises an error if there's no escape plan" do
 	assert_raises(RuntimeError) do
 		Base.new([]).call
 	end
+end
+
+test "context" do
+	products = [
+		Product.new("Apple", 1.00),
+		Product.new(" Banana ", 2.00),
+	]
+
+	assert_equal Context.new(products).call, <<~CSV
+		name,price
+		Apple,1.0
+		" Banana ",2.0
+	CSV
+
+	assert_equal Context.new(products).call(context: { role: :admin }), <<~CSV
+		name,price,admin_only
+		Apple,1.0,secret
+		" Banana ",2.0,secret
+	CSV
 end
