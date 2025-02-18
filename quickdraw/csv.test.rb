@@ -3,7 +3,7 @@
 Product = Struct.new(:name, :price)
 
 class Base < Phlex::CSV
-	def view_template(product)
+	def row_template(product)
 		column("name", product.name)
 		column("price", product.price)
 	end

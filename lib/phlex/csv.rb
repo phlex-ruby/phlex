@@ -1,22 +1,203 @@
 # frozen_string_literal: true
 
 class Phlex::CSV
-	FORMULA_PREFIXES = Set["=", "+", "-", "@", "\t", "\r"].freeze
-	SPACE_CHARACTERS = Set[" ", "\t", "\r"].freeze
+	FORMULA_PREFIXES_MAP = Array.new(128).tap do |map|
+		"=+-@\t\r".each_byte do |byte|
+			map[byte] = true
+		end
+	end.freeze
+
+	WHITESPACE_MAP = Array.new(128).tap do |map|
+		" \t\r".each_byte do |byte|
+			map[byte] = true
+		end
+	end.freeze
+
+	UNDEFINED = Object.new
 
 	def initialize(collection, delimiter: ",")
 		@collection = collection
 		@delimiter = delimiter
-		@_headers = []
-		@_current_row = []
-		@_current_column_index = 0
-		@_first = true
+		@_row_buffer = []
 	end
 
 	attr_reader :collection
 
 	def call(buffer = +"", context: nil)
-		unless escape_csv_injection? == true || escape_csv_injection? == false
+		ensure_escape_csv_injection_configured!
+
+		strip_whitespace = trim_whitespace?
+		escape_csv_injection = escape_csv_injection?
+		delimiter = @delimiter
+		row_buffer = @_row_buffer
+		has_yielder = respond_to?(:yielder, true)
+		first_row = true
+
+		each_item do |record|
+			if has_yielder
+				row = nil
+				yielder(record) { |*a, **k| row = view_template(*a, **k) }
+			else
+				row = around_row(record)
+			end
+
+			buffered = row_buffer.length > 0
+			row = row_buffer if buffered
+
+			if first_row
+				first_row = false
+
+				if render_headers?
+					i = 0
+					number_of_columns = row.length
+					first_col = true
+
+					while i < number_of_columns
+						header, = row[i]
+						if first_col
+							first_col = false
+						else
+							buffer << delimiter
+						end
+
+						__escape__(buffer, header, escape_csv_injection:, strip_whitespace:)
+						i += 1
+					end
+
+					buffer << "\n"
+				end
+			end
+
+			i = 0
+			number_of_columns = row.length
+			first_col = true
+
+			while i < number_of_columns
+				header, value = row[i]
+				if first_col
+					first_col = false
+				else
+					buffer << delimiter
+				end
+
+				__escape__(buffer, value, escape_csv_injection:, strip_whitespace:)
+				i += 1
+			end
+
+			buffer << "\n"
+
+			row_buffer.clear if buffered
+		end
+
+		buffer
+	end
+
+	def around_row(item)
+		row_template(item)
+	end
+
+	def filename
+		nil
+	end
+
+	def content_type
+		"text/csv"
+	end
+
+	private
+
+	def column(header = nil, value)
+		@_row_buffer << [header, value].freeze
+	end
+
+	def each_item(&)
+		collection.each(&)
+	end
+
+	# Override and set to `false` to disable rendering headers.
+	def render_headers?
+		true
+	end
+
+	# Override and set to `true` to strip leading and trailing whitespace from values.
+	def trim_whitespace?
+		false
+	end
+
+	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
+	def escape_csv_injection?
+		UNDEFINED
+	end
+
+	def __escape__(buffer, value, escape_csv_injection:, strip_whitespace:)
+		value = case value
+		when String
+			value
+		when Symbol
+			value.name
+		else
+			value.to_s
+		end
+
+		if strip_whitespace
+			if escape_csv_injection
+				value = value.strip
+
+				if FORMULA_PREFIXES_MAP[value.getbyte(0)]
+					buffer << '"\'' << value.gsub('"', '""') << '"'
+				elsif value.count("\n\",") > 0
+					buffer << '"' << value.gsub('"', '""') << '"'
+				else
+					buffer << value
+				end
+			else # not escaping CSV injection
+				buffer << value.strip
+				nil
+			end
+		else # not stripping whitespace
+			if escape_csv_injection
+				first_byte = value.getbyte(0)
+
+				if FORMULA_PREFIXES_MAP[first_byte]
+					buffer << '"\'' << value.gsub('"', '""') << '"'
+				elsif WHITESPACE_MAP[first_byte] || WHITESPACE_MAP[value.getbyte(-1)] || value.count("\n\",") > 0
+					buffer << '"' << value.gsub('"', '""') << '"'
+				else
+					buffer << value
+				end
+			else # not escaping CSV injection
+				if (WHITESPACE_MAP[value.getbyte(0)] || WHITESPACE_MAP[value.getbyte(-1)]) || value.count("\n\",") > 0
+					buffer << '"' << value.gsub('"', '""') << '"'
+				else
+					buffer << value
+				end
+			end
+		end
+	end
+
+	# Handle legacy `view_template` method
+	def respond_to_missing(method_name, include_private)
+		if method_name == :row_template && respond_to?(:view_template)
+			true
+		else
+			super
+		end
+	end
+
+	# Handle legacy `view_template` method
+	def method_missing(method_name, ...)
+		if method_name == :row_template && respond_to?(:view_template)
+			warn "Deprecated: Use `row_template` instead."
+			view_template(...)
+		else
+			super
+		end
+	end
+
+	private
+
+	def ensure_escape_csv_injection_configured!
+		if escape_csv_injection? == UNDEFINED
 			raise <<~MESSAGE
 				You need to define escape_csv_injection? in #{self.class.name}, returning either `true` or `false`.
 
@@ -38,84 +219,6 @@ class Phlex::CSV
 
 				Unfortunately, there is no one-size-fits-all solution to CSV injection. You need to decide based on your specific use case.
 			MESSAGE
-		end
-
-		each_item do |record|
-			yielder(record) do |*args, **kwargs|
-				view_template(*args, **kwargs)
-
-				if @_first && render_headers?
-					buffer << @_headers.join(@delimiter) << "\n"
-				end
-
-				buffer << @_current_row.join(@delimiter) << "\n"
-				@_current_column_index = 0
-				@_current_row.clear
-			end
-
-			@_first = false
-		end
-
-		buffer
-	end
-
-	def filename
-		nil
-	end
-
-	def content_type
-		"text/csv"
-	end
-
-	private
-
-	def column(header = nil, value)
-		if @_first
-			@_headers << __escape__(header)
-		elsif header != @_headers[@_current_column_index]
-			raise "Inconsistent header."
-		end
-
-		@_current_row << __escape__(value)
-		@_current_column_index += 1
-	end
-
-	def each_item(&)
-		collection.each(&)
-	end
-
-	def yielder(record)
-		yield(record)
-	end
-
-	# Override and set to `false` to disable rendering headers.
-	def render_headers?
-		true
-	end
-
-	# Override and set to `true` to strip leading and trailing whitespace from values.
-	def trim_whitespace?
-		false
-	end
-
-	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
-	def escape_csv_injection?
-		nil
-	end
-
-	def __escape__(value)
-		value = trim_whitespace? ? value.to_s.strip : value.to_s
-		first_char = value[0]
-		last_char = value[-1]
-
-		if escape_csv_injection? && FORMULA_PREFIXES.include?(first_char)
-			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
-			# See https://owasp.org/www-community/attacks/CSV_Injection
-			%("'#{value.gsub('"', '""')}")
-		elsif (!trim_whitespace? && (SPACE_CHARACTERS.include?(first_char) || SPACE_CHARACTERS.include?(last_char))) || value.include?('"') || value.include?(",") || value.include?("\n")
-			%("#{value.gsub('"', '""')}")
-		else
-			value
 		end
 	end
 end
