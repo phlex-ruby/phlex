@@ -46,6 +46,19 @@ test "basic csv" do
 	CSV
 end
 
+test "basic csv with semicolon as delimiter" do
+	products = [
+		Product.new("Apple", 1.00),
+		Product.new(" Banana ", 2.00),
+	]
+
+	assert_equal Example.new(products, delimiter: ";").call, <<~CSV
+		name;price
+		Apple;1.0
+		" Banana ";2.0
+	CSV
+end
+
 test "trim whitespace" do
 	products = [
 		Product.new(" Apple", 1.00),

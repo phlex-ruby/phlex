@@ -4,8 +4,9 @@ class Phlex::CSV
 	FORMULA_PREFIXES = Set["=", "+", "-", "@", "\t", "\r"].freeze
 	SPACE_CHARACTERS = Set[" ", "\t", "\r"].freeze
 
-	def initialize(collection)
+	def initialize(collection, delimiter: ",")
 		@collection = collection
+		@delimiter = delimiter
 		@_headers = []
 		@_current_row = []
 		@_current_column_index = 0
@@ -44,10 +45,10 @@ class Phlex::CSV
 				view_template(*args, **kwargs)
 
 				if @_first && render_headers?
-					buffer << @_headers.join(",") << "\n"
+					buffer << @_headers.join(@delimiter) << "\n"
 				end
 
-				buffer << @_current_row.join(",") << "\n"
+				buffer << @_current_row.join(@delimiter) << "\n"
 				@_current_column_index = 0
 				@_current_row.clear
 			end
