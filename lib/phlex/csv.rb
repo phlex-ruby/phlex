@@ -7,12 +7,6 @@ class Phlex::CSV
 		end
 	end.freeze
 
-	WHITESPACE_MAP = Array.new(128).tap do |map|
-		" \t\r".each_byte do |byte|
-			map[byte] = true
-		end
-	end.freeze
-
 	UNDEFINED = Object.new
 
 	def initialize(collection, delimiter: ",")
@@ -36,12 +30,12 @@ class Phlex::CSV
 		each_item do |record|
 			if has_yielder
 				row = nil
-				yielder(record) { |*a, **k| row = view_template(*a, **k) }
+				yielder(record) { |*a, **k| row = around_row(*a, **k) }
 			else
 				row = around_row(record)
 			end
 
-			buffered = row_buffer.length > 0
+			buffered = row_buffer.length > 0 # column was called
 			row = row_buffer if buffered
 
 			if first_row
@@ -107,7 +101,7 @@ class Phlex::CSV
 	private
 
 	def column(header = nil, value)
-		@_row_buffer << [header, value].freeze
+		@_row_buffer << [header, value]
 	end
 
 	def each_item(&)
@@ -140,19 +134,20 @@ class Phlex::CSV
 		end
 
 		if strip_whitespace
-			if escape_csv_injection
-				value = value.strip
+			value = value.strip
 
+			if escape_csv_injection
 				if FORMULA_PREFIXES_MAP[value.getbyte(0)]
-					buffer << '"\'' << value.gsub('"', '""') << '"'
-				elsif value.count("\n\",") > 0
-					buffer << '"' << value.gsub('"', '""') << '"'
+					value.gsub!('"', '""')
+					buffer << '"\'' << value << '"'
+				elsif value.match?(/[\n",]/)
+					value.gsub!('"', '""')
+					buffer << '"' << value << '"'
 				else
 					buffer << value
 				end
 			else # not escaping CSV injection
-				buffer << value.strip
-				nil
+				buffer << value
 			end
 		else # not stripping whitespace
 			if escape_csv_injection
@@ -160,13 +155,13 @@ class Phlex::CSV
 
 				if FORMULA_PREFIXES_MAP[first_byte]
 					buffer << '"\'' << value.gsub('"', '""') << '"'
-				elsif WHITESPACE_MAP[first_byte] || WHITESPACE_MAP[value.getbyte(-1)] || value.count("\n\",") > 0
+				elsif value.match?(/^\s|\s$|[\n",]/)
 					buffer << '"' << value.gsub('"', '""') << '"'
 				else
 					buffer << value
 				end
 			else # not escaping CSV injection
-				if (WHITESPACE_MAP[value.getbyte(0)] || WHITESPACE_MAP[value.getbyte(-1)]) || value.count("\n\",") > 0
+				if value.match?(/^\s|\s$|[\n",]/)
 					buffer << '"' << value.gsub('"', '""') << '"'
 				else
 					buffer << value
@@ -188,6 +183,7 @@ class Phlex::CSV
 	def method_missing(method_name, ...)
 		if method_name == :row_template && respond_to?(:view_template)
 			warn "Deprecated: Use `row_template` instead."
+			self.class.alias_method :row_template, :view_template
 			view_template(...)
 		else
 			super
