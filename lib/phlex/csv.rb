@@ -190,8 +190,6 @@ class Phlex::CSV
 		end
 	end
 
-	private
-
 	def ensure_escape_csv_injection_configured!
 		if escape_csv_injection? == UNDEFINED
 			raise <<~MESSAGE
