@@ -9,23 +9,31 @@ class Phlex::CSV
 
 	UNDEFINED = Object.new
 
-	def initialize(collection, delimiter: ",")
+	def initialize(collection)
 		@collection = collection
-		@delimiter = delimiter
 		@_row_buffer = []
 	end
 
 	attr_reader :collection
 
-	def call(buffer = +"", context: nil)
+	def call(buffer = +"", context: nil, delimiter: self.delimiter)
 		ensure_escape_csv_injection_configured!
 
 		strip_whitespace = trim_whitespace?
 		escape_csv_injection = escape_csv_injection?
-		delimiter = @delimiter
 		row_buffer = @_row_buffer
 		has_yielder = respond_to?(:yielder, true)
 		first_row = true
+
+		if delimiter.length != 1
+			raise Phlex::ArgumentError.new("Delimiter must be a single character")
+		end
+
+		if strip_whitespace
+			escape_regex = /[\n"#{delimiter}]/
+		else
+			escape_regex = /^\s|\s$|[\n"#{delimiter}]/
+		end
 
 		if has_yielder
 			warn <<~MESSAGE
@@ -65,7 +73,7 @@ class Phlex::CSV
 							buffer << delimiter
 						end
 
-						__escape__(buffer, header, escape_csv_injection:, strip_whitespace:)
+						__escape__(buffer, header, escape_csv_injection:, strip_whitespace:, escape_regex:)
 						i += 1
 					end
 
@@ -85,7 +93,7 @@ class Phlex::CSV
 					buffer << delimiter
 				end
 
-				__escape__(buffer, value, escape_csv_injection:, strip_whitespace:)
+				__escape__(buffer, value, escape_csv_injection:, strip_whitespace:, escape_regex:)
 				i += 1
 			end
 
@@ -107,6 +115,10 @@ class Phlex::CSV
 
 	def content_type
 		"text/csv"
+	end
+
+	def delimiter
+		","
 	end
 
 	private
@@ -134,7 +146,7 @@ class Phlex::CSV
 		UNDEFINED
 	end
 
-	def __escape__(buffer, value, escape_csv_injection:, strip_whitespace:)
+	def __escape__(buffer, value, escape_csv_injection:, strip_whitespace:, escape_regex:)
 		value = case value
 		when String
 			value
@@ -151,7 +163,7 @@ class Phlex::CSV
 				if FORMULA_PREFIXES_MAP[value.getbyte(0)]
 					value.gsub!('"', '""')
 					buffer << '"\'' << value << '"'
-				elsif value.match?(/[\n",]/)
+				elsif value.match?(escape_regex)
 					value.gsub!('"', '""')
 					buffer << '"' << value << '"'
 				else
@@ -166,13 +178,13 @@ class Phlex::CSV
 
 				if FORMULA_PREFIXES_MAP[first_byte]
 					buffer << '"\'' << value.gsub('"', '""') << '"'
-				elsif value.match?(/^\s|\s$|[\n",]/)
+				elsif value.match?(escape_regex)
 					buffer << '"' << value.gsub('"', '""') << '"'
 				else
 					buffer << value
 				end
 			else # not escaping CSV injection
-				if value.match?(/^\s|\s$|[\n",]/)
+				if value.match?(escape_regex)
 					buffer << '"' << value.gsub('"', '""') << '"'
 				else
 					buffer << value

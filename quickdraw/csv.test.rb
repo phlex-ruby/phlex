@@ -178,6 +178,65 @@ test "with a yielder" do
 	CSV
 end
 
+test "with a custom delimiter defined as a method" do
+	example = Class.new(Phlex::CSV) do
+		define_method(:escape_csv_injection?) { true }
+		define_method(:trim_whitespace?) { true }
+		define_method(:delimiter) { ";" }
+		define_method(:row_template) do |product|
+			[
+				["Name", product.name],
+				["Price", product.price],
+			]
+		end
+	end
+
+	assert_equal example.new(products).call, <<~CSV
+		Name;Price
+		Apple;1.0
+		Banana;2.0
+		strawberry;Three pounds
+		"'=SUM(A1:B1)";"'=SUM(A1:B1)"
+		"Abc, ""def""";"Foo
+		bar ""baz"""
+	CSV
+end
+
+test "with a custom delimiter passed in as an argument" do
+	example = Class.new(Phlex::CSV) do
+		define_method(:escape_csv_injection?) { true }
+		define_method(:trim_whitespace?) { true }
+		define_method(:row_template) do |product|
+			[
+				["Name", product.name],
+				["Price", product.price],
+			]
+		end
+	end
+
+	assert_equal example.new(products).call(delimiter: ";"), <<~CSV
+		Name;Price
+		Apple;1.0
+		Banana;2.0
+		strawberry;Three pounds
+		"'=SUM(A1:B1)";"'=SUM(A1:B1)"
+		"Abc, ""def""";"Foo
+		bar ""baz"""
+	CSV
+end
+
+test "with an invalid custom delimiter" do
+	example = Class.new(Base) do
+		define_method(:escape_csv_injection?) { true }
+	end
+
+	error = assert_raises(Phlex::ArgumentError) do
+		example.new([]).call(delimiter: "invalid")
+	end
+
+	assert_equal error.message, "Delimiter must be a single character"
+end
+
 test "content type" do
 	assert_equal Base.new([]).content_type, "text/csv"
 end
