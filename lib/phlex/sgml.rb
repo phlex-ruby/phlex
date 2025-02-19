@@ -6,8 +6,8 @@ class Phlex::SGML
 	REF_ATTRIBUTES = Set.new(%w[href src action formaction lowsrc dynsrc background ping]).freeze
 
 	ERBCompiler = ERB::Compiler.new("<>").tap do |compiler|
-		compiler.pre_cmd    = ["__erbout__ = @_state.buffer"]
-		compiler.put_cmd    = "__erbout__.<<"
+		compiler.pre_cmd    = [""]
+		compiler.put_cmd    = "@_state.buffer.<<"
 		compiler.insert_cmd = "__erb_insert__"
 		compiler.post_cmd   = ["nil"]
 
@@ -41,11 +41,11 @@ class Phlex::SGML
 			end
 		end
 
-		def erb(method_name, erb = nil)
+		def erb(method_name, erb = nil, locals: nil, &block)
 			loc = caller_locations(1, 1)[0]
 			path = loc.path.delete_suffix(".rb")
 			file = loc.path
-			line = loc.lineno
+			line = loc.lineno - 1
 
 			unless erb
 				method_path = "#{path}/#{method_name}.html.erb"
@@ -69,7 +69,7 @@ class Phlex::SGML
 			code, _enc = ERBCompiler.compile(erb)
 
 			class_eval(<<~RUBY, file, line)
-				def #{method_name}
+				def #{method_name} #{locals}
 					#{code}
 				end
 			RUBY

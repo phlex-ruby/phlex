@@ -12,8 +12,8 @@ class Example < Phlex::HTML
 		<% end %>
 	ERB
 
-	erb :some_part, <<~ERB
-		<h2>Some Part</h2>
+	erb :say_bye, <<~ERB, locals: %(name:)
+		<h2>Goodbye <%= name %></h2>
 	ERB
 
 	def greeting
@@ -21,10 +21,10 @@ class Example < Phlex::HTML
 	end
 
 	def card
-		some_part
 		article do
 			yield
 		end
+		say_bye(name: "Joel")
 	end
 end
 
@@ -32,10 +32,10 @@ test do
 	output = Example.call
 
 	assert_equivalent_html output, <<~HTML
-		<h2>Some Part</h2>
 		<article>
 			<h1>Hello Joel</h1>
 			<p>How do you do?</p>
 		</article>
+		<h2>Goodbye Joel</h2>
 	HTML
 end
