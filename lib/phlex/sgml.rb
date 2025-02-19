@@ -8,7 +8,7 @@ class Phlex::SGML
 	ERBCompiler = ERB::Compiler.new("<>").tap do |compiler|
 		compiler.pre_cmd    = [""]
 		compiler.put_cmd    = "@_state.buffer.<<"
-		compiler.insert_cmd = "__erb_insert__"
+		compiler.insert_cmd = "__implicit_output__"
 		compiler.post_cmd   = ["nil"]
 
 		def compiler.add_insert_cmd(out, content)
@@ -383,21 +383,6 @@ class Phlex::SGML
 
 	def after_template
 		nil
-	end
-
-	def __erb_insert__(value)
-		case value
-		when nil
-			# do nothing
-		when Phlex::SGML::SafeObject
-			raw(value)
-		when String
-			@_state.buffer << Phlex::Escape.html_escape(value)
-		when Symbol
-			@_state.buffer << Phlex::Escape.html_escape(value.name)
-		else
-			@_state.buffer << Phlex::Escape.html_escape(value.to_s)
-		end
 	end
 
 	def __yield_content__
