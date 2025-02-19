@@ -1,0 +1,23 @@
+[tasks.setup]
+description = "Install all project dependencies."
+run = ["mise install", "bundle install --jobs 4"]
+
+[tasks.test]
+description = "Run tests"
+run = ["bundle exec sus", "bundle exec qt"]
+
+[tasks.lint]
+description = "Run linter"
+run = "bundle exec rubocop"
+
+[tasks.integrate]
+description = "Run tests and linter"
+run = ["mise run test", "mise run lint"]
+
+[tasks.update]
+description = "Update project dependencies"
+run = ["mise upgrade --bump", "bundle update --jobs 4"]
+
+[tasks.bench]
+description = "Run benchmarks"
+run = ["bundle exec ./bench.rb"]
