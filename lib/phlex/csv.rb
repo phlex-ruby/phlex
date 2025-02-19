@@ -30,7 +30,7 @@ class Phlex::CSV
 		each_item do |record|
 			if has_yielder
 				row = nil
-				yielder(record) { |*a, **k| row = around_row(*a, **k) }
+				yielder(record) { |*a, **k| row = row_template(*a, **k) }
 			else
 				row = around_row(record)
 			end
@@ -171,7 +171,7 @@ class Phlex::CSV
 	end
 
 	# Handle legacy `view_template` method
-	def respond_to_missing(method_name, include_private)
+	def respond_to_missing?(method_name, include_private)
 		if method_name == :row_template && respond_to?(:view_template)
 			true
 		else
