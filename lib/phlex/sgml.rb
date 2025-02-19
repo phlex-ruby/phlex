@@ -5,6 +5,13 @@ class Phlex::SGML
 	UNSAFE_ATTRIBUTES = Set.new(%w[srcdoc sandbox http-equiv]).freeze
 	REF_ATTRIBUTES = Set.new(%w[href src action formaction lowsrc dynsrc background ping]).freeze
 
+	ERBCompiler = ERB::Compiler.new("<>").tap do |compiler|
+		compiler.pre_cmd    = ["_erbout = @_state.buffer"]
+		compiler.put_cmd    = "_erbout.<<"
+		compiler.insert_cmd = "_erb_insert"
+		compiler.post_cmd   = ["nil"]
+	end
+
 	autoload :Elements, "phlex/sgml/elements"
 	autoload :SafeObject, "phlex/sgml/safe_object"
 	autoload :SafeValue, "phlex/sgml/safe_value"
@@ -28,6 +35,29 @@ class Phlex::SGML
 			else
 				super
 			end
+		end
+
+		def erb(method_name, string)
+			code, enc = ERBCompiler.compile(string)
+
+			class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
+				def #{method_name}
+					#{code}
+				end
+			RUBY
+		end
+	end
+
+	def _erb_insert(value)
+		case value
+		when Phlex::SGML::SafeObject
+			raw(value)
+		when String
+			@_state.buffer << Phlex::Escape.html_escape(value)
+		when Symbol
+			@_state.buffer << Phlex::Escape.html_escape(value.name)
+		else
+			@_state.buffer << Phlex::Escape.html_escape(value.to_s)
 		end
 	end
 
