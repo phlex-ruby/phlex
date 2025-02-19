@@ -12,6 +12,8 @@ group :test do
 	gem "selenium-webdriver"
 end
 
+gem "nokogiri"
+
 group :development do
 	gem "rubocop"
 	gem "ruby-lsp"
