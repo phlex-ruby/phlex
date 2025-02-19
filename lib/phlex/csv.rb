@@ -27,6 +27,17 @@ class Phlex::CSV
 		has_yielder = respond_to?(:yielder, true)
 		first_row = true
 
+		if has_yielder
+			warn <<~MESSAGE
+				Custom yielders are deprecated in Phlex::CSV.
+
+				Please replace your yielder with an `around_row` method.
+
+				You should be able to just rename your yielder method
+				and change `yield` to `super`.
+			MESSAGE
+		end
+
 		each_item do |record|
 			if has_yielder
 				row = nil
@@ -193,25 +204,31 @@ class Phlex::CSV
 	def ensure_escape_csv_injection_configured!
 		if escape_csv_injection? == UNDEFINED
 			raise <<~MESSAGE
-				You need to define escape_csv_injection? in #{self.class.name}, returning either `true` or `false`.
+				You need to define `escape_csv_injection?` in #{self.class.name}.
 
-				CSV injection is a security vulnerability where malicious spreadsheet formulae are used to execute code or exfiltrate data when a CSV is opened in a spreadsheet program such as Microsoft Excel or Google Sheets.
+				CSV injection is a security vulnerability where malicious spreadsheet
+				formulae are used to execute code or exfiltrate data when a CSV is opened
+				in a spreadsheet program such as Microsoft Excel or Google Sheets.
 
 				For more information, see https://owasp.org/www-community/attacks/CSV_Injection
 
-				If you're sure this CSV will never be opened in a spreadsheet program, you can disable CSV injection escapes:
+				If you’re sure this CSV will never be opened in a spreadsheet program,
+				you can *disable* CSV injection escapes:
 
 				  def escape_csv_injection? = false
 
 				This is useful when using CSVs for byte-for-byte data exchange between secure systems.
 
-				Alternatively, you can enable CSV injection escapes at the cost of data integrity:
+				Alternatively, you can *enable* CSV injection escapes at the cost of data integrity:
 
 				  def escape_csv_injection? = true
 
-				Note: Enabling the CSV injection escapes will prefix any values that start with `=`, `+`, `-`, `@`, `\\t`, or `\\r` with a single quote `'` to prevent them from being interpreted as formulae by spreadsheet programs.
+				Enabling the CSV injection escapes will prefix with a single quote `'` any
+				values that start with: `=`, `+`, `-`, `@`, `\\t`, `\\r`
 
-				Unfortunately, there is no one-size-fits-all solution to CSV injection. You need to decide based on your specific use case.
+				Unfortunately, there is no one-size-fits-all solution to CSV injection.
+
+				You need to decide based on your specific use case.
 			MESSAGE
 		end
 	end
