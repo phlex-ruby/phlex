@@ -6,10 +6,14 @@ class Phlex::SGML
 	REF_ATTRIBUTES = Set.new(%w[href src action formaction lowsrc dynsrc background ping]).freeze
 
 	ERBCompiler = ERB::Compiler.new("<>").tap do |compiler|
-		compiler.pre_cmd    = ["_erbout = @_state.buffer"]
-		compiler.put_cmd    = "_erbout.<<"
-		compiler.insert_cmd = "_erb_insert"
+		compiler.pre_cmd    = ["__erbout__ = @_state.buffer"]
+		compiler.put_cmd    = "__erbout__.<<"
+		compiler.insert_cmd = "__erb_insert__"
 		compiler.post_cmd   = ["nil"]
+
+		def compiler.add_insert_cmd(out, content)
+			out.push("#{@insert_cmd}((#{content}))")
+		end
 	end
 
 	autoload :Elements, "phlex/sgml/elements"
@@ -37,27 +41,38 @@ class Phlex::SGML
 			end
 		end
 
-		def erb(method_name, string)
-			code, enc = ERBCompiler.compile(string)
+		def erb(method_name, erb = nil)
+			loc = caller_locations(1, 1)[0]
+			path = loc.path.delete_suffix(".rb")
+			file = loc.path
+			line = loc.lineno
 
-			class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
+			unless erb
+				method_path = "#{path}/#{method_name}.html.erb"
+				sidecar_path = "#{path}.html.erb"
+
+				if File.exist?(method_path)
+					erb = File.read(method_path)
+					file = method_path
+					line = 1
+				elsif method_name == :view_template && File.exist?(sidecar_path)
+					erb = File.read(sidecar_path)
+					file = sidecar_path
+					line = 1
+				else
+					raise Phlex::RuntimeError.new(<<~MESSAGE)
+						No ERB template found for #{method_name}
+					MESSAGE
+				end
+			end
+
+			code, _enc = ERBCompiler.compile(erb)
+
+			class_eval(<<~RUBY, file, line)
 				def #{method_name}
 					#{code}
 				end
 			RUBY
-		end
-	end
-
-	def _erb_insert(value)
-		case value
-		when Phlex::SGML::SafeObject
-			raw(value)
-		when String
-			@_state.buffer << Phlex::Escape.html_escape(value)
-		when Symbol
-			@_state.buffer << Phlex::Escape.html_escape(value.name)
-		else
-			@_state.buffer << Phlex::Escape.html_escape(value.to_s)
 		end
 	end
 
@@ -368,6 +383,21 @@ class Phlex::SGML
 
 	def after_template
 		nil
+	end
+
+	def __erb_insert__(value)
+		case value
+		when nil
+			# do nothing
+		when Phlex::SGML::SafeObject
+			raw(value)
+		when String
+			@_state.buffer << Phlex::Escape.html_escape(value)
+		when Symbol
+			@_state.buffer << Phlex::Escape.html_escape(value.name)
+		else
+			@_state.buffer << Phlex::Escape.html_escape(value.to_s)
+		end
 	end
 
 	def __yield_content__
