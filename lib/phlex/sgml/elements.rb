@@ -21,55 +21,69 @@ module Phlex::SGML::Elements
 
 				if attributes.length > 0 # with attributes
 					if block_given # with content block
-						buffer << "<#{tag}" << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
-
-						original_length = buffer.bytesize
-						content = yield(self)
-						if original_length == buffer.bytesize
-							case content
-							when ::Phlex::SGML::SafeObject
-								buffer << content.to_s
-							when String
-								buffer << ::Phlex::Escape.html_escape(content)
-							when Symbol
-								buffer << ::Phlex::Escape.html_escape(content.name)
-							when nil
-								nil
-							else
-								if (formatted_object = format_object(content))
-									buffer << ::Phlex::Escape.html_escape(formatted_object)
-								end
-							end
+						buffer << "<#{tag}"
+						begin
+							buffer << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
+						ensure
+							buffer << ">"
 						end
 
-						buffer << "</#{tag}>"
+						begin
+							original_length = buffer.bytesize
+							content = yield(self)
+							if original_length == buffer.bytesize
+								case content
+								when ::Phlex::SGML::SafeObject
+									buffer << content.to_s
+								when String
+									buffer << ::Phlex::Escape.html_escape(content)
+								when Symbol
+									buffer << ::Phlex::Escape.html_escape(content.name)
+								when nil
+									nil
+								else
+									if (formatted_object = format_object(content))
+										buffer << ::Phlex::Escape.html_escape(formatted_object)
+									end
+								end
+							end
+						ensure
+							buffer << "</#{tag}>"
+						end
 					else # without content
-						buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << "></#{tag}>"
+						buffer << "<#{tag}"
+						begin
+							buffer << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
+						ensure
+							buffer << "></#{tag}>"
+						end
 					end
 				else # without attributes
 					if block_given # with content block
 						buffer << "<#{tag}>"
 
-						original_length = buffer.bytesize
-						content = yield(self)
-						if original_length == buffer.bytesize
-							case content
-							when ::Phlex::SGML::SafeObject
-								buffer << content.to_s
-							when String
-								buffer << ::Phlex::Escape.html_escape(content)
-							when Symbol
-								buffer << ::Phlex::Escape.html_escape(content.name)
-							when nil
-								nil
-							else
-								if (formatted_object = format_object(content))
-									buffer << ::Phlex::Escape.html_escape(formatted_object)
+						begin
+							original_length = buffer.bytesize
+							content = yield(self)
+							if original_length == buffer.bytesize
+								case content
+								when ::Phlex::SGML::SafeObject
+									buffer << content.to_s
+								when String
+									buffer << ::Phlex::Escape.html_escape(content)
+								when Symbol
+									buffer << ::Phlex::Escape.html_escape(content.name)
+								when nil
+									nil
+								else
+									if (formatted_object = format_object(content))
+										buffer << ::Phlex::Escape.html_escape(formatted_object)
+									end
 								end
 							end
+						ensure
+							buffer << "</#{tag}>"
 						end
-
-						buffer << "</#{tag}>"
 					else # without content
 						buffer << "<#{tag}></#{tag}>"
 					end
@@ -95,10 +109,17 @@ module Phlex::SGML::Elements
 
 				return unless state.should_render?
 
+				buffer = state.buffer
+
 				if attributes.length > 0 # with attributes
-					state.buffer << "<#{tag}" << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes)) << ">"
+					buffer << "<#{tag}"
+					begin
+						buffer << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
+					ensure
+						buffer << ">"
+					end
 				else # without attributes
-					state.buffer << "<#{tag}>"
+					buffer << "<#{tag}>"
 				end
 
 				nil
