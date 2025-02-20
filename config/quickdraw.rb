@@ -4,6 +4,7 @@ require "nokogiri"
 require "temple"
 require "tilt"
 require "haml"
+require "slim"
 
 if ENV["COVERAGE"] == "true"
 	require "simplecov"

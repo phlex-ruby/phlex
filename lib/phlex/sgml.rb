@@ -116,6 +116,42 @@ class Phlex::SGML
 				RUBY
 			end
 		end
+
+		if defined?(Slim) && defined?(Temple) && defined?(Tilt)
+			def slim(method_name, slim = nil, locals: nil)
+				loc = caller_locations(1, 1)[0]
+				path = loc.path.delete_suffix(".rb")
+				file = loc.path
+				line = loc.lineno - 1
+
+				unless slim
+					method_path = "#{path}/#{method_name}.html.slim"
+					sidecar_path = "#{path}.html.slim"
+
+					if File.exist?(method_path)
+						slim = File.read(method_path)
+						file = method_path
+						line = 1
+					elsif method_name == :view_template && File.exist?(sidecar_path)
+						slim = File.read(sidecar_path)
+						file = sidecar_path
+						line = 1
+					else
+						raise Phlex::RuntimeError.new(<<~MESSAGE)
+							No HAML template found for #{method_name}
+						MESSAGE
+					end
+				end
+
+				code = Slim::Template.compile(slim, generator: TempleGenerator, engine: Slim::Engine)
+
+				class_eval(<<~RUBY, file, line)
+					def #{method_name} #{locals}
+						#{code}
+					end
+				RUBY
+			end
+		end
 	end
 
 	def view_template

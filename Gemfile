@@ -14,6 +14,7 @@ end
 
 gem "nokogiri"
 gem "haml"
+gem "slim"
 
 group :development do
 	gem "rubocop"
