@@ -16,6 +16,12 @@ class Phlex::SGML
 		end
 	end
 
+	if defined?(Temple)
+		class TempleGenerator < Temple::Generator
+			define_options buffer: "@_state.buffer"
+		end
+	end
+
 	autoload :Elements, "phlex/sgml/elements"
 	autoload :SafeObject, "phlex/sgml/safe_object"
 	autoload :SafeValue, "phlex/sgml/safe_value"
@@ -73,6 +79,42 @@ class Phlex::SGML
 					#{code}
 				end
 			RUBY
+		end
+
+		if defined?(Haml) && defined?(Temple) && defined?(Tilt)
+			def haml(method_name, haml = nil, locals: nil)
+				loc = caller_locations(1, 1)[0]
+				path = loc.path.delete_suffix(".rb")
+				file = loc.path
+				line = loc.lineno - 1
+
+				unless haml
+					method_path = "#{path}/#{method_name}.html.haml"
+					sidecar_path = "#{path}.html.haml"
+
+					if File.exist?(method_path)
+						haml = File.read(method_path)
+						file = method_path
+						line = 1
+					elsif method_name == :view_template && File.exist?(sidecar_path)
+						haml = File.read(sidecar_path)
+						file = sidecar_path
+						line = 1
+					else
+						raise Phlex::RuntimeError.new(<<~MESSAGE)
+							No HAML template found for #{method_name}
+						MESSAGE
+					end
+				end
+
+				code = Haml::Template.compile(haml, generator: TempleGenerator, engine: Haml::Engine)
+
+				class_eval(<<~RUBY, file, line)
+					def #{method_name} #{locals}
+						#{code}
+					end
+				RUBY
+			end
 		end
 	end
 

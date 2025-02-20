@@ -13,6 +13,7 @@ group :test do
 end
 
 gem "nokogiri"
+gem "haml"
 
 group :development do
 	gem "rubocop"

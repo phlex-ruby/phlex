@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "nokogiri"
+require "temple"
+require "tilt"
+require "haml"
 
 if ENV["COVERAGE"] == "true"
 	require "simplecov"
