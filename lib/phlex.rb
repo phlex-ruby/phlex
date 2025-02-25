@@ -4,6 +4,8 @@ require "erb"
 require "set"
 
 module Phlex
+	autoload :VERSION, "phlex/version"
+
 	autoload :Kit, "phlex/kit"
 	autoload :FIFO, "phlex/fifo"
 	autoload :Vanish, "phlex/vanish"
