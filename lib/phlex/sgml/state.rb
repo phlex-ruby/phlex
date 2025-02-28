@@ -12,9 +12,18 @@ class Phlex::SGML::State
 		@output_buffer = output_buffer
 	end
 
-	attr_accessor :buffer, :capturing, :user_context
+	attr_accessor :capturing, :user_context
 
 	attr_reader :fragments, :fragment_depth, :output_buffer
+
+	def buffer
+		case @buffer
+		when Proc
+			@buffer.call
+		else
+			@buffer
+		end
+	end
 
 	def around_render(component)
 		stack = @stack
