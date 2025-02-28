@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # An extremely fast in-memory cache store that evicts keys on a first-in-first-out basis.
+#: [K, V]
 class Phlex::FIFOCacheStore
 	def initialize(max_bytesize: 2 ** 20)
 		@fifo = Phlex::FIFO.new(
@@ -9,6 +10,7 @@ class Phlex::FIFOCacheStore
 		)
 	end
 
+	# (K) { () -> V } -> V
 	def fetch(key)
 		fifo = @fifo
 		key = map_key(key)
@@ -24,12 +26,14 @@ class Phlex::FIFOCacheStore
 		end
 	end
 
+	#: () -> void
 	def clear
 		@fifo.clear
 	end
 
 	private
 
+	#: (untyped) -> Array | Hash | String | Symbol | Integer | Float | Time | true | false | nil
 	def map_key(value)
 		case value
 		when Array

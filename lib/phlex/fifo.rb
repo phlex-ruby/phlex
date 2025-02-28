@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # @api private
+#: [K, V]
 class Phlex::FIFO
 	def initialize(max_bytesize: 2_000, max_value_bytesize: 2_000)
 		@store = {}
@@ -18,11 +19,13 @@ class Phlex::FIFO
 		end
 	end
 
+	#: (K) -> V | nil
 	def [](key)
 		k, v = @store[key.hash]
 		v if k.eql?(key)
 	end
 
+	#: (K, V) -> void
 	def []=(key, value)
 		return if value.bytesize > @max_value_bytesize
 
@@ -42,10 +45,12 @@ class Phlex::FIFO
 		end
 	end
 
+	#: () -> Integer
 	def size
 		@store.size
 	end
 
+	#: () -> void
 	def clear
 		@mutex.synchronize do
 			@store.clear
