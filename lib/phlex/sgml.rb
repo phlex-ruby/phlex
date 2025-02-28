@@ -288,6 +288,10 @@ class Phlex::SGML
 		end
 	end
 
+	def json_escape(string)
+		ERB::Util.json_escape(string)
+	end
+
 	private
 
 	# Override this method to use a different deployment key.
