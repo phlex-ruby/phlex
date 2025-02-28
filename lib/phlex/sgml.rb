@@ -309,7 +309,7 @@ class Phlex::SGML
 		false
 	end
 
-	#: (*) { (*) -> void } -> nil
+	#: (*) { (* | Phlex::SGML) -> void } -> nil
 	def vanish(*args)
 		return unless block_given?
 
