@@ -8,6 +8,7 @@ class Phlex::HTML < Phlex::SGML
 	include VoidElements, StandardElements
 
 	# Output an HTML doctype.
+	#: () -> nil
 	def doctype
 		state = @_state
 		return unless state.should_render?
@@ -20,6 +21,7 @@ class Phlex::HTML < Phlex::SGML
 	#
 	# [MDN Docs](https://developer.mozilla.org/docs/Web/SVG/Element/svg)
 	# [Spec](https://html.spec.whatwg.org/#the-svg-element)
+	#: (*, **) { (Phlex::SVG) -> void } -> nil
 	def svg(*, **, &)
 		if block_given?
 			super { render Phlex::SVG.new(&) }
@@ -29,11 +31,13 @@ class Phlex::HTML < Phlex::SGML
 	end
 
 	# Override to provide a filename for the HTML file
+	#: () -> String | nil
 	def filename
 		nil
 	end
 
 	# Returns the string "text/html"
+	#: () -> String
 	def content_type
 		"text/html"
 	end
@@ -44,6 +48,7 @@ class Phlex::HTML < Phlex::SGML
 	# @tag_name = :h1
 	# tag(@tag_name, class: "title")
 	# ```
+	#: (Symbol, **) { (Phlex::SGML) -> void } -> nil
 	def tag(name, **attributes, &)
 		state = @_state
 		block_given = block_given?

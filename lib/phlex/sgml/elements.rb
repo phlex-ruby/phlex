@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 module Phlex::SGML::Elements
+	#: () -> Hash[Symbol, String]
 	def __registered_elements__
 		@__registered_elements__ ||= {}
 	end
 
+	#: (Symbol, ?tag: String) -> void
 	def register_element(method_name, tag: method_name.name.tr("_", "-"))
 		class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true
@@ -86,6 +88,7 @@ module Phlex::SGML::Elements
 		method_name
 	end
 
+	#: (Symbol, ?tag: String) -> void
 	def __register_void_element__(method_name, tag: method_name.name.tr("_", "-"))
 		class_eval(<<~RUBY, __FILE__, __LINE__ + 1)
 			# frozen_string_literal: true

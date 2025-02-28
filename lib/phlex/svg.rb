@@ -6,15 +6,18 @@ class Phlex::SVG < Phlex::SGML
 	include StandardElements
 
 	# Returns the string "image/svg+xml"
+	#: () -> String
 	def content_type
 		"image/svg+xml"
 	end
 
 	# Override to provide a filename for the SVG file
+	#: () -> String | nil
 	def filename
 		nil
 	end
 
+	#: (Symbol, **) { (Phlex::SGML) -> void } -> nil
 	def tag(name, **attributes, &)
 		state = @_state
 		block_given = block_given?

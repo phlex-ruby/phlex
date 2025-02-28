@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 # @api private
+#: [K, V]
 class Phlex::FIFO
+	#: (max_bytesize: Integer, max_value_bytesize: Integer) -> void
 	def initialize(max_bytesize: 2_000, max_value_bytesize: 2_000)
 		@store = {}
 		@max_bytesize = max_bytesize
@@ -12,17 +14,20 @@ class Phlex::FIFO
 
 	attr_reader :bytesize, :max_bytesize
 
+	#: (Integer) -> void
 	def expand(bytes)
 		@mutex.synchronize do
 			@max_bytesize += bytes
 		end
 	end
 
+	#: (K) -> V | nil
 	def [](key)
 		k, v = @store[key.hash]
 		v if k.eql?(key)
 	end
 
+	#: (K, V) -> void
 	def []=(key, value)
 		return if value.bytesize > @max_value_bytesize
 
@@ -42,10 +47,12 @@ class Phlex::FIFO
 		end
 	end
 
+	#: () -> Integer
 	def size
 		@store.size
 	end
 
+	#: () -> void
 	def clear
 		@mutex.synchronize do
 			@store.clear

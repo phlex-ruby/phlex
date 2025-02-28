@@ -5,6 +5,7 @@ module Phlex::SVG::StandardElements
 
 	# Outputs an `<a>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/a
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def a(
 		download: nil,
 		href: nil,
@@ -19,6 +20,7 @@ module Phlex::SVG::StandardElements
 	) = nil
 	# Outputs an `<animate>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/animate
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def animate(
 		attributeName: nil,
 		values: nil,
@@ -29,6 +31,7 @@ module Phlex::SVG::StandardElements
 	) = nil
 	# Outputs an `<animateMotion>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/animateMotion
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def animateMotion(
 		keyPoints: nil,
 		path: nil,
@@ -54,366 +57,427 @@ module Phlex::SVG::StandardElements
 	) = nil
 	# Outputs an `<animateTransform>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/animateTransform
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def animateTransform(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<circle>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/circle
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def circle(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<clipPath>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/clipPath
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def clipPath(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<defs>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/defs
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def defs(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<desc>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/desc
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def desc(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<discard>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/discard
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def discard(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<ellipse>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/ellipse
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def ellipse(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feBlend>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feBlend
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feBlend(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feColorMatrix>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feColorMatrix
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feColorMatrix(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feComponentTransfer>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feComponentTransfer
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feComponentTransfer(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feComposite>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feComposite
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feComposite(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feConvolveMatrix>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feConvolveMatrix
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feConvolveMatrix(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feDiffuseLighting>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDiffuseLighting
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feDiffuseLighting(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feDisplacementMap>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDisplacementMap
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feDisplacementMap(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feDistantLight>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDistantLight
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feDistantLight(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feDropShadow>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feDropShadow
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feDropShadow(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feFlood>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFlood
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feFlood(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feFuncA>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncA
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feFuncA(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feFuncB>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncB
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feFuncB(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feFuncG>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncG
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feFuncG(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feFuncR>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feFuncR
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feFuncR(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feGaussianBlur>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feGaussianBlur
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feGaussianBlur(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feImage>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feImage
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feImage(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feMerge>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feMerge
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feMerge(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feMergeNode>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feMergeNode
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feMergeNode(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feMorphology>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feMorphology
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feMorphology(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feOffset>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feOffset
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feOffset(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<fePointLight>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/fePointLight
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def fePointLight(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feSpecularLighting>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feSpecularLighting
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feSpecularLighting(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feSpotLight>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feSpotLight
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feSpotLight(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feTile>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feTile
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feTile(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<feTurbulence>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/feTurbulence
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def feTurbulence(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<filter>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/filter
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def filter(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<foreignObject>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/foreignObject
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def foreignObject(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<g>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/g
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def g(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<image>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/image
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def image(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<line>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/line
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def line(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<linearGradient>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/linearGradient
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def linearGradient(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<marker>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/marker
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def marker(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<mask>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/mask
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def mask(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<metadata>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/metadata
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def metadata(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<mpath>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/mpath
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def mpath(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<path>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/path
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def path(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<pattern>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/pattern
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def pattern(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<polygon>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/polygon
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def polygon(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<polyline>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/polyline
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def polyline(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<radialGradient>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/radialGradient
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def radialGradient(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<rect>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/rect
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def rect(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<script>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/script
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def script(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<set>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/set
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def set(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<stop>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/stop
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def stop(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<style>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/style
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def style(
 		**attributes,
 		&content
 	) = nil
 	# Outputs an `<svg>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/svg
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def svg(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<switch>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/switch
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def switch(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<symbol>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/symbol
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def symbol(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<text>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/text
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def text(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<textPath>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/textPath
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def textPath(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<title>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/title
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def title(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<tspan>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/tspan
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def tspan(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<use>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/use
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def use(
 		**attributes,
 		&content
 	) = nil
 	# Outputs a `<view>` tag.
 	# See https://developer.mozilla.org/docs/Web/SVG/Element/view
+	# (**) { (Phlex::SVG) -> void } -> nil
 	register_element def view(
 		**attributes,
 		&content

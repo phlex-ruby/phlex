@@ -20,6 +20,7 @@ class Phlex::SGML
 
 		# Create a new instance of the component.
 		# @note The block will not be delegated {#initialize}. Instead, it will be sent to {#template} when rendering.
+		#: (*, **) { (Phlex::SGML) -> void } -> Phlex::SGML
 		def new(*a, **k, &block)
 			if block
 				object = super(*a, **k, &nil)
@@ -31,6 +32,7 @@ class Phlex::SGML
 		end
 	end
 
+	#: () -> void
 	def view_template
 		if block_given?
 			yield
@@ -39,10 +41,12 @@ class Phlex::SGML
 		end
 	end
 
+	#: () -> { (Phlex::SGML) -> void }
 	def to_proc
 		proc { |c| c.render(self) }
 	end
 
+	#: [B] (B, Hash, fragments: Array[String]) { (Phlex::SGML) -> void } -> B
 	def call(buffer = +"", context: {}, fragments: nil, &)
 		state = Phlex::SGML::State.new(
 			user_context: context,
@@ -55,6 +59,7 @@ class Phlex::SGML
 		state.output_buffer << state.buffer
 	end
 
+	#: (parent: Phlex::SGML | nil, state: Phlex::SGML::State | nil) { (Phlex::SGML) -> void } -> void
 	def internal_call(parent: nil, state: nil, &block)
 		if @_state
 			raise Phlex::DoubleRenderError.new(
@@ -93,6 +98,7 @@ class Phlex::SGML
 		Thread.current[:__phlex_component__] = [parent, Fiber.current.object_id].freeze
 	end
 
+	#: () -> Hash
 	def context
 		if rendering?
 			@_state.user_context
@@ -105,11 +111,13 @@ class Phlex::SGML
 
 	# Returns `false` before rendering and `true` once the component has started rendering.
 	# It will not reset back to false after rendering.
+	#: () -> bool
 	def rendering?
 		!!@_state
 	end
 
 	# Output plain text.
+	#: (untyped) -> nil
 	def plain(content)
 		unless __text__(content)
 			raise Phlex::ArgumentError.new("You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information")
@@ -119,6 +127,7 @@ class Phlex::SGML
 	end
 
 	# Output a single space character. If a block is given, a space will be output before and after the block.
+	#: () { (Phlex::SGML) -> void } -> nil
 	def whitespace(&)
 		state = @_state
 		return unless state.should_render?
@@ -138,6 +147,7 @@ class Phlex::SGML
 	# Wrap the output in an HTML comment.
 	#
 	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Comments)
+	#: () { (Phlex::SGML) -> void } -> nil
 	def comment(&)
 		state = @_state
 		return unless state.should_render?
@@ -152,6 +162,7 @@ class Phlex::SGML
 	end
 
 	# Output the given safe object as-is. You may need to use `safe` to mark a string as a safe object.
+	#: (Phlex::SGML::SafeObject) -> nil
 	def raw(content)
 		case content
 		when Phlex::SGML::SafeObject
@@ -168,6 +179,7 @@ class Phlex::SGML
 	end
 
 	# Capture the output of the block and returns it as a string.
+	#: [A] (*A) { (*A | Phlex::SGML) -> void } -> String
 	def capture(*args, &block)
 		return "" unless block
 
@@ -179,6 +191,7 @@ class Phlex::SGML
 	end
 
 	# Define a named fragment that can be selectively rendered.
+	#: (String) -> nil
 	def fragment(name)
 		state = @_state
 		state.begin_fragment(name)
@@ -188,6 +201,7 @@ class Phlex::SGML
 	end
 
 	# Mark the given string as safe for HTML output.
+	#: (String) -> Phlex::SGML::SafeValue
 	def safe(value)
 		case value
 		when String
@@ -200,10 +214,12 @@ class Phlex::SGML
 	alias_method :🦺, :safe
 
 	# Flush the current state to the output buffer.
+	#: () -> nil
 	def flush
 		@_state.flush
 	end
 
+	#: (untyped) { (Phlex::SGML) -> void } -> nil
 	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
@@ -240,6 +256,7 @@ class Phlex::SGML
 	#   end
 	# end
 	# ```
+	#: (untyped, **) { () -> void }
 	def cache(*cache_key, **, &content)
 		location = caller_locations(1, 1)[0]
 
@@ -267,6 +284,7 @@ class Phlex::SGML
 	#
 	# Note: To allow you more control, this method does not take a splat of cache keys.
 	# If you need to pass multiple cache keys, you should pass an array.
+	#: (untyped, **) { () -> void }
 	def low_level_cache(cache_key, **options, &content)
 		state = @_state
 
@@ -286,6 +304,8 @@ class Phlex::SGML
 				end
 			end
 		end
+
+		nil
 	end
 
 	def json_escape(string)
@@ -295,19 +315,23 @@ class Phlex::SGML
 	private
 
 	# Override this method to use a different deployment key.
+	#: () -> Integer
 	def app_version_key
 		Phlex::DEPLOYED_AT
 	end
 
 	# Override this method to use a different cache store.
+	#: () -> untyped
 	def cache_store
 		raise "Cache store not implemented."
 	end
 
+	#: () -> bool
 	def enable_cache_reloading?
 		false
 	end
 
+	#: [A] (*A) { (*A | Phlex::SGML) -> void } -> nil
 	def vanish(*args)
 		return unless block_given?
 
@@ -320,10 +344,12 @@ class Phlex::SGML
 		nil
 	end
 
+	#: () -> bool
 	def render?
 		true
 	end
 
+	#: (untyped) -> String | nil
 	def format_object(object)
 		case object
 		when Float, Integer
@@ -331,19 +357,23 @@ class Phlex::SGML
 		end
 	end
 
+	#: () -> void
 	def around_template
 		yield
 		nil
 	end
 
+	#: () -> void
 	def before_template
 		nil
 	end
 
+	#: () -> void
 	def after_template
 		nil
 	end
 
+	#: () { (Phlex::SGML) -> void } -> nil
 	def __yield_content__
 		return unless block_given?
 
@@ -356,6 +386,7 @@ class Phlex::SGML
 		nil
 	end
 
+	#: () { () -> void } -> void
 	def __yield_content_with_no_yield_args__
 		return unless block_given?
 
@@ -368,6 +399,7 @@ class Phlex::SGML
 		nil
 	end
 
+	#: [A] (*A) { (*A) -> void } -> void
 	def __yield_content_with_args__(*a)
 		return unless block_given?
 
@@ -380,6 +412,7 @@ class Phlex::SGML
 		nil
 	end
 
+	#: (untyped) -> bool
 	def __implicit_output__(content)
 		state = @_state
 		return true unless state.should_render?
@@ -405,6 +438,7 @@ class Phlex::SGML
 	end
 
 	# same as __implicit_output__ but escapes even `safe` objects
+	#: (untyped) -> bool
 	def __text__(content)
 		state = @_state
 		return true unless state.should_render?
@@ -427,6 +461,7 @@ class Phlex::SGML
 		true
 	end
 
+	#: (Hash, String?) -> String
 	def __attributes__(attributes, buffer = +"")
 		attributes.each do |k, v|
 			next unless v
@@ -520,6 +555,7 @@ class Phlex::SGML
 
 	# Provides the nested-attributes case for serializing out attributes.
 	# This allows us to skip many of the checks the `__attributes__` method must perform.
+	#: (Hash, String, String?) -> String
 	def __nested_attributes__(attributes, base_name, buffer = +"")
 		attributes.each do |k, v|
 			next unless v
@@ -559,6 +595,7 @@ class Phlex::SGML
 		end
 	end
 
+	#: (Array) -> String
 	def __nested_tokens__(tokens)
 		buffer = +""
 
@@ -607,6 +644,7 @@ class Phlex::SGML
 	end
 
 	# Result is **unsafe**, so it should be escaped!
+	#: (Array | Set | Hash) -> String
 	def __styles__(styles)
 		case styles
 		when Array, Set
