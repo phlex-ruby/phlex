@@ -20,6 +20,7 @@ class Phlex::SGML
 
 		# Create a new instance of the component.
 		# @note The block will not be delegated {#initialize}. Instead, it will be sent to {#template} when rendering.
+		#: (*, **) { (Phlex::SGML) -> void } -> Phlex::SGML
 		def new(*a, **k, &block)
 			if block
 				object = super(*a, **k, &nil)
@@ -178,6 +179,7 @@ class Phlex::SGML
 	end
 
 	# Capture the output of the block and returns it as a string.
+	#: [A] (*A) { (*A | Phlex::SGML) -> void } -> String
 	def capture(*args, &block)
 		return "" unless block
 
@@ -217,6 +219,7 @@ class Phlex::SGML
 		@_state.flush
 	end
 
+	#: (untyped) { (Phlex::SGML) -> void } -> nil
 	def render(renderable = nil, &)
 		case renderable
 		when Phlex::SGML
@@ -253,6 +256,7 @@ class Phlex::SGML
 	#   end
 	# end
 	# ```
+	#: (untyped, **) { () -> void }
 	def cache(*cache_key, **, &content)
 		location = caller_locations(1, 1)[0]
 
@@ -280,6 +284,7 @@ class Phlex::SGML
 	#
 	# Note: To allow you more control, this method does not take a splat of cache keys.
 	# If you need to pass multiple cache keys, you should pass an array.
+	#: (untyped, **) { () -> void }
 	def low_level_cache(cache_key, **options, &content)
 		state = @_state
 
@@ -299,11 +304,14 @@ class Phlex::SGML
 				end
 			end
 		end
+
+		nil
 	end
 
 	private
 
 	# Override this method to use a different deployment key.
+	#: () -> Integer
 	def app_version_key
 		Phlex::DEPLOYED_AT
 	end
@@ -319,7 +327,7 @@ class Phlex::SGML
 		false
 	end
 
-	#: (*) { (* | Phlex::SGML) -> void } -> nil
+	#: [A] (*A) { (*A | Phlex::SGML) -> void } -> nil
 	def vanish(*args)
 		return unless block_given?
 
@@ -387,7 +395,7 @@ class Phlex::SGML
 		nil
 	end
 
-	#: (*) { (*) -> void } -> void
+	#: [A] (*A) { (*A) -> void } -> void
 	def __yield_content_with_args__(*a)
 		return unless block_given?
 
@@ -449,6 +457,7 @@ class Phlex::SGML
 		true
 	end
 
+	#: (Hash, String?) -> String
 	def __attributes__(attributes, buffer = +"")
 		attributes.each do |k, v|
 			next unless v
@@ -542,6 +551,7 @@ class Phlex::SGML
 
 	# Provides the nested-attributes case for serializing out attributes.
 	# This allows us to skip many of the checks the `__attributes__` method must perform.
+	#: (Hash, String, String?) -> String
 	def __nested_attributes__(attributes, base_name, buffer = +"")
 		attributes.each do |k, v|
 			next unless v
@@ -581,6 +591,7 @@ class Phlex::SGML
 		end
 	end
 
+	#: (Array) -> String
 	def __nested_tokens__(tokens)
 		buffer = +""
 
@@ -629,6 +640,7 @@ class Phlex::SGML
 	end
 
 	# Result is **unsafe**, so it should be escaped!
+	#: (Array | Set | Hash) -> String
 	def __styles__(styles)
 		case styles
 		when Array, Set
