@@ -10,3 +10,6 @@ Lint/RedundantRequireStatement:
 
 Layout/ExtraSpacing:
   Enabled: false
+
+Layout/LeadingCommentSpace:
+  Enabled: false

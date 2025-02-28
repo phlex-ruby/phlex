@@ -179,7 +179,7 @@ class Phlex::SGML
 	end
 
 	# Define a named fragment that can be selectively rendered.
-	# : (String) -> nil
+	#: (String) -> nil
 	def fragment(name)
 		state = @_state
 		state.begin_fragment(name)
@@ -189,7 +189,7 @@ class Phlex::SGML
 	end
 
 	# Mark the given string as safe for HTML output.
-	# : (String) -> Phlex::SGML::SafeValue
+	#: (String) -> Phlex::SGML::SafeValue
 	def safe(value)
 		case value
 		when String
@@ -202,7 +202,7 @@ class Phlex::SGML
 	alias_method :🦺, :safe
 
 	# Flush the current state to the output buffer.
-	# : () -> nil
+	#: () -> nil
 	def flush
 		@_state.flush
 	end
@@ -299,17 +299,17 @@ class Phlex::SGML
 	end
 
 	# Override this method to use a different cache store.
-	# : () -> untyped
+	#: () -> untyped
 	def cache_store
 		raise "Cache store not implemented."
 	end
 
-	# : () -> bool
+	#: () -> bool
 	def enable_cache_reloading?
 		false
 	end
 
-	# : (*) { (*) -> void } -> nil
+	#: (*) { (*) -> void } -> nil
 	def vanish(*args)
 		return unless block_given?
 
@@ -322,12 +322,12 @@ class Phlex::SGML
 		nil
 	end
 
-	# : () -> bool
+	#: () -> bool
 	def render?
 		true
 	end
 
-	# : (untyped) -> String | nil
+	#: (untyped) -> String | nil
 	def format_object(object)
 		case object
 		when Float, Integer
@@ -335,23 +335,23 @@ class Phlex::SGML
 		end
 	end
 
-	# : () -> void
+	#: () -> void
 	def around_template
 		yield
 		nil
 	end
 
-	# : () -> void
+	#: () -> void
 	def before_template
 		nil
 	end
 
-	# : () -> void
+	#: () -> void
 	def after_template
 		nil
 	end
 
-	# : () { (Phlex::SGML) -> void } -> nil
+	#: () { (Phlex::SGML) -> void } -> nil
 	def __yield_content__
 		return unless block_given?
 
@@ -364,7 +364,7 @@ class Phlex::SGML
 		nil
 	end
 
-	# : () { () -> void } -> void
+	#: () { () -> void } -> void
 	def __yield_content_with_no_yield_args__
 		return unless block_given?
 
@@ -377,7 +377,7 @@ class Phlex::SGML
 		nil
 	end
 
-	# : (*) { (*) -> void } -> void
+	#: (*) { (*) -> void } -> void
 	def __yield_content_with_args__(*a)
 		return unless block_given?
 
@@ -390,7 +390,7 @@ class Phlex::SGML
 		nil
 	end
 
-	# : (untyped) -> bool
+	#: (untyped) -> bool
 	def __implicit_output__(content)
 		state = @_state
 		return true unless state.should_render?
@@ -416,7 +416,7 @@ class Phlex::SGML
 	end
 
 	# same as __implicit_output__ but escapes even `safe` objects
-	# : (untyped) -> bool
+	#: (untyped) -> bool
 	def __text__(content)
 		state = @_state
 		return true unless state.should_render?
