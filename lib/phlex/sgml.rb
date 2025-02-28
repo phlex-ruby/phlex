@@ -31,6 +31,7 @@ class Phlex::SGML
 		end
 	end
 
+	#: () -> void
 	def view_template
 		if block_given?
 			yield
@@ -39,10 +40,12 @@ class Phlex::SGML
 		end
 	end
 
+	#: () -> { (Phlex::SGML) -> void }
 	def to_proc
 		proc { |c| c.render(self) }
 	end
 
+	#: [B] (B, Hash, fragments: Array[String]) { (Phlex::SGML) -> void } -> B
 	def call(buffer = +"", context: {}, fragments: nil, &)
 		state = Phlex::SGML::State.new(
 			user_context: context,
@@ -55,6 +58,7 @@ class Phlex::SGML
 		state.output_buffer << state.buffer
 	end
 
+	#: (parent: Phlex::SGML | nil, state: Phlex::SGML::State | nil) { (Phlex::SGML) -> void } -> void
 	def internal_call(parent: nil, state: nil, &block)
 		if @_state
 			raise Phlex::DoubleRenderError.new(
@@ -93,6 +97,7 @@ class Phlex::SGML
 		Thread.current[:__phlex_component__] = [parent, Fiber.current.object_id].freeze
 	end
 
+	#: () -> Hash
 	def context
 		if rendering?
 			@_state.user_context
@@ -105,11 +110,13 @@ class Phlex::SGML
 
 	# Returns `false` before rendering and `true` once the component has started rendering.
 	# It will not reset back to false after rendering.
+	#: () -> bool
 	def rendering?
 		!!@_state
 	end
 
 	# Output plain text.
+	#: (untyped) -> nil
 	def plain(content)
 		unless __text__(content)
 			raise Phlex::ArgumentError.new("You've passed an object to plain that is not handled by format_object. See https://rubydoc.info/gems/phlex/Phlex/SGML#format_object-instance_method for more information")
@@ -119,6 +126,7 @@ class Phlex::SGML
 	end
 
 	# Output a single space character. If a block is given, a space will be output before and after the block.
+	#: () { (Phlex::SGML) -> void } -> nil
 	def whitespace(&)
 		state = @_state
 		return unless state.should_render?
@@ -138,6 +146,7 @@ class Phlex::SGML
 	# Wrap the output in an HTML comment.
 	#
 	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Comments)
+	#: () { (Phlex::SGML) -> void } -> nil
 	def comment(&)
 		state = @_state
 		return unless state.should_render?
@@ -152,6 +161,7 @@ class Phlex::SGML
 	end
 
 	# Output the given safe object as-is. You may need to use `safe` to mark a string as a safe object.
+	#: (Phlex::SGML::SafeObject) -> nil
 	def raw(content)
 		case content
 		when Phlex::SGML::SafeObject
