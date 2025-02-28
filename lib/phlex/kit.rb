@@ -15,11 +15,7 @@ module Phlex::Kit
 		def respond_to_missing?(name, include_private = false)
 			mod = self.class
 
-			if name[0] == name[0].upcase && mod.constants.include?(name) && mod.const_get(name) && methods.include?(name)
-				true
-			else
-				super
-			end
+			(name[0] == name[0].upcase && mod.constants.include?(name) && mod.const_get(name) && methods.include?(name)) || super
 		end
 	end
 
@@ -45,11 +41,7 @@ module Phlex::Kit
 	end
 
 	def respond_to_missing?(name, include_private = false)
-		if name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)
-			true
-		else
-			super
-		end
+		(name[0] == name[0].upcase && constants.include?(name) && const_get(name) && methods.include?(name)) || super
 	end
 
 	def const_added(name)
