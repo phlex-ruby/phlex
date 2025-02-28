@@ -11,5 +11,6 @@ Lint/RedundantRequireStatement:
 Layout/ExtraSpacing:
   Enabled: false
 
+# See https://github.com/rubocop/rubocop/issues/13930
 Layout/LeadingCommentSpace:
   Enabled: false
