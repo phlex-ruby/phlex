@@ -3,6 +3,7 @@
 # @api private
 #: [K, V]
 class Phlex::FIFO
+	#: (max_bytesize: Integer, max_value_bytesize: Integer) -> void
 	def initialize(max_bytesize: 2_000, max_value_bytesize: 2_000)
 		@store = {}
 		@max_bytesize = max_bytesize
@@ -13,6 +14,7 @@ class Phlex::FIFO
 
 	attr_reader :bytesize, :max_bytesize
 
+	#: (Integer) -> void
 	def expand(bytes)
 		@mutex.synchronize do
 			@max_bytesize += bytes
