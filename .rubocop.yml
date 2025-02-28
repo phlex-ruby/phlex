@@ -10,6 +10,3 @@ Lint/RedundantRequireStatement:
 
 Layout/ExtraSpacing:
   Enabled: false
-
-Layout/LeadingCommentSpace:
-  AllowRBSInlineAnnotation: true
