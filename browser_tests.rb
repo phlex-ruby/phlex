@@ -105,6 +105,10 @@ class XSSWithStrings < Phlex::HTML
 			File.open("fixtures/xss.txt") do |file|
 				file.each_line do |line|
 					div(class: line) { line }
+					svg do |s|
+						s.cdata(line)
+						s.cdata { line }
+					end
 				end
 			end
 		end
