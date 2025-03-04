@@ -48,14 +48,12 @@ class Phlex::CSV
 
 		each_item do |record|
 			if has_yielder
-				row = nil
 				yielder(record) { |*a, **k| row = row_template(*a, **k) }
 			else
-				row = around_row(record)
+				around_row(record)
 			end
 
-			buffered = row_buffer.length > 0 # column was called
-			row = row_buffer if buffered
+			row = row_buffer
 
 			if first_row
 				first_row = false
@@ -99,7 +97,7 @@ class Phlex::CSV
 
 			buffer << "\n"
 
-			row_buffer.clear if buffered
+			row_buffer.clear
 		end
 
 		buffer
@@ -195,17 +193,13 @@ class Phlex::CSV
 
 	# Handle legacy `view_template` method
 	def respond_to_missing?(method_name, include_private)
-		if method_name == :row_template && respond_to?(:view_template)
-			true
-		else
-			super
-		end
+		(method_name == :row_template && respond_to?(:view_template)) || super
 	end
 
 	# Handle legacy `view_template` method
 	def method_missing(method_name, ...)
 		if method_name == :row_template && respond_to?(:view_template)
-			warn "Deprecated: Use `row_template` instead."
+			warn "Deprecated: Use `row_template` instead of `view_template` in Phlex CSVs."
 			self.class.alias_method :row_template, :view_template
 			view_template(...)
 		else

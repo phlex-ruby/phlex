@@ -99,40 +99,14 @@ test "no headers" do
 	CSV
 end
 
-test "using return value" do
-	example = Class.new(Phlex::CSV) do
-		define_method(:escape_csv_injection?) { true }
-		define_method(:trim_whitespace?) { true }
-
-		define_method(:row_template) do |product|
-			[
-				["Name", product.name],
-				["Price", product.price],
-			]
-		end
-	end
-
-	assert_equal example.new(products).call, <<~CSV
-		Name,Price
-		Apple,1.0
-		Banana,2.0
-		strawberry,Three pounds
-		"'=SUM(A1:B1)","'=SUM(A1:B1)"
-		"Abc, ""def""","Foo
-		bar ""baz"""
-	CSV
-end
-
 test "using view_template instead of row_template" do
 	example = Class.new(Phlex::CSV) do
 		define_method(:escape_csv_injection?) { true }
 		define_method(:trim_whitespace?) { true }
 
 		define_method(:view_template) do |product|
-			[
-				["Name", product.name],
-				["Price", product.price],
-			]
+			column "Name", product.name
+			column "Price", product.price
 		end
 	end
 
@@ -160,10 +134,8 @@ test "with a yielder" do
 		define_method(:trim_whitespace?) { true }
 		define_method(:yielder) { |product, &block| block.call(product.name, product.price) }
 		define_method(:row_template) do |name, price|
-			[
-				["Name", name],
-				["Price", price],
-			]
+			column "Name", name
+			column "Price", price
 		end
 	end
 
@@ -184,10 +156,8 @@ test "with a custom delimiter defined as a method" do
 		define_method(:trim_whitespace?) { true }
 		define_method(:delimiter) { ";" }
 		define_method(:row_template) do |product|
-			[
-				["Name", product.name],
-				["Price", product.price],
-			]
+			column "Name", product.name
+			column "Price", product.price
 		end
 	end
 
@@ -207,10 +177,8 @@ test "with a custom delimiter passed in as an argument" do
 		define_method(:escape_csv_injection?) { true }
 		define_method(:trim_whitespace?) { true }
 		define_method(:row_template) do |product|
-			[
-				["Name", product.name],
-				["Price", product.price],
-			]
+			column "Name", product.name
+			column "Price", product.price
 		end
 	end
 
