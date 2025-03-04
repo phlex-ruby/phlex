@@ -15,6 +15,20 @@ class Phlex::SVG < Phlex::SGML
 		nil
 	end
 
+	def cdata(content = nil, &block)
+		state = @_state
+		return unless state.should_render?
+
+		if !block && String === content
+			state.buffer << "<![CDATA[" << content.gsub("]]>", "]]>]]<![CDATA[") << "]]>"
+		elsif block && nil == content
+			state.buffer << "<![CDATA[" << capture(&block).gsub("]]>", "]]>]]<![CDATA[") << "]]>"
+		else
+
+			raise Phlex::ArgumentError.new("Expected a String or block.")
+		end
+	end
+
 	def tag(name, **attributes, &)
 		state = @_state
 		block_given = block_given?
