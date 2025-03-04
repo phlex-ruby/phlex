@@ -1,62 +1,120 @@
 # frozen_string_literal: true
 
 class Phlex::CSV
-	FORMULA_PREFIXES = Set["=", "+", "-", "@", "\t", "\r"].freeze
-	SPACE_CHARACTERS = Set[" ", "\t", "\r"].freeze
+	FORMULA_PREFIXES_MAP = Array.new(128).tap do |map|
+		"=+-@\t\r".each_byte do |byte|
+			map[byte] = true
+		end
+	end.freeze
 
-	def initialize(collection, delimiter: ",")
+	UNDEFINED = Object.new
+
+	def initialize(collection)
 		@collection = collection
-		@delimiter = delimiter
+		@_row_buffer = []
 		@_headers = []
-		@_current_row = []
-		@_current_column_index = 0
-		@_first = true
 	end
 
 	attr_reader :collection
 
-	def call(buffer = +"", context: nil)
-		unless escape_csv_injection? == true || escape_csv_injection? == false
-			raise <<~MESSAGE
-				You need to define escape_csv_injection? in #{self.class.name}, returning either `true` or `false`.
+	def call(buffer = +"", context: nil, delimiter: self.delimiter)
+		ensure_escape_csv_injection_configured!
 
-				CSV injection is a security vulnerability where malicious spreadsheet formulae are used to execute code or exfiltrate data when a CSV is opened in a spreadsheet program such as Microsoft Excel or Google Sheets.
+		strip_whitespace = trim_whitespace?
+		escape_csv_injection = escape_csv_injection?
+		row_buffer = @_row_buffer
+		headers = @_headers
+		has_yielder = respond_to?(:yielder, true)
+		first_row = true
+		render_headers = render_headers?
 
-				For more information, see https://owasp.org/www-community/attacks/CSV_Injection
+		if delimiter.length != 1
+			raise Phlex::ArgumentError.new("Delimiter must be a single character")
+		end
 
-				If you're sure this CSV will never be opened in a spreadsheet program, you can disable CSV injection escapes:
+		if strip_whitespace
+			escape_regex = /[\n"#{delimiter}]/
+		else
+			escape_regex = /^\s|\s$|[\n"#{delimiter}]/
+		end
 
-				  def escape_csv_injection? = false
+		if has_yielder
+			warn <<~MESSAGE
+				Custom yielders are deprecated in Phlex::CSV.
 
-				This is useful when using CSVs for byte-for-byte data exchange between secure systems.
+				Please replace your yielder with an `around_row` method.
 
-				Alternatively, you can enable CSV injection escapes at the cost of data integrity:
-
-				  def escape_csv_injection? = true
-
-				Note: Enabling the CSV injection escapes will prefix any values that start with `=`, `+`, `-`, `@`, `\\t`, or `\\r` with a single quote `'` to prevent them from being interpreted as formulae by spreadsheet programs.
-
-				Unfortunately, there is no one-size-fits-all solution to CSV injection. You need to decide based on your specific use case.
+				You should be able to just rename your yielder method
+				and change `yield` to `super`.
 			MESSAGE
 		end
 
 		each_item do |record|
-			yielder(record) do |*args, **kwargs|
-				view_template(*args, **kwargs)
-
-				if @_first && render_headers?
-					buffer << @_headers.join(@delimiter) << "\n"
-				end
-
-				buffer << @_current_row.join(@delimiter) << "\n"
-				@_current_column_index = 0
-				@_current_row.clear
+			if has_yielder
+				yielder(record) { |*a, **k| row = row_template(*a, **k) }
+			else
+				around_row(record)
 			end
 
-			@_first = false
+			row = row_buffer
+
+			if first_row
+				first_row = false
+
+				i = 0
+				number_of_columns = row.length
+				first_col = true
+
+				while i < number_of_columns
+					header, = row[i]
+					headers[i] = header
+
+					if render_headers
+						if first_col
+							first_col = false
+						else
+							buffer << delimiter
+						end
+
+						__escape__(buffer, header, escape_csv_injection:, strip_whitespace:, escape_regex:)
+					end
+					i += 1
+				end
+
+				buffer << "\n" if render_headers
+			end
+
+			i = 0
+			number_of_columns = row.length
+			first_col = true
+
+			while i < number_of_columns
+				header, value = row[i]
+
+				unless headers[i] == header
+					raise Phlex::RuntimeError.new("Header mismatch at index #{i}: expected #{headers[i]}, got #{header}.")
+				end
+
+				if first_col
+					first_col = false
+				else
+					buffer << delimiter
+				end
+
+				__escape__(buffer, value, escape_csv_injection:, strip_whitespace:, escape_regex:)
+				i += 1
+			end
+
+			buffer << "\n"
+
+			row_buffer.clear
 		end
 
 		buffer
+	end
+
+	def around_row(item)
+		row_template(item)
 	end
 
 	def filename
@@ -67,25 +125,18 @@ class Phlex::CSV
 		"text/csv"
 	end
 
+	def delimiter
+		","
+	end
+
 	private
 
 	def column(header = nil, value)
-		if @_first
-			@_headers << __escape__(header)
-		elsif header != @_headers[@_current_column_index]
-			raise "Inconsistent header."
-		end
-
-		@_current_row << __escape__(value)
-		@_current_column_index += 1
+		@_row_buffer << [header, value]
 	end
 
 	def each_item(&)
 		collection.each(&)
-	end
-
-	def yielder(record)
-		yield(record)
 	end
 
 	# Override and set to `false` to disable rendering headers.
@@ -100,22 +151,101 @@ class Phlex::CSV
 
 	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
 	def escape_csv_injection?
-		nil
+		UNDEFINED
 	end
 
-	def __escape__(value)
-		value = trim_whitespace? ? value.to_s.strip : value.to_s
-		first_char = value[0]
-		last_char = value[-1]
-
-		if escape_csv_injection? && FORMULA_PREFIXES.include?(first_char)
-			# Prefix a single quote to prevent Excel, Google Docs, etc. from interpreting the value as a formula.
-			# See https://owasp.org/www-community/attacks/CSV_Injection
-			%("'#{value.gsub('"', '""')}")
-		elsif (!trim_whitespace? && (SPACE_CHARACTERS.include?(first_char) || SPACE_CHARACTERS.include?(last_char))) || value.include?('"') || value.include?(",") || value.include?("\n")
-			%("#{value.gsub('"', '""')}")
-		else
+	def __escape__(buffer, value, escape_csv_injection:, strip_whitespace:, escape_regex:)
+		value = case value
+		when String
 			value
+		when Symbol
+			value.name
+		else
+			value.to_s
+		end
+
+		if strip_whitespace
+			value = value.strip
+
+			if escape_csv_injection
+				if FORMULA_PREFIXES_MAP[value.getbyte(0)]
+					value.gsub!('"', '""')
+					buffer << '"\'' << value << '"'
+				elsif value.match?(escape_regex)
+					value.gsub!('"', '""')
+					buffer << '"' << value << '"'
+				else
+					buffer << value
+				end
+			else # not escaping CSV injection
+				buffer << value
+			end
+		else # not stripping whitespace
+			if escape_csv_injection
+				first_byte = value.getbyte(0)
+
+				if FORMULA_PREFIXES_MAP[first_byte]
+					buffer << '"\'' << value.gsub('"', '""') << '"'
+				elsif value.match?(escape_regex)
+					buffer << '"' << value.gsub('"', '""') << '"'
+				else
+					buffer << value
+				end
+			else # not escaping CSV injection
+				if value.match?(escape_regex)
+					buffer << '"' << value.gsub('"', '""') << '"'
+				else
+					buffer << value
+				end
+			end
+		end
+	end
+
+	# Handle legacy `view_template` method
+	def respond_to_missing?(method_name, include_private)
+		(method_name == :row_template && respond_to?(:view_template)) || super
+	end
+
+	# Handle legacy `view_template` method
+	def method_missing(method_name, ...)
+		if method_name == :row_template && respond_to?(:view_template)
+			warn "Deprecated: Use `row_template` instead of `view_template` in Phlex CSVs."
+			self.class.alias_method :row_template, :view_template
+			view_template(...)
+		else
+			super
+		end
+	end
+
+	def ensure_escape_csv_injection_configured!
+		if escape_csv_injection? == UNDEFINED
+			raise <<~MESSAGE
+				You need to define `escape_csv_injection?` in #{self.class.name}.
+
+				CSV injection is a security vulnerability where malicious spreadsheet
+				formulae are used to execute code or exfiltrate data when a CSV is opened
+				in a spreadsheet program such as Microsoft Excel or Google Sheets.
+
+				For more information, see https://owasp.org/www-community/attacks/CSV_Injection
+
+				If you’re sure this CSV will never be opened in a spreadsheet program,
+				you can *disable* CSV injection escapes:
+
+				  def escape_csv_injection? = false
+
+				This is useful when using CSVs for byte-for-byte data exchange between secure systems.
+
+				Alternatively, you can *enable* CSV injection escapes at the cost of data integrity:
+
+				  def escape_csv_injection? = true
+
+				Enabling the CSV injection escapes will prefix with a single quote `'` any
+				values that start with: `=`, `+`, `-`, `@`, `\\t`, `\\r`
+
+				Unfortunately, there is no one-size-fits-all solution to CSV injection.
+
+				You need to decide based on your specific use case.
+			MESSAGE
 		end
 	end
 end
