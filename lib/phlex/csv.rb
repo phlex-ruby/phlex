@@ -12,6 +12,7 @@ class Phlex::CSV
 	def initialize(collection)
 		@collection = collection
 		@_row_buffer = []
+		@_headers = []
 	end
 
 	attr_reader :collection
@@ -22,8 +23,10 @@ class Phlex::CSV
 		strip_whitespace = trim_whitespace?
 		escape_csv_injection = escape_csv_injection?
 		row_buffer = @_row_buffer
+		headers = @_headers
 		has_yielder = respond_to?(:yielder, true)
 		first_row = true
+		render_headers = render_headers?
 
 		if delimiter.length != 1
 			raise Phlex::ArgumentError.new("Delimiter must be a single character")
@@ -58,13 +61,15 @@ class Phlex::CSV
 			if first_row
 				first_row = false
 
-				if render_headers?
-					i = 0
-					number_of_columns = row.length
-					first_col = true
+				i = 0
+				number_of_columns = row.length
+				first_col = true
 
-					while i < number_of_columns
-						header, = row[i]
+				while i < number_of_columns
+					header, = row[i]
+					headers[i] = header
+
+					if render_headers
 						if first_col
 							first_col = false
 						else
@@ -72,11 +77,11 @@ class Phlex::CSV
 						end
 
 						__escape__(buffer, header, escape_csv_injection:, strip_whitespace:, escape_regex:)
-						i += 1
 					end
-
-					buffer << "\n"
+					i += 1
 				end
+
+				buffer << "\n" if render_headers
 			end
 
 			i = 0
@@ -85,6 +90,11 @@ class Phlex::CSV
 
 			while i < number_of_columns
 				header, value = row[i]
+
+				unless headers[i] == header
+					raise Phlex::RuntimeError.new("Header mismatch at index #{i}: expected #{headers[i]}, got #{header}.")
+				end
+
 				if first_col
 					first_col = false
 				else
