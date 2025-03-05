@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
 	spec.email = ["joel@drapper.me"]
 
 	spec.summary = "Object-oriented views in Ruby."
-	spec.description = "Build HTML & SVG view components with Ruby classes."
+	spec.description = "Build HTML, SVG and CSV views with Ruby classes."
 	spec.homepage = "https://www.phlex.fun"
 	spec.license = "MIT"
 	spec.required_ruby_version = ">= 3.2"
