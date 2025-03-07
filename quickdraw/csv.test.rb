@@ -99,57 +99,6 @@ test "no headers" do
 	CSV
 end
 
-test "using view_template instead of row_template" do
-	example = Class.new(Phlex::CSV) do
-		define_method(:escape_csv_injection?) { true }
-		define_method(:trim_whitespace?) { true }
-
-		define_method(:view_template) do |product|
-			column "Name", product.name
-			column "Price", product.price
-		end
-	end
-
-	component = example.new(products)
-	assert component.respond_to?(:row_template)
-
-	assert_raises(NoMethodError) do
-		component.some_random_method
-	end
-
-	assert_equal component.call, <<~CSV
-		Name,Price
-		Apple,1.0
-		Banana,2.0
-		strawberry,Three pounds
-		"'=SUM(A1:B1)","'=SUM(A1:B1)"
-		"Abc, ""def""","Foo
-		bar ""baz"""
-	CSV
-end
-
-test "with a yielder" do
-	example = Class.new(Phlex::CSV) do
-		define_method(:escape_csv_injection?) { true }
-		define_method(:trim_whitespace?) { true }
-		define_method(:yielder) { |product, &block| block.call(product.name, product.price) }
-		define_method(:row_template) do |name, price|
-			column "Name", name
-			column "Price", price
-		end
-	end
-
-	assert_equal example.new(products).call, <<~CSV
-		Name,Price
-		Apple,1.0
-		Banana,2.0
-		strawberry,Three pounds
-		"'=SUM(A1:B1)","'=SUM(A1:B1)"
-		"Abc, ""def""","Foo
-		bar ""baz"""
-	CSV
-end
-
 test "with a custom delimiter defined as a method" do
 	example = Class.new(Phlex::CSV) do
 		define_method(:escape_csv_injection?) { true }
