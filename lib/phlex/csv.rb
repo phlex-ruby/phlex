@@ -196,10 +196,10 @@ class Phlex::CSV
 					buffer << value
 				end
 			else # not escaping CSV injection
-				if value.match?(escape_regex)
-					buffer << '"' << value.gsub('"', '""') << '"'
-				elsif value.empty?
+				if value.empty?
 					buffer << '""'
+				elsif value.match?(escape_regex)
+					buffer << '"' << value.gsub('"', '""') << '"'
 				else
 					buffer << value
 				end
