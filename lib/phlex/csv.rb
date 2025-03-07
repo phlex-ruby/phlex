@@ -168,7 +168,9 @@ class Phlex::CSV
 			value = value.strip
 
 			if escape_csv_injection
-				if FORMULA_PREFIXES_MAP[value.getbyte(0)]
+				if value.empty?
+					buffer << value
+				elsif FORMULA_PREFIXES_MAP[value.getbyte(0)]
 					value.gsub!('"', '""')
 					buffer << '"\'' << value << '"'
 				elsif value.match?(escape_regex)
@@ -184,7 +186,9 @@ class Phlex::CSV
 			if escape_csv_injection
 				first_byte = value.getbyte(0)
 
-				if FORMULA_PREFIXES_MAP[first_byte]
+				if value.empty?
+					buffer << '""'
+				elsif FORMULA_PREFIXES_MAP[first_byte]
 					buffer << '"\'' << value.gsub('"', '""') << '"'
 				elsif value.match?(escape_regex)
 					buffer << '"' << value.gsub('"', '""') << '"'
@@ -194,6 +198,8 @@ class Phlex::CSV
 			else # not escaping CSV injection
 				if value.match?(escape_regex)
 					buffer << '"' << value.gsub('"', '""') << '"'
+				elsif value.empty?
+					buffer << '""'
 				else
 					buffer << value
 				end
