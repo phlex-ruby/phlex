@@ -5,6 +5,17 @@ class Phlex::SGML
 	UNSAFE_ATTRIBUTES = Set.new(%w[srcdoc sandbox http-equiv]).freeze
 	REF_ATTRIBUTES = Set.new(%w[href src action formaction lowsrc dynsrc background ping]).freeze
 
+	ERBCompiler = ERB::Compiler.new("<>").tap do |compiler|
+		compiler.pre_cmd    = [""]
+		compiler.put_cmd    = "@_state.buffer.<<"
+		compiler.insert_cmd = "__implicit_output__"
+		compiler.post_cmd   = ["nil"]
+
+		def compiler.add_insert_cmd(out, content)
+			out.push("#{@insert_cmd}((#{content}))")
+		end
+	end
+
 	autoload :Elements, "phlex/sgml/elements"
 	autoload :SafeObject, "phlex/sgml/safe_object"
 	autoload :SafeValue, "phlex/sgml/safe_value"
@@ -28,6 +39,40 @@ class Phlex::SGML
 			else
 				super
 			end
+		end
+
+		def erb(method_name, erb = nil, locals: nil, &block)
+			loc = caller_locations(1, 1)[0]
+			path = loc.path.delete_suffix(".rb")
+			file = loc.path
+			line = loc.lineno - 1
+
+			unless erb
+				method_path = "#{path}/#{method_name}.html.erb"
+				sidecar_path = "#{path}.html.erb"
+
+				if File.exist?(method_path)
+					erb = File.read(method_path)
+					file = method_path
+					line = 1
+				elsif method_name == :view_template && File.exist?(sidecar_path)
+					erb = File.read(sidecar_path)
+					file = sidecar_path
+					line = 1
+				else
+					raise Phlex::RuntimeError.new(<<~MESSAGE)
+						No ERB template found for #{method_name}
+					MESSAGE
+				end
+			end
+
+			code, _enc = ERBCompiler.compile(erb)
+
+			class_eval(<<~RUBY, file, line)
+				def #{method_name} #{locals}
+					#{code}
+				end
+			RUBY
 		end
 	end
 

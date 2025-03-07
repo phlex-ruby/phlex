@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "nokogiri"
+
 if ENV["COVERAGE"] == "true"
 	require "simplecov"
 
