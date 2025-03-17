@@ -15,6 +15,8 @@ products = [
 	Product.new(:strawberry, "Three pounds"),
 	Product.new("=SUM(A1:B1)", "=SUM(A1:B1)"),
 	Product.new("Abc, \"def\"", "Foo\nbar \"baz\""),
+	Product.new("", ""),
+	Product.new(nil, nil),
 ]
 
 test "don’t escape csv injection or trim whitespace" do
@@ -30,6 +32,8 @@ test "don’t escape csv injection or trim whitespace" do
 		strawberry,Three pounds
 		=SUM(A1:B1),=SUM(A1:B1)
 		"Abc, ""def""","Foo\nbar ""baz"""
+		"",""
+		"",""
 	CSV
 end
 
@@ -46,6 +50,8 @@ test "don’t escape csv injection, but do trim whitespace" do
 		strawberry,Three pounds
 		=SUM(A1:B1),=SUM(A1:B1)
 		Abc, "def",Foo\nbar "baz"
+		,
+		,
 	CSV
 end
 
@@ -63,6 +69,8 @@ test "escape csv injection, but don’t trim whitespace" do
 		"'=SUM(A1:B1)","'=SUM(A1:B1)"
 		"Abc, ""def""","Foo
 		bar ""baz"""
+		"",""
+		"",""
 	CSV
 end
 
@@ -80,6 +88,8 @@ test "escape csv injection and trim whitespace" do
 		"'=SUM(A1:B1)","'=SUM(A1:B1)"
 		"Abc, ""def""","Foo
 		bar ""baz"""
+		,
+		,
 	CSV
 end
 
@@ -96,6 +106,8 @@ test "no headers" do
 		=SUM(A1:B1),=SUM(A1:B1)
 		"Abc, ""def""","Foo
 		bar ""baz"""
+		"",""
+		"",""
 	CSV
 end
 
@@ -118,6 +130,8 @@ test "with a custom delimiter defined as a method" do
 		"'=SUM(A1:B1)";"'=SUM(A1:B1)"
 		"Abc, ""def""";"Foo
 		bar ""baz"""
+		;
+		;
 	CSV
 end
 
@@ -139,6 +153,8 @@ test "with a custom delimiter passed in as an argument" do
 		"'=SUM(A1:B1)";"'=SUM(A1:B1)"
 		"Abc, ""def""";"Foo
 		bar ""baz"""
+		;
+		;
 	CSV
 end
 
