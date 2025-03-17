@@ -217,9 +217,9 @@ class Phlex::SGML
 		return "" unless block
 
 		if args.length > 0
-			@_state.capturing_into(+"") { __yield_content_with_args__(*args, &block) }
+			@_state.capture { __yield_content_with_args__(*args, &block) }
 		else
-			@_state.capturing_into(+"") { __yield_content__(&block) }
+			@_state.capture { __yield_content__(&block) }
 		end
 	end
 
@@ -353,15 +353,8 @@ class Phlex::SGML
 		false
 	end
 
-	def vanish(*args)
-		return unless block_given?
-
-		if args.length > 0
-			@_state.capturing_into(Phlex::Vanish) { yield(*args) }
-		else
-			@_state.capturing_into(Phlex::Vanish) { yield(self) }
-		end
-
+	def vanish(...)
+		capture(...)
 		nil
 	end
 

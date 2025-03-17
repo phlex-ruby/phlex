@@ -14,16 +14,7 @@ class Phlex::SGML::State
 
 	attr_accessor :capturing, :user_context
 
-	attr_reader :fragments, :fragment_depth, :output_buffer
-
-	def buffer
-		case @buffer
-		when Proc
-			@buffer.call
-		else
-			@buffer
-		end
-	end
+	attr_reader :fragments, :fragment_depth, :output_buffer, :buffer
 
 	def around_render(component)
 		stack = @stack
@@ -85,17 +76,23 @@ class Phlex::SGML::State
 	end
 
 	def caching(&)
-		buffer = +""
-		@cache_stack.push([buffer, {}].freeze)
-		capturing_into(buffer, &)
-		@cache_stack.pop
+		result = nil
+
+		capture do
+			@cache_stack.push([buffer, {}].freeze)
+			yield
+			result = @cache_stack.pop
+		end
+
+		result
 	end
 
 	def caching?
 		@cache_stack.length > 0
 	end
 
-	def capturing_into(new_buffer)
+	def capture
+		new_buffer = +""
 		original_buffer = @buffer
 		original_capturing = @capturing
 		original_fragments = @fragments
