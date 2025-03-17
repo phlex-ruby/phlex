@@ -298,6 +298,8 @@ class Phlex::SGML
 		].freeze
 
 		low_level_cache(full_key, **, &content)
+
+		nil
 	end
 
 	# Cache a block of content where you control the entire cache key.
@@ -331,6 +333,8 @@ class Phlex::SGML
 				end
 			end
 		end
+
+		nil
 	end
 
 	def json_escape(string)
