@@ -8,7 +8,6 @@ module Phlex
 
 	autoload :Kit, "phlex/kit"
 	autoload :FIFO, "phlex/fifo"
-	autoload :Vanish, "phlex/vanish"
 	autoload :Helpers, "phlex/helpers"
 	autoload :FIFOCacheStore, "phlex/fifo_cache_store"
 
