@@ -113,8 +113,8 @@ class Phlex::CSV
 		buffer
 	end
 
-	def around_row(item)
-		row_template(item)
+	def around_row(...)
+		row_template(...)
 	end
 
 	def filename
