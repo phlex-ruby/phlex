@@ -111,6 +111,33 @@ test "no headers" do
 	CSV
 end
 
+test "with a custom around_row" do
+	example = Class.new(Phlex::CSV) do
+		def escape_csv_injection? = true
+
+		def around_row(item)
+			super(item.name, item.price)
+		end
+
+		def row_template(name, price)
+			column "Name", name
+			column "Price", price
+		end
+	end
+
+	assert_equal example.new(products).call, <<~CSV
+		Name,Price
+		Apple,1.0
+		" Banana ",2.0
+		strawberry,Three pounds
+		"'=SUM(A1:B1)","'=SUM(A1:B1)"
+		"Abc, ""def""","Foo
+		bar ""baz"""
+		"",""
+		"",""
+	CSV
+end
+
 test "with a custom delimiter defined as a method" do
 	example = Class.new(Phlex::CSV) do
 		define_method(:escape_csv_injection?) { true }
