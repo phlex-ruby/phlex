@@ -13,6 +13,7 @@ class Phlex::CSV
 		@collection = collection
 		@_row_buffer = []
 		@_headers = []
+		@_row_appender = nil
 	end
 
 	attr_reader :collection
@@ -49,13 +50,7 @@ class Phlex::CSV
 			MESSAGE
 		end
 
-		each_item do |record|
-			if has_yielder
-				yielder(record) { |*a, **k| row = row_template(*a, **k) }
-			else
-				around_row(record)
-			end
-
+		row_appender = -> {
 			row = row_buffer
 
 			if first_row
@@ -108,6 +103,20 @@ class Phlex::CSV
 			buffer << "\n"
 
 			row_buffer.clear
+		}
+
+		if has_yielder
+			each_item do |record|
+				yielder(record) do |*a, **k|
+					row_template(*a, **k)
+					row_appender.call
+				end
+			end
+		else
+			@row_appender = row_appender
+			each_item do |record|
+				around_row(record)
+			end
 		end
 
 		buffer
@@ -115,6 +124,7 @@ class Phlex::CSV
 
 	def around_row(...)
 		row_template(...)
+		@row_appender.call
 	end
 
 	def filename
