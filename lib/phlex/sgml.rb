@@ -16,11 +16,6 @@ class Phlex::SGML
 		end
 	end
 
-	autoload :Elements, "phlex/sgml/elements"
-	autoload :SafeObject, "phlex/sgml/safe_object"
-	autoload :SafeValue, "phlex/sgml/safe_value"
-	autoload :State, "phlex/sgml/state"
-
 	include Phlex::Helpers
 
 	class << self

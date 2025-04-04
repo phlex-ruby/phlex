@@ -23,7 +23,7 @@ Bundler.require :test
 
 require "phlex"
 
-Phlex.eager_load
+Phlex::Loader.eager_load
 
 # Previous content of test helper now starts here
 $LOAD_PATH.unshift(File.expand_path("../fixtures", __dir__))

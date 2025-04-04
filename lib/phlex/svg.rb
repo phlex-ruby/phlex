@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Phlex::SVG < Phlex::SGML
-	autoload :StandardElements, "phlex/svg/standard_elements"
-
 	include StandardElements
 
 	# Returns the string "image/svg+xml"
