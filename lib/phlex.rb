@@ -6,7 +6,6 @@ require "zeitwerk"
 
 module Phlex
 	Loader = Zeitwerk::Loader.for_gem.tap do |loader|
-		loader.push_dir("lib/phlex/errors", namespace: Phlex)
 		loader.inflector.inflect(
 			"csv" => "CSV",
 			"fifo" => "FIFO",
@@ -16,6 +15,7 @@ module Phlex
 			"svg" => "SVG",
 		)
 
+		loader.collapse("#{__dir__}/phlex/errors")
 		loader.setup
 	end
 
