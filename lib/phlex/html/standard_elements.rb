@@ -472,6 +472,13 @@ module Phlex::HTML::StandardElements
 	# [Spec](https://html.spec.whatwg.org/#the-select-element)
 	register_element def select(**attributes, &content) = nil
 
+	# [EXPERIMENTAL] Outputs a `<selectedcontent>` tag.
+	#
+	# [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/selectedcontent)
+	# [Draft Spec](https://github.com/whatwg/html/pull/10633)
+	# [Can I Use?](https://caniuse.com/mdn-html_elements_selectedcontent)
+	register_element def selectedcontent(**attributes, &content) = nil
+
 	# Outputs a `<slot>` tag.
 	#
 	# [MDN Docs](https://developer.mozilla.org/docs/Web/HTML/Element/slot)
