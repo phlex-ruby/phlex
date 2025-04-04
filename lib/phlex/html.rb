@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class Phlex::HTML < Phlex::SGML
-	autoload :StandardElements, "phlex/html/standard_elements"
-	autoload :VoidElements, "phlex/html/void_elements"
-
 	extend Phlex::SGML::Elements
 	include VoidElements, StandardElements
 

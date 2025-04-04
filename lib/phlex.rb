@@ -2,25 +2,22 @@
 
 require "erb"
 require "set"
+require "zeitwerk"
 
 module Phlex
-	autoload :VERSION, "phlex/version"
+	Loader = Zeitwerk::Loader.for_gem.tap do |loader|
+		loader.push_dir("lib/phlex/errors", namespace: Phlex)
+		loader.inflector.inflect(
+			"csv" => "CSV",
+			"fifo" => "FIFO",
+			"fifo_cache_store" => "FIFOCacheStore",
+			"html" => "HTML",
+			"sgml" => "SGML",
+			"svg" => "SVG",
+		)
 
-	autoload :Kit, "phlex/kit"
-	autoload :FIFO, "phlex/fifo"
-	autoload :Helpers, "phlex/helpers"
-	autoload :FIFOCacheStore, "phlex/fifo_cache_store"
-
-	autoload :CSV, "phlex/csv"
-	autoload :SVG, "phlex/svg"
-	autoload :HTML, "phlex/html"
-	autoload :SGML, "phlex/sgml"
-
-	autoload :Error, "phlex/error"
-	autoload :NameError, "phlex/errors/name_error"
-	autoload :RuntimeError, "phlex/errors/runtime_error"
-	autoload :ArgumentError, "phlex/errors/argument_error"
-	autoload :DoubleRenderError, "phlex/errors/double_render_error"
+		loader.setup
+	end
 
 	Escape = ERB::Escape
 
@@ -32,17 +29,6 @@ module Phlex
 		unless CACHED_FILES.include?(file_path)
 			CACHED_FILES << file_path
 			Phlex::ATTRIBUTE_CACHE.expand(File.size(file_path))
-		end
-	end
-
-	def self.eager_load
-		queue = [self]
-
-		while (mod = queue.shift)
-			mod.constants.each do |const_name|
-				const = mod.const_get(const_name)
-				queue << const if Module === const
-			end
 		end
 	end
 
