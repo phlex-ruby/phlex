@@ -566,7 +566,7 @@ class Phlex::SGML
 		attributes.each do |k, v|
 			next unless v
 
-			if k == :_
+			if (root_key = (:_ == k))
 				name = ""
 				original_base_name = base_name
 				base_name = base_name.delete_suffix("-")
@@ -603,7 +603,7 @@ class Phlex::SGML
 				raise Phlex::ArgumentError.new("Invalid attribute value #{v.inspect}.")
 			end
 
-			if k == :_
+			if root_key
 				base_name = original_base_name
 			end
 
