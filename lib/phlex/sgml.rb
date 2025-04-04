@@ -566,14 +566,20 @@ class Phlex::SGML
 		attributes.each do |k, v|
 			next unless v
 
-			name = case k
-				when String then k
-				when Symbol then k.name.tr("_", "-")
-				else raise Phlex::ArgumentError.new("Attribute keys should be Strings or Symbols")
-			end
+			if (root_key = (:_ == k))
+				name = ""
+				original_base_name = base_name
+				base_name = base_name.delete_suffix("-")
+			else
+				name = case k
+					when String then k
+					when Symbol then k.name.tr("_", "-")
+					else raise Phlex::ArgumentError.new("Attribute keys should be Strings or Symbols")
+				end
 
-			if name.match?(/[<>&"']/)
-				raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
+				if name.match?(/[<>&"']/)
+					raise Phlex::ArgumentError.new("Unsafe attribute name detected: #{k}.")
+				end
 			end
 
 			case v
@@ -595,6 +601,10 @@ class Phlex::SGML
 				buffer << " " << base_name << name << '="' << v.to_s.gsub('"', "&quot;") << '"'
 			else
 				raise Phlex::ArgumentError.new("Invalid attribute value #{v.inspect}.")
+			end
+
+			if root_key
+				base_name = original_base_name
 			end
 
 			buffer

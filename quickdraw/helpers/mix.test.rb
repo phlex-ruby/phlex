@@ -33,7 +33,7 @@ test "array + hash" do
 		{ data: { controller: "bar" } },
 	)
 
-	assert_equal output, { data: { controller: "bar" } }
+	assert_equal output, { data: { _: ["foo"], controller: "bar" } }
 end
 
 test "array + string" do

@@ -272,6 +272,14 @@ test "_, Hash(String, _)" do
 	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { ">" => "a" }) } }
 end
 
+test "_, Hash(:_, _)" do
+	by_itself = phlex { div(attribute: { _: "world" }) }
+	assert_equal_html by_itself, %(<div attribute="world"></div>)
+
+	with_others = phlex { div(data: { _: "test", controller: "hello" }) }
+	assert_equal_html with_others, %(<div data="test" data-controller="hello"></div>)
+end
+
 test "_, Hash(*invalid*, _)" do
 	assert_raises(Phlex::ArgumentError) { phlex { div(attribute: { Object.new => "a" }) } }
 end
