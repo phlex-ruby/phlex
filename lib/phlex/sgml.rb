@@ -25,7 +25,7 @@ class Phlex::SGML
 		end
 
 		# Create a new instance of the component.
-		# @note The block will not be delegated {#initialize}. Instead, it will be sent to {#template} when rendering.
+		# @note The block will not be delegated to {#initialize}. Instead, it will be sent to {#view_template} when rendering.
 		def new(*a, **k, &block)
 			if block
 				object = super(*a, **k, &nil)
