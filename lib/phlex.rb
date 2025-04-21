@@ -3,6 +3,7 @@
 require "erb"
 require "set"
 require "zeitwerk"
+require "phlex/version"
 
 module Phlex
 	Loader = Zeitwerk::Loader.for_gem.tap do |loader|
