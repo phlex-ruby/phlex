@@ -284,12 +284,12 @@ class Phlex::SGML
 		location = caller_locations(1, 1)[0]
 
 		full_key = [
-			app_version_key,                                    # invalidates the key when deploying new code in case of changes
+			app_version_key,                                   # invalidates the key when deploying new code in case of changes
 			self.class.name,                                   # prevents collisions between classes
 			(self.class.object_id if enable_cache_reloading?), # enables reloading
 			location.base_label,                               # prevents collisions between different methods
 			location.lineno,                                   # prevents collisions between different lines
-			cache_key,                                        # allows for custom cache keys
+			cache_key,                                         # allows for custom cache keys
 		].freeze
 
 		low_level_cache(full_key, **, &content)
