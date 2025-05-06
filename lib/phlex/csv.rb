@@ -139,32 +139,30 @@ class Phlex::CSV
 		","
 	end
 
-	private
-
-	def column(header = nil, value)
+	private def column(header = nil, value)
 		@_row_buffer << [header, value]
 	end
 
-	def each_item(&)
+	private def each_item(&)
 		collection.each(&)
 	end
 
 	# Override and set to `false` to disable rendering headers.
-	def render_headers?
+	private def render_headers?
 		true
 	end
 
 	# Override and set to `true` to strip leading and trailing whitespace from values.
-	def trim_whitespace?
+	private def trim_whitespace?
 		false
 	end
 
 	# Override and set to `false` to disable CSV injection escapes or `true` to enable.
-	def escape_csv_injection?
+	private def escape_csv_injection?
 		UNDEFINED
 	end
 
-	def __escape__(buffer, value, escape_csv_injection:, strip_whitespace:, escape_regex:)
+	private def __escape__(buffer, value, escape_csv_injection:, strip_whitespace:, escape_regex:)
 		value = case value
 		when String
 			value
@@ -218,12 +216,12 @@ class Phlex::CSV
 	end
 
 	# Handle legacy `view_template` method
-	def respond_to_missing?(method_name, include_private)
+	private def respond_to_missing?(method_name, include_private)
 		(method_name == :row_template && respond_to?(:view_template)) || super
 	end
 
 	# Handle legacy `view_template` method
-	def method_missing(method_name, ...)
+	private def method_missing(method_name, ...)
 		if method_name == :row_template && respond_to?(:view_template)
 			warn "Deprecated: Use `row_template` instead of `view_template` in Phlex CSVs."
 			self.class.alias_method :row_template, :view_template
@@ -233,7 +231,7 @@ class Phlex::CSV
 		end
 	end
 
-	def ensure_escape_csv_injection_configured!
+	private def ensure_escape_csv_injection_configured!
 		if escape_csv_injection? == UNDEFINED
 			raise <<~MESSAGE
 				You need to define `escape_csv_injection?` in #{self.class.name}.

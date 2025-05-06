@@ -2,9 +2,7 @@
 
 # @api private
 module Phlex::Helpers
-	private
-
-	def mix(*args)
+	private def mix(*args)
 		args.each_with_object({}) do |object, result|
 			result.merge!(object) do |_key, old, new|
 				case [old, new].freeze
@@ -43,7 +41,7 @@ module Phlex::Helpers
 		end
 	end
 
-	def grab(**bindings)
+	private def grab(**bindings)
 		if bindings.size > 1
 			bindings.values
 		else

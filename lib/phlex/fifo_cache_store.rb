@@ -28,9 +28,7 @@ class Phlex::FIFOCacheStore
 		@fifo.clear
 	end
 
-	private
-
-	def map_key(value)
+	private def map_key(value)
 		case value
 		when Array
 			value.map { |it| map_key(it) }

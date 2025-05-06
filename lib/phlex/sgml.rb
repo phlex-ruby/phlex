@@ -336,52 +336,50 @@ class Phlex::SGML
 		ERB::Util.json_escape(string)
 	end
 
-	private
-
 	# Override this method to use a different deployment key.
-	def app_version_key
+	private def app_version_key
 		Phlex::DEPLOYED_AT
 	end
 
 	# Override this method to use a different cache store.
-	def cache_store
+	private def cache_store
 		raise "Cache store not implemented."
 	end
 
-	def enable_cache_reloading?
+	private def enable_cache_reloading?
 		false
 	end
 
-	def vanish(...)
+	private def vanish(...)
 		capture(...)
 		nil
 	end
 
-	def render?
+	private def render?
 		true
 	end
 
-	def format_object(object)
+	private def format_object(object)
 		case object
 		when Float, Integer
 			object.to_s
 		end
 	end
 
-	def around_template
+	private def around_template
 		yield
 		nil
 	end
 
-	def before_template
+	private def before_template
 		nil
 	end
 
-	def after_template
+	private def after_template
 		nil
 	end
 
-	def __yield_content__
+	private def __yield_content__
 		return unless block_given?
 
 		buffer = @_state.buffer
@@ -393,7 +391,7 @@ class Phlex::SGML
 		nil
 	end
 
-	def __yield_content_with_no_yield_args__
+	private def __yield_content_with_no_yield_args__
 		return unless block_given?
 
 		buffer = @_state.buffer
@@ -405,7 +403,7 @@ class Phlex::SGML
 		nil
 	end
 
-	def __yield_content_with_args__(*a)
+	private def __yield_content_with_args__(*a)
 		return unless block_given?
 
 		buffer = @_state.buffer
@@ -417,7 +415,7 @@ class Phlex::SGML
 		nil
 	end
 
-	def __implicit_output__(content)
+	private def __implicit_output__(content)
 		state = @_state
 		return true unless state.should_render?
 
@@ -442,7 +440,7 @@ class Phlex::SGML
 	end
 
 	# same as __implicit_output__ but escapes even `safe` objects
-	def __text__(content)
+	private def __text__(content)
 		state = @_state
 		return true unless state.should_render?
 
@@ -464,7 +462,7 @@ class Phlex::SGML
 		true
 	end
 
-	def __attributes__(attributes, buffer = +"")
+	private def __attributes__(attributes, buffer = +"")
 		attributes.each do |k, v|
 			next unless v
 
@@ -557,7 +555,7 @@ class Phlex::SGML
 
 	# Provides the nested-attributes case for serializing out attributes.
 	# This allows us to skip many of the checks the `__attributes__` method must perform.
-	def __nested_attributes__(attributes, base_name, buffer = +"")
+	private def __nested_attributes__(attributes, base_name, buffer = +"")
 		attributes.each do |k, v|
 			next unless v
 
@@ -606,7 +604,7 @@ class Phlex::SGML
 		end
 	end
 
-	def __nested_tokens__(tokens)
+	private def __nested_tokens__(tokens)
 		buffer = +""
 
 		i, length = 0, tokens.length
@@ -654,7 +652,7 @@ class Phlex::SGML
 	end
 
 	# Result is **unsafe**, so it should be escaped!
-	def __styles__(styles)
+	private def __styles__(styles)
 		case styles
 		when Array, Set
 			styles.filter_map do |s|
