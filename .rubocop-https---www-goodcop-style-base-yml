@@ -688,6 +688,10 @@ Security/YAMLLoad:
 Style/ArgumentsForwarding:
   Enabled: true
 
+Style/AccessModifierDeclarations:
+  Enabled: true
+  EnforcedStyle: inline
+
 Style/ComparableClamp:
   Enabled: true
 
