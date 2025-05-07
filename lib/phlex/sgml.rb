@@ -481,6 +481,8 @@ class Phlex::SGML
 				v.name.tr("_", "-").gsub('"', "&quot;")
 			when Integer, Float
 				v.to_s
+			when Date, Time
+				v.iso8601
 			when Hash
 				case k
 				when :style
