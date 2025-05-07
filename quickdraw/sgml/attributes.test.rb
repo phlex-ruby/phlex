@@ -176,6 +176,16 @@ test "_, Float" do
 	assert_equal_html output, %(<div attribute="1.234"></div>)
 end
 
+test "_, Date" do
+	output = phlex { div(attribute: Date.new(2023, 1, 15)) }
+	assert_equal_html output, %(<div attribute="2023-01-15"></div>)
+end
+
+test "_, Time" do
+	output = phlex { div(attribute: Time.new(2023, 1, 15, 12, 30, 45)) }
+	assert_equal_html output, %(<div attribute="2023-01-15T12:30:45+00:00"></div>)
+end
+
 test "_, *invalid*" do
 	assert_raises(Phlex::ArgumentError) do
 		phlex { div(attribute: Object.new) }

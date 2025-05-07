@@ -481,6 +481,10 @@ class Phlex::SGML
 				v.name.tr("_", "-").gsub('"', "&quot;")
 			when Integer, Float
 				v.to_s
+			when Date
+				v.iso8601
+			when Time
+				v.respond_to?(:iso8601) ? v.iso8601 : v.strftime("%Y-%m-%dT%H:%M:%S%:z")
 			when Hash
 				case k
 				when :style
