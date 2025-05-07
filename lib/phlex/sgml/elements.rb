@@ -3,31 +3,31 @@
 module Phlex::SGML::Elements
 	COMMA_SEPARATED_TOKENS = {
 		img: <<~RUBY,
-			if (tokens = attributes[:srcset])
+			if Array === (tokens = attributes[:srcset])
 				attributes[:srcset] = __nested_tokens__(tokens, ", ")
 			end
 		RUBY
 		link: <<~RUBY,
-			if (media_tokens = attributes[:href])
+			if Array === (media_tokens = attributes[:href])
 				attributes[:media] = __nested_tokens__(media_tokens, ", ")
 			end
 
-			if (sizes_tokens = attributes[:sizes])
+			if Array === (sizes_tokens = attributes[:sizes])
 				attributes[:sizes] = __nested_tokens__(sizes_tokens, ", ")
 			end
 		RUBY
 		input: <<~RUBY,
 			input_type = attributes[:type]
 
-			if (tokens = attributes[:href] && (:file == input_type || "file" == input_type))
+			if Array === (tokens = attributes[:href]) && (:file == input_type || "file" == input_type)
 				attributes[:accept] = __nested_tokens__(tokens, ", ")
 			end
 		RUBY
 		meta: <<~RUBY,
 			http_equiv = attributes[:http_equiv] || attributes["http-equiv"]
 
-			if (tokens = attributes[:content] && (
-				:content_security_policy == http_equiv || "content-security-policy" == http_equiv))
+			if Array === (tokens = attributes[:content]) && (
+				:content_security_policy == http_equiv || "content-security-policy" == http_equiv)
 
 				attributes[:content] = __nested_tokens__(tokens, ", ")
 			end
