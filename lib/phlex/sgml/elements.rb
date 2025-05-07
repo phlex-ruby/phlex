@@ -1,6 +1,39 @@
 # frozen_string_literal: true
 
 module Phlex::SGML::Elements
+	COMMA_SEPARATED_TOKENS = {
+		img: <<~RUBY,
+			if (tokens = attributes[:srcset])
+				attributes[:srcset] = __nested_tokens__(tokens, ", ")
+			end
+		RUBY
+		link: <<~RUBY,
+			if (media_tokens = attributes[:href])
+				attributes[:media] = __nested_tokens__(media_tokens, ", ")
+			end
+
+			if (sizes_tokens = attributes[:sizes])
+				attributes[:sizes] = __nested_tokens__(sizes_tokens, ", ")
+			end
+		RUBY
+		input: <<~RUBY,
+			input_type = attributes[:type]
+
+			if (tokens = attributes[:href] && (:file == input_type || "file" == input_type))
+				attributes[:accept] = __nested_tokens__(tokens, ", ")
+			end
+		RUBY
+		meta: <<~RUBY,
+			http_equiv = attributes[:http_equiv] || attributes["http-equiv"]
+
+			if (tokens = attributes[:content] && (
+				:content_security_policy == http_equiv || "content-security-policy" == http_equiv))
+
+				attributes[:content] = __nested_tokens__(tokens, ", ")
+			end
+		RUBY
+	}.freeze
+
 	def __registered_elements__
 		@__registered_elements__ ||= {}
 	end
@@ -23,6 +56,7 @@ module Phlex::SGML::Elements
 					if block_given # with content block
 						buffer << "<#{tag}"
 						begin
+							#{COMMA_SEPARATED_TOKENS[method_name]}
 							buffer << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
 						ensure
 							buffer << ">"
@@ -53,6 +87,7 @@ module Phlex::SGML::Elements
 					else # without content
 						buffer << "<#{tag}"
 						begin
+							#{COMMA_SEPARATED_TOKENS[method_name]}
 							buffer << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
 						ensure
 							buffer << "></#{tag}>"
@@ -114,6 +149,7 @@ module Phlex::SGML::Elements
 				if attributes.length > 0 # with attributes
 					buffer << "<#{tag}"
 					begin
+						#{COMMA_SEPARATED_TOKENS[method_name]}
 						buffer << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
 					ensure
 						buffer << ">"

@@ -604,7 +604,7 @@ class Phlex::SGML
 		end
 	end
 
-	private def __nested_tokens__(tokens)
+	private def __nested_tokens__(tokens, sep = " ")
 		buffer = +""
 
 		i, length = 0, tokens.length
@@ -615,28 +615,28 @@ class Phlex::SGML
 			case token
 			when String
 				if i > 0
-					buffer << " " << token
+					buffer << sep << token
 				else
 					buffer << token
 				end
 			when Symbol
 				if i > 0
-					buffer << " " << token.name.tr("_", "-")
+					buffer << sep << token.name.tr("_", "-")
 				else
 					buffer << token.name.tr("_", "-")
 				end
 			when Integer, Float, Phlex::SGML::SafeObject
 				if i > 0
-					buffer << " " << token.to_s
+					buffer << sep << token.to_s
 				else
 					buffer << token.to_s
 				end
 			when Array
 				if token.length > 0
 					if i > 0
-						buffer << " " << __nested_tokens__(token)
+						buffer << sep << __nested_tokens__(token, sep)
 					else
-						buffer << __nested_tokens__(token)
+						buffer << __nested_tokens__(token, sep)
 					end
 				end
 			when nil
