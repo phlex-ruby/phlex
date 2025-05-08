@@ -3,33 +3,44 @@
 module Phlex::SGML::Elements
 	COMMA_SEPARATED_TOKENS = {
 		img: <<~RUBY,
-			if Array === (tokens = attributes[:srcset])
-				attributes[:srcset] = __nested_tokens__(tokens, ", ")
+			if Array === (srcset_attribute = attributes[:srcset])
+				attributes[:srcset] = __nested_tokens__(srcset_attribute, ", ")
 			end
 		RUBY
 		link: <<~RUBY,
-			if Array === (media_tokens = attributes[:href])
-				attributes[:media] = __nested_tokens__(media_tokens, ", ")
+			if Array === (media_attribute = attributes[:media])
+				attributes[:media] = __nested_tokens__(media_attribute, ", ")
 			end
 
-			if Array === (sizes_tokens = attributes[:sizes])
-				attributes[:sizes] = __nested_tokens__(sizes_tokens, ", ")
+			if Array === (sizes_attribute = attributes[:sizes])
+				attributes[:sizes] = __nested_tokens__(sizes_attribute, ", ")
+			end
+
+			if Array === (imagesrcset_attribute = attributes[:imagesrcset])
+				rel_attribute = attributes[:rel] || attributes["rel"]
+				as_attribute = attributes[:as] || attributes["as"]
+
+				if (:preload == rel_attribute || "preload" == rel_attribute) && (:image == as_attribute || "image" == as_attribute)
+					attributes[:imagesrcset] = __nested_tokens__(imagesrcset_attribute, ", ")
+				end
 			end
 		RUBY
 		input: <<~RUBY,
-			input_type = attributes[:type]
+			if Array === (accept_attribute = attributes[:accept])
+				type_attribute = attributes[:type] || attributes["type"]
 
-			if Array === (tokens = attributes[:href]) && (:file == input_type || "file" == input_type)
-				attributes[:accept] = __nested_tokens__(tokens, ", ")
+				if :file == type_attribute || "file" == type_attribute
+					attributes[:accept] = __nested_tokens__(accept_attribute, ", ")
+				end
 			end
 		RUBY
 		meta: <<~RUBY,
-			http_equiv = attributes[:http_equiv] || attributes["http-equiv"]
+			if Array === (contents_attribute = attributes[:content])
+				http_equiv_attribute = attributes[:http_equiv] || attributes["http-equiv"]
 
-			if Array === (tokens = attributes[:content]) && (
-				:content_security_policy == http_equiv || "content-security-policy" == http_equiv)
-
-				attributes[:content] = __nested_tokens__(tokens, ", ")
+				if :content_security_policy == http_equiv_attribute || "content-security-policy" == http_equiv_attribute
+					attributes[:content] = __nested_tokens__(contents_attribute, ", ")
+				end
 			end
 		RUBY
 	}.freeze
