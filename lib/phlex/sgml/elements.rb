@@ -20,7 +20,7 @@ module Phlex::SGML::Elements
 				rel_attribute = attributes[:rel] || attributes["rel"]
 				as_attribute = attributes[:as] || attributes["as"]
 
-				if (:preload == rel_attribute || "preload" == rel_attribute) && (:image == as_attribute || "image" == as_attribute)
+				if ("preload" == rel_attribute || :preload == rel_attribute) && ("image" == as_attribute || :image == as_attribute)
 					attributes[:imagesrcset] = __nested_tokens__(imagesrcset_attribute, ", ")
 				end
 			end
@@ -29,7 +29,7 @@ module Phlex::SGML::Elements
 			if Array === (accept_attribute = attributes[:accept])
 				type_attribute = attributes[:type] || attributes["type"]
 
-				if :file == type_attribute || "file" == type_attribute
+				if "file" == type_attribute || :file == type_attribute
 					attributes[:accept] = __nested_tokens__(accept_attribute, ", ")
 				end
 			end
