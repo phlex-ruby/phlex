@@ -34,15 +34,6 @@ module Phlex::SGML::Elements
 				end
 			end
 		RUBY
-		meta: <<~RUBY,
-			if Array === (contents_attribute = attributes[:content])
-				http_equiv_attribute = attributes[:http_equiv] || attributes["http-equiv"]
-
-				if :content_security_policy == http_equiv_attribute || "content-security-policy" == http_equiv_attribute
-					attributes[:content] = __nested_tokens__(contents_attribute, ", ")
-				end
-			end
-		RUBY
 	}.freeze
 
 	def __registered_elements__

@@ -528,6 +528,61 @@ test ":style, Hash(*invalid*, String)" do
 	end
 end
 
+test ":srcset on img with an Array" do
+	output = phlex { img(srcset: []) }
+	assert_equal_html output, %(<img srcset="">)
+
+	output = phlex { img(srcset: ["image.jpg 1x", "image@2x.jpg 2x"]) }
+	assert_equal_html output, %(<img srcset="image.jpg 1x, image@2x.jpg 2x">)
+end
+
+test ":media on link with an Array" do
+	output = phlex { link(media: []) }
+	assert_equal_html output, %(<link media="">)
+
+	output = phlex { link(media: ["screen", "print"]) }
+	assert_equal_html output, %(<link media="screen, print">)
+
+	output = phlex { link(media: ["(max-width: 600px)", "(min-width: 1200px)"]) }
+	assert_equal_html output, %(<link media="(max-width: 600px), (min-width: 1200px)">)
+end
+
+test ":sizes on link with an Array" do
+	output = phlex { link(sizes: []) }
+	assert_equal_html output, %(<link sizes="">)
+
+	output = phlex { link(sizes: ["16x16", "32x32", "64x64"]) }
+	assert_equal_html output, %(<link sizes="16x16, 32x32, 64x64">)
+end
+
+test ":imagesrcset on link with an Array when rel is preload and as is image" do
+	output = phlex { link(imagesrcset: [], rel: "preload", as: "image") }
+	assert_equal_html output, %(<link imagesrcset="" rel="preload" as="image">)
+
+	output = phlex { link(imagesrcset: ["image.jpg 1x", "image@2x.jpg 2x"], rel: "preload", as: "image") }
+	assert_equal_html output, %(<link imagesrcset="image.jpg 1x, image@2x.jpg 2x" rel="preload" as="image">)
+
+	output = phlex { link(imagesrcset: ["image.jpg 1x", "image@2x.jpg 2x"], rel: :preload, as: :image) }
+	assert_equal_html output, %(<link imagesrcset="image.jpg 1x, image@2x.jpg 2x" rel="preload" as="image">)
+
+	output = phlex { link(:imagesrcset => ["image.jpg 1x", "image@2x.jpg 2x"], "rel" => "preload", "as" => "image") }
+	assert_equal_html output, %(<link imagesrcset="image.jpg 1x, image@2x.jpg 2x" rel="preload" as="image">)
+end
+
+test ":accept on input with array when type is file" do
+	output = phlex { input(accept: [], type: "file") }
+	assert_equal_html output, %(<input accept="" type="file">)
+
+	output = phlex { input(accept: ["image/jpeg", "image/png"], type: "file") }
+	assert_equal_html output, %(<input accept="image/jpeg, image/png" type="file">)
+
+	output = phlex { input(accept: ["image/jpeg", "image/png"], type: :file) }
+	assert_equal_html output, %(<input accept="image/jpeg, image/png" type="file">)
+
+	output = phlex { input(:accept => ["image/jpeg", "image/png"], "type" => "file") }
+	assert_equal_html output, %(<input accept="image/jpeg, image/png" type="file">)
+end
+
 # This is just for coverage.
 Phlex::HTML.call do |c|
 	c.__send__(:__styles__, nil)
