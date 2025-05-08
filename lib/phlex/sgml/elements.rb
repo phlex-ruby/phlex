@@ -1,6 +1,41 @@
 # frozen_string_literal: true
 
 module Phlex::SGML::Elements
+	COMMA_SEPARATED_TOKENS = {
+		img: <<~RUBY,
+			if Array === (srcset_attribute = attributes[:srcset])
+				attributes[:srcset] = __nested_tokens__(srcset_attribute, ", ")
+			end
+		RUBY
+		link: <<~RUBY,
+			if Array === (media_attribute = attributes[:media])
+				attributes[:media] = __nested_tokens__(media_attribute, ", ")
+			end
+
+			if Array === (sizes_attribute = attributes[:sizes])
+				attributes[:sizes] = __nested_tokens__(sizes_attribute, ", ")
+			end
+
+			if Array === (imagesrcset_attribute = attributes[:imagesrcset])
+				rel_attribute = attributes[:rel] || attributes["rel"]
+				as_attribute = attributes[:as] || attributes["as"]
+
+				if ("preload" == rel_attribute || :preload == rel_attribute) && ("image" == as_attribute || :image == as_attribute)
+					attributes[:imagesrcset] = __nested_tokens__(imagesrcset_attribute, ", ")
+				end
+			end
+		RUBY
+		input: <<~RUBY,
+			if Array === (accept_attribute = attributes[:accept])
+				type_attribute = attributes[:type] || attributes["type"]
+
+				if "file" == type_attribute || :file == type_attribute
+					attributes[:accept] = __nested_tokens__(accept_attribute, ", ")
+				end
+			end
+		RUBY
+	}.freeze
+
 	def __registered_elements__
 		@__registered_elements__ ||= {}
 	end
@@ -23,6 +58,7 @@ module Phlex::SGML::Elements
 					if block_given # with content block
 						buffer << "<#{tag}"
 						begin
+							#{COMMA_SEPARATED_TOKENS[method_name]}
 							buffer << (Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
 						ensure
 							buffer << ">"
@@ -53,6 +89,7 @@ module Phlex::SGML::Elements
 					else # without content
 						buffer << "<#{tag}"
 						begin
+							#{COMMA_SEPARATED_TOKENS[method_name]}
 							buffer << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
 						ensure
 							buffer << "></#{tag}>"
@@ -114,6 +151,7 @@ module Phlex::SGML::Elements
 				if attributes.length > 0 # with attributes
 					buffer << "<#{tag}"
 					begin
+						#{COMMA_SEPARATED_TOKENS[method_name]}
 						buffer << (::Phlex::ATTRIBUTE_CACHE[attributes] ||= __attributes__(attributes))
 					ensure
 						buffer << ">"
